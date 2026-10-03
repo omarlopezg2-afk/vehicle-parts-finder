@@ -1,0 +1,96 @@
+[
+  {
+    "id": "toyota-filtro-aceite-04152-yzza1",
+    "part_number": "04152-YZZA1",
+    "part_number_norm": "04152YZZA1",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de aceite",
+    "category": "filtro-aceite",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=04152YZZA1"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-03T22:42:40Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-03T22:42:40Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-03T22:42:40Z"
+      }
+    ],
+    "updated_at": "2026-10-03T22:42:40Z"
+  },
+  {
+    "id": "mitsubishi-filtro-aceite-1230a114",
+    "part_number": "1230A114",
+    "part_number_norm": "1230A114",
+    "type": "OEM",
+    "brand": "Mitsubishi",
+    "name": "Filtro de aceite",
+    "category": "filtro-aceite",
+    "epc_link": {
+      "source": "7zap",
+      "url": "https://7zap.com/en/catalog/cars/mitsubishi/asx-outlander-sport-rvr-4th-facelift-parts-catalog/oil-pump-oil-filter/"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-03T22:42:40Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-03T22:42:40Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-03T22:42:40Z"
+      }
+    ],
+    "updated_at": "2026-10-03T22:42:40Z"
+  }
+]

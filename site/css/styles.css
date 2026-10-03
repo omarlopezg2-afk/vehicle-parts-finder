@@ -1,0 +1,389 @@
+/* site/css/styles.css
+ * Estilos del buscador de piezas. Mobile-first, sin frameworks.
+ * Reglas clave: nunca scroll horizontal, focus siempre visible, tamaños
+ * táctiles >= 44px.
+ */
+
+:root {
+  --color-bg: #0f172a;
+  --color-surface: #1e293b;
+  --color-surface-alt: #273449;
+  --color-text: #e2e8f0;
+  --color-text-dim: #94a3b8;
+  --color-primary: #38bdf8;
+  --color-primary-dark: #0ea5e9;
+  --color-accent: #4ade80;
+  --color-border: #334155;
+  --radius: 10px;
+  --focus-ring: 3px solid #facc15;
+  --max-width: 960px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+img,
+svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+a {
+  color: var(--color-primary);
+}
+
+/* Visible siempre al navegar con teclado (y también con mouse, a propósito:
+ * es más fácil de verificar manualmente que solo aparezca con :focus-visible
+ * y en este proyecto preferimos pecar de visible). */
+:focus {
+  outline: var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-primary);
+  color: #0f172a;
+  padding: 0.5rem 1rem;
+  z-index: 100;
+}
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+header.app-header {
+  padding: 1.25rem 1rem;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+}
+
+header.app-header h1 {
+  margin: 0 0 0.25rem;
+  font-size: 1.4rem;
+}
+
+header.app-header p {
+  margin: 0;
+  color: var(--color-text-dim);
+  font-size: 0.95rem;
+}
+
+main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 1rem;
+  width: 100%;
+}
+
+.fixture-banner {
+  background: #422006;
+  border: 1px solid #a16207;
+  color: #fde68a;
+  padding: 0.6rem 0.9rem;
+  border-radius: var(--radius);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+/* --- Buscador principal --- */
+.search-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.search-form label {
+  flex: 1 1 100%;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.search-form input[type="search"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.75rem 0.9rem;
+  font-size: 1rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+}
+
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.1rem;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: var(--color-primary);
+  color: #0f172a;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  text-decoration: none;
+  min-height: 44px;
+  line-height: 1.2;
+}
+
+.btn:hover {
+  background: var(--color-primary-dark);
+}
+
+.btn.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+}
+
+.search-hint {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+  margin: 0.25rem 0 1rem;
+}
+
+.detected-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 999px;
+  background: var(--color-surface-alt);
+  color: var(--color-accent);
+  margin-left: 0.5rem;
+}
+
+/* --- Árbol vehículo -> categorías --- */
+.vehicle-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.vehicle-card h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.1rem;
+}
+
+.vehicle-card .vehicle-meta {
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.category-grid li {
+  margin: 0;
+}
+
+.category-btn {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 0.6rem;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+}
+
+.category-btn:hover {
+  border-color: var(--color-primary);
+}
+
+.category-btn img {
+  width: 48px;
+  height: 48px;
+}
+
+.category-btn .category-name {
+  font-size: 0.8rem;
+}
+
+.category-btn[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  background: var(--color-surface-alt);
+}
+
+/* --- Ficha de parte --- */
+.part-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.part-card .part-image {
+  flex: 0 0 96px;
+  width: 96px;
+  height: 96px;
+  background: var(--color-surface-alt);
+  border-radius: var(--radius);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+}
+
+.part-card .part-body {
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.part-card h3 {
+  margin: 0 0 0.2rem;
+  font-size: 1.05rem;
+}
+
+.part-card .part-brand {
+  color: var(--color-text-dim);
+  font-size: 0.9rem;
+  margin: 0 0 0.5rem;
+}
+
+.epc-link-box {
+  margin-top: 0.5rem;
+}
+
+.offers-list {
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.offer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: space-between;
+  background: var(--color-surface-alt);
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--radius);
+}
+
+.offer-price {
+  font-weight: 700;
+  color: var(--color-accent);
+}
+
+.equivalents-list {
+  margin: 0.5rem 0 0;
+  padding-left: 1.1rem;
+}
+
+.pegar-numero-box {
+  background: var(--color-surface);
+  border: 1px dashed var(--color-primary);
+  border-radius: var(--radius);
+  padding: 1rem;
+  margin-top: 1rem;
+}
+
+.pegar-numero-box h3 {
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
+}
+
+.pegar-numero-box form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.pegar-numero-box input[type="search"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-alt);
+  color: var(--color-text);
+}
+
+.breadcrumb {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+  margin-bottom: 0.75rem;
+}
+
+.breadcrumb button {
+  background: none;
+  border: none;
+  color: var(--color-primary);
+  cursor: pointer;
+  padding: 0;
+  font-size: 0.85rem;
+  text-decoration: underline;
+}
+
+.empty-state {
+  color: var(--color-text-dim);
+  padding: 1rem;
+  text-align: center;
+}
+
+footer.app-footer {
+  text-align: center;
+  color: var(--color-text-dim);
+  font-size: 0.8rem;
+  padding: 1.5rem 1rem;
+}
+
+@media (min-width: 640px) {
+  .search-form input[type="search"] {
+    flex: 1 1 auto;
+  }
+}
