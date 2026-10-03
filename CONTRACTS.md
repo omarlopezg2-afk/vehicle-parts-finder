@@ -1,0 +1,100 @@
+# Contratos de datos
+
+> Congelado por el líder el 25/09/2026. **Ningún agente cambia esto sin aprobación del
+> líder.** Si un contrato no te sirve, pide el cambio — no lo improvises en tu rama.
+
+## Normalización de número de parte
+
+- `part_number`: valor original, tal como aparece en la fuente, para **mostrar**.
+- `part_number_norm`: mayúsculas, sin espacios, guiones, puntos ni barras, para **buscar**.
+  Ejemplo: `04152-YZZA1` → `04152YZZA1`.
+
+## `data/build/parts.json`
+
+Array de objetos. Cada parte:
+
+```json
+{
+  "id": "string (único, estable, no cambia entre builds)",
+  "part_number": "04152-YZZA1",
+  "part_number_norm": "04152YZZA1",
+  "type": "OEM | AFTERMARKET",
+  "brand": "Toyota",
+  "name": "Filtro de aceite",
+  "category": "filtro-aceite",
+  "epc_link": {
+    "source": "7zap | partsouq | oem-store | null",
+    "url": "string|null"
+  },
+  "image": {
+    "url": "string|null",
+    "source": "ebay | generic",
+    "credit": "string|null"
+  },
+  "equivalents": ["id", "id"],
+  "fitment_ids": ["id", "id"],
+  "offers": [
+    {
+      "store": "eBay",
+      "url": "string (link de afiliado cuando exista campaign id; si no, link normal)",
+      "price": 0.0,
+      "currency": "USD",
+      "condition": "string|null",
+      "updated_at": "ISO-8601"
+    }
+  ],
+  "updated_at": "ISO-8601"
+}
+```
+
+**Importante — el campo que preserva el flujo principal del proyecto**: `epc_link` es
+obligatorio como clave (puede ir `null` dentro si todavía no se resolvió), porque el
+producto es "VIN → ensamblaje → deep link a la fuente del diagrama/número de fábrica", no
+solo "ya tengo el número, dame precio". Ningún agente debe quitar este campo ni tratarlo
+como opcional/secundario.
+
+## `data/build/vehicles.json`
+
+Array de objetos, uno por combinación vehículo resuelta vía vPIC:
+
+```json
+{ "id": "string (único)", "make": "Mitsubishi", "model": "Outlander Sport", "year": 2020,
+  "trim": "string|null", "engine": "string|null" }
+```
+
+## `data/build/search_index.json`
+
+Índice liviano para búsqueda en el navegador (sin precios ni links, solo lo necesario para
+filtrar rápido en el cliente):
+
+```json
+{ "id": "string", "part_number_norm": "string", "name": "string", "brand": "string" }
+```
+
+## `data/build/categories.json`
+
+```json
+{ "slug": "filtro-aceite", "name_es": "Filtro de aceite", "svg": "filtro-aceite.svg" }
+```
+
+## Regla de escalado (no negociable sin pasar por el líder)
+
+El frontend **solo** lee datos a través de `site/js/dataClient.js`, con esta superficie:
+
+- `searchPart(q)` — por `part_number_norm` o texto libre.
+- `getPart(id)`
+- `getVehicles()`
+
+Si el catálogo crece y hay que migrar a Supabase (u otra base), **solo cambia ese módulo**.
+Ningún otro archivo de `site/` debe hacer fetch directo a `data/build/*.json`.
+
+## Reglas transversales (aplican a todos los agentes)
+
+1. Nunca commitear llaves, tokens ni secretos. Van en GitHub Secrets (Actions) o en un
+   `.env` local ignorado por git.
+2. Nunca re-alojar ni copiar diagramas de catálogos EPC (7zap, Partsouq, tiendas oficiales):
+   son dibujos de fábrica con derechos. Solo se guarda el **deep link** (`epc_link.url`).
+3. Scraping solo permitido para precio/equivalencias de sitios pequeños que lo autoricen
+   (robots.txt + términos revisados). Nunca eBay, nunca tiendas grandes, nunca diagramas EPC.
+4. Todo texto de cara al usuario en español.
+5. Cada entrega indica: qué se hizo, cómo probarlo, supuestos y problemas conocidos.

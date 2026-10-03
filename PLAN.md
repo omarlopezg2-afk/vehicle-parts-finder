@@ -1,0 +1,274 @@
+# Buscador de piezas de vehículos (multimarca) — plan
+
+> ## Cómo retomar este proyecto en una conversación nueva
+>
+> **Modelo:** trabajar con **Anthropic**. En la conversación nueva, pon el modelo a
+> **Claude Sonnet 5** para el trabajo del día a día, o **Opus 5** para las decisiones de
+> diseño. Los ayudantes en paralelo ya están configurados en `claude-sonnet-5`.
+>
+> **Lo único que hay que leer:** este archivo, entero. Es autocontenido a propósito.
+>
+> **Estado (25/09/2026): en construcción.** Fase 0 arrancada — repo creado, contratos
+> congelados, agentes de Fase 1 lanzados en paralelo. Ver `TASKS.md` y `REVIEW_LOG.md`
+> en el repo para el estado detallado tarea por tarea.
+>
+> Si algo del plan se cambia al arrancar, **actualizar este archivo**: es la memoria del
+> proyecto.
+
+## 0. Origen de este plan (25/09/2026)
+
+Omar trajo un plan externo (`PLAN_buscador_partes.md`) con estructura de repo, contratos de
+datos, equipo de agentes A-G y flujo de git. Decisión de Omar: **tomar de ahí la mecánica de
+trabajo, pero el núcleo del producto sigue siendo el que ya habíamos cerrado el 24/09.** Lo
+que se adoptó y lo que no:
+
+**Se adopta:**
+- Estructura de repo (`data/`, `pipeline/`, `site/`, `.github/workflows/`, `docs/`).
+- `CONTRACTS.md` / `TASKS.md` / `REVIEW_LOG.md` y el protocolo de revisión del líder.
+- Equipo de agentes A-H trabajando en paralelo por carpetas propias (ver sección más abajo).
+- GitHub Pages + GitHub Actions para hosting del MVP (sustituye a Hetzner/Cloudflare de la
+  tabla de costos original: sigue siendo gratis y es más simple al estar ya en GitHub).
+- SVG genéricos por categoría como imagen de respaldo.
+
+**Se adopta con cambios (porque contradecía lo ya decidido o lo investigado):**
+- **El núcleo NO cambia**: sigue siendo VIN → vPIC → ensamblaje → **deep link a fuente EPC
+  (7zap/Partsouq/tienda oficial) para leer el número de fábrica** → ese número se busca en
+  eBay Browse API para confirmar con fotos reales → enlace de afiliado. El plan externo
+  asumía que el usuario ya tiene el número de parte y no mencionaba el EPC en ningún lugar;
+  eso se queda como *modo alterno* ("ya sé mi número, dame equivalencias y precio"), no como
+  reemplazo del flujo principal.
+- **Orden de EPN cambia**: el plan externo pedía registrar a Omar en eBay Partner Network en
+  Fase 0, día 1. La investigación del 24/09 (`investigacion-ebay-24sep2026.md`) encontró que
+  el motivo de rechazo más citado en la práctica es "sitio no funcional/vacío" — se mueve a
+  **Fase 3, cuando ya hay un sitio mínimo navegable**. La cuenta de developer de eBay sí se
+  saca ya, porque no depende de tener sitio.
+- **Equivalencias (cross-reference)**: el CSV propio + datos derivados de eBay es el punto de
+  partida del MVP, pero se documenta como lo que es — una aproximación, no una fuente
+  autorizada. El cross-reference real vive en estándares de pago (ACES/PIES), que queda en
+  fase 2 si el negocio lo justifica.
+- **Scraping**: limitado a precio/equivalencias de sitios pequeños que lo permitan (robots.txt
+  + términos). **Nunca** diagramas EPC (derechos de fábrica) ni eBay ni tiendas grandes — esto
+  ya estaba en ambos planes, se mantiene explícito para que ningún agente lo cruce por error.
+- **Git**: se usa GitHub directo con ramas + Pull Requests (la alternativa simple que el plan
+  externo mismo ofrece), no Gitea en el servidor casero. Reduce una pieza de infraestructura
+  sin cambiar el protocolo de revisión. Se puede migrar a Gitea después si hace falta.
+
+## Qué es
+
+Web para: poner tu coche (VIN, o marca/modelo/año/versión) → llegar al ensamblaje correcto
+→ ver el diagrama de fábrica y el número de parte OEM → encontrar esa pieza a la venta
+(eBay y tiendas de repuestos). **Multimarca**: cualquier marca, no solo una.
+
+Caso de prueba: Mitsubishi Outlander Sport 2020 (es el coche de Omar, pero no es el alcance).
+
+**Fuera de alcance del MVP:** carrito propio, pagos, cuentas de usuario, inventario propio,
+scraping masivo.
+
+## Decisiones tomadas (24/09 y 25/09/2026)
+
+1. **Alcance: multimarca desde el diseño.** Núcleo agnóstico de la marca.
+2. **Datos: empezar enlazando** a fuentes gratuitas (7zap, Partsouq, la tienda oficial de
+   cada marca). No replicamos diagramas: cero costo y cero riesgo legal. Licenciar una
+   fuente multimarca queda como fase 2 si el producto lo pide.
+3. **Dinero: afiliados** (eBay y tiendas de repuestos). El usuario no paga nada.
+4. **Repo con estructura fija + equipo de agentes por carpeta**, revisión centralizada por
+   el líder antes de fusionar a `main`.
+5. **Hosting MVP: GitHub Pages + GitHub Actions** (recolección programada de datos).
+
+## La consecuencia técnica que hay que tener clara
+
+Los diagramas y los números **viven dentro del catálogo de cada fuente**. Si solo enlazamos,
+no podemos mostrar el número de fábrica en nuestra página, porque no es nuestro. Así que la
+fase 1 es un **lanzador inteligente + puente a eBay**, no una copia del catálogo:
+
+- Núcleo agnóstico: `vehículo → categorías → ensamblaje → (deep link a la fuente)`.
+- **VIN como entrada**: vPIC (NHTSA) gratis y sin clave para vehículos de mercado
+  americano; búsqueda por VIN o número de chasis en la propia fuente para el resto
+  (en japoneses el número de chasis es imprescindible).
+- Caja "pega el número que encontraste → buscar en eBay": filtros de precio, condición y
+  ubicación, con enlace de afiliado. **Modo alterno**: si el usuario ya trae su propio
+  número de parte (sin pasar por el EPC), entra directo aquí.
+
+Fase 2 (si el producto lo pide): licenciar una fuente multimarca y mostrar diagramas y
+números **dentro** de la página, ya con permiso.
+
+## Arquitectura
+
+- **Un esquema único** (`marca, modelo, generación, año, versión, ensamblaje, pieza, número`)
+  y **un adaptador por fuente**. Añadir una marca o una fuente no debe tocar el núcleo.
+- Fuentes candidatas y qué aporta cada una (verificar a fondo al construir):
+
+| Fuente | Qué da |
+|---|---|
+| **7zap** | 60+ marcas, diagramas explotados, búsqueda por VIN. Outlander Sport cubierto (ASX/RVR 4ª facelift 2019–2024) |
+| **Partsouq** | Búsqueda por VIN **o número de chasis**, diagramas (clave en japoneses) |
+| **Tienda oficial de la marca** | Diagramas y números por año/versión, URLs estables por categoría → buenos deep links (ej. `parts.mitsubishicars.com/v-2020-mitsubishi-outlander-sport--sp--2-0l-l4-gas/engine--engine-parts`) |
+| Amayama, MegaZip, catcar, epc-data | Alternativas y respaldo |
+| VINsearch, partslink24 | Vía de pago: 52 catálogos con un acceso / oficial por marca (fase 2) |
+
+- **Compra**: eBay **Browse API** (`/buy/browse/v1/item_summary/search`) — cuenta de
+  desarrollador gratuita, token de aplicación por client credentials grant, funciona de
+  inmediato contra producción sin pasos de afiliado (verificado 24/09, ver
+  `investigacion-ebay-24sep2026.md`). Busca por palabra clave, por número de parte y con
+  **filtro de compatibilidad por vehículo** (`compatibility_filter`). Límite por defecto:
+  5,000 llamadas/día (se sube gratis pidiéndolo).
+  Afiliados: eBay Partner Network — aplicar en **Fase 3**, con sitio mínimo ya navegable.
+- **vPIC (NHTSA)**: `https://vpic.nhtsa.dot.gov/api/` — probado el 24/09: sin clave,
+  devuelve marca, modelo, año, versión, tracción, cilindrada y carrocería desde el VIN.
+
+## Estructura del repositorio
+
+```
+/
+├── PLAN.md                  # memoria del proyecto (este documento, copia en el repo)
+├── TASKS.md                 # tablero de tareas (lo mantiene el líder)
+├── CONTRACTS.md             # contratos entre agentes (esquemas, nombres de archivos)
+├── REVIEW_LOG.md            # registro de revisiones del líder
+├── data/
+│   ├── raw/                 # respuestas crudas de APIs (no se sirven al sitio)
+│   ├── seed/                # CSV propios (equivalencias, partes de ejemplo)
+│   └── build/               # JSON finales que consume el sitio (generados)
+├── pipeline/                # scripts Python de recolección y construcción
+│   ├── fetch_vehicles.py    # vPIC
+│   ├── fetch_ebay.py        # eBay Browse API (modo mock + modo real)
+│   ├── fetch_epc_links.py   # deep links por ensamblaje (7zap/Partsouq/tienda oficial)
+│   ├── normalize.py         # limpieza y normalización de números de parte
+│   ├── build_index.py       # genera data/build/*.json
+│   ├── validate.py          # valida contra los esquemas
+│   └── tests/
+├── site/                    # frontend estático
+│   ├── index.html, css/, js/
+│   ├── assets/categories/   # SVG genéricos por categoría
+│   └── tests/
+├── .github/workflows/
+│   ├── build-data.yml       # recolección programada (semanal)
+│   ├── deploy-site.yml      # publica en GitHub Pages
+│   └── ci.yml               # tests + validación en cada cambio
+└── docs/                    # legal, fuentes, decisiones
+```
+
+## Contratos de datos (resumen — el detalle vivo está en `CONTRACTS.md` del repo)
+
+**`data/build/parts.json`** — por parte, incluye:
+`id, part_number, part_number_norm, type (OEM|AFTERMARKET), brand, name, category,
+epc_link { source: 7zap|partsouq|oem-store|null, url: string|null }` ← **el campo que
+preserva el núcleo original** (deep link a la fuente del diagrama/número de fábrica),
+`image { url, source: ebay|generic, credit }, equivalents[], fitment_ids[], offers[]
+{ store, url (link afiliado), price, currency, updated_at }, updated_at`.
+
+**`data/build/vehicles.json`** — `{ id, make, model, year, trim|null, engine|null }`
+(desde vPIC por VIN).
+
+**`data/build/search_index.json`** — índice liviano para búsqueda en el navegador.
+**`data/build/categories.json`** — `{ slug, name_es, svg }`.
+
+**Regla de escalado**: el frontend lee datos solo vía `site/js/dataClient.js`
+(`searchPart(q)`, `getPart(id)`, `getVehicles()`). Migrar a Supabase después (si el
+catálogo pasa de ~100 mil partes) solo toca ese módulo.
+
+## Equipo de agentes
+
+### Líder (coordinador y revisor)
+Congela contratos, crea el esqueleto, asigna tareas con criterios de aceptación medibles,
+revisa cada entrega con la checklist (sección siguiente), anota el resultado en
+`REVIEW_LOG.md`, resuelve conflictos, no escribe código de producción salvo para integrar.
+
+### Agentes trabajadores (dueños de sus carpetas, nadie edita carpetas ajenas)
+
+| Agente | Dueño de | Responsabilidad |
+|---|---|---|
+| **A. Datos-Vehículos** | `pipeline/fetch_vehicles.py`, `data/build/vehicles.json` | vPIC, catálogo marca/modelo/año/versión, tests |
+| **B. Datos-Partes (eBay)** | `pipeline/fetch_ebay.py`, `pipeline/normalize.py` | OAuth client-credentials + Browse API, búsqueda por número, imagen/precio/condición, modo mock sin llaves |
+| **C. EPC-Puente** *(nuevo, no estaba en el plan externo)* | `pipeline/fetch_epc_links.py` | Construir los deep links por ensamblaje hacia 7zap/Partsouq/tienda oficial — es el paso que el plan externo se saltaba |
+| **D. Pipeline-Build** | `pipeline/build_index.py`, `pipeline/validate.py`, `data/seed/` | Unir fuentes, generar `data/build/*.json`, validar contra contratos |
+| **E. Frontend** | `site/` (excepto `assets/categories/`) | Buscador, árbol vehículo→ensamblaje, ficha de parte con el enlace EPC y la caja "pega tu número", filtros, botón de compra, responsive |
+| **F. Diseño-Assets** | `site/assets/categories/`, `categories.json` | ~12–15 SVG genéricos por categoría + imagen "sin foto" |
+| **G. DevOps-CI** | `.github/workflows/`, `docs/` | Workflows de build programado, tests, deploy a Pages, secretos |
+| **H. QA-Legal** | `docs/legal.md`, tests de aceptación | Términos de eBay, aviso de afiliados, privacidad, atribución de diagramas (solo enlace, nunca copia) |
+
+A, B, C, F, G arrancan en paralelo (no dependen entre sí). D depende de contratos + salida/mocks
+de A, B, C. E depende de contratos y trabaja primero con datos de ejemplo.
+
+## Fases
+
+**Fase 0 — Fundación (Líder + Omar).** Esqueleto del repo, `CONTRACTS.md`, `TASKS.md`,
+`REVIEW_LOG.md`, 20-30 partes de ejemplo en `data/seed/`. Omar: cuenta eBay Developers
+(gratis, ~1 día de aprobación, no depende de tener sitio) y guardar llaves como GitHub
+Secrets. **EPN se aplaza a Fase 3.**
+
+**Fase 1 — Construcción en paralelo (A, B, C, F, G).** Cada pieza funciona aislada y pasa
+sus tests.
+
+**Fase 2 — Integración (D, luego Líder).** Build que une vehículos + partes + EPC links +
+equivalencias. Frontend conectado a los JSON reales. `build-data.yml` programado activo.
+
+**Fase 3 — Afiliados, calidad y legal (H, Líder).** Con el sitio ya navegable: **aplicar a
+eBay Partner Network** (orden invertido respecto al plan externo, por la evidencia del
+24/09), revisión de términos, aviso de afiliados/privacidad, accesibilidad, prueba con
+catálogo grande simulado (decide si hace falta Supabase).
+
+**Fase 4 — Lanzamiento y mejoras.** Dominio propio (~10-12 USD/año, pendiente de decidir),
+analítica respetuosa de privacidad. Backlog: más fuentes, proveedor de pago para
+equivalencias (ACES/PIES), Supabase, búsqueda multi-idioma.
+
+## Protocolo de coordinación y revisión
+
+Tablero `TASKS.md`: ID, dueño, dependencias, criterios de aceptación, estado
+(`pendiente → en curso → en revisión → aprobada / cambios pedidos`).
+
+Reglas: cada agente solo edita sus carpetas; pide al líder si necesita tocar otra; entrega
+con qué hizo / cómo probarlo / supuestos; ningún cambio de contrato sin aprobación del
+líder; conflictos de archivo los resuelve y reasigna el líder; cada entrega se revisa antes
+de que otro agente dependa de ella.
+
+**Checklist de revisión**: cumple criterios de aceptación · datos validan contra el
+esquema · tests pasan · sin llaves/secretos en el repo · respeta términos de las APIs y de
+las fuentes EPC (solo enlace, nunca copia de diagramas) · maneja errores y límites de tasa ·
+código legible y documentado · frontend funciona en móvil/teclado, textos en español ·
+links de compra llevan parámetro de afiliado + aviso visible.
+
+**Definición de "hecho" del MVP**: buscar por VIN+categoría o por número de parte directo
+devuelve la pieza (o el deep link EPC si falta el número), equivalencias, imagen, al menos
+un link de compra con tracking de afiliado. La recolección corre sola por GitHub Actions.
+Hay SVG genéricos y aviso legal/afiliados visible. CI en verde, todas las tareas de Fases
+1-3 aprobadas.
+
+## Git y repositorio
+
+GitHub directo (sin Gitea): rama `agent/<letra>-<tarea>` por agente, nadie commitea directo
+a `main`, Pull Request con qué hizo/cómo probarlo/supuestos, **solo el líder fusiona**
+después de la checklist, resultado anotado en `REVIEW_LOG.md`. Llaves de eBay: GitHub
+Secrets (Actions) + `.env` local ignorado por git para pruebas. Nunca en el repo.
+
+## Riesgos y mitigaciones
+
+| Riesgo | Mitigación |
+|---|---|
+| Términos de eBay limitan guardar datos o imágenes | Revisar antes de Fase 2 (agente H); si no se permiten, guardar solo números y links |
+| Datos de compatibilidad incompletos | Mostrar "compatibilidad no verificada", no inventar |
+| Cobertura de vPIC centrada en EE. UU. | Aclarar en el sitio; otras fuentes en backlog |
+| Límites de tasa de las APIs | Caché en `data/raw/`, reintentos, ejecución programada |
+| Catálogo crece y el sitio estático se vuelve lento | Fragmentar índice o migrar a Supabase (solo cambia `dataClient.js`) |
+| Llaves expuestas | Solo GitHub Secrets; el líder revisa que no aparezcan en commits |
+| Fuentes EPC bloquean o cambian URLs | Adaptadores aislados, más de una fuente por marca |
+| EPN rechaza por sitio no funcional | Por eso se aplica en Fase 3, no en Fase 0 (evidencia del 24/09) |
+| Aviso legal/afiliados faltante | Criterio de aceptación en Fase 3 |
+
+## Recursos y costos (verificado 24/09, ajustado 25/09)
+
+| Partida | Costo |
+|---|---|
+| Desarrollar y probar | **0** |
+| Hosting MVP (GitHub Pages + Actions) | **0** |
+| Dominio propio (opcional, pendiente de decidir) | ~10-12 USD/año |
+| Cuenta de desarrollador de eBay | 0 |
+| vPIC (NHTSA) | 0 |
+| eBay Partner Network (Fase 3) | 0 |
+| **Fase 2: licencia de datos EPC** | la partida cara — pedir precio si se llega ahí |
+
+El techo de escalado llegaría por cuotas de llamadas de eBay (se suben pidiéndolo), no por
+servidor ni GPU.
+
+## Historial de documentos
+- `investigacion-ebay-24sep2026.md` — verificación de cuenta developer, EPN y evidencia real.
+- `PLAN_buscador_partes.md` (en Descargas) — plan externo que se fusionó aquí el 25/09.

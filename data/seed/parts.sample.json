@@ -1,0 +1,32 @@
+[
+  {
+    "id": "toyota-filtro-aceite-04152-yzza1",
+    "part_number": "04152-YZZA1",
+    "part_number_norm": "04152YZZA1",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de aceite",
+    "category": "filtro-aceite",
+    "epc_link": { "source": null, "url": null },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-09-25T00:00:00Z"
+  },
+  {
+    "id": "mitsubishi-filtro-aceite-1230a114",
+    "part_number": "1230A114",
+    "part_number_norm": "1230A114",
+    "type": "OEM",
+    "brand": "Mitsubishi",
+    "name": "Filtro de aceite",
+    "category": "filtro-aceite",
+    "epc_link": { "source": null, "url": null },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-09-25T00:00:00Z"
+  }
+]
