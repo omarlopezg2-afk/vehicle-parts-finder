@@ -55,13 +55,18 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEED_DIR = os.path.join(REPO_ROOT, "data", "seed")
 BUILD_DIR = os.path.join(REPO_ROOT, "data", "build")
 
-# VIN fijo de ejemplo: el mismo Mitsubishi Outlander Sport 2020 que usa T-A1
-# en sus tests (pipeline/tests/test_fetch_vehicles.py). Así el build nunca
-# depende de que alguien provea un VIN real al correrlo.
-EXAMPLE_VIN = "JA4AP3AU0LU000302"
+# VIN de ejemplo: el Mitsubishi Outlander Sport 2020 real de Omar (el caso
+# de prueba del proyecto, ver PLAN.md). Resuelto en vivo contra vPIC el
+# 03/10/2026: Make=MITSUBISHI, Model=Outlander Sport, ModelYear=2020,
+# DisplacementL=2, EngineCylinders=4, EngineHP=148, EngineModel=MIVEC.
+# Antes de este cambio se usaba un VIN distinto (JA4AP3AU0LU000302, el que
+# usan los tests de T-A1 en pipeline/tests/test_fetch_vehicles.py) — ese
+# VIN sigue siendo válido para los tests, pero el build real debe usar el
+# VIN de Omar para que el sitio publicado lo encuentre al probarlo.
+EXAMPLE_VIN = "JA4AP4AU3LU023739"
 
 # Fallback 100% offline si vPIC no responde (sin red / timeout / caído).
-# Datos tomados de la resolución real conocida de este mismo VIN (ver T-A1).
+# Datos tomados de la resolución real conocida de este mismo VIN (ver arriba).
 # Es una aproximación fija, no una llamada real a vPIC — se documenta en el
 # PR como supuesto.
 _FALLBACK_VEHICLE: dict[str, Any] = {
@@ -70,7 +75,7 @@ _FALLBACK_VEHICLE: dict[str, Any] = {
     "model": "Outlander Sport",
     "year": 2020,
     "trim": None,
-    "engine": None,
+    "engine": "2.0L 4cil Gasoline 148HP (MIVEC)",
 }
 
 
