@@ -1,0 +1,6 @@
+# Dependencias mínimas del pipeline (T-G1).
+# Cada agente de datos (A/B/C/D) puede agregar aquí lo que su script necesite;
+# si lo hace, CI las instalará automáticamente porque este archivo es la fuente
+# de verdad para `pip install -r requirements.txt`.
+pytest>=7.4,<9
+requests>=2.31,<3

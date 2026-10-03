@@ -1,0 +1,82 @@
+name: CI
+
+# T-G1 — DevOps-CI: tests + validate.py en cada push y PR hacia main.
+#
+# Decisiones (ver resumen del PR para el detalle):
+# - Python 3.11 y 3.12 en matriz: el pipeline todavía no fija una versión exacta
+#   en ningún otro archivo, así que probamos ambas para no bloquear a otros
+#   agentes que decidan usar una u otra en su entorno local.
+# - "No tests collected" (exit code 5 de pytest) NO hace fallar el job: otros
+#   agentes (A/B/C/D) todavía no mergean sus tests en pipeline/tests/. El job
+#   SÍ debe fallar si hay tests y alguno falla, o si pytest encuentra un error
+#   real (sintaxis, import, etc).
+# - pipeline/validate.py se ejecuta solo si existe (T-D1 lo crea más adelante).
+#   Si no existe aún, el step se salta explícitamente sin marcar el job en rojo.
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Tests y validate.py (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            echo "Instalando desde requirements.txt"
+            pip install -r requirements.txt
+          else
+            echo "No existe requirements.txt todavía: instalando el mínimo (pytest, requests)"
+            pip install "pytest>=7.4,<9" "requests>=2.31,<3"
+          fi
+          # Aseguramos pytest incluso si requirements.txt existe pero no lo declara.
+          python -m pytest --version >/dev/null 2>&1 || pip install "pytest>=7.4,<9"
+
+      - name: Ejecutar pytest sobre pipeline/
+        run: |
+          if [ ! -d pipeline ]; then
+            echo "pipeline/ todavía no existe en esta rama: se omite la etapa de tests."
+            exit 0
+          fi
+
+          set +e
+          python -m pytest pipeline/ -v
+          status=$?
+          set -e
+
+          if [ $status -eq 5 ]; then
+            echo "pytest no encontró tests en pipeline/ todavía (exit 5): no se considera fallo."
+            exit 0
+          fi
+
+          exit $status
+
+      - name: Ejecutar pipeline/validate.py (si existe)
+        run: |
+          if [ -f pipeline/validate.py ]; then
+            echo "Ejecutando pipeline/validate.py"
+            python pipeline/validate.py
+          else
+            echo "pipeline/validate.py todavía no existe: se omite este step sin fallar el job."
+          fi
