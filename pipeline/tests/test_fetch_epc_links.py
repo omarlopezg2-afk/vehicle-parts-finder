@@ -11,9 +11,12 @@ para pasar el challenge de Cloudflare.
 import sys
 from pathlib import Path
 
+# Convención compartida con los demás tests de pipeline/tests/ (ver
+# test_fetch_vehicles.py, test_fetch_ebay.py): se agrega pipeline/ al path
+# para poder importar el módulo por su nombre simple, sin paquete.
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from pipeline.fetch_epc_links import get_epc_links  # noqa: E402
+from fetch_epc_links import get_epc_links  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
