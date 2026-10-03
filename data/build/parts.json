@@ -25,7 +25,7 @@
         "price": 12.99,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-03T22:42:40Z"
+        "updated_at": "2026-10-03T22:54:26Z"
       },
       {
         "store": "eBay",
@@ -33,7 +33,7 @@
         "price": 7.49,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-03T22:42:40Z"
+        "updated_at": "2026-10-03T22:54:26Z"
       },
       {
         "store": "eBay",
@@ -41,10 +41,10 @@
         "price": 4.0,
         "currency": "USD",
         "condition": "Used",
-        "updated_at": "2026-10-03T22:42:40Z"
+        "updated_at": "2026-10-03T22:54:26Z"
       }
     ],
-    "updated_at": "2026-10-03T22:42:40Z"
+    "updated_at": "2026-10-03T22:54:26Z"
   },
   {
     "id": "mitsubishi-filtro-aceite-1230a114",
@@ -72,7 +72,7 @@
         "price": 12.99,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-03T22:42:40Z"
+        "updated_at": "2026-10-03T22:54:26Z"
       },
       {
         "store": "eBay",
@@ -80,7 +80,7 @@
         "price": 7.49,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-03T22:42:40Z"
+        "updated_at": "2026-10-03T22:54:26Z"
       },
       {
         "store": "eBay",
@@ -88,9 +88,9 @@
         "price": 4.0,
         "currency": "USD",
         "condition": "Used",
-        "updated_at": "2026-10-03T22:42:40Z"
+        "updated_at": "2026-10-03T22:54:26Z"
       }
     ],
-    "updated_at": "2026-10-03T22:42:40Z"
+    "updated_at": "2026-10-03T22:54:26Z"
   }
 ]
