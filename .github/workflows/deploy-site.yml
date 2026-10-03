@@ -1,0 +1,79 @@
+name: Deploy site (GitHub Pages)
+
+# T-G2 — DevOps-CI: "deploy-site.yml (Pages)".
+#
+# Automatiza exactamente el paso manual que el líder hizo al mergear T-E1:
+# copiar data/build/*.json -> site/data/build/ (el frontend, por regla de
+# CONTRACTS.md, SOLO lee de site/data/build/ vía site/js/dataClient.js) y
+# publicar el contenido de site/ en GitHub Pages.
+#
+# Decisiones:
+# - `on: push: branches: [main]` para desplegar automáticamente tras cada
+#   merge a main. Además `workflow_dispatch` para poder probarlo a mano
+#   desde una rama que todavía no está en main (un push a una rama que no
+#   es main NO dispara este workflow por el filtro `branches: [main]`, así
+#   que sin workflow_dispatch no habría forma de probarlo antes del PR).
+# - Se usan las actions oficiales de GitHub Pages: actions/configure-pages,
+#   actions/upload-pages-artifact y actions/deploy-pages. Estas exigen
+#   `permissions: pages: write, id-token: write` a nivel de job (el
+#   id-token es para el OIDC que deploy-pages usa para autenticar el
+#   despliegue; no es un secret que haya que crear a mano).
+# - El repo ya tiene Pages activado via API con build_type=workflow (fuente
+#   GitHub Actions, no rama), así que este workflow es justo lo que ese
+#   modo espera: un job que sube un artifact de Pages y lo despliega con
+#   el action oficial, en vez de pushear a una rama gh-pages.
+# - Nota honesta (ver también la descripción del PR): el environment
+#   `github-pages` que actions/deploy-pages usa internamente normalmente
+#   solo queda disponible para despliegues reales una vez que el workflow
+#   vive en la rama por defecto (main) — es una restricción de GitHub
+#   Actions sobre el "deployment branch policy" de ese environment, no
+#   algo que este archivo pueda evitar. Por eso se documenta aquí probar
+#   vía workflow_dispatch ANTES del merge y reportar el resultado real
+#   (éxito o el error exacto de GitHub) en el PR, en vez de asumir que
+#   funciona.
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Copiar data/build/ a site/data/build/ y publicar en Pages
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Copiar data/build/*.json a site/data/build/
+        run: |
+          mkdir -p site/data/build
+          cp data/build/*.json site/data/build/
+          echo "Copiado:"
+          ls -la site/data/build/
+
+      - name: Configurar GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Subir site/ como artifact de Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Publicar en GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

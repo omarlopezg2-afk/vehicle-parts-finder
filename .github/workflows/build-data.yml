@@ -1,0 +1,96 @@
+name: Build data (recolección programada)
+
+# T-G2 — DevOps-CI: "build-data.yml (recolección programada)".
+#
+# Esto es exactamente lo que T-D1 / TASKS.md pidió para esta pieza: correr
+# pipeline/build_index.py de forma programada (semanal) para regenerar
+# data/build/*.json con datos frescos, validar el resultado con
+# pipeline/validate.py, y si el build produjo cambios reales respecto a lo
+# que ya está en main, comitearlos y pushearlos automáticamente — sin que
+# un humano tenga que correr el pipeline a mano cada semana.
+#
+# Decisiones:
+# - `schedule` (lunes 6am UTC) + `workflow_dispatch` para poder dispararlo a
+#   mano desde la pestaña Actions (ej. para probarlo sin esperar al lunes,
+#   o para forzar una recolección fuera de horario).
+# - EBAY_CLIENT_ID / EBAY_CLIENT_SECRET se pasan como env vars desde
+#   secrets.EBAY_CLIENT_ID / secrets.EBAY_CLIENT_SECRET. Referenciar un
+#   secret que no existe en GitHub Actions NO rompe el workflow: el
+#   contexto `secrets` simplemente resuelve a cadena vacía, y
+#   pipeline/fetch_ebay.py (T-B1) ya está diseñado para caer a modo MOCK
+#   automáticamente cuando esas variables están vacías o ausentes. O sea:
+#   hoy (sin cuenta de developer de eBay todavía) este job corre 100% en
+#   modo mock, y el día que Omar agregue los secrets reales, el mismo
+#   workflow empieza a usar datos reales sin ningún cambio de código aquí.
+# - Si build_index.py o validate.py fallan (exit code distinto de 0), el
+#   step correspondiente falla y por lo tanto el job queda en rojo de forma
+#   visible — no hay `continue-on-error` ni `|| true` en esos dos steps.
+# - El commit/push de vuelta a main usa el GITHUB_TOKEN que Actions inyecta
+#   automáticamente en cada run (permissions: contents: write en este
+#   workflow). No se necesita crear ni guardar un Personal Access Token
+#   nuevo. Si no hay cambios en data/build/*.json, el workflow NO comitea
+#   nada (evita commits vacíos/ruido en el historial).
+
+on:
+  schedule:
+    # Lunes 06:00 UTC.
+    - cron: "0 6 * * 1"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-commit:
+    name: Regenerar data/build/*.json y comitear si hay cambios
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+        with:
+          # Necesitamos un checkout normal (no shallow-sin-historia) para
+          # poder hacer commit y push de vuelta a la misma rama (main).
+          fetch-depth: 0
+
+      - name: Instalar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then
+            pip install -r requirements.txt
+          else
+            pip install "pytest>=7.4,<9" "requests>=2.31,<3"
+          fi
+
+      - name: Ejecutar pipeline/build_index.py
+        env:
+          # Pueden estar vacías/no existir todavía (cuenta de developer de
+          # eBay en trámite): fetch_ebay.py cae a modo MOCK solo. El job no
+          # debe fallar por la ausencia de estos secrets.
+          EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
+          EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
+        run: python pipeline/build_index.py
+
+      - name: Ejecutar pipeline/validate.py
+        run: python pipeline/validate.py
+
+      - name: Comitear y pushear data/build/*.json si cambiaron
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add data/build/*.json
+
+          if git diff --cached --quiet; then
+            echo "Sin cambios en data/build/*.json tras el build: no se comitea nada."
+            exit 0
+          fi
+
+          git commit -m "chore(build-data): recolección programada [skip ci]"
+          git push origin HEAD:main
