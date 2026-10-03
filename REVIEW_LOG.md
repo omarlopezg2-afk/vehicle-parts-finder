@@ -22,3 +22,41 @@ Pendiente de Omar antes de poder cerrar Fase 0 del todo: cuenta de eBay Develope
 no depende de tener sitio) y decidir si se compra dominio propio ahora o se deja para Fase 4.
 
 Próximo paso: lanzar en paralelo T-A1, T-B1, T-C1, T-F1, T-G1 (no dependen entre sí).
+
+---
+
+## 03/10/2026 — Fase 1 — Líder
+
+**Resultado: las 5 tareas de Fase 1 (T-A1, T-B1+T-B2, T-C1, T-F1, T-G1) aprobadas y
+fusionadas a `main` (PRs #1 a #5).** CI en verde con las 5 piezas integradas (43 tests).
+
+Revisión por tarea:
+- **T-A1 (vPIC)**: cumple el esquema, maneja VIN inválido sin excepción, 7 tests contra la
+  API real (incluye un VIN real de Outlander Sport 2020, no el de Omar específicamente —
+  documentado en el PR, reemplazable). Aprobado sin cambios.
+- **T-B1/T-B2 (eBay)**: modo mock funciona out-of-the-box con fixture realista, modo real
+  implementado según los datos verificados el 24/09 pero sin probar contra la API real
+  (no hay llaves todavía — Omar está tramitando la cuenta developer). Normalización
+  correcta. Aprobado sin cambios; falta prueba end-to-end cuando haya llaves.
+- **T-C1 (EPC-Puente)**: la pieza más importante del plan. 7zap funciona con estructura
+  estable (verificado por fetch HTTP con headers de navegador real, no por screenshot —
+  Cloudflare bloqueó el navegador automatizado del agente en 7zap/Partsouq/tiendas
+  oficiales). Partsouq funciona por VIN directo. Tienda oficial de Mitsubishi: sin URLs
+  estables por categoría, el agente lo reportó con honestidad en vez de inventar un link.
+  Aprobado — es exactamente el nivel de rigor que se pedía.
+- **T-F1 (SVG)**: 13 iconos con viewBox y stroke-width idénticos, estilo consistente
+  verificado por script (no hubo renderizador disponible para verificación visual real,
+  queda como riesgo menor a revisar a simple vista más adelante). Aprobado.
+- **T-G1 (CI)**: workflow correcto, corrió en verde en el PR. Aprobado.
+
+**Corrección del líder al integrar (no requirió reabrir ningún PR)**: el agente C puso sus
+tests en `tests/` (raíz) en vez de `pipeline/tests/`; el CI solo corre `pytest pipeline/`,
+así que esos 14 tests nunca se ejecutaban en el pipeline de integración aunque pasaran en
+local — un hueco real que no se habría notado sin revisar el log de Actions tarea por
+tarea, no solo el resultado "success" del check. Se movieron a `pipeline/tests/` siguiendo
+la misma convención de import de A y B, directo a `main` (commit del líder, no un PR de
+agente, porque es trabajo de integración). Verificado después: 43/43 tests pasan desde
+`pipeline/`, CI en verde con el fix incluido.
+
+Próximo paso: lanzar T-D1 (Pipeline-Build, ya puede arrancar con A+B+C en main) y T-E1
+(Frontend, puede arrancar ya con `data/seed/` + los SVG de F).
