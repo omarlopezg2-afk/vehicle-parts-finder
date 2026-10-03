@@ -1,0 +1,145 @@
+[
+  {
+    "id": "mitsubishi-filtro-aceite-1230a114",
+    "part_number": "1230A114",
+    "part_number_norm": "1230A114",
+    "type": "OEM",
+    "brand": "Mitsubishi",
+    "name": "Filtro de aceite",
+    "category": "filtro-aceite",
+    "epc_link": { "source": "7zap", "url": "https://parts.mitsubishi-motors.com/es/catalog/search?q=1230A114" },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": ["aftermarket-filtro-aceite-wix-57060"],
+    "fitment_ids": ["veh-mitsubishi-outlander-sport-2020"],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/sch/i.html?_nkw=1230A114",
+        "price": 9.99,
+        "currency": "USD",
+        "condition": "Nuevo",
+        "updated_at": "2026-09-30T00:00:00Z"
+      }
+    ],
+    "updated_at": "2026-09-30T00:00:00Z"
+  },
+  {
+    "id": "aftermarket-filtro-aceite-wix-57060",
+    "part_number": "WIX-57060",
+    "part_number_norm": "WIX57060",
+    "type": "AFTERMARKET",
+    "brand": "WIX",
+    "name": "Filtro de aceite (equivalente)",
+    "category": "filtro-aceite",
+    "epc_link": { "source": null, "url": null },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": ["mitsubishi-filtro-aceite-1230a114"],
+    "fitment_ids": ["veh-mitsubishi-outlander-sport-2020"],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/sch/i.html?_nkw=WIX+57060",
+        "price": 7.5,
+        "currency": "USD",
+        "condition": "Nuevo",
+        "updated_at": "2026-09-30T00:00:00Z"
+      }
+    ],
+    "updated_at": "2026-09-30T00:00:00Z"
+  },
+  {
+    "id": "mitsubishi-pastillas-freno-mz690219",
+    "part_number": "MZ690219",
+    "part_number_norm": "MZ690219",
+    "type": "OEM",
+    "brand": "Mitsubishi",
+    "name": "Pastillas de freno delanteras",
+    "category": "pastillas-freno",
+    "epc_link": { "source": "partsouq", "url": "https://partsouq.com/en/search/all?q=MZ690219" },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": [],
+    "fitment_ids": ["veh-mitsubishi-outlander-sport-2020"],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/sch/i.html?_nkw=MZ690219",
+        "price": 34.99,
+        "currency": "USD",
+        "condition": "Nuevo",
+        "updated_at": "2026-09-30T00:00:00Z"
+      },
+      {
+        "store": "RockAuto",
+        "url": "https://www.rockauto.com/search?q=MZ690219",
+        "price": 29.5,
+        "currency": "USD",
+        "condition": "Nuevo",
+        "updated_at": "2026-09-30T00:00:00Z"
+      }
+    ],
+    "updated_at": "2026-09-30T00:00:00Z"
+  },
+  {
+    "id": "mitsubishi-bateria-mz313043",
+    "part_number": "MZ313043",
+    "part_number_norm": "MZ313043",
+    "type": "OEM",
+    "brand": "Mitsubishi",
+    "name": "Batería",
+    "category": "bateria",
+    "epc_link": { "source": null, "url": null },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": [],
+    "fitment_ids": ["veh-mitsubishi-outlander-sport-2020"],
+    "offers": [],
+    "updated_at": "2026-09-30T00:00:00Z"
+  },
+  {
+    "id": "toyota-filtro-aceite-04152-yzza1",
+    "part_number": "04152-YZZA1",
+    "part_number_norm": "04152YZZA1",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de aceite",
+    "category": "filtro-aceite",
+    "epc_link": { "source": "7zap", "url": "https://parts.toyota.com/es/catalog/search?q=04152-YZZA1" },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": [],
+    "fitment_ids": ["veh-toyota-corolla-2015"],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/sch/i.html?_nkw=04152-YZZA1",
+        "price": 11.25,
+        "currency": "USD",
+        "condition": "Nuevo",
+        "updated_at": "2026-09-30T00:00:00Z"
+      }
+    ],
+    "updated_at": "2026-09-30T00:00:00Z"
+  },
+  {
+    "id": "toyota-bujia-90919-01210",
+    "part_number": "90919-01210",
+    "part_number_norm": "9091901210",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bujía",
+    "category": "bujia",
+    "epc_link": { "source": "7zap", "url": "https://parts.toyota.com/es/catalog/search?q=90919-01210" },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": [],
+    "fitment_ids": ["veh-toyota-corolla-2015"],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/sch/i.html?_nkw=90919-01210",
+        "price": 6.99,
+        "currency": "USD",
+        "condition": "Nuevo",
+        "updated_at": "2026-09-30T00:00:00Z"
+      }
+    ],
+    "updated_at": "2026-09-30T00:00:00Z"
+  }
+]

@@ -1,0 +1,9 @@
+{
+  "name": "vehicle-parts-finder-site",
+  "private": true,
+  "type": "module",
+  "description": "Frontend estático (sin build step). Este package.json solo existe para declarar type=module y poder correr los tests con `node --test` desde site/.",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}

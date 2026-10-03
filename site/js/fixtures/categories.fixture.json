@@ -1,0 +1,15 @@
+[
+  { "slug": "filtro-aceite", "name_es": "Filtro de aceite", "svg": "filtro-aceite.svg" },
+  { "slug": "filtro-aire", "name_es": "Filtro de aire", "svg": "filtro-aire.svg" },
+  { "slug": "pastillas-freno", "name_es": "Pastillas de freno", "svg": "pastillas-freno.svg" },
+  { "slug": "discos-freno", "name_es": "Discos de freno", "svg": "discos-freno.svg" },
+  { "slug": "bujia", "name_es": "Bujía", "svg": "bujia.svg" },
+  { "slug": "amortiguador", "name_es": "Amortiguador", "svg": "amortiguador.svg" },
+  { "slug": "bateria", "name_es": "Batería", "svg": "bateria.svg" },
+  { "slug": "correa", "name_es": "Correa (banda)", "svg": "correa.svg" },
+  { "slug": "bomba-agua", "name_es": "Bomba de agua", "svg": "bomba-agua.svg" },
+  { "slug": "alternador", "name_es": "Alternador", "svg": "alternador.svg" },
+  { "slug": "faro", "name_es": "Faro", "svg": "faro.svg" },
+  { "slug": "limpiaparabrisas", "name_es": "Limpiaparabrisas", "svg": "limpiaparabrisas.svg" },
+  { "slug": "generico-sin-foto", "name_es": "Genérico (sin foto)", "svg": "generico-sin-foto.svg" }
+]

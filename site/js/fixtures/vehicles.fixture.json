@@ -1,0 +1,22 @@
+[
+  {
+    "id": "veh-mitsubishi-outlander-sport-2020",
+    "make": "Mitsubishi",
+    "model": "Outlander Sport",
+    "year": 2020,
+    "trim": "ES 2.0",
+    "engine": "2.0L 4B11",
+    "vin": "JA4AP3AW9LZ012345",
+    "_vin_nota_dev": "El campo 'vin' NO existe en el contrato real de data/build/vehicles.json (ver CONTRACTS.md). Se agrega solo en esta fixture de desarrollo para poder emparejar un VIN tecleado con un vehículo sin tener un endpoint real de decodificación VIN. Ver 'problemas_conocidos' en el PR."
+  },
+  {
+    "id": "veh-toyota-corolla-2015",
+    "make": "Toyota",
+    "model": "Corolla",
+    "year": 2015,
+    "trim": "LE",
+    "engine": "1.8L",
+    "vin": "5YFBURHE5FP123456",
+    "_vin_nota_dev": "Ver nota de vehículo anterior."
+  }
+]
