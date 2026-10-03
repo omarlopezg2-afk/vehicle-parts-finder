@@ -1,0 +1,48 @@
+{
+  "_comment": "Fixture de ejemplo con la FORMA real de GET /buy/browse/v1/item_summary/search documentada por eBay (campos relevantes). Usado por fetch_ebay.py en modo mock cuando no hay EBAY_CLIENT_ID/EBAY_CLIENT_SECRET, o como fallback si la API real falla (401/429). {part_number_norm} se reemplaza en tiempo de ejecución por el número buscado, así el mock siempre refleja la búsqueda hecha.",
+  "href": "https://api.ebay.com/buy/browse/v1/item_summary/search?q={part_number_norm}&limit=50",
+  "total": 3,
+  "limit": 50,
+  "offset": 0,
+  "itemSummaries": [
+    {
+      "itemId": "v1|110123456789|0",
+      "title": "Filtro de aceite OEM {part_number_norm} - Genuine Part",
+      "price": { "value": "12.99", "currency": "USD" },
+      "condition": "New",
+      "conditionId": "1000",
+      "image": {
+        "imageUrl": "https://i.ebayimg.com/images/g/mockAAA/s-l500.jpg"
+      },
+      "itemWebUrl": "https://www.ebay.com/itm/110123456789",
+      "seller": { "username": "mock_autoparts_store" },
+      "itemLocation": { "country": "US" }
+    },
+    {
+      "itemId": "v1|220987654321|0",
+      "title": "{part_number_norm} Aftermarket Oil Filter - Fits Multiple Models",
+      "price": { "value": "7.49", "currency": "USD" },
+      "condition": "New",
+      "conditionId": "1000",
+      "image": {
+        "imageUrl": "https://i.ebayimg.com/images/g/mockBBB/s-l500.jpg"
+      },
+      "itemWebUrl": "https://www.ebay.com/itm/220987654321",
+      "seller": { "username": "mock_discount_parts" },
+      "itemLocation": { "country": "US" }
+    },
+    {
+      "itemId": "v1|330555111222|0",
+      "title": "{part_number_norm} Used Oil Filter - Tested Working",
+      "price": { "value": "4.00", "currency": "USD" },
+      "condition": "Used",
+      "conditionId": "3000",
+      "image": {
+        "imageUrl": "https://i.ebayimg.com/images/g/mockCCC/s-l500.jpg"
+      },
+      "itemWebUrl": "https://www.ebay.com/itm/330555111222",
+      "seller": { "username": "mock_used_parts_yard" },
+      "itemLocation": { "country": "US" }
+    }
+  ]
+}
