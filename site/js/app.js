@@ -173,7 +173,7 @@ async function runSearch(rawQuery) {
     const vehicle = await matchVehicleByVIN(vin);
     if (!vehicle) {
       renderEmptyState(
-        `No encontramos un vehículo para el VIN "${vin}". Prueba con el VIN de ejemplo JA4AP3AW9LZ012345 (fixture de desarrollo) o busca por número de parte.`
+        `No encontramos un vehículo para el VIN "${vin}". Si estás probando con datos de ejemplo, usa un VIN de 17 caracteres que exista en el catálogo actual (ver data/build/vehicles.json), o busca directamente por número de parte.`
       );
       return;
     }

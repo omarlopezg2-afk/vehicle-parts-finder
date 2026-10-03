@@ -200,15 +200,32 @@ export async function _isUsingFixture(key) {
 // construya T-D1), es un cambio contenido a este archivo.
 
 /**
- * Busca un vehículo cuyo campo de desarrollo "vin" (ver fixture, NO existe
- * en el contrato real de vehicles.json) coincide con el VIN dado.
+ * Busca un vehículo cuyo VIN coincide con el dado.
+ *
+ * El contrato real de vehicles.json (T-A1/T-D1, ver CONTRACTS.md) NO tiene
+ * un campo `vin` separado: el VIN viaja codificado dentro de `id` con el
+ * formato `vin-<VIN>` (ver pipeline/fetch_vehicles.py e id real generado
+ * por build_index.py, ej. "vin-JA4AP3AU0LU000302"). Por eso esta función
+ * primero intenta extraer el VIN del `id` con ese patrón; si un vehículo
+ * no sigue ese formato (p. ej. una fixture antigua con id tipo
+ * "veh-marca-modelo-año"), cae a comparar contra un campo `vin` opcional
+ * si existe, para no romper fixtures previas.
+ *
  * @param {string} vin ya limpio (ver site/js/vin.js)
  * @returns {Promise<object|null>}
  */
 export async function matchVehicleByVIN(vin) {
   const vehicles = await getVehicles();
   const needle = String(vin || "").trim().toUpperCase();
-  return vehicles.find((v) => (v.vin || "").toUpperCase() === needle) || null;
+  if (!needle) return null;
+
+  return (
+    vehicles.find((v) => {
+      const idMatch = /^vin-(.+)$/i.exec(String(v.id || ""));
+      if (idMatch && idMatch[1].toUpperCase() === needle) return true;
+      return (v.vin || "").toUpperCase() === needle;
+    }) || null
+  );
 }
 
 /**
