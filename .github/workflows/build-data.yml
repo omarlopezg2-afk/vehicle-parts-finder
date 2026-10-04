@@ -92,5 +92,12 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore(build-data): recolección programada [skip ci]"
+          # SIN "[skip ci]" a propósito. Con esa marca, el push de datos NO
+          # dispara "Deploy site (GitHub Pages)", así que los datos frescos se
+          # quedan en el repo sin llegar nunca al sitio. Comprobado el
+          # 04/10/2026 con la primera recolección real: el build comiteó datos
+          # reales de eBay y partexact.com siguió sirviendo el fixture hasta
+          # que se lanzó el deploy a mano. El coste de quitarla es un CI de
+          # ~30 s por recolección (una vez por semana o a mano).
+          git commit -m "chore(build-data): recolección programada"
           git push origin HEAD:main

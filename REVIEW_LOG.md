@@ -428,6 +428,42 @@ definitiva habría que pedirlo a soporte de GitHub. Regla para el futuro: **nunc
 en carpetas que contienen cachés de herramientas (`.wrangler/`, `.venv/`, `node_modules/`);
 revisar lo que `git status` propone antes de commitear.
 
-Pendiente de Omar para cerrar Fase 3: keyset de **Production** de eBay (la cuenta de
-Developer ya fue aprobada el 04/10) — con Client ID + Client Secret se activa el modo real
-de `fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo).
+---
+
+## 04/10/2026 — eBay en producción, parte 2: keyset activo y datos reales en el sitio — Líder
+
+**El keyset estaba "Non Compliant" por un formulario a medio llenar.** La captura del portal
+lo dejó claro: los tres campos de *Alerts & Notifications* (correo de alertas, endpoint y
+token de verificación) estaban vacíos. No era un problema de credenciales ni de código — de
+hecho el App ID del `.env` coincidía con el del keyset que mostraba el portal (comprobado
+programáticamente, sin imprimir valores).
+
+**Secuencia real, con la evidencia de cada paso:**
+
+1. Omar guardó el correo, la URL `https://ebay.partexact.com/` y el token de verificación, y
+   envió una notificación de prueba.
+2. `wrangler tail` en crudo capturó el reto de eBay llegando al Worker:
+   `GET https://ebay.partexact.com/?challenge_code=… -> 200`. El endpoint pasó la
+   verificación. (Del botón de prueba solo se vio ese GET; el POST de borrado no apareció,
+   y es normal: eBay solo lo manda cuando hay un borrado real. Si llega, el Worker responde
+   204.)
+3. El token de OAuth empezó a funcionar: `TOKEN OK (expira en 7200s)`.
+4. Búsqueda real del Browse API: **3.846 resultados** para `04152YZZA1`, con precios reales.
+
+**Datos reales en el sitio**: con las llaves en GitHub Secrets (cargadas con
+`scripts/seed-secrets.sh`, que lee el `.env` y usa la entrada estándar para que los valores
+no pasen por la línea de comandos), `build-data.yml` regeneró `data/build/*.json` con **103
+ofertas reales** de eBay para 3 números de parte. La tubería completa queda: API de eBay →
+pipeline → GitHub Actions → `partexact.com`.
+
+**Bug encontrado por verificar en vez de asumir**: el commit del build llevaba la marca
+`[skip ci]`, así que GitHub **no disparaba el deploy** y el sitio seguía sirviendo el
+fixture — con el build en verde, parecía que todo había funcionado. Confirmado comparando lo
+que servía el sitio (12,99 / 7,49 USD del fixture) con lo del repo (28,00 / 31,99 USD
+reales). Corregido por partida doble: se lanzó el deploy a mano para publicar ya, y se quitó
+`[skip ci]` de `build-data.yml` con el porqué escrito en el propio archivo. Regla que queda:
+**un job en verde no prueba que el usuario final vea los datos** — hay que mirar el artefacto
+publicado.
+
+Pendiente de Omar para cerrar Fase 3: `EBAY_CAMPAIGN_ID` (eBay Partner Network) cuando se
+pase a monetización, y Advance Auto Parts vía Impact.com.
