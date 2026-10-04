@@ -579,3 +579,46 @@ de EPN.
 **Estado**: T-B5 aprobada y fusionada (9638d73). T-H2 (aviso de afiliados en el footer) sigue
 bloqueada a propósito hasta que el ID real esté activo: el aviso tiene que aparecer el mismo
 día que los enlaces de afiliado, ni antes ni después.
+
+---
+
+## 04/10/2026 — Ronda 4 revisada, fusionada e integrada: 28 partes y 33 categorías en vivo — Líder
+
+**Tres PRs revisados por el líder y fusionados** (T-C3 #18, T-F3 #17, T-D5 #19), más el
+arranque de la taxonomía. Resultado real, verificado contra el sitio publicado:
+
+| Métrica | Antes | Ahora |
+|---|---|---|
+| Partes en el catálogo | 3 | **28** |
+| Ofertas de eBay | 103 | **1.190**, y **1.190 de 1.190 con URL real** (cero datos de laboratorio) |
+| Categorías de producto | 12 | **33** (27 con al menos una parte) |
+| Pruebas | 105 Python | **114 Python + 52 Node**, todas en verde |
+
+`pipeline/validate.py` en verde, incluida la **integridad referencial nueva** (T-D5): si una
+parte apunta a una categoría que no existe o a un `fitment_id` inexistente, la validación
+falla. Eso cierra el bug que encontró el líder antes de repartir (`clip-parachoques`).
+
+**La investigación de C (#18) decide bien**: el trim de marketing (BE/ES/GT/SE/SP) **queda
+fuera del MVP** con evidencia en vivo — 0 de 10 VIN reales trajeron `Trim` poblado, 7zap llega
+a generación pero no a trim, y Partsouq respondió 403 de Cloudflare (que el informe distingue
+correctamente de "no existe"). Es la decisión que buscábamos: decir no con pruebas.
+
+**Solapamiento D/F, resuelto por el líder**: el agente D, para que su seed funcionara, creó
+**15 de los 21 SVG** y reescribió `categories.json` — archivos del agente F, que ya estaba
+fusionado. Resolución: a la rama de D se le devolvieron las versiones de main (con un commit
+que explica el porqué) y se conservó **solo lo suyo** (seed, `validate.py`, pruebas). Lección
+para futuras rondas: **la taxonomía y los iconos son de un solo dueño**; quien necesite una
+categoría nueva, la pide — no la implementa.
+
+**Incidente de proceso**: apareció en el checkout compartido un `data/build/parts.json`
+regenerado **en modo mock** (precios de laboratorio) por algún agente que corrió el pipeline
+fuera de su clon. Se descartó y **el build se regeneró con las llaves reales** después de
+integrar. Regla que queda escrita: los agentes trabajan en su clon, y **los datos se
+regeneran en main después de integrar**, nunca se aceptan los `data/build/*.json` que traiga
+una rama.
+
+**Pendiente al cierre de esta entrada**: T-A4 (criterio de marcas) seguía corriendo después
+de 70 minutos; y la revisión **visual** de los 21 iconos nuevos no se pudo hacer con el
+navegador del arnés porque Chrome tenía bloqueado el perfil (y no se le cierra la sesión al
+usuario). Sí se verificó lo estructural: los 34 SVG comparten `viewBox 0 0 64 64`,
+`stroke-width 2.5` y no tienen referencias externas ni imágenes incrustadas.
