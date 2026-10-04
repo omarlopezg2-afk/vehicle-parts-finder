@@ -353,6 +353,64 @@ def validate_categories(data: Any, errores: ValidationErrors) -> None:
 # Entrypoint
 # ---------------------------------------------------------------------------
 
+def validate_referential_integrity(
+    parts: Any, vehicles: Any, categories: Any, errores: ValidationErrors
+) -> None:
+    """Integridad referencial ENTRE archivos (T-D5).
+
+    `validate_parts`/`validate_vehicles`/`validate_categories` solo validan la
+    FORMA de cada archivo por separado; esto valida que las referencias que
+    cruzan archivos realmente existan:
+
+    - `parts.json[*].category` debe existir como `slug` en `categories.json`.
+      (Bug real detectado en Ronda 4: `MR297182` usaba `clip-parachoques`, que
+      nunca existió en `categories.json` — la parte quedaba invisible en toda
+      navegación por categoría sin que `validate.py` lo detectara.)
+    - `parts.json[*].fitment_ids[*]` debe existir como `id` en `vehicles.json`
+      (una lista vacía sigue siendo válida: significa "no fijado a un
+      vehículo concreto").
+
+    Requiere que los tres argumentos ya sean listas (llamar solo cuando
+    `_load_json` no devolvió None para ninguno de los tres).
+    """
+    if not isinstance(categories, list):
+        return
+    if not isinstance(parts, list):
+        return
+
+    slugs_validos: set[str] = {
+        c.get("slug") for c in categories if isinstance(c, dict) and isinstance(c.get("slug"), str)
+    }
+    ids_vehiculos_validos: set[str] = set()
+    if isinstance(vehicles, list):
+        ids_vehiculos_validos = {
+            v.get("id") for v in vehicles if isinstance(v, dict) and isinstance(v.get("id"), str)
+        }
+
+    for i, parte in enumerate(parts):
+        if not isinstance(parte, dict):
+            continue
+        pid = parte.get("id")
+        contexto_id = f"parts.json[{pid or i}]"
+
+        categoria = parte.get("category")
+        if isinstance(categoria, str) and categoria not in slugs_validos:
+            errores.add(
+                contexto_id,
+                f"'category' {categoria!r} no existe en categories.json (slug huérfano: "
+                "la parte no aparecería en ninguna categoría del sitio)",
+            )
+
+        fitment_ids = parte.get("fitment_ids")
+        if isinstance(fitment_ids, list):
+            for fid in fitment_ids:
+                if isinstance(fid, str) and fid not in ids_vehiculos_validos:
+                    errores.add(
+                        contexto_id,
+                        f"'fitment_ids' referencia {fid!r}, que no existe en vehicles.json",
+                    )
+
+
 def run_validation() -> ValidationErrors:
     errores = ValidationErrors()
 
@@ -369,6 +427,9 @@ def run_validation() -> ValidationErrors:
         validate_search_index(search_index, errores)
     if categories is not None:
         validate_categories(categories, errores)
+
+    if parts is not None and categories is not None:
+        validate_referential_integrity(parts, vehicles, categories, errores)
 
     return errores
 
