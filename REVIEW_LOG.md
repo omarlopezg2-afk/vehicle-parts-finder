@@ -476,6 +476,48 @@ fue mirar los runs por SHA y no conformarse con que el push dijera «ok».
 
 ---
 
+## 04/10/2026 — eBay Partner Network declinó la solicitud (automática): qué sabemos y qué no — Líder
+
+**Hecho**: Omar envió la solicitud a EPN el 04/10/2026 (cuenta de eBay personal, propiedad
+`https://partexact.com/`, Business Model `Content/Reviews`, sitio declarado) y la respuesta
+fue un **rechazo automático**.
+
+**Lo que el correo dice y lo que NO dice**: es una plantilla que enumera **tres motivos
+posibles** sin indicar cuál aplicó —
+(a) país no soportado por el programa,
+(b) el correo ya se usó para registrar una cuenta EPN,
+(c) no cumplir otros criterios del Network Agreement / Código de Conducta.
+El propio correo remite a `epnhelp@ebay.com` para preguntar. **No se puede deducir el motivo
+del texto**, y por eso no se toca el plan hasta saberlo.
+
+**Lo que sí se pudo comprobar**:
+
+- El **Network Agreement vigente** (publicado el 22/01/2026) define la elegibilidad geográfica
+  **por prohibición, no por lista**: solo excluye estar en un país embargado por EE.UU. o en
+  la lista SDN del Tesoro. La República Dominicana no está en ninguna de las dos, así que el
+  motivo (a) no encaja con la letra del propio acuerdo — aunque no se descarta que el
+  obstáculo real sean sus vías de pago.
+- El acuerdo exige además que **la cuenta de eBay esté "in good standing" en todo momento**,
+  lo que convierte a la cuenta usada en un candidato a revisar.
+- Motivos de rechazo más citados por solicitantes reales (foros): sitio "non-functioning" o
+  de calidad insuficiente. El sitio está vivo y responde 200, pero el catálogo tiene **3
+  partes**: "calidad" es una hipótesis razonable que el correo no menciona.
+
+**Qué NO cambia**: el acceso a la **API de eBay es otro programa** (Developers) y sigue
+funcionando: el sitio sigue mostrando anuncios y precios reales. Lo único bloqueado es la
+**comisión**. El trabajo de T-B5 (enlaces de afiliado) queda implementado y probado, esperando
+un campaign ID que, hoy, solo EPN puede emitir.
+
+**Consecuencia para Fase 3**: la monetización por eBay está **en pausa hasta aclarar el
+rechazo**. Si el motivo es el país y no hay vuelta, hay que reevaluar toda la Fase 3 (la
+alternativa ya planificada, Advance Auto Parts vía Impact.com, es una red distinta con su
+propia lista de países — **sin verificar** todavía si acepta publicadores en RD).
+
+Pendiente de Omar: (1) comprobar si ya existe una cuenta EPN con ese correo, (2) escribir a
+`epnhelp@ebay.com` preguntando por el criterio exacto.
+
+---
+
 ## 04/10/2026 — T-B5 revisada y fusionada (PR #16): enlaces de afiliado listos, esperando el ID — Líder
 
 **Entrega (agente B)**: `pipeline/fetch_ebay.py` con `_build_affiliate_header()` (header
