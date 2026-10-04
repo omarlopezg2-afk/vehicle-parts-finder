@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Tambor de freno: dos circulos concentricos con tornillos -->
+  <circle cx="32" cy="32" r="22"/>
+  <circle cx="32" cy="32" r="10"/>
+  <circle cx="32" cy="12" r="1.4" fill="currentColor" stroke="none"/>
+  <circle cx="50" cy="32" r="1.4" fill="currentColor" stroke="none"/>
+  <circle cx="32" cy="52" r="1.4" fill="currentColor" stroke="none"/>
+  <circle cx="14" cy="32" r="1.4" fill="currentColor" stroke="none"/>
+</svg>

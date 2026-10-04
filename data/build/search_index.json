@@ -16,5 +16,155 @@
     "part_number_norm": "MR297182",
     "name": "Clip retenedor de parachoques",
     "brand": "Mitsubishi"
+  },
+  {
+    "id": "toyota-filtro-aire-17801-21060",
+    "part_number_norm": "1780121060",
+    "name": "Filtro de aire",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-filtro-cabina-87139-yzz08",
+    "part_number_norm": "87139YZZ08",
+    "name": "Filtro de aire de cabina",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-filtro-combustible-23300-29045",
+    "part_number_norm": "2330029045",
+    "name": "Filtro de combustible",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-limpiaparabrisas-85212-42120",
+    "part_number_norm": "8521242120",
+    "name": "Limpiaparabrisas delantero derecho",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-pastillas-freno-04465-02070",
+    "part_number_norm": "0446502070",
+    "name": "Pastillas de freno delanteras",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-discos-freno-43512-02240",
+    "part_number_norm": "4351202240",
+    "name": "Disco de freno delantero",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-tambor-freno-42431-35210",
+    "part_number_norm": "4243135210",
+    "name": "Tambor de freno trasero",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-caliper-47750-12b10",
+    "part_number_norm": "4775012B10",
+    "name": "Caliper de freno delantero izquierdo",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-manguera-freno-90947-a2109",
+    "part_number_norm": "90947A2109",
+    "name": "Manguera de freno trasera derecha",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-bujia-90919-01253",
+    "part_number_norm": "9091901253",
+    "name": "Bujía de iridio",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-correa-90916-02652",
+    "part_number_norm": "9091602652",
+    "name": "Correa de accesorios (banda serpentina)",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-sensor-oxigeno-89465-09200",
+    "part_number_norm": "8946509200",
+    "name": "Sensor de oxígeno delantero",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-amortiguador-48510-a9690",
+    "part_number_norm": "48510A9690",
+    "name": "Amortiguador delantero derecho",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-rotula-43330-09670",
+    "part_number_norm": "4333009670",
+    "name": "Rótula de suspensión inferior",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-rodamiento-rueda-42450-12211",
+    "part_number_norm": "4245012211",
+    "name": "Rodamiento de rueda delantero con maza",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-bateria-00544-h6efb-ts",
+    "part_number_norm": "00544H6EFBTS",
+    "name": "Batería TrueStart H6 EFB",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-alternador-27060-0t260",
+    "part_number_norm": "270600T260",
+    "name": "Alternador",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-motor-arranque-28100-0d080-84",
+    "part_number_norm": "281000D08084",
+    "name": "Motor de arranque",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-bobina-encendido-90919-02258",
+    "part_number_norm": "9091902258",
+    "name": "Bobina de encendido",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-bomba-agua-16100-09560",
+    "part_number_norm": "1610009560",
+    "name": "Bomba de agua",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-termostato-90916-03075",
+    "part_number_norm": "9091603075",
+    "name": "Termostato del motor",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-radiador-16400-21130",
+    "part_number_norm": "1640021130",
+    "name": "Radiador",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-faro-81130-wb001",
+    "part_number_norm": "81130WB001",
+    "name": "Faro delantero derecho",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-bombilla-90981-13046",
+    "part_number_norm": "9098113046",
+    "name": "Bombilla de faro (halógena)",
+    "brand": "Toyota"
+  },
+  {
+    "id": "toyota-espejo-lateral-87910-02926",
+    "part_number_norm": "8791002926",
+    "name": "Espejo lateral derecho",
+    "brand": "Toyota"
   }
 ]

@@ -22,406 +22,30 @@
     "offers": [
       {
         "store": "eBay",
-        "url": "https://www.ebay.com/itm/820055463160?_skw=04152YZZA1&hash=itembeef1d54f8:g:7qgAAeSwau1qkKX3",
-        "price": 28.0,
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
+        "updated_at": "2026-10-04T20:27:51Z"
       },
       {
         "store": "eBay",
-        "url": "https://www.ebay.com/itm/197598229241?_skw=04152YZZA1&hash=item2e01c5b2f9:g:78sAAeSwU9lolPn6&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGa3Dfi63G0AqxcRxlMCjRMZFQPlJ5jpCLKbOJhZyza5s2%2FtmI6mUFhpsNv2PEcRFq6GamqVN7xHqM0D3vJjHtUpML0vshmXAKJ%2FZTvJkWllUtt6v8O8aPXAtJarrp4RiPX5vrxTuzq4Xf5NMtRvDT2H15emfQ9tcbSg26qHXUPiSCgKccnLZ2dhJxd%2F981jxWRAz3x463wyPvulreHqI0bLohgzfOK0pP3yoPwAk%2ByOOmPIGODF0iflZCIlxQVHy2YmW6BFzOP9x6aoc8%2F7o4odbQwsrhg6vJU%2FKeQSbZFVIQ%3D%3D",
-        "price": 31.99,
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
+        "updated_at": "2026-10-04T20:27:51Z"
       },
       {
         "store": "eBay",
-        "url": "https://www.ebay.com/itm/407177566423?_skw=04152YZZA1&hash=item5ecdac98d7:g:15kAAeSwhq5qkju2&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGbPb9KsvyU%2F4lrqA4H%2FyP%2BuK%2BRTbFrL9gq5wakhXw6tEmMlFrmQZqydPBxSDpa6jXfyF09%2BCtlgKW%2Bw6F4PGPO0yEvKVlRYse87WcEJM8Jxq%2F6DjBEn3cRN3EioHvuLMCNS6DvAME7jmguKG6dP9sVOG%2BdMLZRPI88bmDPSCjuUlqg05wDAlyweJa9MRXr0G9EzU%2Bn3qG7hWgLVrwjUMoCm6tlyDetzHhhO3NlSyb53Sq4jt8AF7xzTYayTp0GYoSQFiP2Ewoo1%2FYstAWo%2Bvf9w%2Fy6%2FjKBwRYzmhWJP6MjTZQ%3D%3D",
-        "price": 43.9,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/237082302160?_skw=04152YZZA1&hash=item373334d6d0:g:sakAAeSwUeVofpfm&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGYEkJows0my3%2FJ51NR4kSqolRMc8aYkJax8sShDLkVP5niURaoHT01Wl1tZEujdLJCcvFOju%2FJhBdvO%2BFjELOEmb7jIY7ZfMydg2BCuFJp7lFWNRsLBwG8Y0NAlA3pSEwRD1YXV3no%2BIWomqryEA8GvcEz2OTpLN9NMQp6%2BtSMwOewMTvjjVJTD1QKo0iuAoD00G3ddXztNL7R20frcKtWNu9CEfouNc4CPS2SoR0P5kGGUt%2FXZ0VBFXuer%2BJX%2BLvhmBEPD%2B21ivWHVJR7svLRezh%2BxgprRf5303Q4QXBvxxw%3D%3D",
-        "price": 65.0,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/282815553293?_skw=04152YZZA1&hash=item41d91edf0d:g:qGwAAOSwFLBaYiEj",
-        "price": 34.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/163335797459?_skw=04152YZZA1&hash=item2607927ad3:g:RNcAAOSwQHFeoKNX",
-        "price": 23.5,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/163337477307?_skw=04152YZZA1&hash=item2607ac1cbb:g:9WEAAOSwA9xeobEy",
-        "price": 28.6,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/113643381769?_skw=04152YZZA1&hash=item1a75ac6409:g:lDIAAOSwo61cZu-2",
-        "price": 43.6,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227455885941?_skw=04152YZZA1&hash=item34f56d6275:g:CQkAAeSwVfZpMODU",
-        "price": 39.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/335391380457?_skw=04152YZZA1&hash=item4e16e253e9:g:BM8AAOSw6J5mQjcj",
-        "price": 59.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/363843472234?_skw=04152YZZA1&hash=item54b6c2cb6a:g:NLAAAOSwmNJihWaS",
-        "price": 60.0,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/263566271712?_skw=04152YZZA1&hash=item3d5dc624e0:g:kEoAAOSw9-RlKBe4",
-        "price": 17.74,
-        "currency": "USD",
-        "condition": "New other (see details)",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/820182975980?_skw=04152YZZA1&hash=itembef6b705ec:g:30cAAeSweqlqugXb",
-        "price": 28.0,
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
         "currency": "USD",
         "condition": "Used",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/327360493492?_skw=04152YZZA1&hash=item4c3834b7b4:g:MdIAAeSwNsRqqlAn&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaJIkLmZjDsn1B7x7we%2Fbc9Yp8%2B4jyhjz%2F%2BfcuX2JAKU7hEJimyxcaDPujaDK0rqr0ViQFMpyg3osrsTssEGlwNfIt%2FDrFfGC%2FzgD8zF5OXT1LQnh7tADD%2BtetSYuIrW5toonaF0PhYwjQXiGc5vJnYQz7NL0J2xiZ9cnzVjd4QiswvIU58QzHM72xinEy%2FDlZIv%2BStW7iDs4nlcjvqD3Q54enevDaYYYncAKqm%2FXKZoH6fGjfP6rT72SGKJ%2BvSQYOHhYPMa8xYE2l4bs7DkxD0QNPgR1lgQGMvgECb9WDdyQ%3D%3D",
-        "price": 70.95,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/357761915153?_skw=04152YZZA1&hash=item534c459911:g:~kYAAeSwbodo8O~M&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZwZI7WZwQe%2Bkt%2FljQkObsANo9aP88kCQzX3cIExQoMBbdIF6Gl0Ccpd9%2BD8QwRa%2BS857frHHVw5iNaXrNzfJ%2F2DOgI6K8ambNAxXRzCP4NMBUocLrT1BJ5UI4KJAZyxthrWGm1NRXvzf05Nhbm7x86U426AfUZaQOp%2FgMl6eYFi8X84FvpBbLjw9ndMS%2FVRi%2FVe1OAZPHMRKDEG6PujUEKnhrOnTKa4FSsNYSVbN%2F%2BpW3yMSBXecO%2F22I%2BXcfB%2BS0ZJ4xYZrLUeb2DvqzFELqq7wCrCnLDakd321z27ZzqUA%3D%3D",
-        "price": 35.59,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/263566260263?_skw=04152YZZA1&hash=item3d5dc5f827:g:QeEAAOSwu6xlKBfY&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZlKWJcR44SDHNqsN9dtTJ%2Bb3%2Fdp37INt5YlCdJ1XzRPR73F7AOQoBULDlbDtSqEfMAy0SXfjuUFWiGF0whb4e8KLangoJrneQgT3YINkAZQtnHpp0U5%2BEWGCemTVmFQA0P8Z5KrTd45%2BcG0oX9rDCvmrBeIoDwSXjd3v2gtysyW3amlkSxXtScgmLtJxZxgz98JV3PDz365IdHCmNTERlfEoJLbYAXQ3tMOI4vzMuvJ6QEqCB1buSXNFVyfi9F82kpZoxToWL0fLSG7DYYfRD628xn4gtqzJPqmsBzvj%2F8ZQ%3D%3D",
-        "price": 36.74,
-        "currency": "USD",
-        "condition": "New other (see details)",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/127965929907?_skw=04152YZZA1&hash=item1dcb5d21b3:g:t8YAAeSwyWFqT6DG",
-        "price": 8.96,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227435740992?_skw=04152YZZA1&hash=item34f439ff40:g:CQkAAeSwVfZpMODU",
-        "price": 39.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/407264427407?_skw=04152YZZA1&hash=item5ed2d9fd8f:g:3PoAAeSwFJ9qwYBa",
-        "price": 10.0,
-        "currency": "USD",
-        "condition": "New other (see details)",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227248913634?_skw=04152YZZA1&hash=item34e9173ce2:g:CQkAAeSwVfZpMODU",
-        "price": 39.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227228187604?_skw=04152YZZA1&hash=item34e7dafbd4:g:oQQAAeSw-ghqOGDM",
-        "price": 58.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/232359032107?_skw=04152YZZA1&hash=item3619ad752b:g:QGAAAOSwu1VW2fmw",
-        "price": 9.97,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/334605437849?_skw=04152YZZA1&hash=item4de809cb99:g:zBEAAOSwYlJW2flZ",
-        "price": 9.97,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/388010837005?_skw=04152YZZA1&hash=item5a573f840d:g:igYAAOSwpTtnwVjg",
-        "price": 7.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227162119835?_skw=04152YZZA1&hash=item34e3eade9b:g:RyYAAeSwqV1qOFh~",
-        "price": 56.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/262910197271?_skw=04152YZZA1&hash=item3d36ab3e17:g:cMAAAOSw2s1U06~9",
-        "price": 50.75,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/387550133426?_skw=04152YZZA1&hash=item5a3bc9bcb2:g:To8AAeSwk1JqhSTV",
-        "price": 8.58,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/237047864887?_skw=04152YZZA1&hash=item3731275e37:g:ZxAAAeSwWoVqmi0X",
-        "price": 7.96,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/398350382537?_skw=04152YZZA1&hash=item5cbf8875c9:g:yQcAAeSwiTNql99a&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZAfDgaM9Z8Ufoj1RSg1rV2lAYZR2hP5wS3Hm4G8Hxn2Vx33qr87A%2B1Qqsz2xO%2BaAUzEaaen4LjrU8BHBm7yDHI%2BhJdg%2BjiKQPp0BcWODaYHxNVeXdL86NxF%2BIY0CAXPkX0hpXaByA2hoZspxZyy%2F9r%2FNZjRiS%2BIwsNvDTP8hX3tKQdOICErJiTFQ3dNTCNf0NwynMB4kva%2F9TI8dU%2B4eekCAk7YREm93CpiFDjYSX3r0hCF9L9gOYedshcuCD1JKxRf8uQxe2WZq18YugAXQ2tubjPd%2B7bkDTvu7w72WAtvg%3D%3D",
-        "price": 15.81,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/800727810410?_skw=04152YZZA1&hash=itemba6f18c16a:g:~L0AAeSwbhdqujGc&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGapuVhvwA9EJgdv1YNdP8Fm3ooeiyHDNZANGAaM05iJh7p9s87ChRRGz8MArwS5on0gfnPz2wSMbJGyxbdTqdYuC8PeZaiyBVF9D%2ByStZj71yYfaEQfQkSvTdsdtJAVXLcdSjW08bnY2zIk5KS4--JcnmlzhjHzK6kKqgVn28rbFGKeWVR2W5KLbQa3ZaeWFMBM7nrmS7RU%2BId4%2Ff85kQ9mg0TLIkISXk%2FapW%2FLv%2FR4dqUZnEG%2BaSIxRHQsHMiud8tayDLqlH5XqQVHuExIqkqvysri4VuzXaQJw4Hm1KrsKw%3D%3D",
-        "price": 43.55,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/398350391461?_skw=04152YZZA1&hash=item5cbf8898a5:g:yQcAAeSwiTNql99a&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaofY1m%2FrRAzAumajnYtk8mqsLDGp6SFiLPSIChwGWgLsYb8VnDLTWMOYai8hbAntiAdOEh0H6j5eEBEMKTLZgIZZnCbKYZtfsvO8ylQEJeyroZcX8Fm5tHxl7ocO01OJK9Mv7rYZZLNm9rQMorzemMepqYvM4yaIpjSVLQoH4KvQJcBOZ%2BnRW8YUYvRZRhiTjWaPQBILWblPIMt4YwF%2FlmnDFNF9Mp5gCXbcdR%2F2zCPgBh1l4VpzML7epLpHfAbT0Y81FmB3xUhqCmfdyXnFTWWlVOGm05PoLwK3pGGrhGUg%3D%3D",
-        "price": 15.81,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/365921155440?_skw=04152YZZA1&hash=item553299b970:g:G8kAAeSwmd5oZ4U4&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZUnNca%2BJmlUDo5aK7TNWRyR%2BtbBz%2Bvm4OkYr1LoVzB7eW4GpWBDoNI43q8bz%2By%2FMqMjWTyhmYohkWnA7oucQO%2BusT3%2Bs%2FnEvTbOsYanUr4Fb%2F%2BJc3Ya3WgiYaTjLptHrX8t81TZb0JRFIg9U%2BcLhgpS0kKY5vji%2BNZweP67cu0BAf8sxhpPNJU7o43RAerl6Arh5n0P8oVelNz6%2Fp0nUef40cwcma%2FYVExkzX3wvpdHAdgrf%2F1e5X1iWAwazYR8Locb5ipJ3gK7a%2BkcdLY4hK7LjjC%2BXjdwXGF2LtU3vgrjg%3D%3D",
-        "price": 29.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/318599725839?_skw=04152YZZA1&hash=item4a2e06030f:g:oFYAAeSw87xqWy7k",
-        "price": 9.9,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227455881914?_skw=04152YZZA1&hash=item34f56d52ba:g:RyYAAeSwqV1qOFh~",
-        "price": 57.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/282815548933?_skw=04152YZZA1&hash=item41d91ece05:g:Vz8AAOSwcuZaYh4Q",
-        "price": 24.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/135837481814?_skw=04152YZZA1&hash=item1fa08b7b56:g:CMkAAeSwGFpqnlIc",
-        "price": 6.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/188034036927?_skw=04152YZZA1&hash=item2bc7b3b4bf:g:sS8AAeSwWUhqgovf",
-        "price": 41.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/388954341288?_skw=04152YZZA1&hash=item5a8f7c3fa8:g:oaAAAeSwxtNpSnto",
-        "price": 13.69,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/267333321873?_skw=04152YZZA1&hash=item3e3e4ec491:g:4L0AAeSwueNofBoU&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGY8BmXE6Pt%2FebJY4MWmq7mWwn4GNQguj%2FaQcfWHilEJpIWYITqXCXAGTe%2BRkQhReB905AoqVpbrxhC7RdeCntg95lFXJHqwYL%2BKWIDR9kp8cngNHwIoNbFLYyQx05cp%2ByAJDgUUAL2PjVH2uEtrLdwl%2FeAxHPp%2BkFH6vCtpRG62hbHWx%2F1azInfGcxOEGy4UOznaYgbX3UcLCDfddBTw7oEY1ocQhirF99lwmOlT6jzhXBspuhi%2F%2B1XiAVyyvLmDYRcfzWLIddDapOjepAypf4kJ%2BAp2DRHN29CVp7sYzRanw%3D%3D",
-        "price": 20.74,
-        "currency": "USD",
-        "condition": "New other (see details)",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/263566249216?_skw=04152YZZA1&hash=item3d5dc5cd00:g:S-QAAOSwafFlKBiV&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZ9YVG7K7tqO0G5H5Va4bBLS5O95CeDTdDa2MZLU4gq5xG5S9PnGx%2FwjEDqOTTScCqy9%2BLQesjbers77Tw5ebgX4NAXA%2FAxlLSBQs4L8atLZikPCfCiHlq%2FQjovUImTSq7T6cr%2BfUs1Fxd1fVikS2iQvJWgRirDiEHzSxVvXFWRbtPmBdTcUACVV0%2BH%2F2wDMU6fhcw4rAAUskyxSLu2lvFfy4Ch6q7qKgNLuSBPVRMtFgowGQ7L%2BLboUd2DxLbC%2F1PDoT%2FC0ftogzjkxgc2seAXz7FQlLcARb52eWaE%2BPEgeQ%3D%3D",
-        "price": 35.74,
-        "currency": "USD",
-        "condition": "New other (see details)",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/253544615318?_skw=04152YZZA1&hash=item3b086fcd96:g:rnEAAOSwOtVax3wU",
-        "price": 18.61,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/377543187484?_skw=04152YZZA1&hash=item57e753dc1c:g:hGYAAeSwSYdquX1j",
-        "price": 8.99,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/336241693731?_skw=04152YZZA1&hash=item4e49911423:g:S7EAAeSwkVlo9U8l",
-        "price": 9.87,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/377527252458?_skw=04152YZZA1&hash=item57e660b5ea:g:hGYAAeSwSYdquX1j",
-        "price": 7.26,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/389922288197?_skw=04152YZZA1&hash=item5ac92df245:g:dkgAAeSwBhJowpEw",
-        "price": 22.79,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/336655250983?_skw=04152YZZA1&hash=item4e62377627:g:SdgAAeSwcVhqPFCH",
-        "price": 24.65,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/257413737730?_skw=04152YZZA1&hash=item3bef0ded02:g:Zx0AAeSwe1BqwfpS",
-        "price": 11.72,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/254310704691?_skw=04152YZZA1&hash=item3b36196633:g:16EAAeSwmIFojfN1",
-        "price": 28.0,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/317839568852?_skw=04152YZZA1&hash=item4a00b6efd4:g:M5gAAeSwJoVo3m-K&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGaVx5359g0ROLPKnhn02bstoxpgpU6%2FUNm6ZnVflTLa55AcCWkogG%2BPUBHNbPpMkpOLEWXTiPvmrckHF66yckuR5SQ2e8fm0zjvE6Qu8Y4nOIp46YlNVaTcyQcPVqiQ6MwLFvMFktno59lmfGZtSW93MhArnPhL4JCVZ0UBitOemMMfjI7rucqHD%2FekVu4MHChQBzoFkC%2F3In0l0TGW1CKCOUPOvO7DVoDmMoKyaNjIIk2gLhI1Q%2B8BexrdwUX8cIkhlnTZ3JiylYfV0%2F5sKLB%2BCqttDu3Kpmj2p8YVUfMGww%3D%3D",
-        "price": 40.8,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227512745375?_skw=04152YZZA1&hash=item34f8d0fd9f:g:ehwAAOSwm3hlbQSW&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGZA8L0YB6xJHrFf98aW7r1uOF84Dv%2FpvFIWv0JtSf5OY1RJ1GOO0cog5RBCYeaYVGA1xIurGCms9xlHjs6zwM5x%2FpifE%2BdR%2BVfzdp8WHwoKylCprVgmS9D%2FcpD9aKMjFQoLqGKuU4XcW%2FJPAG47qjD3A6dOehfntAUZGZf7n4m%2BYpBxUzJKETee6sW0Bs56i75bBnddIB9NfOM%2F87umDe%2BnfZXaxMzbk%2BedxblouHedjKC3Oiv4uE5uypqn2LVWQ64bXprXhxkmFXk7aQI4AHjvdWigk3NdJaKbywZpvP7NAw%3D%3D",
-        "price": 27.97,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:05Z"
+        "updated_at": "2026-10-04T20:27:51Z"
       }
     ],
-    "updated_at": "2026-10-04T12:43:04Z"
+    "updated_at": "2026-10-04T20:27:51Z"
   },
   {
     "id": "mitsubishi-filtro-aceite-1230a114",
@@ -446,406 +70,30 @@
     "offers": [
       {
         "store": "eBay",
-        "url": "https://www.ebay.com/itm/317792898761?_skw=1230A114&hash=item49fdeecec9:g:WK4AAeSwUZtpcx~7",
-        "price": 69.35,
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
+        "updated_at": "2026-10-04T20:27:51Z"
       },
       {
         "store": "eBay",
-        "url": "https://www.ebay.com/itm/387043134005?_skw=1230A114&hash=item5a1d918a35:g:ehEAAOSw11hmWCgT&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGZsNUTqZhEe3oBT9rEFOc7shWSm%2B00G7kf3FHoDw77Z9R%2BdB%2FShsSNjEAGrwnQPJXXlSdzXYJFAA1EgfGjw8p4R3NGD5oDu4I4AkIoYYV7P%2BT2OjxJZIkA46uT4j03324YN%2FLF19mOOu36oeP09s14CzzOIyPtEUcUUcrfbl6zdV4adak3b9DVhyuKvsO504cc7KHXQ6HEhIkNrl5LHVSMHWVOYGjomT9h2M6cIbrqLt3NnXUjHyEBmuSmpBtagzJ47S8%2B4a206Z0H1a96Luipi",
-        "price": 72.06,
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
+        "updated_at": "2026-10-04T20:27:51Z"
       },
       {
         "store": "eBay",
-        "url": "https://www.ebay.com/itm/366662209833?_skw=1230A114&hash=item555ec55129:g:DDAAAeSwUz5qoUgP&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGYTF2bCLdewLFpCxTnNSzWM7e4sgPMqT5u9gVo8WG5h9xlfPloOfa2QAU%2BWsSom8X3Op6oFIX8Z2cRSXvrsVmUOcMOjwDSAJkMLHNxrfFiLrfAr0kZCgt9tsLKQQmsAfEZVUZ8pWLx4KVu0irq6VikmqTnAPtCbgzsHCyF2DaNGB1nSqaCKeUXd1nXp%2BeM9JCmDsYnA8%2BDE5aNsBJsjE8eR7h0JA%2FLcQuZtFdin1vJPxxvnUUxfKP8yJLmaK%2BIZ492sEXERetpn9CLI3NlmSHzz",
-        "price": 61.63,
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
         "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/398378215714?_skw=1230A114&hash=item5cc1312922:g:DDAAAeSwUz5qoUgP&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGYWRTe2Cr5CGJZlLSeZhANEoDWC3%2BwsuDUenwDzUC35IUraE2kRYLn%2BseUN%2Ftmq%2F%2BsuAlVm4wHU5pZl7AMUZ6NyL1AY0AbIhTt6db6B5aFmFg1pN091pgOsYnrnUXTroaHhDhHKVQPc902gcKHL7%2BdpYV7iUgHBdkADvFfFjm6SZsvK64Oi7xLpKgPjgDybUeKgAfUO9PaA0waeToDTfPcWanNcV4LJiwL6NikDAWXSw6VIG4NXgwoqFzhb9yZhsCbPn2Zao9SE9Unn%2BaYD%2FsJv",
-        "price": 62.35,
-        "currency": "USD",
-        "condition": "Nuovo",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/257365291215?_skw=1230A114&hash=item3bec2ab0cf:g:2eIAAeSwiWpqvMFn",
-        "price": 41.58,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227141746189?_skw=1230A114&hash=item34e2b3fe0d:g:Qj4AAeSwimhqwJEA",
-        "price": 13.08,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/153982872136?_skw=1230A114&hash=item23da182a48:g:c-sAAeSwkAlqlPU2",
-        "price": 36.16,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/117437591588?_skw=1230A114&hash=item1b57d37024:g:6BQAAeSwJxpqu6ZQ",
-        "price": 25.04,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/161426880478?_skw=1230A114&hash=item2595cab7de:g:VZIAAeSwxZRqlOx3",
-        "price": 55.64,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/164748517625?_skw=1230A114&hash=item265bc6e0f9:g:X0UAAeSwO6VqCIUX",
-        "price": 22.25,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/353973461452?_skw=1230A114&hash=item526a7661cc:g:2dUAAOSwzmViO0SK",
-        "price": 29.88,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286140457722?_skw=1230A114&hash=item429f4ce2fa:g:AqAAAOSwPDVnJd0y",
-        "price": 111.16,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/306551695415?_skw=1230A114&hash=item475fe7a837:g:hdgAAeSwQdFo8DJa",
-        "price": 12.46,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/147572077136?_skw=1230A114&hash=item225bfb3250:g:E-wAAeSwSCRqoUg5&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGaUh3U%2B%2BsRqBHhWjifwj4dDQzybq95uWMnCRcTmc2A6fKtP6%2FrE7QzsNeudladr5LGKL022mUS4U3dCn0XitWMmbf2D3uxhE14o%2FvZjdZoS5Qte4h0JGo4X%2BQBuDxmgCESE0QG%2BUs9dh6LalwI2GzsxllHkizg8ndx5nuzTupWRbL28KY%2BWQ63zIL2kk3gu9abxcECBy1XS9LNlLk%2F57XYUwjDOjYAVU7hXqhB8pfsRjDJCwA2B4w95sXVAC9fijv%2FOeeka4%2BDVZCySi6TDOJGP",
-        "price": 62.03,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/157357642273?_skw=1230A114&hash=item24a33f1221:g:aZAAAeSwdXFo25l9&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGY7VVXCfkB%2B7PKHBLbS1RHHsyuHAJbxS9JRbgtS6qa9Z5G0KdEy2sVvG2acecIxxYY65V2mxqv7iWXQs%2Fk41zk0l2FlO%2BTEvBn0ljqRjfkmMxnel7dQBwcRTLG%2FYRGS334H651BJkexs5yMCO2y6Fqv1c1ECpUL%2BbAAUMnLtkPx7eg5uaGKMSBEb7jWlWwDR3zXfCulKRRAsum2%2BZiMj1ck3ULBu1QxQVDYzLsilGFRaas8OGsPuhtz8ueOMyo1mBcROruCYJKqa5YLoJ2Pvuql",
-        "price": 26.47,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/157616603614?_skw=1230A114&hash=item24b2ae81de:g:KAEAAeSw2KBoJSDc&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGbFiiOng6mXz40z92XgfUpb1OG5aKvx9bPMdNEH%2BLXscDNYt5%2FvUr2uZ5SRXLxRs0BtfR6DOzM%2Fq%2F0L5t1E2SE%2FZ%2B8K26MHqoCtOFWYf7M4LlSEPcbNI6RMqw3mEG2Y7JnJo5F85zw4gURBTcIyR8u6siz1m8eKKapO%2FoLOZVOYA%2FrnwVXbjm%2B2cwa5beY38AS3GK%2BmPNRY1q52QPYioLUb1L4jvr1k8D%2B2MZca9WkjtSqlXwup4W2MqOPiNb1zArOQa%2F%2Be%2B0fXib%2BZFsoxRIpt",
-        "price": 9.89,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286041306412?_skw=1230A114&hash=item429963f52c:g:MBMAAOSw4mRm1XDI",
-        "price": 83.91,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/267595021142?_skw=1230A114&hash=item3e4de7fb56:g:qJQAAeSwZYppqXkV",
-        "price": 56.71,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287325707177?_skw=1230A114&hash=item42e5f25ba9:g:uC4AAeSw8iBqAes-",
-        "price": 75.41,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286099362596?_skw=1230A114&hash=item429cd9d324:g:BW0AAOSw5sRnBj8a",
-        "price": 111.21,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286723389998?_skw=1230A114&hash=item42c20bba2e:g:5UUAAOSwy-1nBj6m",
-        "price": 135.23,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286041304359?_skw=1230A114&hash=item429963ed27:g:ThcAAeSwM~xqHUwX",
-        "price": 141.61,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/323963780378?_skw=1230A114&hash=item4b6dbefd1a:g:WY8AAeSwSG9qebad",
-        "price": 10.14,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/227503273634?_skw=1230A114&hash=item34f84076a2:g:8HIAAeSwdy9qmNY7",
-        "price": 19.55,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286099358635?_skw=1230A114&hash=item429cd9c3ab:g:E1AAAOSwkaZnBj1j",
-        "price": 96.86,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287325704703?_skw=1230A114&hash=item42e5f251ff:g:FhQAAeSw9VlqAeqf",
-        "price": 101.36,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287420599534?_skw=1230A114&hash=item42eb9a4cee:g:QkQAAeSwkDBqPqBF",
-        "price": 98.92,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287071975914?_skw=1230A114&hash=item42d6d2b9ea:g:SZcAAeSwv8dpZjKj",
-        "price": 194.55,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/237053281967?_skw=1230A114&hash=item37317a06af:g:7okAAeSwiX1qnWV9&amdata=enc%3AAQALAAAA8ACCtXRWQnOEpyOqnQQ8KGbIlLifw8ZXB0karV58oYDndXdYor6WocEBUZ2ngg2vTfPp9XJmv5E1Lefbd7LKNi0hFaKG9TMXZnCgbWzIBFrUB0BlKSETgV3K8%2BM4w2tcmxjasyO91UEhTBeRS%2FobMNVtQ8VdbncwKv98V%2B6lqjjmDhqPZ3QAMtvDLXSVLYyKxrwKx7CMgF%2BqgIMuveFTc%2FC0YAOY6svsPuHqaD37RrTRH496HYIn4Jm10nTi5aD0cXTBqm7Q9g1%2FSZTSiIm2NsmXCeRTLNubC%2Bok2X39mXwCbT7s8Gdp70dSUtfGXMVeug%3D%3D",
-        "price": 17.24,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/278276709027?_skw=1230A114&hash=item40ca959aa3:g:i-8AAeSwErxqv1-I&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGZKVmhNKbOM%2B2YL7CqvytiS3TO%2FCTKRX837zIpGxumqrtFZ6rg3HILcrH7RxNKIxj5lL%2F3OKJ0F6dkyp0wqReM3mCridSQOlG6iZIZ4Cc0ax49z7UI1YMWOLYnL83jo6dv8EI91z7wXChXD47T8DECM2QKqWHngfWxI9uHuxOP3yX4maCx8zKuVGaxvr%2B%2BTofUzEx3ZuWrsGfRqZ0v1E8J%2FRbB2X5mEtIhC7hQCLrAwQSD%2FBh5kzqE%2FhasDtmaIK%2B1EKDOueu%2FtiD0BScNp68nL",
-        "price": 51.71,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/178502543264?_skw=1230A114&hash=item298f94a7a0:g:UogAAeSwdb9qqlby&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGbXue%2BjWN2cDFavyav3aodIdSOovLMhFCJUd0ZS3JceHKBQcZWxdzVGIzY8s36%2F%2BJS0Qvu5N8dsjS45XIUJLFNGV%2F6tCEuBmFm9gAI4ACIwwTF5rd3PVc6FRmOnJu34Jt0%2FU57p2OPjcUAkvUMwcc7VmJAx3uvJUce95sv35C9SAtg79CXIgGbbMnuzLWj8kGorZQZJX8zIzqJp8nnCP6ElJouJNJk8%2BpaYc%2FctIttNrweQy6MDfGCxjp0U9K0x8GodQccOS4G55QXkNLOxGoUt",
-        "price": 45.25,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/198488872334?_skw=1230A114&hash=item2e36dbd58e:g:5JUAAeSwCAxqwbNJ&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGbnhrIYgCUndRtQGj3qs9CIK%2BcnulFOjdysmaXji08fF0QPUhpncIl48p88HlqlDHFknA8iwa0LuH1AaVXaOy%2FkzgHyzAYDdU2MuIxQIKxiYUkARokCdW22S6jUjuCnLL0q4QtQsiLpjAh%2B2keu4Y5Ty079G5cXx8WukqazPExeTQph9fMoiefs1WuZkqZtN0iRkZJywZuH5FwjRt0iXVIvXLg8%2BydxIG4i93t6VqM6EhUWFMAmwIr77n9aFXGUA0VSzyw1dW5PGz1LDT6NljFP",
-        "price": 57.86,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286041309373?_skw=1230A114&hash=item42996400bd:g:ZCwAAeSwZSxqHUy~",
-        "price": 116.45,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/165008237978?_skw=1230A114&hash=item266b41e59a:g:B3IAAeSwdg9o32NG",
-        "price": 20.55,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286140451988?_skw=1230A114&hash=item429f4ccc94:g:yRYAAOSwLYRnJdvS",
-        "price": 97.39,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287325691557?_skw=1230A114&hash=item42e5f21ea5:g:JhAAAeSwyk1qAehf",
-        "price": 141.61,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287325701592?_skw=1230A114&hash=item42e5f245d8:g:-eYAAeSwto1qAend",
-        "price": 126.52,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/298653689768?_skw=1230A114&hash=item458925a7a8:g:GBcAAeSwN-9qnuI1",
-        "price": 11.97,
-        "currency": "USD",
-        "condition": "Brand New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/206539371079?_skw=1230A114&hash=item3016b4b247:g:fjsAAeSwUkpqnUH2&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGYSPkgmnKKqtd%2FQXM0LhaudxrnFNOFZDUUbJpjCfmqWgAYvhlGch%2BwslC8rLIPOzbU4A7ts7xiUiDqj0zzsWtbDZWgnk2hZtF9O7T5WpEPLp%2FgmicYg9B6fyvdVU0c274aeOX0eQVdallllKpmyZ1XA3sVq1ipGQXB5M5n8PAfP5Zoj0s8BDYKiZWvy6ANbJ3CFxqg5kC1BR3FP8NhWFiMZbkPP8H3Jn1Qf5mnJb8LVfHPkTYoCba6hwLTVZ87IXrm6GI1Ns331RWrf3KuXxwoU",
-        "price": 15.55,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/800652085987?_skw=1230A114&hash=itemba6a954ae3:g:LDQAAeSwK7lqv63a&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGa9LGRRXL96eitjugd%2BqDcNFA1kgPmyXhpcWIBMaj7rhknJWiLSDEwi47OWGiFsKHry%2BF5KccqO1VEjoA0%2BxQIH1zK0RgkRtw9NgUjgC%2B3y4Nly9eSr%2F3iHC5k0Nkojqbk7Zneof8FzviOMdz5FS4uWi%2FZly6jVcguPgeh5%2FyFEYGlMPJ9s98IN%2BHAcSr2tiJP%2BKZa0WWH0YBq80U7MMdc26lz7ZXEE%2FVBgr71rGZ7YSY8vBWTPj%2Bnv5D7lpljM5nmKhhgA%2FHtN%2BuN5r7wUn%2Feh",
-        "price": 45.17,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286041296979?_skw=1230A114&hash=item429963d053:g:wN4AAeSwKkRqHU32",
-        "price": 101.36,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287325695194?_skw=1230A114&hash=item42e5f22cda:g:XgYAAeSwHpNqAelB",
-        "price": 116.45,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/154598081787?_skw=1230A114&hash=item23fec384fb:g:SQgAAOSwYeBhNMYA",
-        "price": 25.76,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/278367700986?_skw=1230A114&hash=item40d00207fa:g:zfIAAeSw3btqt8rL",
-        "price": 39.27,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/286099359791?_skw=1230A114&hash=item429cd9c82f:g:fcAAAOSwmr9nBj3g",
-        "price": 120.85,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/287071980632?_skw=1230A114&hash=item42d6d2cc58:g:UcMAAeSwSmxpZjO2",
-        "price": 169.35,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/267797017557?_skw=1230A114&hash=item3e59f233d5:g:P98AAeSw6OVquQh0",
-        "price": 34.77,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/318936887837?_skw=1230A114&hash=item4a421eb21d:g:3PoAAeSwIVdqvKgU",
-        "price": 39.22,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/406786502120?_skw=1230A114&hash=item5eb65d6de8:g:JJ0AAeSwOp1pvXYM&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGYSW4K%2BH8Jb%2BxpWTSjiBK0Z1%2BaObwvZpYpLoG%2FbsgJHwns8qgfYOaFhImWzOd5jrCQsONk9CyqsR42%2BnKjuobRnbffAk3CbIAitIQX%2BsQGM9n%2FZh12%2BOAP5MRWS1ygxY4Zz7kQ57THFnDlTjOwGmJe0PRUtUjdP7G%2BwDwEeQUkgTyNAuiYR3S8pQRcWdjUuPgyO3dkRfzrF4bucruOA714R%2FfPv9PVBwY5PpNiHkGabeGQfPGyJ3viXJGk7zKbSfxthTAA2oyiT6FWE1kGgSL8J",
-        "price": 72.8,
-        "currency": "USD",
-        "condition": "New",
-        "updated_at": "2026-10-04T12:43:06Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/318564511417?_skw=1230A114&hash=item4a2becaeb9:g:~ucAAeSwwSlqv8DR&amdata=enc%3AAQALAAAA4ACCtXRWQnOEpyOqnQQ8KGYO5gQWaiV73xqa9B1UpAw1nknHoWrODbTxlZcn9%2FHpBAewgYHdnFHISdY6neFDm8KNHaDnELENhSA3QAzrBi7na5ZL7LXpuCVKj04h3K7WKFj1JLg%2BwWLL5P%2BphqH3dLToy%2FWr%2FDFNpxZFnL7jgRiIsf%2FNsS9xgosGCGZ42U2nxX60KvlHL%2Flb10YULudEoOIh8jdwFTZr0NzHwV0wYXg6v9LUL3zACpiFmLAQ%2FBiQHkRzzF3fzHOvZFhmT6pjCU%2FvKTAMsxj9gsPYR%2FDj1syg",
-        "price": 45.85,
-        "currency": "USD",
-        "condition": "Neu",
-        "updated_at": "2026-10-04T12:43:06Z"
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
       }
     ],
-    "updated_at": "2026-10-04T12:43:04Z"
+    "updated_at": "2026-10-04T20:27:51Z"
   },
   {
     "id": "mitsubishi-clip-parachoques-mr297182",
@@ -854,7 +102,7 @@
     "type": "OEM",
     "brand": "Mitsubishi",
     "name": "Clip retenedor de parachoques",
-    "category": "clip-parachoques",
+    "category": "clips-y-sujeciones",
     "epc_link": {
       "source": "7zap",
       "url": "https://7zap.com/en/catalog/cars/mitsubishi/asx-outlander-sport-rvr-4th-facelift-parts-catalog/"
@@ -874,29 +122,1229 @@
     "offers": [
       {
         "store": "eBay",
-        "url": "https://www.ebay.com/itm/256713318779?_skw=MR297182&hash=item3bc54e617b:g:vfIAAOSwWF9nM4iI",
-        "price": 129.0,
-        "currency": "USD",
-        "condition": "Used",
-        "updated_at": "2026-10-04T12:43:07Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/157514107138?_skw=MR297182&hash=item24ac928902:g:L~wAAeSwMqJpLfk6",
-        "price": 134.24,
-        "currency": "USD",
-        "condition": "New with tags",
-        "updated_at": "2026-10-04T12:43:07Z"
-      },
-      {
-        "store": "eBay",
-        "url": "https://www.ebay.com/itm/334374499606?_skw=MR297182&hash=item4dda45f516:g:qr0AAOSwXiVeJ9PD",
-        "price": 98.1,
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
         "currency": "USD",
         "condition": "New",
-        "updated_at": "2026-10-04T12:43:07Z"
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
       }
     ],
-    "updated_at": "2026-10-04T12:43:04Z"
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-filtro-aire-17801-21060",
+    "part_number": "17801-21060",
+    "part_number_norm": "1780121060",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de aire",
+    "category": "filtro-aire",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=1780121060"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-filtro-cabina-87139-yzz08",
+    "part_number": "87139-YZZ08",
+    "part_number_norm": "87139YZZ08",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de aire de cabina",
+    "category": "filtro-cabina",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=87139YZZ08"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-filtro-combustible-23300-29045",
+    "part_number": "23300-29045",
+    "part_number_norm": "2330029045",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de combustible",
+    "category": "filtro-combustible",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=2330029045"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-limpiaparabrisas-85212-42120",
+    "part_number": "85212-42120",
+    "part_number_norm": "8521242120",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Limpiaparabrisas delantero derecho",
+    "category": "limpiaparabrisas",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=8521242120"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-pastillas-freno-04465-02070",
+    "part_number": "04465-02070",
+    "part_number_norm": "0446502070",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Pastillas de freno delanteras",
+    "category": "pastillas-freno",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=0446502070"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-discos-freno-43512-02240",
+    "part_number": "43512-02240",
+    "part_number_norm": "4351202240",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Disco de freno delantero",
+    "category": "discos-freno",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=4351202240"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-tambor-freno-42431-35210",
+    "part_number": "42431-35210",
+    "part_number_norm": "4243135210",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Tambor de freno trasero",
+    "category": "tambor-freno",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=4243135210"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-caliper-47750-12b10",
+    "part_number": "47750-12B10",
+    "part_number_norm": "4775012B10",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Caliper de freno delantero izquierdo",
+    "category": "caliper",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=4775012B10"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-manguera-freno-90947-a2109",
+    "part_number": "90947-A2109",
+    "part_number_norm": "90947A2109",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Manguera de freno trasera derecha",
+    "category": "manguera-freno",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=90947A2109"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-bujia-90919-01253",
+    "part_number": "90919-01253",
+    "part_number_norm": "9091901253",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bujía de iridio",
+    "category": "bujia",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=9091901253"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-correa-90916-02652",
+    "part_number": "90916-02652",
+    "part_number_norm": "9091602652",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Correa de accesorios (banda serpentina)",
+    "category": "correa",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=9091602652"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-sensor-oxigeno-89465-09200",
+    "part_number": "89465-09200",
+    "part_number_norm": "8946509200",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Sensor de oxígeno delantero",
+    "category": "sensor-oxigeno",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=8946509200"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-amortiguador-48510-a9690",
+    "part_number": "48510-A9690",
+    "part_number_norm": "48510A9690",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Amortiguador delantero derecho",
+    "category": "amortiguador",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=48510A9690"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-rotula-43330-09670",
+    "part_number": "43330-09670",
+    "part_number_norm": "4333009670",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Rótula de suspensión inferior",
+    "category": "rotula",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=4333009670"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-rodamiento-rueda-42450-12211",
+    "part_number": "42450-12211",
+    "part_number_norm": "4245012211",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Rodamiento de rueda delantero con maza",
+    "category": "rodamiento-rueda",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=4245012211"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-bateria-00544-h6efb-ts",
+    "part_number": "00544-H6EFB-TS",
+    "part_number_norm": "00544H6EFBTS",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Batería TrueStart H6 EFB",
+    "category": "bateria",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=00544H6EFBTS"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-alternador-27060-0t260",
+    "part_number": "27060-0T260",
+    "part_number_norm": "270600T260",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Alternador",
+    "category": "alternador",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=270600T260"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-motor-arranque-28100-0d080-84",
+    "part_number": "28100-0D080-84",
+    "part_number_norm": "281000D08084",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Motor de arranque",
+    "category": "motor-arranque",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=281000D08084"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-bobina-encendido-90919-02258",
+    "part_number": "90919-02258",
+    "part_number_norm": "9091902258",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bobina de encendido",
+    "category": "bobina-encendido",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=9091902258"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-bomba-agua-16100-09560",
+    "part_number": "16100-09560",
+    "part_number_norm": "1610009560",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bomba de agua",
+    "category": "bomba-agua",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=1610009560"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-termostato-90916-03075",
+    "part_number": "90916-03075",
+    "part_number_norm": "9091603075",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Termostato del motor",
+    "category": "termostato",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=9091603075"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-radiador-16400-21130",
+    "part_number": "16400-21130",
+    "part_number_norm": "1640021130",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Radiador",
+    "category": "radiador",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=1640021130"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-faro-81130-wb001",
+    "part_number": "81130-WB001",
+    "part_number_norm": "81130WB001",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Faro delantero derecho",
+    "category": "faro",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=81130WB001"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-bombilla-90981-13046",
+    "part_number": "90981-13046",
+    "part_number_norm": "9098113046",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bombilla de faro (halógena)",
+    "category": "bombilla",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=9098113046"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
+  },
+  {
+    "id": "toyota-espejo-lateral-87910-02926",
+    "part_number": "87910-02926",
+    "part_number_norm": "8791002926",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Espejo lateral derecho",
+    "category": "espejo-lateral",
+    "epc_link": {
+      "source": "partsouq",
+      "url": "https://partsouq.com/en/search/all?q=8791002926"
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [],
+    "offers": [
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/110123456789",
+        "price": 12.99,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/220987654321",
+        "price": 7.49,
+        "currency": "USD",
+        "condition": "New",
+        "updated_at": "2026-10-04T20:27:51Z"
+      },
+      {
+        "store": "eBay",
+        "url": "https://www.ebay.com/itm/330555111222",
+        "price": 4.0,
+        "currency": "USD",
+        "condition": "Used",
+        "updated_at": "2026-10-04T20:27:51Z"
+      }
+    ],
+    "updated_at": "2026-10-04T20:27:51Z"
   }
 ]

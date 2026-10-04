@@ -7,8 +7,15 @@
     "brand": "Toyota",
     "name": "Filtro de aceite",
     "category": "filtro-aceite",
-    "epc_link": { "source": null, "url": null },
-    "image": { "url": null, "source": "generic", "credit": null },
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
     "equivalents": [],
     "fitment_ids": [],
     "offers": [],
@@ -22,8 +29,15 @@
     "brand": "Mitsubishi",
     "name": "Filtro de aceite",
     "category": "filtro-aceite",
-    "epc_link": { "source": null, "url": null },
-    "image": { "url": null, "source": "generic", "credit": null },
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
     "equivalents": [],
     "fitment_ids": [],
     "offers": [],
@@ -36,9 +50,16 @@
     "type": "OEM",
     "brand": "Mitsubishi",
     "name": "Clip retenedor de parachoques",
-    "category": "clip-parachoques",
-    "epc_link": { "source": null, "url": null },
-    "image": { "url": null, "source": "generic", "credit": null },
+    "category": "clips-y-sujeciones",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
     "equivalents": [],
     "fitment_ids": [],
     "other_names": [
@@ -46,6 +67,556 @@
       "Sight Shield Clip",
       "Grille Clip"
     ],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-filtro-aire-17801-21060",
+    "part_number": "17801-21060",
+    "part_number_norm": "1780121060",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de aire",
+    "category": "filtro-aire",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-filtro-cabina-87139-yzz08",
+    "part_number": "87139-YZZ08",
+    "part_number_norm": "87139YZZ08",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de aire de cabina",
+    "category": "filtro-cabina",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-filtro-combustible-23300-29045",
+    "part_number": "23300-29045",
+    "part_number_norm": "2330029045",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Filtro de combustible",
+    "category": "filtro-combustible",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-limpiaparabrisas-85212-42120",
+    "part_number": "85212-42120",
+    "part_number_norm": "8521242120",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Limpiaparabrisas delantero derecho",
+    "category": "limpiaparabrisas",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-pastillas-freno-04465-02070",
+    "part_number": "04465-02070",
+    "part_number_norm": "0446502070",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Pastillas de freno delanteras",
+    "category": "pastillas-freno",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-discos-freno-43512-02240",
+    "part_number": "43512-02240",
+    "part_number_norm": "4351202240",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Disco de freno delantero",
+    "category": "discos-freno",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-tambor-freno-42431-35210",
+    "part_number": "42431-35210",
+    "part_number_norm": "4243135210",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Tambor de freno trasero",
+    "category": "tambor-freno",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-caliper-47750-12b10",
+    "part_number": "47750-12B10",
+    "part_number_norm": "4775012B10",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Caliper de freno delantero izquierdo",
+    "category": "caliper",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-manguera-freno-90947-a2109",
+    "part_number": "90947-A2109",
+    "part_number_norm": "90947A2109",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Manguera de freno trasera derecha",
+    "category": "manguera-freno",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-bujia-90919-01253",
+    "part_number": "90919-01253",
+    "part_number_norm": "9091901253",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bujía de iridio",
+    "category": "bujia",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-correa-90916-02652",
+    "part_number": "90916-02652",
+    "part_number_norm": "9091602652",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Correa de accesorios (banda serpentina)",
+    "category": "correa",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-sensor-oxigeno-89465-09200",
+    "part_number": "89465-09200",
+    "part_number_norm": "8946509200",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Sensor de oxígeno delantero",
+    "category": "sensor-oxigeno",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-amortiguador-48510-a9690",
+    "part_number": "48510-A9690",
+    "part_number_norm": "48510A9690",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Amortiguador delantero derecho",
+    "category": "amortiguador",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-rotula-43330-09670",
+    "part_number": "43330-09670",
+    "part_number_norm": "4333009670",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Rótula de suspensión inferior",
+    "category": "rotula",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-rodamiento-rueda-42450-12211",
+    "part_number": "42450-12211",
+    "part_number_norm": "4245012211",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Rodamiento de rueda delantero con maza",
+    "category": "rodamiento-rueda",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-bateria-00544-h6efb-ts",
+    "part_number": "00544-H6EFB-TS",
+    "part_number_norm": "00544H6EFBTS",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Batería TrueStart H6 EFB",
+    "category": "bateria",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-alternador-27060-0t260",
+    "part_number": "27060-0T260",
+    "part_number_norm": "270600T260",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Alternador",
+    "category": "alternador",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-motor-arranque-28100-0d080-84",
+    "part_number": "28100-0D080-84",
+    "part_number_norm": "281000D08084",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Motor de arranque",
+    "category": "motor-arranque",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-bobina-encendido-90919-02258",
+    "part_number": "90919-02258",
+    "part_number_norm": "9091902258",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bobina de encendido",
+    "category": "bobina-encendido",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-bomba-agua-16100-09560",
+    "part_number": "16100-09560",
+    "part_number_norm": "1610009560",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bomba de agua",
+    "category": "bomba-agua",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-termostato-90916-03075",
+    "part_number": "90916-03075",
+    "part_number_norm": "9091603075",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Termostato del motor",
+    "category": "termostato",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-radiador-16400-21130",
+    "part_number": "16400-21130",
+    "part_number_norm": "1640021130",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Radiador",
+    "category": "radiador",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-faro-81130-wb001",
+    "part_number": "81130-WB001",
+    "part_number_norm": "81130WB001",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Faro delantero derecho",
+    "category": "faro",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-bombilla-90981-13046",
+    "part_number": "90981-13046",
+    "part_number_norm": "9098113046",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Bombilla de faro (halógena)",
+    "category": "bombilla",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
+  },
+  {
+    "id": "toyota-espejo-lateral-87910-02926",
+    "part_number": "87910-02926",
+    "part_number_norm": "8791002926",
+    "type": "OEM",
+    "brand": "Toyota",
+    "name": "Espejo lateral derecho",
+    "category": "espejo-lateral",
+    "epc_link": {
+      "source": null,
+      "url": null
+    },
+    "image": {
+      "url": null,
+      "source": "generic",
+      "credit": null
+    },
+    "equivalents": [],
+    "fitment_ids": [],
     "offers": [],
     "updated_at": "2026-10-04T00:00:00Z"
   }
