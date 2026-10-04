@@ -474,5 +474,209 @@ acabábamos de arreglar. Regla: al documentar esta marca, escribirla de forma qu
 literal en el mensaje de commit (o citarla sin corchetes). La verificación buena, otra vez,
 fue mirar los runs por SHA y no conformarse con que el push dijera «ok».
 
-Pendiente de Omar para cerrar Fase 3: `EBAY_CAMPAIGN_ID` (eBay Partner Network) cuando se
-pase a monetización, y Advance Auto Parts vía Impact.com.
+---
+
+## 04/10/2026 — eBay Partner Network declinó la solicitud (automática): qué sabemos y qué no — Líder
+
+**Hecho**: Omar envió la solicitud a EPN el 04/10/2026 (cuenta de eBay personal, propiedad
+`https://partexact.com/`, Business Model `Content/Reviews`, sitio declarado) y la respuesta
+fue un **rechazo automático**.
+
+**Lo que el correo dice y lo que NO dice**: es una plantilla que enumera **tres motivos
+posibles** sin indicar cuál aplicó —
+(a) país no soportado por el programa,
+(b) el correo ya se usó para registrar una cuenta EPN,
+(c) no cumplir otros criterios del Network Agreement / Código de Conducta.
+El propio correo remite a `epnhelp@ebay.com` para preguntar. **No se puede deducir el motivo
+del texto**, y por eso no se toca el plan hasta saberlo.
+
+**Lo que sí se pudo comprobar**:
+
+- El **Network Agreement vigente** (publicado el 22/01/2026) define la elegibilidad geográfica
+  **por prohibición, no por lista**: solo excluye estar en un país embargado por EE.UU. o en
+  la lista SDN del Tesoro. La República Dominicana no está en ninguna de las dos, así que el
+  motivo (a) no encaja con la letra del propio acuerdo — aunque no se descarta que el
+  obstáculo real sean sus vías de pago.
+- El acuerdo exige además que **la cuenta de eBay esté "in good standing" en todo momento**,
+  lo que convierte a la cuenta usada en un candidato a revisar.
+- Motivos de rechazo más citados por solicitantes reales (foros): sitio "non-functioning" o
+  de calidad insuficiente. El sitio está vivo y responde 200, pero el catálogo tiene **3
+  partes**: "calidad" es una hipótesis razonable que el correo no menciona.
+
+**Qué NO cambia**: el acceso a la **API de eBay es otro programa** (Developers) y sigue
+funcionando: el sitio sigue mostrando anuncios y precios reales. Lo único bloqueado es la
+**comisión**. El trabajo de T-B5 (enlaces de afiliado) queda implementado y probado, esperando
+un campaign ID que, hoy, solo EPN puede emitir.
+
+**Consecuencia para Fase 3**: la monetización por eBay está **en pausa hasta aclarar el
+rechazo**. Si el motivo es el país y no hay vuelta, hay que reevaluar toda la Fase 3 (la
+alternativa ya planificada, Advance Auto Parts vía Impact.com, es una red distinta con su
+propia lista de países — **sin verificar** todavía si acepta publicadores en RD).
+
+Pendiente de Omar: (1) comprobar si ya existe una cuenta EPN con ese correo, (2) escribir a
+`epnhelp@ebay.com` preguntando por el criterio exacto.
+
+**Actualización (misma fecha) — la cuenta SÍ existe, y eso apunta al motivo (b)**: Omar entró a
+partnernetwork.ebay.com con su cuenta de eBay y encontró un panel con una cuenta
+**`PartExact` (ID 7896370)** ya creada (pantalla de *Account Settings* con las secciones
+General / Profile / Technical, y **sin campos rellenos**). El correo de rechazo afirma que
+*"an account has not been created"*, así que esa cuenta **es anterior a la solicitud**: encaja
+con el motivo (b) de la plantilla (*"your email address has already been used to register for
+an eBay Partner Network account"*). Los números que traía el correo (`1354875`, `9356`) **no
+coinciden** con el ID de la cuenta, así que parecen referencias internas del ticket, no la
+cuenta — no sirven para cruzarlos.
+
+**CORRECCIÓN de la deducción anterior (misma fecha, tras revisarlo Omar en el panel)**: ese
+`PartExact (7896370)` **no es una cuenta de publicador**. Omar lo comprobó: no hay secciones
+de enlaces, campañas ni reportes, y no hay funciones de cuenta — **solo está el perfil de la
+empresa que llenó al aplicar**, es decir, el registro de la propia solicitud declinada. Por
+tanto **el motivo (b) (correo duplicado) queda sin sustento**: el registro existe porque la
+solicitud lo creó, no porque hubiera uno anterior. La deducción que hice antes era plausible
+pero falsa, y se deja anotada precisamente por eso: **no volver a inferir el motivo desde la
+existencia de un ID en el panel**.
+
+Con (b) descartado, quedan en pie **el país (a)** y **los criterios/calidad (c)** — y ninguno
+de los dos se puede distinguir desde fuera. La única vía es preguntar a EPN.
+
+**Lo que hay que averiguar ahora, antes de escribir a soporte**: si esa cuenta está
+**operativa** (se pueden crear campañas/enlaces → habría campaign ID y T-B5 se desbloquea sin
+apelar nada) o si está **pendiente/rechazada** (limbo). Señales a mirar en el panel:
+*Account Information* (país, zona horaria trabada en MST, estado), *Media Properties* (si
+`partexact.com` ya está declarada) y, sobre todo, dónde se generan los **enlaces/campañas** y
+si esa opción está disponible o bloqueada. La campana de notificaciones puede tener el aviso.
+
+---
+
+## 04/10/2026 — T-B5 revisada y fusionada (PR #16): enlaces de afiliado listos, esperando el ID — Líder
+
+**Entrega (agente B)**: `pipeline/fetch_ebay.py` con `_build_affiliate_header()` (header
+`X-EBAY-C-ENDUSERCTX: affiliateCampaignId=<id>[,affiliateReferenceId=<ref>]`, y **sin header**
+si no hay campaign id) y `_map_item_summary_to_offer` que ahora prefiere
+`itemAffiliateWebUrl` sobre `itemWebUrl`. 9 pruebas nuevas, `docs/ebay-produccion.md` y su
+fila de `TASKS.md`.
+
+**Lo que verifiqué yo, con la API real, en vez de creerle al autoinforme** (era el punto
+crítico de la tarea: si el mecanismo no funciona, el ID real no serviría de nada):
+
+| Prueba | Resultado |
+|---|---|
+| `python -m pytest pipeline/ -q` en la rama, corrido por el líder | **105/105 en verde** |
+| Búsqueda real **sin** `EBAY_CAMPAIGN_ID` | URL plana, sin `campid` — comportamiento de hoy intacto |
+| Búsqueda real **con** campaign id inventado (`5338800000`) y reference id | eBay devuelve la URL con `mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=...` — el mecanismo funciona tal como dice su documentación |
+| Diff de la rama | solo sus 4 archivos; la fila `T-B5` fue la única de `TASKS.md` tocada |
+| Secretos | ninguno en el diff; `.env` nunca versionado |
+
+La pieza de código que importa es una línea: `item.get("itemAffiliateWebUrl") or
+item.get("itemWebUrl") or ""` — preferir la afiliada y caer a la normal, sin inventar
+parámetros de tracking en el cliente.
+
+**Lo que sigue sin poder verificarse, y hay que decirlo**: con un campaign id **real** no se
+puede probar hasta que EPN apruebe la cuenta. El ID de prueba demuestra que eBay devuelve la
+URL de afiliado cuando se pide, no que la comisión se vaya a pagar a esta cuenta. Esa parte
+solo se confirma con el ID de verdad y, más adelante, con el primer reporte de conversiones
+de EPN.
+
+**Estado**: T-B5 aprobada y fusionada (9638d73). T-H2 (aviso de afiliados en el footer) sigue
+bloqueada a propósito hasta que el ID real esté activo: el aviso tiene que aparecer el mismo
+día que los enlaces de afiliado, ni antes ni después.
+
+---
+
+## 04/10/2026 — Ronda 4 revisada, fusionada e integrada: 28 partes y 33 categorías en vivo — Líder
+
+**Tres PRs revisados por el líder y fusionados** (T-C3 #18, T-F3 #17, T-D5 #19), más el
+arranque de la taxonomía. Resultado real, verificado contra el sitio publicado:
+
+| Métrica | Antes | Ahora |
+|---|---|---|
+| Partes en el catálogo | 3 | **28** |
+| Ofertas de eBay | 103 | **1.190**, y **1.190 de 1.190 con URL real** (cero datos de laboratorio) |
+| Categorías de producto | 12 | **33** (27 con al menos una parte) |
+| Pruebas | 105 Python | **114 Python + 52 Node**, todas en verde |
+
+`pipeline/validate.py` en verde, incluida la **integridad referencial nueva** (T-D5): si una
+parte apunta a una categoría que no existe o a un `fitment_id` inexistente, la validación
+falla. Eso cierra el bug que encontró el líder antes de repartir (`clip-parachoques`).
+
+**La investigación de C (#18) decide bien**: el trim de marketing (BE/ES/GT/SE/SP) **queda
+fuera del MVP** con evidencia en vivo — 0 de 10 VIN reales trajeron `Trim` poblado, 7zap llega
+a generación pero no a trim, y Partsouq respondió 403 de Cloudflare (que el informe distingue
+correctamente de "no existe"). Es la decisión que buscábamos: decir no con pruebas.
+
+**Solapamiento D/F, resuelto por el líder**: el agente D, para que su seed funcionara, creó
+**15 de los 21 SVG** y reescribió `categories.json` — archivos del agente F, que ya estaba
+fusionado. Resolución: a la rama de D se le devolvieron las versiones de main (con un commit
+que explica el porqué) y se conservó **solo lo suyo** (seed, `validate.py`, pruebas). Lección
+para futuras rondas: **la taxonomía y los iconos son de un solo dueño**; quien necesite una
+categoría nueva, la pide — no la implementa.
+
+**Incidente de proceso**: apareció en el checkout compartido un `data/build/parts.json`
+regenerado **en modo mock** (precios de laboratorio) por algún agente que corrió el pipeline
+fuera de su clon. Se descartó y **el build se regeneró con las llaves reales** después de
+integrar. Regla que queda escrita: los agentes trabajan en su clon, y **los datos se
+regeneran en main después de integrar**, nunca se aceptan los `data/build/*.json` que traiga
+una rama.
+
+**Pendiente al cierre de esta entrada**: T-A4 (criterio de marcas) seguía corriendo después
+de 70 minutos; y la revisión **visual** de los 21 iconos nuevos no se pudo hacer con el
+navegador del arnés porque Chrome tenía bloqueado el perfil (y no se le cierra la sesión al
+usuario). Sí se verificó lo estructural: los 34 SVG comparten `viewBox 0 0 64 64`,
+`stroke-width 2.5` y no tienen referencias externas ni imágenes incrustadas.
+
+---
+
+## 04/10/2026 — Revisión visual de los iconos (pasada) e investigación de EPN — Líder
+
+**Iconos: revisión visual hecha y aprobada.** Con Chrome liberado, miré la parrilla de
+categorías en el sitio en vivo. Los 34 iconos se ven coherentes entre sí, con trazo uniforme y
+legibles a tamaño de chip. **Único reparo**: el de *Caliper (pinza de freno)* es abstracto
+(cuadrado punteado con un círculo dentro) y no se lee como una pinza de freno — candidato a
+rehacer, **no bloquea**. Verificado de paso que la parrilla del inicio es un **acordeón por
+grupos** y que los conteos por grupo (5+5+6+4+4+3+3+3) suman exactamente las 33 categorías.
+
+**EPN: investigación terminada con fuentes primarias** — `docs/epn-investigacion.md`. El
+hallazgo que cambia el diagnóstico: **no habíamos considerado que el problema fuera el modelo
+declarado**. El acuerdo (24/09/2026) dice que **todo método promocional no expresamente
+permitido exige aprobación previa por escrito** (EXHIBIT A) y define el *Buy API Program* como
+un programa aprobado de EPN para **mostrar productos de eBay con la API** (definición 8) — que
+es exactamente lo que hace PartExact. En el alta se declaró **"Content/Reviews"**, y PartExact
+no es un sitio de contenido: es una herramienta con integración de API. Esa vía de aprobación
+previa **no la hemos tocado nunca**.
+
+También documentado: el rechazo es **discrecional y sin apelación de derecho** ("EPN may in its
+sole discretion reject your application…"); **no existe lista pública de países soportados** (el
+límite declarado es la capacidad de pago, y el peso dominicano no está entre las monedas de
+pago que lista el acuerdo); PayPal sí opera en RD y permite retirar a banco local, pero **no se
+pudo confirmar** si *PayPal Payouts* cubre RD; y la evidencia secundaria muestra que el
+formulario de alta **deja aplicar a países no soportados sin avisar** — por eso, que la
+solicitud pasara el formulario no prueba nada (el mismo error de razonamiento que cometí con el
+ID del panel).
+
+**Creada T-O3**: pedir la aprobación previa por escrito del método real, en el mismo envío que
+T-O1 cuando Omar lo decida. El correo ya no pregunta "por qué me rechazaron" sino **qué modelo
+declarar y qué aprobación previa hace falta**.
+
+---
+
+## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
+
+Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó
+el rechazo; cuál es el modelo de negocio correcto y si ese método exige aprobación previa
+(SBM / Buy API Program); y si la República Dominicana está soportada **para pagos**.
+
+Se mandó desde el **Gmail de Omar a propósito**: es la dirección con la que se presentó la
+solicitud, así que soporte puede localizarla y responder al mismo hilo. Escribir desde
+`soporte@partexact.com` habría sido una dirección que EPN nunca ha visto — aquí el objetivo no
+era la marca del producto, era que encontrasen la solicitud.
+
+**Evidencia leída del propio mensaje en "Enviados"** (no de la pantalla de confirmación):
+destinatario `epnhelp@ebay.com`, remitente `omar.lopezg2@gmail.com`, 4 oct 2026 5:40 p.m.,
+asunto "Application declined - request for the specific reason and the correct business model
+(property: partexact.com)", **cuerpo íntegro de 2.185 caracteres** (comprobado que el mensaje
+menciona `Content/Reviews`, `Buy API Program` y `Dominican Republic`) y **un solo mensaje** para
+ese destinatario, sin duplicados.
+
+La carta dice expresamente que **no se volvió a aplicar** ni se creó otra cuenta mientras se
+espera respuesta (una de las cláusulas del acuerdo exige consentimiento previo para eso). Texto
+versionado en `docs/carta-epn.md`. T-O1 y T-O3 quedan **enviadas**; T-O2 (plan B) **sigue
+bloqueada** hasta que respondan.

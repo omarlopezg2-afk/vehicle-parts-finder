@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Termostato: valvula circular dentro de un marco con resorte -->
+  <rect x="10" y="26" width="44" height="10" rx="3"/>
+  <circle cx="32" cy="31" r="14"/>
+  <path d="M32,45 q0,4 -4,4 q-4,0 -4,4 q0,4 4,4 q4,0 4,4"/>
+</svg>

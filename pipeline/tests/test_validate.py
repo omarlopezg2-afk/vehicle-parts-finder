@@ -192,6 +192,68 @@ class TestValidateCategories(unittest.TestCase):
         self.assertTrue(any("duplicado" in e for e in errores))
 
 
+class TestValidateReferentialIntegrity(unittest.TestCase):
+    """T-D5: integridad referencial entre parts/vehicles/categories.
+
+    Reproduce el bug real de Ronda 3 (MR297182 -> 'clip-parachoques', un slug
+    que nunca existió en categories.json) para asegurar que no vuelva a pasar
+    desapercibido.
+    """
+
+    _CATEGORIAS = [
+        {"slug": "filtro-aceite", "name_es": "Filtro de aceite", "svg": "filtro-aceite.svg"},
+        {"slug": "clips-y-sujeciones", "name_es": "Clips y sujeciones", "svg": "clips-y-sujeciones.svg"},
+    ]
+    _VEHICULOS = [
+        {"id": "vin-ABC", "make": "Toyota", "model": "Corolla", "year": 2020, "trim": None, "engine": None},
+    ]
+
+    def test_categoria_existente_no_genera_error(self):
+        errores = validate.ValidationErrors()
+        validate.validate_referential_integrity(
+            [_parte_valida(category="filtro-aceite")], self._VEHICULOS, self._CATEGORIAS, errores,
+        )
+        self.assertEqual(list(errores), [])
+
+    def test_categoria_huerfana_es_error(self):
+        # Caso real: 'clip-parachoques' no existe en categories.json.
+        errores = validate.ValidationErrors()
+        validate.validate_referential_integrity(
+            [_parte_valida(category="clip-parachoques")], self._VEHICULOS, self._CATEGORIAS, errores,
+        )
+        self.assertTrue(any("no existe en categories.json" in e for e in errores))
+
+    def test_fitment_id_valido_no_genera_error(self):
+        errores = validate.ValidationErrors()
+        validate.validate_referential_integrity(
+            [_parte_valida(fitment_ids=["vin-ABC"])], self._VEHICULOS, self._CATEGORIAS, errores,
+        )
+        self.assertEqual(list(errores), [])
+
+    def test_fitment_id_huerfano_es_error(self):
+        errores = validate.ValidationErrors()
+        validate.validate_referential_integrity(
+            [_parte_valida(fitment_ids=["vin-NO-EXISTE"])], self._VEHICULOS, self._CATEGORIAS, errores,
+        )
+        self.assertTrue(any("no existe en vehicles.json" in e for e in errores))
+
+    def test_fitment_ids_vacio_es_valido(self):
+        errores = validate.ValidationErrors()
+        validate.validate_referential_integrity(
+            [_parte_valida(fitment_ids=[])], self._VEHICULOS, self._CATEGORIAS, errores,
+        )
+        self.assertEqual(list(errores), [])
+
+    def test_se_invoca_desde_run_validation_sobre_los_archivos_reales(self):
+        # Si build_index.py ya corrió en este checkout, run_validation() debe
+        # seguir en verde incorporando este chequeo cruzado (no solo la forma).
+        ruta = os.path.join(validate.BUILD_DIR, "parts.json")
+        if not os.path.isfile(ruta):
+            self.skipTest("data/build/parts.json no existe todavía.")
+        errores = validate.run_validation()
+        self.assertEqual(list(errores), [], msg="\n".join(errores))
+
+
 class TestRunValidationIntegration(unittest.TestCase):
     """Prueba run_validation() contra los 4 archivos reales de data/build/
     (generados por build_index.py). Si build_index.py no corrió todavía en

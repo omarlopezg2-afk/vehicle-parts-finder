@@ -75,6 +75,11 @@ jobs:
           # debe fallar por la ausencia de estos secrets.
           EBAY_CLIENT_ID: ${{ secrets.EBAY_CLIENT_ID }}
           EBAY_CLIENT_SECRET: ${{ secrets.EBAY_CLIENT_SECRET }}
+          # Campaign ID de eBay Partner Network (afiliados). Si no existe, el
+          # secret resuelve a cadena vacía y fetch_ebay.py genera enlaces
+          # normales, sin tracking: exactamente el comportamiento actual. Se
+          # activa el día que EPN apruebe la cuenta y emita el campaign ID.
+          EBAY_CAMPAIGN_ID: ${{ secrets.EBAY_CAMPAIGN_ID }}
         run: python pipeline/build_index.py
 
       - name: Ejecutar pipeline/validate.py
