@@ -465,5 +465,14 @@ reales). Corregido por partida doble: se lanzó el deploy a mano para publicar y
 **un job en verde no prueba que el usuario final vea los datos** — hay que mirar el artefacto
 publicado.
 
+**Segundo tropiezo, con el mismo origen y una lección nueva**: al comitear la corrección —
+cuyo mensaje *explicaba* que se había quitado la marca de omitir CI— **el propio mensaje
+contenía esa marca entre corchetes**, y GitHub la interpreta en **cualquier parte del
+mensaje**, no solo en la primera línea. Resultado: el push del commit `6ec77dd` no disparó
+ningún workflow (0 runs para ese SHA, comprobado con la API), el mismo síntoma que
+acabábamos de arreglar. Regla: al documentar esta marca, escribirla de forma que no sea
+literal en el mensaje de commit (o citarla sin corchetes). La verificación buena, otra vez,
+fue mirar los runs por SHA y no conformarse con que el push dijera «ok».
+
 Pendiente de Omar para cerrar Fase 3: `EBAY_CAMPAIGN_ID` (eBay Partner Network) cuando se
 pase a monetización, y Advance Auto Parts vía Impact.com.
