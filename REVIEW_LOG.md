@@ -103,3 +103,48 @@ trámite). No bloquea nada de lo construido hasta ahora — todo corre en modo m
 Próximo paso: T-G2 (`build-data.yml` + `deploy-site.yml`, ya puede arrancar con T-D1 en
 main) es la única tarea de Fase 2 que falta antes de poder publicar el sitio en GitHub
 Pages. T-H1 (legal/EPN) sigue aplazada a Fase 3.
+
+---
+
+## 03-04/10/2026 — Repo público + Pages + Fase 2.5 (drill-down) — Líder
+
+**Repo pasado a público** (`gh repo edit --visibility public`) porque GitHub Pages no
+funciona con repos privados en plan Free (confirmado con un intento real contra la API:
+`"Your current plan does not support GitHub Pages for this repository"`). No había secretos
+en el código (las llaves van en `.env`/Secrets, nunca en el repo), así que no hay riesgo.
+Pages activado (`build_type=workflow`). **T-G2 fusionado (PR #8)**: `build-data.yml` +
+`deploy-site.yml`. El agente fue honesto sobre no poder probar el deploy real antes del
+merge (restricción real de GitHub: `workflow_dispatch` en rama feature da 404) — lo verifiqué
+yo después del merge: deploy automático corrió en éxito, sitio responde 200 en
+https://omarlopezg2-afk.github.io/vehicle-parts-finder/ con datos reales.
+
+**Fix de líder**: Omar probó el sitio con su VIN real (`JA4AP4AU3LU023739`) y no lo
+encontró — el build usaba un VIN de ejemplo distinto puesto a mano en Fase 0. Verificado
+contra vPIC: el VIN de Omar decodifica a Mitsubishi Outlander Sport 2020 (el caso de prueba
+exacto de PLAN.md). Cambiado `EXAMPLE_VIN` en `build_index.py`, regenerado y desplegado.
+
+**Monetización multi-tienda**: investigación con fuentes oficiales (AutoZone, O'Reilly,
+Advance Auto Parts, RockAuto). Ninguna tiene API de precio/stock. Solo **Advance Auto
+Parts** tiene programa de afiliados real y corre en Impact.com (misma cuenta que eBay EPN)
+— se agrega a Fase 3. AutoZone (red distinta, Pepperjam/Ascend, no justifica el overhead),
+O'Reilly (sin programa de venta real) y RockAuto (su propio newsletter niega vender en
+sitios de afiliados) quedan descartados. Documentado en PLAN.md.
+
+**T-A2 (PR #9, aprobada)**: `get_all_makes()` y `get_models_for_make_year()` agregadas a
+`fetch_vehicles.py` (Python/pipeline), completando el drill-down marca→modelo→año que
+PLAN.md siempre mencionó pero no se había construido. Filtrado car+mpv de vPIC, documentado
+que no es perfecto (mezcla camiones Fuso bajo "Mitsubishi", excluye pickups puras).
+
+**T-E2 (PR #10, aprobada)**: integración al frontend. El agente eligió fetch directo del
+navegador a vPIC (Opción A) en vez de un JSON pre-generado (Opción B), verificando CORS
+abierto antes de decidir — yo lo re-verifiqué de forma independiente con curl real:
+`access-control-allow-origin: *`. Nuevo módulo `site/js/vpicClient.js`, aislado de
+`dataClient.js`, documentado como excepción deliberada a la regla de escalado de
+CONTRACTS.md (vPIC no es nuestro catálogo, es un servicio externo). Verificado por mí tras
+el merge: solo 2 archivos hacen fetch en todo `site/js/` (dataClient.js y vpicClient.js,
+confirmado con grep), 28/28 tests pasan, y probé el flujo real contra la API real de vPIC:
+247 marcas filtradas (vs 12,380 crudas sin filtrar), Mitsubishi presente, "Outlander Sport"
+presente en los modelos de Mitsubishi 2020.
+
+Pendiente de Omar: cuenta eBay Developer (en trámite), y ahora también Advance Auto Parts
+vía Impact.com cuando se llegue a Fase 3.
