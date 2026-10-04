@@ -388,11 +388,120 @@ footer.app-footer {
   }
 }
 
-/* --- Selector de vehículo sin VIN (marca → año → modelo) --- */
-.vehicle-picker-toggle {
+/* --- T-E3: layout de dos columnas, VIN y selector de vehículo visibles
+ * a la vez (reemplaza el toggle anterior "¿No tienes tu VIN a mano?").
+ * Mobile-first: apiladas por defecto, lado a lado desde 760px. --- */
+.dual-path {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.path-col {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1rem;
+  min-width: 0;
+}
+
+.path-col h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.05rem;
+}
+
+.path-col .search-form,
+.path-col .vehicle-picker {
+  margin-bottom: 0;
+  border: none;
+  padding: 0;
+  background: none;
+}
+
+@media (min-width: 760px) {
+  .dual-path {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .path-col {
+    flex: 1 1 0;
+  }
+}
+
+/* --- T-E4: barra "Mi vehículo" persistente --- */
+.vehicle-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-primary-dark);
+  border-radius: var(--radius);
+  padding: 0.75rem 1rem;
   margin-bottom: 1rem;
 }
 
+/* Misma especificidad que ".vehicle-bar { display: flex }" de arriba: sin
+ * esta regla, el atributo HTML `hidden` (que el navegador implementa como
+ * `[hidden] { display: none }` de baja especificidad) pierde contra
+ * nuestra clase y la barra se muestra vacía aunque JS la deje hidden=true
+ * al cargar la página (bug real encontrado al probar T-E4 a mano). */
+.vehicle-bar[hidden] {
+  display: none;
+}
+
+.vehicle-bar-text {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.vehicle-bar-text strong {
+  color: var(--color-accent);
+}
+
+/* --- T-E5: categorías destacadas en el home --- */
+.home-categories {
+  margin-bottom: 1.5rem;
+}
+
+.home-categories h2 {
+  margin: 0 0 0.25rem;
+  font-size: 1.05rem;
+}
+
+/* --- T-E6: tabla de fitment en la ficha de parte --- */
+.fitment-box {
+  margin-top: 0.75rem;
+  overflow-x: auto;
+}
+
+.fitment-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.9rem;
+}
+
+.fitment-table th,
+.fitment-table td {
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.fitment-table th {
+  color: var(--color-text-dim);
+  font-weight: 600;
+}
+
+/* --- Selector de vehículo sin VIN (marca → año → modelo) ---
+ * Antes de T-E3 esto vivía oculto detrás de un botón de toggle
+ * (.vehicle-picker-toggle, ya removido de index.html junto con la clase).
+ * Ahora .vehicle-picker se monta siempre dentro de .path-col (ver bloque
+ * T-E3 arriba), por eso aquí ya no define su propio margen/fondo que
+ * compitiera con .path-col. */
 .vehicle-picker {
   background: var(--color-surface);
   border: 1px solid var(--color-border);

@@ -2,8 +2,10 @@
 //
 // Wizard "elige tu vehículo sin VIN" (marca → año → modelo), camino
 // alterno al flujo VIN que PLAN.md siempre describió ("VIN, o
-// marca/modelo/año/versión"). Vive en la misma pantalla de búsqueda,
-// detrás de un botón "¿No tienes tu VIN a mano? Elige tu vehículo".
+// marca/modelo/año/versión"). Desde T-E3 (Fase 2.5) vive SIEMPRE visible
+// en la misma pantalla de búsqueda, en su propia columna junto al
+// buscador de VIN/número de parte (ver #home-paths en index.html) — ya
+// no hay botón que lo oculte.
 //
 // Este módulo NO hace fetch a data/build/*.json (eso sigue siendo solo
 // trabajo de dataClient.js, ver CONTRACTS.md). Las dos fuentes de datos

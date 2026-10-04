@@ -128,11 +128,20 @@ export async function searchPart(q) {
 
   const needle = query.toLowerCase();
   return parts.filter((p) => {
+    // other_names (agregado a CONTRACTS.md el 04/10/2026, campo opcional
+    // de T-D2): sinónimos/nombres alternativos de la misma pieza. Se
+    // matchea igual que name/brand, sin distinguir mayúsculas/minúsculas,
+    // para que alguien que busca por el nombre "de la calle" (ej. "clip de
+    // parrilla") encuentre la pieza aunque el nombre canónico sea otro.
+    // Puede no existir (fixtures/partes viejas antes del campo) o venir
+    // vacío: el `|| []` cubre ambos casos sin romper.
+    const otherNames = Array.isArray(p.other_names) ? p.other_names : [];
     return (
       (p.part_number && p.part_number.toLowerCase().includes(needle)) ||
       (p.name && p.name.toLowerCase().includes(needle)) ||
       (p.brand && p.brand.toLowerCase().includes(needle)) ||
-      (p.part_number_norm && p.part_number_norm.includes(normQuery))
+      (p.part_number_norm && p.part_number_norm.includes(normQuery)) ||
+      otherNames.some((n) => String(n || "").toLowerCase().includes(needle))
     );
   });
 }
@@ -285,4 +294,23 @@ export async function getPartsByFitment(vehicleId, categorySlug = null) {
     if (categorySlug && p.category !== categorySlug) return false;
     return true;
   });
+}
+
+/**
+ * Piezas de una categoría, SIN filtrar por vehículo (T-E5: permite
+ * "navegar por categoría" desde el home antes de resolver un vehículo,
+ * ver decisión de diseño en el PR de T-E3/T-E5). Extensión del mismo
+ * estilo que getPartsByFitment/matchVehicleByVIN: no está en la
+ * superficie literal de CONTRACTS.md, pero sigue viviendo solo aquí para
+ * no romper la regla de escalado (ningún otro archivo de site/ hace
+ * fetch directo a data/build/*.json).
+ *
+ * @param {string} categorySlug
+ * @returns {Promise<Array<object>>} piezas de esa categoría (puede ser
+ *   vacío si el catálogo todavía no tiene piezas ahí).
+ */
+export async function getPartsByCategory(categorySlug) {
+  if (!categorySlug) return [];
+  const { data: parts } = await _loadJSON("parts");
+  return parts.filter((p) => p.category === categorySlug);
 }

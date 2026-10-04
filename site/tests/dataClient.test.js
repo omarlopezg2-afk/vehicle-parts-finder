@@ -24,6 +24,7 @@ import {
   matchVehicleByVIN,
   matchVehicleByMakeModelYear,
   getPartsByFitment,
+  getPartsByCategory,
   _setFetchForTests,
 } from "../js/dataClient.js";
 
@@ -152,5 +153,56 @@ describe("dataClient.js", () => {
     assert.equal(await matchVehicleByMakeModelYear("", "Outlander Sport", 2020), null);
     assert.equal(await matchVehicleByMakeModelYear("Mitsubishi", "", 2020), null);
     assert.equal(await matchVehicleByMakeModelYear("Mitsubishi", "Outlander Sport", "no-es-año"), null);
+  });
+
+  test("getPartsByCategory regresa solo piezas de esa categoría", async () => {
+    const parts = await getPartsByCategory("filtro-aceite");
+    assert.ok(parts.length >= 2);
+    assert.ok(parts.every((p) => p.category === "filtro-aceite"));
+  });
+
+  test("getPartsByCategory regresa [] con slug vacío/nulo", async () => {
+    assert.deepEqual(await getPartsByCategory(""), []);
+    assert.deepEqual(await getPartsByCategory(null), []);
+  });
+
+  test("getPartsByCategory regresa [] si la categoría no tiene piezas", async () => {
+    assert.deepEqual(await getPartsByCategory("categoria-inventada-sin-piezas"), []);
+  });
+
+  test("searchPart también matchea contra other_names cuando existe", async () => {
+    // La fixture no trae other_names en ninguna parte todavía (campo
+    // agregado a CONTRACTS.md el 04/10/2026, T-D2 lo llena en el build
+    // real) — se inyecta aquí un fetch con una parte de prueba para
+    // probar el comportamiento sin depender de que T-D2 ya haya corrido.
+    _setFetchForTests(async (url) => {
+      if (url.includes("data/build/parts")) {
+        return {
+          ok: true,
+          status: 200,
+          json: async () => [
+            {
+              id: "test-clip-parrilla",
+              part_number: "MB123456",
+              part_number_norm: "MB123456",
+              brand: "Mitsubishi",
+              name: "Clip de parachoques",
+              category: "generico-sin-foto",
+              other_names: ["Clip de parrilla", "Bumper Cover Retainer Clip"],
+              epc_link: { source: null, url: null },
+              image: { url: null, source: "generic", credit: null },
+              equivalents: [],
+              fitment_ids: [],
+              offers: [],
+              updated_at: "2026-10-04T00:00:00Z",
+            },
+          ],
+        };
+      }
+      return { ok: false, status: 404, json: async () => ({}) };
+    });
+    const results = await searchPart("clip de parrilla");
+    assert.equal(results.length, 1);
+    assert.equal(results[0].id, "test-clip-parrilla");
   });
 });
