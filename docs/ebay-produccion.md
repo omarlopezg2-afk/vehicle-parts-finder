@@ -81,6 +81,30 @@ camino de afiliado no se ejercita por el fixture; sí está cubierto con mocks s
 - El repo es **público**: los valores no pueden aparecer en ningún archivo versionado ni en
   logs de Actions.
 
+## eBay Partner Network: lo que hay que tener claro antes de aplicar (verificado 04/10/2026)
+
+Se corrige y amplía aquí lo que quedó en `investigacion-ebay-24sep2026.md`, porque dos datos
+de esa investigación estaban desactualizados:
+
+1. **El pago NO llega el mes siguiente.** La página oficial de EPN (`partnernetwork.ebay.com`,
+   *Our partnership*) dice textualmente: *"you will be paid on the 10th for the month before
+   the previous month"* — o sea, lo que generes en enero se paga **el 10 de marzo**. Es un
+   desfase de dos meses, no de uno. Consecuencia práctica: la primera comisión tarda ~2 meses
+   desde la primera venta, y eso hay que tenerlo claro antes de usar el ingreso para nada.
+2. **Cobrar por PayPal cuesta 2 %** (con tope de 20 USD al mes); por transferencia bancaria
+   (direct deposit / EFT) **no hay comisión**. Si el banco lo permite, transferencia.
+3. **Umbral mínimo de pago: 10 USD.** Por debajo, se acumula.
+4. **Impuestos**: hay que enviar W-9 (si eres de EE.UU.) o **W-8BEN** (fuera de EE.UU., nuestro
+   caso) con firma electrónica. Sin eso no hay pago, aunque haya comisiones.
+5. **Zona horaria del formulario de alta**: el campo sale bloqueado con un valor por defecto
+   (`MST`). No es un bloqueador — afecta el corte de los reportes, no si te pagan. Lo que sí
+   está documentado es que la configuración de la cuenta se puede editar después del alta
+   (la propia EPN explica cómo actualizar datos de usuario); conviene revisarlo al entrar por
+   primera vez y, si sigue trabado, preguntar a soporte.
+6. **Impuesto indirecto (ITBIS/IVA)**: si no hay registro fiscal de este negocio, la respuesta
+   honesta es *"I am not registered for Indirect Tax"*. Declarar un registro que no existe
+   obliga a dar un número que después traba el pago.
+
 ## Cómo verificar que quedó bien (sin creerle a la pantalla)
 
 ```bash
