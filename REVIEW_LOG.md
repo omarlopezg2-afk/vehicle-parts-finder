@@ -526,6 +526,18 @@ an eBay Partner Network account"*). Los números que traía el correo (`1354875`
 coinciden** con el ID de la cuenta, así que parecen referencias internas del ticket, no la
 cuenta — no sirven para cruzarlos.
 
+**CORRECCIÓN de la deducción anterior (misma fecha, tras revisarlo Omar en el panel)**: ese
+`PartExact (7896370)` **no es una cuenta de publicador**. Omar lo comprobó: no hay secciones
+de enlaces, campañas ni reportes, y no hay funciones de cuenta — **solo está el perfil de la
+empresa que llenó al aplicar**, es decir, el registro de la propia solicitud declinada. Por
+tanto **el motivo (b) (correo duplicado) queda sin sustento**: el registro existe porque la
+solicitud lo creó, no porque hubiera uno anterior. La deducción que hice antes era plausible
+pero falsa, y se deja anotada precisamente por eso: **no volver a inferir el motivo desde la
+existencia de un ID en el panel**.
+
+Con (b) descartado, quedan en pie **el país (a)** y **los criterios/calidad (c)** — y ninguno
+de los dos se puede distinguir desde fuera. La única vía es preguntar a EPN.
+
 **Lo que hay que averiguar ahora, antes de escribir a soporte**: si esa cuenta está
 **operativa** (se pueden crear campañas/enlaces → habría campaign ID y T-B5 se desbloquea sin
 apelar nada) o si está **pendiente/rechazada** (limbo). Señales a mirar en el panel:
