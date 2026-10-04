@@ -622,3 +622,36 @@ de 70 minutos; y la revisión **visual** de los 21 iconos nuevos no se pudo hace
 navegador del arnés porque Chrome tenía bloqueado el perfil (y no se le cierra la sesión al
 usuario). Sí se verificó lo estructural: los 34 SVG comparten `viewBox 0 0 64 64`,
 `stroke-width 2.5` y no tienen referencias externas ni imágenes incrustadas.
+
+---
+
+## 04/10/2026 — Revisión visual de los iconos (pasada) e investigación de EPN — Líder
+
+**Iconos: revisión visual hecha y aprobada.** Con Chrome liberado, miré la parrilla de
+categorías en el sitio en vivo. Los 34 iconos se ven coherentes entre sí, con trazo uniforme y
+legibles a tamaño de chip. **Único reparo**: el de *Caliper (pinza de freno)* es abstracto
+(cuadrado punteado con un círculo dentro) y no se lee como una pinza de freno — candidato a
+rehacer, **no bloquea**. Verificado de paso que la parrilla del inicio es un **acordeón por
+grupos** y que los conteos por grupo (5+5+6+4+4+3+3+3) suman exactamente las 33 categorías.
+
+**EPN: investigación terminada con fuentes primarias** — `docs/epn-investigacion.md`. El
+hallazgo que cambia el diagnóstico: **no habíamos considerado que el problema fuera el modelo
+declarado**. El acuerdo (24/09/2026) dice que **todo método promocional no expresamente
+permitido exige aprobación previa por escrito** (EXHIBIT A) y define el *Buy API Program* como
+un programa aprobado de EPN para **mostrar productos de eBay con la API** (definición 8) — que
+es exactamente lo que hace PartExact. En el alta se declaró **"Content/Reviews"**, y PartExact
+no es un sitio de contenido: es una herramienta con integración de API. Esa vía de aprobación
+previa **no la hemos tocado nunca**.
+
+También documentado: el rechazo es **discrecional y sin apelación de derecho** ("EPN may in its
+sole discretion reject your application…"); **no existe lista pública de países soportados** (el
+límite declarado es la capacidad de pago, y el peso dominicano no está entre las monedas de
+pago que lista el acuerdo); PayPal sí opera en RD y permite retirar a banco local, pero **no se
+pudo confirmar** si *PayPal Payouts* cubre RD; y la evidencia secundaria muestra que el
+formulario de alta **deja aplicar a países no soportados sin avisar** — por eso, que la
+solicitud pasara el formulario no prueba nada (el mismo error de razonamiento que cometí con el
+ID del panel).
+
+**Creada T-O3**: pedir la aprobación previa por escrito del método real, en el mismo envío que
+T-O1 cuando Omar lo decida. El correo ya no pregunta "por qué me rechazaron" sino **qué modelo
+declarar y qué aprobación previa hace falta**.
