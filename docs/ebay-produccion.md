@@ -104,6 +104,25 @@ de esa investigación estaban desactualizados:
 6. **Impuesto indirecto (ITBIS/IVA)**: si no hay registro fiscal de este negocio, la respuesta
    honesta es *"I am not registered for Indirect Tax"*. Declarar un registro que no existe
    obliga a dar un número que después traba el pago.
+7. **Tarifa real de nuestras categorías** (leída en la tarjeta de comisiones del alta,
+   04/10/2026): **`Vehicle Parts & Accessories` = 3 % del importe, tope 550 USD por
+   artículo**. Las filas de `eBay Motors` y `US Motors` (4 %, tope 100 USD) son las de
+   **vehículos completos**, no de piezas — de ahí el tope bajo, para que un coche de 20.000
+   USD no pague 800. Con piezas, el tope de 550 no se alcanza nunca (haría falta un artículo
+   de 18.333 USD).
+8. **Ventana de atribución: 24 horas** (ayuda oficial de EPN, *How Long Does an EPN Cookie
+   Last?*): desde el clic, el comprador tiene 24 h para cerrar una compra (Buy It Now); en
+   subasta, pujar dentro de esas 24 h y ganarla dentro de 10 días. Se paga por **último
+   clic**. Dato a favor y importante: **no hace falta que compre la pieza que enlazamos** —
+   cualquier transacción válida suya en esa ventana cuenta. Las transacciones tardan hasta
+   48 h en aparecer en los reportes. *(Un sitio de afiliados afirma que en mayo de 2026 la
+   bajaron a 12 h; la ayuda oficial de eBay sigue diciendo 24 y no hay anuncio oficial:
+   comprobarlo en los Program Terms que se descarguen al aplicar.)*
+9. **La cuenta honesta, con los precios reales del sitio** (3 %): filtro de aceite de 28 USD
+   → **0,84 USD**; pieza de 69,35 USD → **2,08 USD**; las más caras de las nuestras, 129 USD
+   → **3,87 USD**. El umbral de pago de 10 USD son ~12 ventas de filtro; **100 USD al mes
+   exigen unos 3.300 USD en compras atribuidas** (~50 pedidos de 65 USD). Es un negocio de
+   volumen y de tráfico, no de tarifa — y el dinero llega con dos meses de desfase.
 
 ## Cómo verificar que quedó bien (sin creerle a la pantalla)
 
