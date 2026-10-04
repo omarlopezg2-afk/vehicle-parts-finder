@@ -302,3 +302,42 @@ usuario.
 
 Pendiente de Omar: cuenta eBay Developer (en trámite), Advance Auto Parts vía Impact.com
 (Fase 3).
+
+---
+
+## 04/10/2026 — Fase 4: dominio comprado y sitio publicado en `partexact.com` — Líder
+
+**Contexto**: era el pendiente que quedó abierto al cerrar el nombre de marca. Omar pidió
+comprarlo reutilizando la cuenta de Cloudflare donde ya vive `wifimonitor.app`.
+
+**Qué se hizo, con la evidencia real de cada paso:**
+
+1. **Compra** en Cloudflare Registrar (misma cuenta que `wifimonitor.app`): 10,46 USD/año,
+   renovación automática activada, contacto WHOIS redactado por Cloudflare, tarjeta guardada
+   de la cuenta (terminada en 5730). Orden `ea1d18dd-15b0-44cc-93f0-81c0ca732c22`.
+2. **Verificación independiente del registro** (no la pantalla de confirmación del panel):
+   `whois partexact.com` → `Creation Date: 2026-10-04T11:23:30Z`, `Registry Expiry Date:
+   2027-10-04`, `Registrar: Cloudflare, Inc.`, nameservers `gracie`/`skip.ns.cloudflare.com`.
+3. **DNS** hecho en el panel de Cloudflare, no por API (esta cuenta no tiene token de API y
+   no valía la pena crear uno para 5 registros): 4 A en el ápice → 185.199.108.153 / .109 /
+   .110 / .111.153, y CNAME `www` → `omarlopezg2-afk.github.io`, **todos con el proxy
+   APAGADO (DNS only)**. Verificado con `dig` contra 1.1.1.1: los 4 A en el ápice, el CNAME
+   de `www` y su resolución a esos mismos 4 A de GitHub.
+4. **GitHub Pages**: `pages.cname = partexact.com` puesto por API; el certificado quedó en
+   `authorization_created` para `partexact.com` + `www.partexact.com` (lo emite GitHub solo,
+   tarda unos minutos). `www` ya responde 301 → `http://partexact.com/` y el ápice sirve el
+   HTML con el `<title>` de marca correcto (`PartExact — Encuentra la pieza exacta de tu
+   vehículo`), comprobado con una petición real al dominio, no con la vista previa del panel.
+
+**Decisión técnica que conviene no olvidar**: los registros van en *DNS only*. Con el proxy
+naranja de Cloudflare activo, GitHub Pages no puede completar el reto HTTP para emitir su
+propio certificado (Cloudflare responde en su lugar). Si algún día se quiere el proxy por
+performance/anti-bot, hay que asumir el certificado de Cloudflare y pasar el modo SSL a
+*Full (strict)* — es una configuración o la otra, no las dos a la vez.
+
+**Lo que NO se hizo, a propósito**: renombrar el repo (`vehicle-parts-finder` →
+`partexact`) y el logo. Ninguno bloquea nada; ambos quedan anotados en `PLAN.md`.
+
+Pendiente de Omar para cerrar Fase 3: keyset de **Production** de eBay (la cuenta de
+Developer ya fue aprobada el 04/10) — con Client ID + Client Secret se activa el modo real
+de `fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo).

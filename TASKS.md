@@ -88,6 +88,28 @@ dependencia F2→E7.
   problemas conocidos) + mover la fila de este tablero a "en revisión".
 - El líder revisa con la checklist de PLAN.md y anota el resultado en REVIEW_LOG.md.
 
+### Fase 4 — dominio propio y publicación (04/10/2026)
+
+Cierra el pendiente que quedó abierto al cerrar el nombre de marca: comprar el dominio y
+publicar el sitio en él.
+
+| ID | Agente | Tarea | Dueño de | Depende de | Estado | Criterios de aceptación |
+|---|---|---|---|---|---|---|
+| T-H2 | Líder (con Omar) | Comprar `partexact.com` | Cuenta Cloudflare de Omar (no es código de repo) | T-E7, T-H1 | **aprobada** (04/10) | Dominio registrado a nombre de Omar en Cloudflare Registrar (la misma cuenta que ya tenía `wifimonitor.app`), 10,46 USD/año con renovación automática. Verificado en WHOIS real, no solo en la pantalla de confirmación: `Creation Date: 2026-10-04`, `Registry Expiry Date: 2027-10-04`, registrador Cloudflare |
+| T-H3 | Líder | Conectar el dominio a GitHub Pages (DNS + certificado) | DNS de `partexact.com` en Cloudflare + ajustes de Pages por API | T-H2 | **aprobada** (04/10) | 4 registros A en el ápice (185.199.108–111.153) + CNAME `www` → `omarlopezg2-afk.github.io`, **todos en modo DNS only** (sin proxy de Cloudflare: con el proxy naranja activo GitHub no puede emitir su propio certificado); `pages.cname = partexact.com` puesto por API; sitio servido con el título de marca correcto (`PartExact — Encuentra la pieza exacta de tu vehículo`) |
+
+**Aprendizaje operativo para no rehacer el trabajo la próxima vez**: cuando GitHub Pages
+es el origen y el DNS vive en Cloudflare, los registros del sitio **deben** quedar en DNS
+only. Si en el futuro se quiere el proxy de Cloudflare por performance/anti-bot, hay que
+cambiar el modo SSL a *Full (strict)* y aceptar que el certificado lo emite Cloudflare, no
+GitHub — son dos configuraciones excluyentes, no acumulables.
+
+Pendiente de Omar (no bloquea nada del sitio, sí bloquea Fase 3 de monetización):
+cuenta eBay Developer ✅ **aprobada** (correo recibido 04/10) — falta crear el keyset de
+**Production** y darme Client ID + Client Secret para activar el modo real de
+`fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo). Advance Auto Parts vía
+Impact.com, sigue pendiente para Fase 3.
+
 ## Backlog — próxima ronda (04/10/2026, pedido explícito de Omar, no lanzar todavía)
 
 Omar probó el drill-down y encontró 3 huecos reales, verificados contra vPIC antes de

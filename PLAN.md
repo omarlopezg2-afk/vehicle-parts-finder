@@ -2,15 +2,19 @@
 
 > ## Cómo retomar este proyecto en una conversación nueva
 >
-> **Modelo:** trabajar con **Anthropic**. En la conversación nueva, pon el modelo a
-> **Claude Sonnet 5** para el trabajo del día a día, o **Opus 5** para las decisiones de
-> diseño. Los ayudantes en paralelo ya están configurados en `claude-sonnet-5`.
+> **Modelo:** el proyecto se construyó con **Claude Sonnet 5** (día a día) y **Opus 5**
+> (decisiones de diseño); desde el 04/10/2026 se continúa con **DeepSeek v4** por costo.
+> Nada del trabajo depende del modelo — lo que sí importa es leer este archivo y `TASKS.md`
+> antes de tocar código, y mantenerlos actualizados.
 >
 > **Lo único que hay que leer:** este archivo, entero. Es autocontenido a propósito.
 >
-> **Estado (25/09/2026): en construcción.** Fase 0 arrancada — repo creado, contratos
-> congelados, agentes de Fase 1 lanzados en paralelo. Ver `TASKS.md` y `REVIEW_LOG.md`
-> en el repo para el estado detallado tarea por tarea.
+> **Estado (04/10/2026): MVP navegable y publicado en dominio propio.** Fases 0–3 con sus
+> tareas aprobadas (detalle en `TASKS.md` y `REVIEW_LOG.md`). Sitio en vivo:
+> **https://partexact.com** — dominio comprado el 04/10/2026 en Cloudflare Registrar y ya
+> conectado a GitHub Pages (DNS + certificado). Pendientes abiertos en una línea: llaves de
+> producción de eBay (la cuenta de Developer ya fue aprobada) para activar el modo real del
+> pipeline, y los 3 huecos de drill-down del backlog al final de `TASKS.md`.
 >
 > Si algo del plan se cambia al arrancar, **actualizar este archivo**: es la memoria del
 > proyecto.
@@ -224,8 +228,8 @@ verificable — su propio newsletter dice explícitamente "We don't sell parts o
 marketplace or affiliate sites"; los sitios que lo listan como afiliado son agregadores de
 cupones de terceros sin relación confirmada).
 
-**Fase 4 — Lanzamiento y mejoras.** Dominio propio (~10-12 USD/año, pendiente de decidir),
-analítica respetuosa de privacidad. Backlog: más fuentes, proveedor de pago para
+**Fase 4 — Lanzamiento y mejoras.** Dominio propio ✅ hecho (`partexact.com`, 04/10/2026,
+en vivo), analítica respetuosa de privacidad. Backlog: más fuentes, proveedor de pago para
 equivalencias (ACES/PIES), Supabase, búsqueda multi-idioma.
 
 ## Protocolo de coordinación y revisión
@@ -277,7 +281,7 @@ Secrets (Actions) + `.env` local ignorado por git para pruebas. Nunca en el repo
 |---|---|
 | Desarrollar y probar | **0** |
 | Hosting MVP (GitHub Pages + Actions) | **0** |
-| Dominio propio: **partexact.com** (verificado libre 04/10/2026) | ~12 USD/año, pendiente de comprar |
+| Dominio propio: **partexact.com** (comprado 04/10/2026, Cloudflare Registrar) | **10,46 USD/año** con renovación automática — ya pagado |
 | Cuenta de desarrollador de eBay | 0 |
 | vPIC (NHTSA) | 0 |
 | eBay Partner Network (Fase 3) | 0 |
@@ -303,10 +307,17 @@ sugerir asociación oficial con ninguna marca de auto (Mitsubishi, Toyota, etc.)
 cosas violarían los términos de marca de eBay Partner Network y de los propios
 fabricantes. El nombre elegido no toca ninguna de las dos.
 
-Pendiente: comprar el dominio, actualizar el `<title>` y textos de marca en `site/`
-(ya iniciado, ver `REVIEW_LOG.md`), el logo (queda para después de tener el nombre
-asentado — es trabajo de diseño, no bloquea nada técnico), y renombrar el repo de GitHub
-si se quiere que coincida (`vehicle-parts-finder` → `partexact`, opcional, no urgente).
+**Dominio: comprado y funcionando (04/10/2026).** `partexact.com` y `www.partexact.com`
+resuelven a GitHub Pages: 4 registros A en el ápice (185.199.108–111.153) + CNAME `www` →
+`omarlopezg2-afk.github.io`, todos en modo *DNS only* (sin proxy de Cloudflare) para que
+GitHub pueda emitir su propio certificado TLS. El sitio se sirve en `https://partexact.com`.
+Registrador: Cloudflare Registrar (la misma cuenta que ya tenía `wifimonitor.app`), 10,46
+USD/año con renovación automática. Orden de compra: `ea1d18dd-15b0-44cc-93f0-81c0ca732c22`.
+
+Pendiente: el logo (trabajo de diseño, no bloquea nada técnico) y renombrar el repo de
+GitHub si se quiere que coincida (`vehicle-parts-finder` → `partexact`, opcional, no
+urgente — cambiar el nombre del repo NO rompe el sitio porque GitHub Pages redirige el
+`*.github.io` viejo, pero el CNAME de `www` sí habría que actualizarlo).
 
 ## Historial de documentos
 - `investigacion-ebay-24sep2026.md` — verificación de cuenta developer, EPN y evidencia real.
