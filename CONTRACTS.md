@@ -87,6 +87,14 @@ filtrar rápido en el cliente):
   "group_slug": "mantenimiento", "group_name_es": "Mantenimiento" }
 ```
 
+**Catálogo de categorías: congelado en `docs/taxonomia-categorias.md`** (04/10/2026, Ronda 4).
+Ese documento es la lista exacta de slugs, nombres, grupos y archivo SVG de cada categoría, y
+las reglas de inclusión. El esquema de arriba **no cambia**; lo que se congela es el
+contenido. Todo slug que exista en `categories.json` debe tener: su fila en ese documento, su
+archivo SVG en `site/assets/categories/` y (salvo pendiente declarado) al menos una parte real
+en el seed. **Un slug nunca se renombra una vez publicado**, porque es la clave que referencian
+`parts.json.category` y `search_index.json`.
+
 **Jerarquía de 2 niveles** (agregado 04/10/2026, inspirado en la taxonomía estándar de la
 industria — sistema → pieza — que usan catálogos grandes como RockAuto; es terminología
 genérica del sector, no contenido propietario de nadie). `group_slug`/`group_name_es` son

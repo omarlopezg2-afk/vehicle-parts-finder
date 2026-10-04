@@ -160,5 +160,37 @@ anotarlos (no son solo opinión):
    jerarquía de 2 niveles; implica tocar `categories.json`, los SVG (T-F1, puede necesitar
    más iconos) y `categoryTree.js`.
 
-No lanzar estas 3 hasta que Omar lo pida — quedan aquí documentadas para no perder el
-contexto ni repetir la investigación de vPIC que ya se hizo hoy.
+Omar pidió arrancar con esto el 04/10/2026 (fin de la sesión de eBay): estas 3 pasan a
+**Ronda 4, en curso**. Se conserva la nota original arriba porque documenta la investigación
+de vPIC ya hecha y no hay que repetirla.
+
+### Verificación del líder antes de repartir (04/10/2026)
+
+- **Punto 1, parcialmente hecho**: T-A3 ya está fusionada y `_MARCAS_INDUSTRIALES_EXCLUIDAS`
+  (comparación por **nombre exacto**) sí saca a FREIGHTLINER, BLUE BIRD y ORION BUS. Pero el
+  problema no está cerrado: consultando `get_all_makes()` en vivo hoy devuelve **244 marcas**
+  y el filtro por nombre todavía deja pasar una cola de fabricantes de buses/limusinas/
+  carrocerías (ej. `Autocar Ltd`, `Execucoach Inc`, `Londoncoach Inc`, `Daytona Coach
+  Builders`, `Creative Coachworks`). Ojo al verificar: varias candidatas son **falsos
+  positivos** de una búsqueda por substring (ej. `Sprinter (Dodge Or Freightliner)` es una
+  van de pasajeros legítima; `Morgan` y `Sterling Motor Car` son autos). La comparación debe
+  ser por igualdad exacta, nunca `'X' in nombre`.
+- **Punto 3, bug real encontrado**: la parte `MR297182` del seed usa la categoría
+  `clip-parachoques`, que **no existe** en `categories.json`. Hoy el sitio sirve una parte que
+  no aparece en ninguna categoría. No lo detecta `validate.py` porque valida la forma de cada
+  archivo por separado y no la integridad referencial entre ellos.
+
+### Ronda 4 — tablero
+
+| ID | Agente | Tarea | Dueño de | Depende de | Estado | Criterios de aceptación |
+|---|---|---|---|---|---|---|
+| T-A4 | A. Datos-Vehículos | Criterio de marcas **basado en datos**, no en una lista corta a mano | `pipeline/fetch_vehicles.py`, `pipeline/tests/`, `data/build/vehicles.json` | T-A3 | **pendiente** | Un criterio verificable contra vPIC (p. ej. "la marca tiene ≥1 modelo bajo `vehicletype=car`/`mpv` en un año reciente") con caché local y **fallback offline** para no romper el pipeline sin red; la lista resultante se documenta con su conteo. Pruebas que fijan: **excluidas** por nombre exacto `Autocar Ltd`, `Execucoach Inc`, `Londoncoach Inc`, `Daytona Coach Builders`, `Creative Coachworks`; **presentes** `Toyota`, `Mitsubishi`, `Honda`, `BMW`, `Byd`, `Sprinter (Dodge Or Freightliner)`, `Morgan`, `Sterling Motor Car`. Si el criterio descarta alguna de las que hay que mantener, se ajusta el criterio, no la lista de pruebas |
+| T-C3 | C. EPC-Puente | **Investigación**: ¿existe el nivel Trim/Submodelo en alguna fuente gratuita? | `docs/` (informe nuevo) | — | **pendiente** | Informe con evidencia en vivo (URL/endpoint probado y qué devolvió, no conclusiones de memoria) sobre: (a) navegación por generación de 7zap y de Partsouq para un caso concreto —idealmente Outlander Sport 2020, trims BE/ES/GT/SE/SP—; (b) vPIC con VIN completo vs. sin VIN. Cierra con una recomendación explícita: **implementar / dejar fuera del MVP / solo cuando hay VIN**, con el motivo. No escribe código de producción ni promete el nivel si la evidencia no lo sostiene |
+| T-D5 | D. Pipeline-Build | Seed de **≥24 partes reales** + integridad referencial en la validación | `data/seed/`, `pipeline/validate.py`, `pipeline/build_index.py` | Taxonomía congelada (`docs/taxonomia-categorias.md`) | **pendiente** | Al menos 24 partes en `data/seed/` (hoy hay 3) repartidas de forma que **≥20 de las 33 categorías** tengan al menos una parte; cada parte con `part_number` real y **verificada contra el Browse API real** (existe al menos 1 oferta), con la evidencia anotada en el PR; `MR297182` migrada a `clips-y-sujeciones`; `validate.py` detecta y falla si `parts.json.category` no está en `categories.json` o si un `fitment_ids` no existe en `vehicles.json` (con prueba que lo demuestre, no solo el código) |
+| T-F3 | F. Diseño-Assets | Implementar la taxonomía: `categories.json` + SVG faltantes | `site/assets/categories/`, `pipeline/` (solo la parte de categorías), `categories.json` | Taxonomía congelada (`docs/taxonomia-categorias.md`) | **pendiente** | `categories.json` con exactamente las 33 categorías de producto del documento (+ el marcador `generico-sin-foto`, marcado como no-categoría), con los grupos y nombres de ahí; **un archivo SVG por slug** en `site/assets/categories/`, los nuevos en el mismo estilo de línea simple que los existentes; prueba automática de que **todo slug de `categories.json` tiene su SVG presente y que todo SVG referenciado existe** (una categoría con icono roto es un fallo visible para el usuario) |
+
+**Orden de integración**: T-A4 y T-C3 son independientes. T-D5 y T-F3 comparten la taxonomía
+congelada, así que van en paralelo **contra el documento**, y el líder los integra juntos y
+corre el build completo antes de cerrar (productor de datos + catálogo de categorías: si se
+fusionan por separado y sin probarlos juntos, una parte puede quedar apuntando a una categoría
+que existe en un PR y no en el otro).
