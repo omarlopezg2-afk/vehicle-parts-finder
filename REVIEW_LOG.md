@@ -148,3 +148,50 @@ presente en los modelos de Mitsubishi 2020.
 
 Pendiente de Omar: cuenta eBay Developer (en trámite), y ahora también Advance Auto Parts
 vía Impact.com cuando se llegue a Fase 3.
+
+---
+
+## 04/10/2026 — Fase 2.5 (UX inspirada en factorymitsubishiparts.com) — Líder
+
+**Resultado: T-D2 y T-E3/E4/E5/E6 aprobadas y fusionadas (PR #11, PR #12).** 96 tests
+Python + 40 tests Node, build+validate limpio, deploy automático verificado en vivo.
+
+**T-D2 (PR #11)**: campo `other_names[]` propagado en `build_index.py` (default `[]`,
+nunca falta la clave, mismo patrón que `epc_link`), validado por tipo en `validate.py`
+(falla si no es array de strings). Parte de ejemplo agregada en `data/seed/` con 3
+sinónimos reales de un clip de parachoques. Aprobado sin cambios.
+
+**T-E3/E4/E5/E6 (PR #12)**: las 4 mejoras de UX pedidas por Omar tras ver
+factorymitsubishiparts.com.
+- **T-E3** (la prioridad de Omar): verificado en el HTML real servido — ambas secciones
+  (`¿Conoces tu VIN?` / `O elige tu vehículo`) están en el DOM sin ningún botón/`hidden`
+  que las oculte, mobile-first apiladas y lado a lado desde 760px. Confirmado también en
+  el sitio ya publicado.
+- **T-E4**: `vehicleSession.js` nuevo, aislado de `dataClient.js` (mismo criterio que
+  `vpicClient.js`: localStorage es estado de sesión del navegador, no catálogo).
+- **T-E5**: decisión de diseño documentada — clic en categoría sin vehículo resuelto
+  navega el catálogo completo de esa categoría (`getPartsByCategory()`, nueva función en
+  `dataClient.js`, mismo patrón que `getPartsByFitment`/`matchVehicleByVIN`: vive ahí para
+  no romper la regla de escalado aunque no esté en la superficie literal del contrato).
+- **T-E6**: tabla de fitment se oculta si `fitment_ids` está vacío (no tabla vacía),
+  verificado con los datos reales actuales (vacíos hoy, por eso no se ve aún en
+  producción — comportamiento esperado, documentado honestamente por el agente).
+- **Bonus no pedido explícitamente pero correcto**: `searchPart()` ya matchea contra
+  `other_names[]`, coordinado con T-D2 en paralelo sin pisarse (archivos distintos).
+  Verificado por mí tras fusionar ambos PRs: buscar "grille clip" (un sinónimo, no el
+  nombre canónico "Clip retenedor de parachoques") sí encuentra la pieza.
+
+Encontré un bug real de CSS durante la verificación visual del propio agente (`[hidden]`
+perdía contra `.vehicle-bar{display:flex}`) — ya lo corrigió él mismo antes de entregar,
+documentado en su reporte. No hubo que reabrir nada.
+
+**Backlog registrado para la próxima ronda** (pedido explícito de Omar, con imagen de
+referencia, NO lanzar sin indicación): 3 huecos verificados contra vPIC antes de anotarlos
+en `TASKS.md` — (1) filtro de marcas sigue colando fabricantes industriales (confirmado:
+FREIGHTLINER aparece en car+mpv), (2) falta nivel de Trim/Submodelo (confirmado que vPIC
+NO lo resuelve de forma confiable: el VIN real de Omar trajo `Trim` vacío), (3) categorías
+del catálogo más granulares (RockAuto como referencia de taxonomía estándar de industria,
+no de datos propietarios).
+
+Pendiente de Omar: cuenta eBay Developer (en trámite), Advance Auto Parts vía Impact.com
+(Fase 3).
