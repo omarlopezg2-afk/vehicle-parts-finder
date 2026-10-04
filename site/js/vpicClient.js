@@ -29,17 +29,87 @@
 // pipeline/fetch_vehicles.py (ver sus docstrings de get_all_makes /
 // get_models_for_make_year) para que el camino VIN (Python, en el
 // pipeline de build) y el camino drill-down (JS, en el navegador)
-// lleguen al mismo tipo de resultado para una misma marca/año. Los
-// mismos "problemas conocidos" documentados allá (marcas límite tipo
-// camión, "Mitsubishi Fuso" mezclado con "Mitsubishi" en
-// GetModelsForMakeYear) aplican aquí tal cual — no se intentó arreglar
-// en JS lo que ya se documentó como no resuelto en Python.
+// lleguen al mismo tipo de resultado para una misma marca/año. El
+// "problema conocido" de marcas límite tipo camión en getAllMakes
+// (Freightliner, Blue Bird, Orion Bus colándose en car+MPV) se resolvió
+// en T-A3 con `MARCAS_INDUSTRIALES_EXCLUIDAS` (idéntica a
+// `_MARCAS_INDUSTRIALES_EXCLUIDAS` en fetch_vehicles.py; ver ese
+// comentario para el razonamiento completo). El otro "problema conocido"
+// documentado allá ("Mitsubishi Fuso" mezclado con "Mitsubishi" en
+// GetModelsForMakeYear) sigue sin resolver — no se intentó arreglar en
+// JS lo que ya se documentó como no resuelto en Python, porque T-A3 solo
+// tocó getAllMakes/get_all_makes.
 
 const VPIC_API_ROOT = "https://vpic.nhtsa.dot.gov/api/vehicles";
 const DEFAULT_TIMEOUT_MS = 10000;
 
 // Mismos dos tipos que _TIPOS_VEHICULO_AUTO en pipeline/fetch_vehicles.py.
 const TIPOS_VEHICULO_AUTO = ["car", "multipurpose passenger vehicle (mpv)"];
+
+// T-A3 — MISMO CRITERIO REPLICADO EN pipeline/fetch_vehicles.py
+// (_MARCAS_INDUSTRIALES_EXCLUIDAS / get_all_makes). Si se cambia esta
+// lista, cambiar la de allá IDÉNTICA, o Python y JS mostrarán marcas
+// distintas para el mismo usuario (camino VIN vs camino drill-down).
+//
+// POR QUÉ EXISTE ESTA LISTA (investigación contra la API real de vPIC, no
+// asumida — ver PR de T-A3 para el detalle completo):
+// La unión car+MPV (arriba) ya filtra la enorme mayoría de fabricantes
+// industriales: de ~207 marcas que vPIC devuelve bajo el tipo "truck",
+// solo 3 "se cuelan" también en car+MPV al momento de escribir esto
+// (verificado a mano contra GetMakesForVehicleType/car, .../multipurpose
+// passenger..., y .../truck): FREIGHTLINER, BLUE BIRD y ORION BUS. Las
+// ~204 restantes (Peterbilt, Kenworth, Mack, International, Western Star,
+// Autocar, Capacity Trucks, Thomas Built, Oshkosh, Navistar, Hino, etc.)
+// NUNCA aparecen en car/MPV y ya quedan fuera solo con el filtro de
+// tipos — no necesitan estar en esta lista para que el resultado hoy sea
+// correcto, pero se agregan igual como lista de exclusión EXPLÍCITA (no
+// heurística) para no depender de que vPIC nunca reclasifique una marca
+// de camión/bus hacia car/MPV en el futuro; es más fácil de auditar y de
+// extender a mano que inventar una regla automática.
+//
+// Fuente de la lista: fabricantes de camiones pesados/semirremolques/
+// buses comerciales ampliamente conocidos (dominio público, ninguno vende
+// autos ni SUV de consumo), más los 3 confirmados arriba que sí aparecen
+// en car/MPV hoy. Comparación exacta por nombre en MAYÚSCULAS tal como lo
+// devuelve vPIC (NO por substring, para no atrapar por accidente nombres
+// legítimos que contienen la palabra, ej. "SPRINTER (DODGE OR
+// FREIGHTLINER)" es una van MPV real de Mercedes-Benz/Dodge y debe
+// quedarse).
+//
+// MARCAS LÍMITE que se decidió NO excluir (ver razonamiento en el PR):
+// - ISUZU: vPIC la clasifica bajo car Y bajo MPV (no solo truck), y
+//   vendió SUVs de consumo en EE. UU. por décadas (Trooper, Rodeo, Axiom,
+//   Ascender) hasta 2009. Aunque hoy en EE. UU. solo vende camiones
+//   medianos comerciales, el filtro aquí es sobre el catálogo vPIC (que
+//   incluye histórico), así que se mantiene DENTRO.
+const MARCAS_INDUSTRIALES_EXCLUIDAS = new Set([
+  // Confirmadas: aparecen en car/MPV hoy pero son 100% industriales.
+  "FREIGHTLINER",
+  "BLUE BIRD",
+  "ORION BUS",
+  // Defensa en profundidad: fabricantes de camiones pesados/buses
+  // ampliamente conocidos que hoy NO aparecen en car/MPV (confirmado
+  // contra la API real), pero se excluyen explícitamente por si vPIC
+  // cambia su clasificación más adelante.
+  "PETERBILT",
+  "KENWORTH",
+  "MACK",
+  "INTERNATIONAL",
+  "WESTERN STAR",
+  "AUTOCAR",
+  "AUTOCAR INDUSTRIES",
+  "CAPACITY TRUCKS",
+  "THOMAS BUILT",
+  "OSHKOSH",
+  "NAVISTAR",
+  "HINO",
+  "SPARTAN MOTORS",
+  "PIERCE MANUFACTURING",
+  "CRANE CARRIER COMPANY (CCC)",
+  "E-ONE",
+  "KALMAR",
+  "DENNIS EAGLE",
+]);
 
 // Rango de años razonable para el selector (vPIC decodifica VINs desde
 // 1980 aprox.; se limita a partir de 1990 para no alargar el <select>
@@ -82,7 +152,19 @@ async function _fetchJSON(url, { timeoutMs = DEFAULT_TIMEOUT_MS, fetchImpl = fet
 /**
  * Lista de marcas de auto/SUV disponibles en vPIC, para el paso 1 del
  * drill-down. Mismo criterio de filtrado (unión car + MPV, deduplicado por
- * nombre) que get_all_makes() en pipeline/fetch_vehicles.py.
+ * nombre, MENOS la lista explícita de fabricantes industriales en
+ * `MARCAS_INDUSTRIALES_EXCLUIDAS`) que get_all_makes() en
+ * pipeline/fetch_vehicles.py.
+ *
+ * FILTRO ADICIONAL (T-A3): la unión car+MPV por sí sola deja colar algunos
+ * fabricantes 100% industriales (camiones pesados/buses comerciales) que
+ * vPIC también cataloga bajo esos tipos — confirmado contra la API real:
+ * FREIGHTLINER, BLUE BIRD y ORION BUS aparecen en car/MPV junto a
+ * Toyota/BMW/Mitsubishi. Por eso, después de la unión, se excluyen por
+ * nombre exacto las marcas en `MARCAS_INDUSTRIALES_EXCLUIDAS` (lista
+ * explícita y auditable, no heurística — ver el comentario junto a esa
+ * constante para el razonamiento completo y las marcas límite que se
+ * decidió mantener, ej. Isuzu).
  *
  * @param {object} [opts] { timeoutMs, fetchImpl } — para tests.
  * @returns {Promise<Array<{id:number,name:string}>>} puede ser [] si falla
@@ -100,6 +182,7 @@ export async function getAllMakes(opts = {}) {
         const nombreCrudo = (item.MakeName || "").trim();
         const idCrudo = item.MakeId;
         if (!nombreCrudo || idCrudo === undefined || idCrudo === null) continue;
+        if (MARCAS_INDUSTRIALES_EXCLUIDAS.has(nombreCrudo.toUpperCase())) continue;
         const nombre = _titleCaseIfUpper(nombreCrudo);
         if (!porNombre.has(nombre)) porNombre.set(nombre, idCrudo);
       }
