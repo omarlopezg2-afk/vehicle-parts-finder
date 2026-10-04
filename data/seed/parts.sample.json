@@ -28,5 +28,25 @@
     "fitment_ids": [],
     "offers": [],
     "updated_at": "2026-09-25T00:00:00Z"
+  },
+  {
+    "id": "mitsubishi-clip-parachoques-mr297182",
+    "part_number": "MR297182",
+    "part_number_norm": "MR297182",
+    "type": "OEM",
+    "brand": "Mitsubishi",
+    "name": "Clip retenedor de parachoques",
+    "category": "clip-parachoques",
+    "epc_link": { "source": null, "url": null },
+    "image": { "url": null, "source": "generic", "credit": null },
+    "equivalents": [],
+    "fitment_ids": [],
+    "other_names": [
+      "Bumper Cover Retainer Clip",
+      "Sight Shield Clip",
+      "Grille Clip"
+    ],
+    "offers": [],
+    "updated_at": "2026-10-04T00:00:00Z"
   }
 ]

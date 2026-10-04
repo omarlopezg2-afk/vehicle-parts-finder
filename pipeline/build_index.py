@@ -7,7 +7,7 @@ Une las salidas de:
   - fetch_epc_links.py (T-C1) -> epc_link dentro de parts.json
   - data/seed/*.json -> catálogo base de partes (campos que ningún fetch_*
     resuelve: id, part_number, type, brand, name, category, equivalents,
-    fitment_ids, image)
+    fitment_ids, image, other_names)
 
 y escribe los 4 archivos de `data/build/` que exige CONTRACTS.md: parts.json,
 vehicles.json, search_index.json, categories.json.
@@ -244,6 +244,11 @@ def build_parts(vehiculo_ejemplo: dict[str, Any]) -> list[dict[str, Any]]:
                 "image": imagen,
                 "equivalents": parte.get("equivalents", []),
                 "fitment_ids": parte.get("fitment_ids", []),
+                # other_names (CONTRACTS.md, agregado 04/10/2026): opcional en
+                # el seed, pero la clave SIEMPRE debe estar presente en el
+                # parts.json final (mismo patrón que epc_link) -- default []
+                # cuando la parte del seed no trae sinónimos.
+                "other_names": parte.get("other_names", []),
                 "offers": offers,
                 "updated_at": build_time,
             }
