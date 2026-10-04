@@ -3,8 +3,9 @@
 Qué tan automatizado quedó, con honestidad:
 
 - **Automatizado:** `site/js/dataClient.js`, `site/js/vin.js`,
-  `site/js/vpicClient.js` y `site/js/vehicleSession.js` tienen tests
-  unitarios con `node --test` (nativo de Node, sin dependencias) en
+  `site/js/vpicClient.js`, `site/js/vehicleSession.js` y la función pura
+  `groupCategories` de `site/js/categoryTree.js` tienen tests unitarios
+  con `node --test` (nativo de Node, sin dependencias) en
   `site/tests/*.test.js`. Cubren `searchPart` (incluido el match contra
   `other_names`), `getPart`, `getVehicles`, `getCategories`,
   `getPartsByCategory`, `matchVehicleByVIN`, `matchVehicleByMakeModelYear`,
@@ -12,25 +13,33 @@ Qué tan automatizado quedó, con honestidad:
   `getModelsForMakeYear`/`getYearRange` de vpicClient.js (con un
   `fetchImpl` falso inyectado — no pegan contra vPIC real en los tests,
   para no depender de red en CI; la verificación de que vPIC responde con
-  CORS abierto y datos reales se hizo a mano, ver el PR de T-E2), y
+  CORS abierto y datos reales se hizo a mano, ver el PR de T-E2),
   `saveVehicle`/`loadVehicle`/`clearVehicle`/`formatVehicleLabel` de
   vehicleSession.js (con un polyfill mínimo de `localStorage` en memoria,
-  porque Node sin `--experimental-webstorage` no define ese global).
+  porque Node sin `--experimental-webstorage` no define ese global), y
+  (T-E7) `groupCategories` agrupando por `group_slug`/`group_name_es`,
+  preservando orden, con fallback a "Otros" si faltan esos campos, sin
+  mutar el arreglo de entrada.
   Adicionalmente, `site/tests/vpicClient.real.test.js` (T-A3) SÍ pega
   contra vPIC real (sin `fetchImpl`) para verificar el filtro de
   fabricantes industriales (`MARCAS_INDUSTRIALES_EXCLUIDAS`) con datos
   reales, no con un fixture que ya asume el resultado — requiere red y NO
-  está incluido en el conteo de 40 de abajo; correrlo aparte con
+  está incluido en el conteo de 52 de abajo; correrlo aparte con
   `node --test tests/vpicClient.real.test.js`.
 - **NO automatizado (manual):** todo lo visual/DOM (formulario, árbol de
   categorías, ficha de parte, wizard de marca/año/modelo, responsive,
   navegación por teclado). No hay Playwright/Cypress/Puppeteer instalado
   como dependencia de este proyecto — se decidió no agregar una
   dependencia de build/test pesada para un sitio que explícitamente no
-  debe tener build step. Si el líder quiere cobertura E2E real, lo
-  siguiente sería agregar Playwright como devDependency solo para `site/`
-  (no afecta cómo se sirve en producción). (Nota T-E3/E4/E5/E6: para
-  verificar este PR se usó una instalación *temporal* de
+  debe tener build step. Esto incluye el acordeón de grupos del árbol de
+  categorías (T-E7, `renderCategoryGrid`/`renderVehicleTree`): construye
+  DOM real (`document.createElement`), por lo que expandir/colapsar,
+  `aria-expanded` y el orden de Tab se verifican a mano (ver sección 8 de
+  abajo), igual que el resto del DOM de este proyecto. Si el líder quiere
+  cobertura E2E real, lo siguiente sería agregar Playwright como
+  devDependency solo para `site/` (no afecta cómo se sirve en
+  producción). (Nota T-E3/E4/E5/E6: para verificar este PR se usó una
+  instalación *temporal* de
   `puppeteer-core` fuera del repo, apuntando a un Chrome ya instalado en
   la máquina — no se agregó como dependencia del proyecto ni se commiteó
   nada de eso; ver "cómo probar" del PR para los pasos manuales
@@ -44,11 +53,11 @@ node --test tests/*.test.js
 # o: npm test
 ```
 
-Debe imprimir 43 tests, 0 fallos (`dataClient.js`: 20, `vehicleSession.js`:
-8, `vin.js`: 6, `vpicClient.js`: 7, `vpicClient.real.test.js`: 2). Los
-últimos 2 (T-A3, filtro de marcas industriales contra vPIC real) requieren
-red — mismo trade-off que ya acepta el lado Python en
-`pipeline/tests/test_fetch_vehicles_makes.py`.
+Debe imprimir 52 tests, 0 fallos (`dataClient.js`: 20, `categoryTree.js`:
+9, `vehicleSession.js`: 8, `vin.js`: 6, `vpicClient.js`: 7,
+`vpicClient.real.test.js`: 2). Los últimos 2 (T-A3, filtro de marcas
+industriales contra vPIC real) requieren red — mismo trade-off que ya
+acepta el lado Python en `pipeline/tests/test_fetch_vehicles_makes.py`.
 
 ## 2. Probar el sitio a mano
 
@@ -124,19 +133,35 @@ mejor probar con un servidor real para que coincida con producción).
      que el campo de VIN/número de parte sigue visible al lado — nunca
      debe desaparecer ni quedar detrás de un toggle.
 
-5. **Categorías destacadas en el home (T-E5)** — antes de resolver ningún
-   vehículo (recarga la página o presiona "Cambiar vehículo" primero).
-   - Debe verse la sección "Categorías populares" con el grid de SVG,
-     visible de inmediato en el home, debajo del buscador/selector.
-   - Click en una categoría (ej. "Pastillas de freno") SIN vehículo
-     resuelto → debe mostrar las piezas de esa categoría para TODO el
-     catálogo (no exige elegir vehículo primero) con un aviso explicando
-     que para ver solo lo que aplica a tu auto hay que resolver el
-     vehículo arriba.
+5. **Categorías destacadas en el home (T-E5), AHORA agrupadas (T-E7)** —
+   antes de resolver ningún vehículo (recarga la página o presiona
+   "Cambiar vehículo" primero).
+   - Debe verse la sección "Categorías populares" con una lista de
+     **grupos** colapsados (Mantenimiento, Frenos, Motor, Eléctrico,
+     Suspensión y dirección, Refrigeración, Iluminación, Carrocería y
+     exterior, Otros — 9 grupos con las 13 categorías de
+     `data/build/categories.json`), cada uno como un botón con su nombre,
+     un contador de cuántas categorías tiene y una flecha (▾).
+   - Click en un grupo (ej. "Frenos") → debe expandirse mostrando el grid
+     de SVG de sus slugs hoja (Pastillas de freno, Discos de freno) justo
+     debajo, la flecha debe rotar y `aria-expanded` del botón debe pasar
+     de `"false"` a `"true"` (verificable con el inspector o las
+     herramientas de accesibilidad del navegador).
+   - Click otra vez en el mismo grupo → debe colapsarse (oculta el grid,
+     `aria-expanded` vuelve a `"false"`).
+   - Click en una categoría hoja (ej. "Pastillas de freno") dentro de un
+     grupo expandido, SIN vehículo resuelto → debe mostrar las piezas de
+     esa categoría para TODO el catálogo (mismo comportamiento que antes
+     de T-E7, no cambió), con un aviso explicando que para ver solo lo
+     que aplica a tu auto hay que resolver el vehículo arriba.
    - Ahora resuelve un vehículo (VIN o wizard) y vuelve a hacer click en
-     una categoría del grid del home → debe mostrarte solo las piezas que
-     le quedan a ESE vehículo (mismo comportamiento que el árbol de
-     categorías del flujo VIN).
+     una categoría hoja del grid del home → debe mostrarte solo las
+     piezas que le quedan a ESE vehículo (mismo comportamiento que el
+     árbol de categorías del flujo VIN).
+   - Dentro del flujo VIN/wizard (después de resolver un vehículo), el
+     árbol "Elige la categoría de la pieza" debe mostrar el MISMO
+     acordeón de grupos (es el mismo componente `renderCategoryGrid`
+     reutilizado, ver cabecera de `categoryTree.js`).
 
 6. **Tabla de fitment en la ficha de parte (T-E6)** — ver paso 1
    (`1230A114` trae `fitment_ids` en la fixture). Para confirmar el caso
@@ -150,10 +175,14 @@ mejor probar con un servidor real para que coincida con producción).
    desarrollador del navegador, prueba el modo de dispositivo móvil (ej.
    375px de ancho, iPhone SE). Verifica que no aparezca una barra de
    scroll horizontal en ninguna pantalla (buscador + selector apilados,
-   barra "Tu vehículo", grid de categorías del home, árbol de categorías,
-   ficha de parte con tabla de fitment y ofertas). Confirma que desde
-   ~760px de ancho el buscador y el selector de vehículo pasan a verse
-   lado a lado.
+   barra "Tu vehículo", acordeón de grupos de categorías del home, árbol
+   de categorías del vehículo, ficha de parte con tabla de fitment y
+   ofertas). El nombre de un grupo largo (ej. "Suspensión y dirección")
+   debe partirse en varias líneas dentro del botón en vez de desbordar o
+   forzar scroll horizontal (`overflow-wrap: break-word` en
+   `.category-group-name`, ver `styles.css`). Confirma que desde ~760px
+   de ancho el buscador y el selector de vehículo pasan a verse lado a
+   lado.
 
 8. **Navegación por teclado** — usando solo Tab/Shift+Tab/Enter/Espacio
    (sin mouse):
@@ -164,11 +193,20 @@ mejor probar con un servidor real para que coincida con producción).
      modelo — cada uno navegable con flechas como cualquier `<select>`
      nativo) y al botón "Ver piezas para este vehículo" — todo accesible
      sin ningún clic previo para "revelarlo".
-   - En el grid de categorías del home y en el árbol de categorías del
-     vehículo, cada botón de categoría debe ser alcanzable con Tab y
-     activable con Enter/Espacio.
-   - Cada botón/enlace/select enfocado debe tener un contorno amarillo
-     visible (`:focus`, ver `site/css/styles.css`).
+   - En el acordeón de grupos del home y en el árbol de categorías del
+     vehículo (T-E7): con el grupo colapsado, Tab debe ir de un botón de
+     grupo directo al siguiente (los slugs hoja ocultos con `hidden` NO
+     son focusables, así que no "roban" un Tab de más). Enter o Espacio
+     con foco en un botón de grupo debe expandirlo/colapsarlo igual que
+     el click (son `<button>` nativos, responden a ambas teclas sin JS
+     adicional) y actualizar su `aria-expanded`.
+   - Con un grupo expandido, Tab desde ese botón de grupo debe entrar
+     directo a sus slugs hoja (en el orden en que aparecen) ANTES de
+     seguir al botón del siguiente grupo. Cada slug hoja sigue siendo
+     alcanzable con Tab y activable con Enter/Espacio (esa lógica no
+     cambió respecto a antes de T-E7).
+   - Cada botón/enlace/select enfocado (grupo o slug hoja) debe tener un
+     contorno amarillo visible (`:focus`, ver `site/css/styles.css`).
    - Los enlaces "Ver diagrama…" y "Comprar en…" deben ser alcanzables con
      Tab y abrir en pestaña nueva con Enter.
 
