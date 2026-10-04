@@ -37,6 +37,32 @@ Búsqueda:
 Límite: 5000 llamadas/día por defecto (se sube gratis pidiéndolo, "Application
 Growth Check"). Este módulo no implementa un contador de cuota propio; si eBay
 responde 429 se aplica el manejo descrito abajo.
+
+--- Modo afiliado (T-B5, eBay Partner Network) ---
+Para que eBay pague comisión por los clics, la documentación de EPN dice literal:
+"In order to receive a commission for your sales, you must use the URL returned
+in the itemAffiliateWebUrl field" — no basta con pegarle parámetros a mano a
+itemWebUrl.
+
+Cómo se activa aquí:
+- Si existe `EBAY_CAMPAIGN_ID` en el entorno (no vacío), la búsqueda manda el
+  header `X-EBAY-C-ENDUSERCTX: affiliateCampaignId=<id>`.
+- Si además existe `EBAY_REFERENCE_ID` (el "custom id" de EPN), se añade al mismo
+  header, separado por coma: `affiliateCampaignId=<id>,affiliateReferenceId=<ref>`.
+- Si NO existe `EBAY_CAMPAIGN_ID`, el header no se manda (comportamiento idéntico
+  al de hoy, enlaces normales).
+- En `_map_item_summary_to_offer`, `offer.url` usa `itemAffiliateWebUrl` cuando
+  el item lo trae (no vacío); si no viene, cae a `itemWebUrl` como siempre. Esto
+  pasa tanto si pedimos el header como si no — es solo "usa la mejor URL
+  disponible", nunca se inventan parámetros de tracking en el cliente.
+
+**Importante sobre el modo mock**: el fixture `fixtures/ebay_browse_search.sample.json`
+es una respuesta REAL capturada SIN campaign id, así que no contiene el campo
+`itemAffiliateWebUrl`. Eso significa que el camino de afiliado (preferir
+`itemAffiliateWebUrl`) no se puede ejercitar end-to-end en modo mock con el
+fixture tal cual; se prueba con mocks de `unittest.mock` que sintetizan un item
+con ese campo (ver `pipeline/tests/test_fetch_ebay.py`), y se verá de verdad solo
+en modo real, con un campaign ID auténtico de EPN.
 """
 
 from __future__ import annotations
@@ -124,17 +150,43 @@ def get_access_token(client_id: str, client_secret: str) -> str:
     return token
 
 
+def _build_affiliate_header() -> str | None:
+    """Construye el valor del header X-EBAY-C-ENDUSERCTX para EPN, o None.
+
+    None (sin header) si EBAY_CAMPAIGN_ID no está en el entorno o está vacío,
+    para que sin esa variable el comportamiento sea exactamente el de hoy (sin
+    tracking de afiliado, enlaces normales).
+
+    Si además EBAY_REFERENCE_ID está presente, se añade affiliateReferenceId
+    separado por coma (mismo header, varios parámetros), como documenta eBay
+    para X-EBAY-C-ENDUSERCTX.
+    """
+    campaign_id = os.environ.get("EBAY_CAMPAIGN_ID")
+    if not campaign_id:
+        return None
+
+    parts = [f"affiliateCampaignId={campaign_id}"]
+    reference_id = os.environ.get("EBAY_REFERENCE_ID")
+    if reference_id:
+        parts.append(f"affiliateReferenceId={reference_id}")
+    return ",".join(parts)
+
+
 def _do_search_request(part_number_norm: str, token: str, limit: int) -> dict[str, Any]:
     """Una sola llamada GET a item_summary/search. Puede lanzar urllib.error.HTTPError."""
     query = urllib.parse.urlencode({"q": part_number_norm, "limit": limit})
     url = f"{SEARCH_URL}?{query}"
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "X-EBAY-C-MARKETPLACE-ID": MARKETPLACE_ID,
+    }
+    affiliate_header = _build_affiliate_header()
+    if affiliate_header:
+        headers["X-EBAY-C-ENDUSERCTX"] = affiliate_header
     req = urllib.request.Request(
         url,
         method="GET",
-        headers={
-            "Authorization": f"Bearer {token}",
-            "X-EBAY-C-MARKETPLACE-ID": MARKETPLACE_ID,
-        },
+        headers=headers,
     )
     with urllib.request.urlopen(req, timeout=_HTTP_TIMEOUT_S) as resp:
         return json.loads(resp.read().decode("utf-8"))
@@ -170,7 +222,14 @@ def _search_real(part_number_norm: str, client_id: str, client_secret: str, limi
 
 
 def _map_item_summary_to_offer(item: dict[str, Any]) -> dict[str, Any]:
-    """Convierte un item_summary (real o mock) al shape de `offers` de CONTRACTS.md."""
+    """Convierte un item_summary (real o mock) al shape de `offers` de CONTRACTS.md.
+
+    `url` prefiere `itemAffiliateWebUrl` (la URL con tracking de EPN que eBay exige
+    usar para pagar comisión) y cae a `itemWebUrl` si no viene o viene vacía. eBay
+    solo devuelve `itemAffiliateWebUrl` cuando la petición llevó un campaign id
+    válido (ver `_build_affiliate_header`); sin eso, este campo no existe en la
+    respuesta y se usa siempre `itemWebUrl`, igual que antes de T-B5.
+    """
     price_obj = item.get("price") or {}
     price_value = price_obj.get("value")
     try:
@@ -178,9 +237,11 @@ def _map_item_summary_to_offer(item: dict[str, Any]) -> dict[str, Any]:
     except (TypeError, ValueError):
         price = 0.0
 
+    url = item.get("itemAffiliateWebUrl") or item.get("itemWebUrl") or ""
+
     return {
         "store": "eBay",
-        "url": item.get("itemWebUrl") or "",
+        "url": url,
         "price": price,
         "currency": price_obj.get("currency") or "USD",
         "condition": item.get("condition"),

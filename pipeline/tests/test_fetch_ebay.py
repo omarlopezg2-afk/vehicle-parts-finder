@@ -5,6 +5,7 @@ instalar nada, igual que el modo mock del propio módulo.
 """
 
 import io
+import json
 import os
 import sys
 import unittest
@@ -140,6 +141,93 @@ class TestSearchPartReal(unittest.TestCase):
                 offers = fetch_ebay.search_part("04152YZZA1")
         self.assertIsInstance(offers, list)
         self.assertGreater(len(offers), 0)
+
+
+class TestAffiliateHeader(unittest.TestCase):
+    """T-B5: header X-EBAY-C-ENDUSERCTX según EBAY_CAMPAIGN_ID / EBAY_REFERENCE_ID."""
+
+    def _run_search_and_capture_headers(self, env, real_payload=None):
+        """Corre _do_search_request real (sin mockearla) y captura los headers
+        del objeto urllib.request.Request realmente construido."""
+        payload = real_payload or {"itemSummaries": []}
+        captured_requests = []
+
+        class _FakeResponse:
+            def __init__(self, data):
+                self._data = json.dumps(data).encode("utf-8")
+
+            def read(self):
+                return self._data
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+        def _fake_urlopen(req, timeout=None):
+            captured_requests.append(req)
+            return _FakeResponse(payload)
+
+        with mock.patch.dict(os.environ, env, clear=True):
+            with mock.patch.object(fetch_ebay.urllib.request, "urlopen", side_effect=_fake_urlopen):
+                fetch_ebay._do_search_request("04152YZZA1", "tok", 50)
+
+        self.assertEqual(len(captured_requests), 1)
+        return captured_requests[0]
+
+    def test_con_campaign_id_header_tiene_valor_correcto(self):
+        env = {"EBAY_CAMPAIGN_ID": "123456789"}
+        req = self._run_search_and_capture_headers(env)
+        self.assertEqual(req.get_header("X-ebay-c-enduserctx"), "affiliateCampaignId=123456789")
+
+    def test_sin_campaign_id_no_manda_header(self):
+        req = self._run_search_and_capture_headers({})
+        self.assertIsNone(req.get_header("X-ebay-c-enduserctx"))
+
+    def test_con_reference_id_aparece_en_el_header(self):
+        env = {"EBAY_CAMPAIGN_ID": "123456789", "EBAY_REFERENCE_ID": "ref-42"}
+        req = self._run_search_and_capture_headers(env)
+        self.assertEqual(
+            req.get_header("X-ebay-c-enduserctx"),
+            "affiliateCampaignId=123456789,affiliateReferenceId=ref-42",
+        )
+
+    def test_reference_id_sin_campaign_id_no_manda_header(self):
+        # EBAY_REFERENCE_ID solo no tiene sentido sin campaign id: sin ID de
+        # campaña no hay nada que rastrear, así que no se manda el header.
+        req = self._run_search_and_capture_headers({"EBAY_REFERENCE_ID": "ref-42"})
+        self.assertIsNone(req.get_header("X-ebay-c-enduserctx"))
+
+
+class TestMapItemAffiliateUrl(unittest.TestCase):
+    """T-B5: offer.url prefiere itemAffiliateWebUrl, cae a itemWebUrl."""
+
+    def test_item_con_affiliate_web_url_se_usa_esa(self):
+        item = {
+            "price": {"value": "9.99", "currency": "USD"},
+            "itemWebUrl": "https://www.ebay.com/itm/1",
+            "itemAffiliateWebUrl": "https://www.ebay.com/itm/1?campid=123456789",
+        }
+        offer = fetch_ebay._map_item_summary_to_offer(item)
+        self.assertEqual(offer["url"], "https://www.ebay.com/itm/1?campid=123456789")
+
+    def test_item_sin_affiliate_web_url_cae_a_item_web_url(self):
+        item = {
+            "price": {"value": "9.99", "currency": "USD"},
+            "itemWebUrl": "https://www.ebay.com/itm/1",
+        }
+        offer = fetch_ebay._map_item_summary_to_offer(item)
+        self.assertEqual(offer["url"], "https://www.ebay.com/itm/1")
+
+    def test_item_con_affiliate_web_url_vacia_cae_a_item_web_url(self):
+        item = {
+            "price": {"value": "9.99", "currency": "USD"},
+            "itemWebUrl": "https://www.ebay.com/itm/1",
+            "itemAffiliateWebUrl": "",
+        }
+        offer = fetch_ebay._map_item_summary_to_offer(item)
+        self.assertEqual(offer["url"], "https://www.ebay.com/itm/1")
 
 
 if __name__ == "__main__":

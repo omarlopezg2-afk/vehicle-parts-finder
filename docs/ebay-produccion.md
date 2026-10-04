@@ -39,7 +39,38 @@ y ya está escrito y probado en local.
 | 4 | Con el keyset ya activado, copiar **App ID (Client ID)** y **Cert ID (Client Secret)** | Omar | pendiente |
 | 5 | Guardar las llaves en `.env` (local, ignorado por git) y como **GitHub Secrets** | Omar rellena, el líder carga | pendiente |
 | 6 | Correr `build-data.yml` y verificar precios reales en el sitio | líder | pendiente |
-| 7 | `EBAY_CAMPAIGN_ID` (eBay Partner Network) cuando se pase a monetización | Omar | Fase 3, no urgente |
+| 7 | `EBAY_CAMPAIGN_ID` (eBay Partner Network) cuando se pase a monetización | Omar | Fase 3, no urgente — **mecanismo implementado en T-B5 (ver abajo), falta el ID real** |
+
+## T-B5: mecanismo de afiliado (header + itemAffiliateWebUrl), implementado
+
+Queda implementado en `pipeline/fetch_ebay.py` (ver docstring del módulo para el detalle
+completo):
+
+- Si existe `EBAY_CAMPAIGN_ID` en el entorno, la búsqueda manda el header
+  `X-EBAY-C-ENDUSERCTX: affiliateCampaignId=<id>` (y `affiliateReferenceId=<ref>` si
+  además existe `EBAY_REFERENCE_ID`).
+- `offers[].url` usa `itemAffiliateWebUrl` cuando eBay lo devuelve, y cae a `itemWebUrl`
+  si no (comportamiento de hoy, sin cambios, mientras no haya campaign id).
+
+**Verificado con un campaign id de PRUEBA (inventado, NO un ID real de EPN — `5338800000`,
+nunca usar este valor en producción ni publicarlo con tráfico real)**: con ese id, eBay sí
+devolvió `itemAffiliateWebUrl` en cada item, con esta forma:
+
+```
+https://www.ebay.com/itm/<id>?_skw=...&hash=...&mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=5338800000&customid=<EBAY_REFERENCE_ID o vacío>&toolid=10049
+```
+
+Es decir: `campid` lleva el campaign id tal cual, y `customid` lleva `EBAY_REFERENCE_ID` si
+se mandó (si no, queda vacío). Sin `EBAY_CAMPAIGN_ID` el campo `itemAffiliateWebUrl` no
+viene en la respuesta y `offers[].url` sigue siendo la `itemWebUrl` normal, sin ningún
+parámetro de tracking — exactamente el comportamiento de antes de T-B5.
+
+**Qué falta**: el campaign ID real de la cuenta de eBay Partner Network de Omar. En cuanto
+exista, basta con ponerlo en `EBAY_CAMPAIGN_ID` (`.env` local + GitHub Secret) — no hace
+falta tocar código. El fixture de mock (`pipeline/fixtures/ebay_browse_search.sample.json`)
+no tiene `itemAffiliateWebUrl` porque se capturó sin campaign id, así que en modo mock el
+camino de afiliado no se ejercita por el fixture; sí está cubierto con mocks sintéticos en
+`pipeline/tests/test_fetch_ebay.py`.
 
 ## Regla de manejo de las llaves (no negociable)
 
