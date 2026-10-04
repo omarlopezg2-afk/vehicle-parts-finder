@@ -655,3 +655,28 @@ ID del panel).
 **Creada T-O3**: pedir la aprobación previa por escrito del método real, en el mismo envío que
 T-O1 cuando Omar lo decida. El correo ya no pregunta "por qué me rechazaron" sino **qué modelo
 declarar y qué aprobación previa hace falta**.
+
+---
+
+## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
+
+Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó
+el rechazo; cuál es el modelo de negocio correcto y si ese método exige aprobación previa
+(SBM / Buy API Program); y si la República Dominicana está soportada **para pagos**.
+
+Se mandó desde el **Gmail de Omar a propósito**: es la dirección con la que se presentó la
+solicitud, así que soporte puede localizarla y responder al mismo hilo. Escribir desde
+`soporte@partexact.com` habría sido una dirección que EPN nunca ha visto — aquí el objetivo no
+era la marca del producto, era que encontrasen la solicitud.
+
+**Evidencia leída del propio mensaje en "Enviados"** (no de la pantalla de confirmación):
+destinatario `epnhelp@ebay.com`, remitente `omar.lopezg2@gmail.com`, 4 oct 2026 5:40 p.m.,
+asunto "Application declined - request for the specific reason and the correct business model
+(property: partexact.com)", **cuerpo íntegro de 2.185 caracteres** (comprobado que el mensaje
+menciona `Content/Reviews`, `Buy API Program` y `Dominican Republic`) y **un solo mensaje** para
+ese destinatario, sin duplicados.
+
+La carta dice expresamente que **no se volvió a aplicar** ni se creó otra cuenta mientras se
+espera respuesta (una de las cláusulas del acuerdo exige consentimiento previo para eso). Texto
+versionado en `docs/carta-epn.md`. T-O1 y T-O3 quedan **enviadas**; T-O2 (plan B) **sigue
+bloqueada** hasta que respondan.
