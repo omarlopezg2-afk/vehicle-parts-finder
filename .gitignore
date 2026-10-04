@@ -8,3 +8,6 @@ node_modules/
 data/raw/*
 !data/raw/.gitkeep
 .DS_Store
+
+# caché local de Wrangler (incluye el id/nombre de la cuenta de Cloudflare)
+**/.wrangler/

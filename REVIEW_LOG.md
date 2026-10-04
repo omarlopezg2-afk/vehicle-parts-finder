@@ -375,6 +375,46 @@ buzón real funciona. Dos matices que salieron en la prueba, y que conviene reco
    del DNS (el dominio se registró minutos antes, así que durante un rato "partexact.com
    no existe" seguía cacheado en el resolutor de Google). Se cura solo en ~30 min.
 
+---
+
+## 04/10/2026 — eBay en producción, parte 1: keyset creado y endpoint de notificaciones desplegado — Líder
+
+**El hallazgo que cambió el plan**: la cuenta de eBay Developer ya estaba aprobada, pero eso
+no basta. eBay **no activa el keyset de Production** hasta que la aplicación cumpla el
+requisito de notificaciones de borrado/cierre de cuenta: o se suscribe exponiendo un endpoint
+HTTPS que responda su reto de verificación, o se acoge a la exención "Not persisting eBay
+data".
+
+**La exención se descartó a propósito.** Nuestra tubería sí persiste datos de eBay (títulos,
+precios, URLs e imágenes de anuncios en `data/build/parts.json`, que además es público), así
+que marcar esa casilla sería declarar algo falso para desbloquear las llaves un rato antes.
+Se va por la suscripción, que cuesta un Worker gratis.
+
+**Lo que se construyó y se verificó (T-B2)**:
+
+- `infra/ebay-notifications/worker.js`: responde el reto con
+  `sha256(challenge_code + verification_token + endpoint_url)` en el orden que exige eBay y
+  `content-type: application/json`; acusa las notificaciones reales con 204; devuelve 400 sin
+  `challenge_code`, 405 en otros métodos y **500 si faltan variables** (falla fuerte en vez
+  de devolver un hash falso, que dejaría el keyset bloqueado sin decir por qué).
+- 8/8 comprobaciones en local y en CI (job nuevo en `ci.yml`), con el hash contrastado contra
+  una implementación independiente — no validado con el mismo código que lo produce.
+- **Desplegado** con Wrangler en el subdominio propio `ebay.partexact.com` (Wrangler creó el
+  registro proxeado; el ápice sigue en DNS only y el sitio no se tocó, comprobado después).
+- Contra el endpoint real: el hash que devuelve coincide **carácter por carácter** con el
+  calculado en local, y los casos límite responden 400/204/405.
+
+Dos tropiezos reales del despliegue, para no repetirlos: `wrangler deploy` falla si
+`workers_dev = true` y la cuenta no tiene subdominio `workers.dev` registrado — con la ruta
+de dominio propio y `workers_dev = false` despliega sin pedir nada. Y el primer intento dejó
+un Worker vacío (solo con el secreto) porque `wrangler secret put` crea el Worker si no
+existe: no es un problema, el `deploy` posterior sube el script al mismo nombre.
+
+**Lo que falta (T-B3, del lado de Omar)**: registrar en el portal la URL
+`https://ebay.partexact.com/` y el token de verificación (vive en el `.env` local y nunca se
+imprimió en pantalla) y confirmar que eBay valida el reto y activa el keyset. Después, T-B4:
+cargar App ID y Cert ID con `scripts/seed-secrets.sh` y correr el pipeline en modo real.
+
 Pendiente de Omar para cerrar Fase 3: keyset de **Production** de eBay (la cuenta de
 Developer ya fue aprobada el 04/10) — con Client ID + Client Secret se activa el modo real
 de `fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo).

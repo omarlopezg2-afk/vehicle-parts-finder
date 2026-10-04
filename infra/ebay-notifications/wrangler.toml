@@ -1,15 +1,21 @@
 name = "ebay-notifications"
 main = "worker.js"
 compatibility_date = "2026-10-04"
+workers_dev = false
 
-# EBAY_ENDPOINT_URL no es un secreto (es la URL pública del endpoint), pero
-# tiene que ser EXACTAMENTE la misma cadena que se guarda en el portal de eBay,
-# porque entra en el hash del reto. Si se despliega en workers.dev, el valor es
-# https://ebay-notifications.<tu-subdominio>.workers.dev/ (con barra final si
-# así se registró en el portal).
+# Dominio propio en vez de workers.dev: la URL del endpoint entra en el hash del
+# reto de eBay, así que conviene que sea estable y con la marca. Al desplegar,
+# Wrangler crea el registro DNS proxeado de este subdominio; el ápice del sitio
+# (partexact.com → GitHub Pages) sigue en DNS only y no se toca.
+routes = [
+  { pattern = "ebay.partexact.com", custom_domain = true }
+]
+
+# EBAY_ENDPOINT_URL no es un secreto, pero tiene que ser EXACTAMENTE la cadena
+# que se registra en el portal de eBay: entra en el hash del reto tal cual.
 [vars]
-EBAY_ENDPOINT_URL = "https://ebay-notifications.CAMBIAR.workers.dev/"
+EBAY_ENDPOINT_URL = "https://ebay.partexact.com/"
 
-# EBAY_VERIFICATION_TOKEN es un secreto y NO va aquí:
-#   npx wrangler secret put EBAY_VERIFICATION_TOKEN
-# Token de 32 a 80 caracteres, solo letras, números, guion y guion bajo.
+# EBAY_VERIFICATION_TOKEN es un secreto y NO va aquí. Se carga con:
+#   set -a; source .env; set +a
+#   printf '%s' "$EBAY_VERIFICATION_TOKEN" | npx wrangler secret put EBAY_VERIFICATION_TOKEN
