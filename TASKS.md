@@ -25,16 +25,32 @@ RevolutionParts — **no es fuente de datos a integrar**, es solo inspiración d
 
 | ID | Agente | Tarea | Dueño de | Depende de | Estado | Criterios de aceptación |
 |---|---|---|---|---|---|---|
-| T-E3 | E. Frontend | **Layout: VIN y drill-down visibles a la vez** (no detrás de un botón) | `site/index.html`, `site/js/app.js`, `site/css/styles.css` | T-E1, T-E2 | en revisión | Ambos caminos (campo VIN/número + selector marca/año/modelo) visibles en la misma pantalla sin clic adicional; responsive (en móvil pueden apilarse, pero ninguno queda oculto tras un toggle) |
-| T-E4 | E. Frontend | **"Mi vehículo" persistente** (localStorage) | `site/js/dataClient.js` o módulo nuevo `site/js/vehicleSession.js` | T-E1, T-E2 | en revisión | Una vez resuelto el vehículo (por VIN o drill-down), se recuerda en toda la sesión del navegador sin volver a pedirlo; opción visible de "cambiar vehículo" |
-| T-E5 | E. Frontend | **Categorías destacadas en el home** | `site/index.html`, `site/js/app.js` | T-F1 (ya aprobada) | en revisión | Grid de categorías con los SVG existentes, visible sin necesidad de resolver vehículo primero |
-| T-E6 | E. Frontend | **Tabla de fitment visible en la ficha de parte** | `site/js/partCard.js` | CONTRACTS.md | en revisión | Si `fitment_ids[]` tiene elementos, se muestra una tabla año/marca/modelo (resuelta vía `getVehicles()`), no solo el conteo |
-| T-D2 | D. Pipeline-Build | Soporte de `other_names[]` en build + búsqueda | `pipeline/build_index.py`, `pipeline/validate.py`, `data/seed/` | CONTRACTS.md (campo agregado 04/10) | pendiente | `other_names` opcional en el esquema; `validate.py` no exige el campo pero lo valida si existe (debe ser array de strings); al menos 1 parte de `data/seed/` con sinónimos de ejemplo |
+| T-E3 | E. Frontend | **Layout: VIN y drill-down visibles a la vez** (no detrás de un botón) | `site/index.html`, `site/js/app.js`, `site/css/styles.css` | T-E1, T-E2 | **aprobada** (PR #12, merge 04/10) | Ambos caminos (campo VIN/número + selector marca/año/modelo) visibles en la misma pantalla sin clic adicional; responsive (en móvil pueden apilarse, pero ninguno queda oculto tras un toggle) |
+| T-E4 | E. Frontend | **"Mi vehículo" persistente** (localStorage) | `site/js/dataClient.js` o módulo nuevo `site/js/vehicleSession.js` | T-E1, T-E2 | **aprobada** (PR #12, merge 04/10) | Una vez resuelto el vehículo (por VIN o drill-down), se recuerda en toda la sesión del navegador sin volver a pedirlo; opción visible de "cambiar vehículo" |
+| T-E5 | E. Frontend | **Categorías destacadas en el home** | `site/index.html`, `site/js/app.js` | T-F1 (ya aprobada) | **aprobada** (PR #12, merge 04/10) | Grid de categorías con los SVG existentes, visible sin necesidad de resolver vehículo primero |
+| T-E6 | E. Frontend | **Tabla de fitment visible en la ficha de parte** | `site/js/partCard.js` | CONTRACTS.md | **aprobada** (PR #12, merge 04/10) | Si `fitment_ids[]` tiene elementos, se muestra una tabla año/marca/modelo (resuelta vía `getVehicles()`), no solo el conteo |
+| T-D2 | D. Pipeline-Build | Soporte de `other_names[]` en build + búsqueda | `pipeline/build_index.py`, `pipeline/validate.py`, `data/seed/` | CONTRACTS.md (campo agregado 04/10) | **aprobada** (PR #11, merge 04/10) | `other_names` opcional en el esquema; `validate.py` no exige el campo pero lo valida si existe (debe ser array de strings); al menos 1 parte de `data/seed/` con sinónimos de ejemplo |
 
 Nota de dependencia: T-E6 depende solo del campo `fitment_ids` que ya existe en el
 contrato (no de T-D2); T-D2 es necesaria para que `other_names` llegue con datos reales a
 `dataClient.js`, pero `searchPart()` puede implementarse ya contra el campo del contrato
 aunque esté vacío en el build actual.
+
+### Ronda 3 — marcas, trim, categorías jerárquicas (04/10/2026)
+
+Las 3 del backlog de abajo, ahora activas. `CONTRACTS.md` ya tiene `group_slug`/
+`group_name_es` en `categories.json` (congelado por el líder antes de lanzar esta ronda).
+
+| ID | Agente | Tarea | Dueño de | Depende de | Estado | Criterios de aceptación |
+|---|---|---|---|---|---|---|
+| T-A3 | A. Datos-Vehículos | Filtrar marcas industriales del drill-down (Python + JS) | `pipeline/fetch_vehicles.py`, `site/js/vpicClient.js` | T-A2, T-E2 | pendiente | `FREIGHTLINER` y fabricantes de camiones/buses pesados equivalentes ya no aparecen en `get_all_makes()`/`getAllMakes()`; Mitsubishi, Toyota, Honda, Ford, etc. siguen presentes; criterio de exclusión documentado (lista explícita o heurística) y con tests que prueben al menos 3 exclusiones y 3 inclusiones reales contra la API |
+| T-C2 | C. EPC-Puente | Investigar si 7zap/Partsouq exponen Trim/submodelo por generación | `pipeline/fetch_epc_links.py` (solo si hay hallazgo que justifique código; si no, el entregable es el hallazgo documentado) | — | pendiente | Responde con evidencia (no opinión) si alguna fuente gratuita da trims tipo BE/ES/GT/SE/SP para Mitsubishi Outlander Sport 2020; si existe, expone una función que lo devuelva; si NO existe en ninguna fuente gratuita verificada, lo dice explícitamente en el PR en vez de inventar, y la tarea se cierra como "no viable con fuentes gratuitas" sin bloquear nada más |
+| T-F2 | F. Diseño-Assets | Categorías jerárquicas: agrupar los 13 slugs existentes en grupos + `categories.json` con `group_slug`/`group_name_es` | `data/build/categories.json` | CONTRACTS.md (jerarquía agregada 04/10) | pendiente | Los 13 slugs actuales quedan agrupados en 6-9 grupos tipo industria (Frenos, Motor, Eléctrico, Suspensión y dirección, Refrigeración, Mantenimiento...); `categories.json` válido contra el nuevo esquema; no hace falta SVG nuevos en esta tarea (son los mismos 13 iconos, solo se agrupan) |
+| T-E7 | E. Frontend | `categoryTree.js` agrupado por `group_slug` | `site/js/categoryTree.js` | T-F2 | pendiente | El árbol de categorías (tanto en el home T-E5 como dentro del flujo vehículo→categoría) muestra primero el grupo y despliega los slugs hoja al expandir, en vez de una lista plana de 13; responsive y navegable por teclado igual que el resto |
+
+Depende de orden: T-F2 (el dato) antes de T-E7 (la UI que lo consume). T-A3 y T-C2 son
+independientes entre sí y de las otras dos — pueden ir todas en paralelo salvo esa
+dependencia F2→E7.
 
 ## Reglas
 - Cada agente solo edita las carpetas de su columna "Dueño de".

@@ -83,8 +83,21 @@ filtrar rápido en el cliente):
 ## `data/build/categories.json`
 
 ```json
-{ "slug": "filtro-aceite", "name_es": "Filtro de aceite", "svg": "filtro-aceite.svg" }
+{ "slug": "filtro-aceite", "name_es": "Filtro de aceite", "svg": "filtro-aceite.svg",
+  "group_slug": "mantenimiento", "group_name_es": "Mantenimiento" }
 ```
+
+**Jerarquía de 2 niveles** (agregado 04/10/2026, inspirado en la taxonomía estándar de la
+industria — sistema → pieza — que usan catálogos grandes como RockAuto; es terminología
+genérica del sector, no contenido propietario de nadie). `group_slug`/`group_name_es` son
+**obligatorios** desde ahora (todo slug pertenece a un grupo), pero es un cambio
+**retrocompatible**: el campo `category` en `parts.json` sigue apuntando al slug HOJA
+(ej. `"pastillas-freno"`), nunca al grupo — así que nada que ya lea `parts.json.category`
+se rompe. Solo `categoryTree.js` necesita aprender a agrupar visualmente por `group_slug`
+antes de mostrar los slugs hoja. Grupos sugeridos de partida (el agente que implemente
+puede ajustar nombres, pero mantener el mismo *tipo* de agrupación): Frenos, Motor,
+Eléctrico, Suspensión y dirección, Refrigeración, Mantenimiento, Carrocería y exterior,
+Interior, Iluminación.
 
 ## Regla de escalado (no negociable sin pasar por el líder)
 
