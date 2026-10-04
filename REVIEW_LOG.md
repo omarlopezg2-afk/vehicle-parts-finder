@@ -360,6 +360,21 @@ lookup rejected"* (la IP residencial no tiene rDNS válido). La prueba de punta 
 que hacerla enviando desde un correo real (Gmail) a `soporte@partexact.com` y mirando el
 **Activity log** de Email Routing para confirmar el reenvío.
 
+**Prueba de punta a punta: ✅ pasada (04/10).** Omar envió un correo desde su Gmail a
+`soporte@partexact.com`; el Activity log de Email Routing lo registra como **Forwarded**
+(asunto «Hola Hermes», remitente `omar.lopezg2@gmail.com`). El reenvío de la marca al
+buzón real funciona. Dos matices que salieron en la prueba, y que conviene recordar:
+
+1. **Gmail no enseña el reenvío cuando el remitente y el destino son la misma cuenta.**
+   Cloudflare lo avisó por correo: Gmail deduplica, así que el mensaje reenviado no
+   aparece como nuevo (se ve el que uno mandó). No es un fallo del reenvío — el propio
+   Cloudflare manda un aviso explicándolo. Para probar «de verdad» hay que enviar desde
+   una cuenta distinta a la de destino (o mirar el Activity log, que es la fuente que no
+   miente).
+2. **El primer intento desde Gmail falló** y el segundo funcionó: era la caché negativa
+   del DNS (el dominio se registró minutos antes, así que durante un rato "partexact.com
+   no existe" seguía cacheado en el resolutor de Google). Se cura solo en ~30 min.
+
 Pendiente de Omar para cerrar Fase 3: keyset de **Production** de eBay (la cuenta de
 Developer ya fue aprobada el 04/10) — con Client ID + Client Secret se activa el modo real
 de `fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo).
