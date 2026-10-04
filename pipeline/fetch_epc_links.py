@@ -78,9 +78,9 @@ como ASX). Categoria de prueba: filtro de aceite ("maintenance parts" /
    usamos el link al decoder como paso intermedio y el link directo a la
    generación+categoría como el deep link principal.
 
-2) PARTSOUQ (https://partsouq.com) — URL CONSTRUIBLE PERO NO VERIFICADA
-   EN VIVO POR BLOQUEO DE CLOUDFLARE EN AMBOS CANALES (navegador headless
-   Y curl simple).
+2) PARTSOUQ (https://partsouq.com) — URL VERIFICADA EN VIVO POR UN USUARIO REAL
+   (04/10/2026). Bloqueo de Cloudflare confirmado SOLO en acceso automatizado
+   (navegador headless y curl simple); un navegador normal sí pasa.
 
    Estructura real observada (via resultados de busqueda de Google que
    indexaron paginas de Partsouq, NO fabricada):
@@ -100,15 +100,28 @@ como ASX). Categoria de prueba: filtro de aceite ("maintenance parts" /
    y que el propio sitio redirige internamente al catalogo genuino con su
    `ssd` una vez que identifica el VIN.
 
-   Intento de verificacion en vivo: `curl` con UA de navegador -> HTTP 403 +
-   pagina "Just a moment..." (challenge de Cloudflare, variante no
-   interactiva). El navegador headless del agente tambien fue bloqueado con
-   el challenge interactivo "Un momento...". No pudimos confirmar visualmente
-   que la pagina de resultados cargue contenido de catalogo para este VIN
-   especifico. Se documenta como "URL construida pero sin verificacion visual
-   directa en esta sesion" — un usuario con navegador normal probablemente SI
-   puede completar el challenge (es el mismo que ve cualquier visitante
-   humano de Partsouq).
+   VERIFICACION REAL (04/10/2026, Omar, navegador normal, VIN real
+   JA4AP4AU3LU023739): la busqueda devolvio 3 coincidencias de vehiculo
+   (mismo chasis GA2W: "ASX(G.EXP)", "Outlander Sport(P&G)",
+   "Outlander Sport(MMNA)" — MMNA = Mitsubishi Motors North America, la
+   variante correcta para EE.UU.). Al entrar a esa variante cargo un catalogo
+   OEM ilustrado real: categoria "Engine" con 24 diagramas (Oil pump & Oil
+   filter, A/T valve body, Power steering oil pump, cylinder head,
+   camshaft/timing, engine mount), con sub-etiquetas de pieza clicables. El
+   vehiculo aparece etiquetado como "Airtrek / Outlander" (nombre de
+   plataforma global de Mitsubishi), no "Outlander Sport" (nombre de mercado
+   EE.UU.) — es el mismo catalogo, solo cambia el nombre comercial mostrado.
+   No aparecio ningun selector de trim BE/ES/GT/SE/SP en esta pantalla —
+   consistente con el hallazgo de T-C2 (ver TASKS.md): el campo
+   "Modification" de Partsouq usa codigos de tren motriz (H-LINE, S-CVT), no
+   los nombres de trim de marketing de EE.UU.
+
+   Intento previo (curl / navegador headless del agente): HTTP 403 + pagina
+   "Just a moment..." (challenge de Cloudflare) en ambos canales, en varias
+   sesiones distintas. Confirma que el bloqueo es deteccion de automatizacion
+   (navigator.webdriver, fingerprint de CDP), no un problema del link en si
+   — un usuario real con navegador normal no deberia encontrar este
+   obstaculo, como ya se confirmo.
 
    Estabilidad: la ruta de busqueda por `q=` es estable (parte de su API
    publica de busqueda, documentada por ellos mismos); la ruta de catalogo

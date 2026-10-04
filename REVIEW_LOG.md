@@ -257,5 +257,48 @@ renderizados, toggle de `aria-expanded` funciona (`false`→`true` al click, pan
 revela). 52/52 tests.
 
 Pendiente de Omar: cuenta eBay Developer (en trámite), Advance Auto Parts vía Impact.com
-(Fase 3), y confirmar si el link de Partsouq pasa el challenge de Cloudflare en su
-navegador normal.
+(Fase 3).
+
+---
+
+## 04/10/2026 — Confirmación de Partsouq por Omar — Líder
+
+**Resultado: Partsouq SÍ funciona de punta a punta para un usuario real — queda
+confirmado, cerrando la duda que quedó abierta en la Ronda 3.**
+
+Omar probó en su propio navegador (no automatizado) el link que el proyecto ya genera
+(`https://partsouq.com/en/search/all?q=<VIN>`) con su VIN real
+(`JA4AP4AU3LU023739`):
+
+1. **Pasó el challenge de Cloudflare Turnstile sin problema** — algo que el navegador
+   automatizado del líder no logró en 2 intentos distintos (ver entrada de Ronda 3).
+   Confirma que el bloqueo es puramente de detección de automatización, no del link.
+2. **La búsqueda devolvió 3 coincidencias de vehículo** para el mismo VIN (ASX(G.EXP),
+   Outlander Sport(P&G), Outlander Sport(MMNA)) — Partsouq decodifica por plataforma
+   compartida (chasis GA2W) y lista las variantes de mercado, no un único resultado.
+   MMNA = Mitsubishi Motors North America, la variante correcta para EE.UU.
+3. **Al entrar a esa variante, cargó un catálogo OEM ilustrado real**: categoría "Engine"
+   con 24 diagramas (Oil pump & Oil filter, A/T valve body, Power steering oil pump,
+   cylinder head, camshaft/timing, engine mount), con sub-etiquetas de pieza clicables
+   (ej. "Engine oil filter", "Oil pump chain"). Esto es exactamente lo que el flujo
+   VIN→EPC del proyecto necesita: diagrama real + ruta hacia el número de parte.
+
+**Matiz honesto, no un problema**: el catálogo etiqueta el vehículo como "Airtrek /
+Outlander" (nombre de plataforma global), no "Outlander Sport" (nombre de mercado EE.UU.)
+— es la misma pieza/catálogo, solo cambia el nombre comercial mostrado. Tampoco aparece
+ningún selector de trim BE/ES/GT/SE/SP en esta pantalla — consistente con el hallazgo de
+T-C2: el campo "Modification" de Partsouq usa códigos de tren motriz (H-LINE, S-CVT), no
+los nombres de trim de marketing de EE.UU.
+
+**Conclusión actualizada para el proyecto**: Partsouq es una fuente EPC viable para
+usuarios reales (no solo "URL construida pero sin verificar" como quedó documentado
+antes) — el link de búsqueda por VIN que ya generamos en `fetch_epc_links.py` SÍ lleva a
+un catálogo real y navegable. El límite que sigue en pie es que **nuestros agentes no
+pueden verificarlo de forma automatizada** (Cloudflare), así que cualquier intento futuro
+de extraer datos de Partsouq (ej. para completar T-C2) seguirá necesitando verificación
+manual o una técnica anti-Cloudflare real — no cambia la recomendación de "no vale la
+pena automatizar scraping aquí", pero sí sube la confianza en el link que mostramos al
+usuario.
+
+Pendiente de Omar: cuenta eBay Developer (en trámite), Advance Auto Parts vía Impact.com
+(Fase 3).
