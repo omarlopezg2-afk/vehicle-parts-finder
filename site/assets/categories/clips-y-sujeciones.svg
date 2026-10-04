@@ -1,5 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Clips y sujeciones: dos clips tipo U entrelazados -->
-  <path d="M16,12 v18 a8,8 0 0 0 16,0 V18"/>
-  <path d="M32,34 v18 a8,8 0 0 0 16,0 V40"/>
+  <!-- Clips y sujeciones: remaches a presion con cabeza y vastago expandible -->
+  <path d="M18,10 Q10,10 10,18 Q10,24 18,24 Q26,24 26,18 Q26,10 18,10 Z"/>
+  <line x1="18" y1="24" x2="18" y2="46"/>
+  <path d="M12,46 Q12,54 18,54 Q24,54 24,46"/>
+  <path d="M46,10 Q38,10 38,18 Q38,24 46,24 Q54,24 54,18 Q54,10 46,10 Z"/>
+  <line x1="46" y1="24" x2="46" y2="40"/>
 </svg>

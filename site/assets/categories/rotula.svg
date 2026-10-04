@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-  <!-- Rotula: vastago con bola en junta esferica -->
-  <line x1="32" y1="6" x2="32" y2="26"/>
-  <circle cx="32" cy="34" r="10"/>
-  <path d="M24,42 L20,56 M40,42 L44,56"/>
+  <!-- Rotula: esfera dentro de un alojamiento con vastago roscado -->
+  <line x1="32" y1="6" x2="32" y2="24"/>
+  <circle cx="32" cy="34" r="11"/>
+  <path d="M18,40 Q18,54 32,54 Q46,54 46,40"/>
 </svg>
