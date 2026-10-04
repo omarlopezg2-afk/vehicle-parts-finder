@@ -232,6 +232,58 @@ cupones de terceros sin relación confirmada).
 en vivo), analítica respetuosa de privacidad. Backlog: más fuentes, proveedor de pago para
 equivalencias (ACES/PIES), Supabase, búsqueda multi-idioma.
 
+## Fase 5 — Validación: qué significa que funcione (decidido 04/10/2026)
+
+**Por qué esta fase va antes de cualquier producto nuevo.** Hoy no se puede responder "¿esto
+funciona?" con hechos: el sitio está en vivo con 28 partes reales y 33 categorías, y **no tiene
+ni una línea de analítica** — nadie sabe si entra alguien. Y no existe ningún canal de
+distribución: nadie tiene motivo para conocer la dirección. **El cuello de botella no es el
+catálogo, es la distribución.**
+
+Decidido con Omar el 04/10/2026: **no se abre ningún frente nuevo** (ni la versión móvil ni el
+producto para negocios de repuestos) hasta tener un veredicto **medido** sobre lo ya construido.
+Su razonamiento, textual: *"no quería comenzar tantas cosas al mismo tiempo y ni siquiera
+sabemos al 100% de que lo que estamos creando ahora va a funcionar"*.
+
+**El embudo, y qué parte todavía no se puede medir:**
+
+| Paso | Cómo se mide | Estado |
+|---|---|---|
+| Visitas y de dónde vienen | analítica sin cookies (GoatCounter) | **falta** |
+| Búsquedas hechas (VIN o selector) | evento propio en el JS | **falta** |
+| Clics salientes a eBay | evento propio en el JS (lo controlamos nosotros) | **falta** |
+| Compras / comisión | panel de EPN | **imposible hoy** (solicitud declinada) |
+
+Conclusión que ordena todo: **lo que depende de nosotros es medible ya**; lo único invisible es
+la compra del lado de eBay. Por eso el criterio de éxito **no puede ser "comisiones"** todavía:
+tiene que ser **tráfico útil y clics cualificados**. Medir la compra queda pendiente de EPN o de
+una red alternativa.
+
+**Herramientas: las dos gratis y sin cookies.** GoatCounter (una etiqueta, sin banner de
+consentimiento) y Google Search Console (consultas reales de búsqueda: dice **con qué palabras**
+nos encuentran, que es lo que orienta el contenido).
+
+**Tres experimentos, con su regla de decisión:**
+
+1. **Distribución orgánica.** No es "hacer SEO" en abstracto: es publicar las páginas que
+   responden a búsquedas reales (número de parte, "qué pieza le queda a…") y responder donde la
+   gente ya pregunta. Trabajo de semanas, no de días, y con efecto acumulativo.
+2. **Pre-test del negocio B2B, sin escribir una línea de código (spike).** Hablar con 5–8
+   talleres y repuesteras: cómo resuelven hoy "¿qué número le queda a este carro?", cuánto tiempo
+   pierden y qué pagarían por resolverlo. Regla: si **3 o más** describen el problema espontáneamente
+   y preguntan precio, la Fase 2 (producto para negocios) se diseña **con sus respuestas**; si
+   nadie lo reconoce como problema, **se descarta antes de construirla**.
+3. **Móvil.** No se decide ahora. El sitio ya funciona en el teléfono (es responsive): "versión
+   móvil" y "app" no son lo mismo, y una app sin retorno medido es trabajo regalado.
+
+**Criterio de veredicto — propuesta, para que Omar la apruebe o la cambie** (no es un dato, es
+un umbral que fijamos antes de medir, para no interpretar los resultados a conveniencia): tras
+**8–10 semanas** de trabajo de distribución, si el sitio no consigue del orden de **100 visitas
+orgánicas semanales**, con **más del 30 %** haciendo una búsqueda y **más del 20 %** de esas
+haciendo clic a eBay, entonces el producto tal como está **no atrae demanda**, y las salidas son
+cambiar la cuña (ir por el B2B del spike) o parar. Lo que no se hará es seguir agregando catálogo
+y funciones esperando que eso solo traiga gente.
+
 ## Protocolo de coordinación y revisión
 
 Tablero `TASKS.md`: ID, dueño, dependencias, criterios de aceptación, estado
