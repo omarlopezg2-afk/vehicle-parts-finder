@@ -415,6 +415,19 @@ existe: no es un problema, el `deploy` posterior sube el script al mismo nombre.
 imprimió en pantalla) y confirmar que eBay valida el reto y activa el keyset. Después, T-B4:
 cargar App ID y Cert ID con `scripts/seed-secrets.sh` y correr el pipeline en modo real.
 
+**Tropiezo propio, documentado porque es el tipo de error que se repite**: al commitear, se
+coló al repo público `infra/ebay-notifications/.wrangler/cache/wrangler-account.json` — un
+archivo de caché local de Wrangler que contiene el **id de la cuenta de Cloudflare y el
+nombre de la cuenta** (que en este caso incluye el correo de Omar). No son credenciales, pero
+no tienen nada que hacer en un repo público. Corregido: `**/.wrangler/` agregado a
+`.gitignore`, archivo sacado del árbol y commit reescrito (`--amend`) con `--force-with-lease`.
+Verificado que `main` ya no lo sirve (404 en raw.githubusercontent). Queda dicho con
+honestidad: el commit huérfano anterior sigue accesible por SHA directo hasta que GitHub haga
+su recolección de objetos inalcanzables, así que la limpieza no es al 100 % — para que sea
+definitiva habría que pedirlo a soporte de GitHub. Regla para el futuro: **nunca** `git add -A`
+en carpetas que contienen cachés de herramientas (`.wrangler/`, `.venv/`, `node_modules/`);
+revisar lo que `git status` propone antes de commitear.
+
 Pendiente de Omar para cerrar Fase 3: keyset de **Production** de eBay (la cuenta de
 Developer ya fue aprobada el 04/10) — con Client ID + Client Secret se activa el modo real
 de `fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo).
