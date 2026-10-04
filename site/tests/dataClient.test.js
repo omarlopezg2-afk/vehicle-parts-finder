@@ -22,6 +22,7 @@ import {
   getVehicles,
   getCategories,
   matchVehicleByVIN,
+  matchVehicleByMakeModelYear,
   getPartsByFitment,
   _setFetchForTests,
 } from "../js/dataClient.js";
@@ -128,5 +129,28 @@ describe("dataClient.js", () => {
     const parts = await getPartsByFitment("veh-mitsubishi-outlander-sport-2020");
     const categoriesFound = new Set(parts.map((p) => p.category));
     assert.ok(categoriesFound.size >= 2); // filtro-aceite, pastillas-freno, bateria
+  });
+
+  test("matchVehicleByMakeModelYear encuentra el vehículo por marca/modelo/año", async () => {
+    const vehicle = await matchVehicleByMakeModelYear("Mitsubishi", "Outlander Sport", 2020);
+    assert.ok(vehicle);
+    assert.equal(vehicle.id, "veh-mitsubishi-outlander-sport-2020");
+  });
+
+  test("matchVehicleByMakeModelYear no distingue mayúsculas/minúsculas ni espacios", async () => {
+    const vehicle = await matchVehicleByMakeModelYear("  mitsubishi ", "outlander sport", "2020");
+    assert.ok(vehicle);
+    assert.equal(vehicle.make, "Mitsubishi");
+  });
+
+  test("matchVehicleByMakeModelYear regresa null si no hay match", async () => {
+    const vehicle = await matchVehicleByMakeModelYear("Mitsubishi", "Outlander Sport", 1999);
+    assert.equal(vehicle, null);
+  });
+
+  test("matchVehicleByMakeModelYear regresa null con argumentos vacíos/inválidos", async () => {
+    assert.equal(await matchVehicleByMakeModelYear("", "Outlander Sport", 2020), null);
+    assert.equal(await matchVehicleByMakeModelYear("Mitsubishi", "", 2020), null);
+    assert.equal(await matchVehicleByMakeModelYear("Mitsubishi", "Outlander Sport", "no-es-año"), null);
   });
 });

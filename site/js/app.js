@@ -12,6 +12,7 @@ import {
   getPart,
   getCategories,
   matchVehicleByVIN,
+  matchVehicleByMakeModelYear,
   getPartsByFitment,
   _isUsingFixture,
 } from "./dataClient.js";
@@ -19,11 +20,14 @@ import { isLikelyVIN, cleanVIN } from "./vin.js";
 import { renderVehicleTree } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
+import { renderVehiclePicker } from "./vehiclePicker.js";
 
 const resultsEl = document.getElementById("results");
 const form = document.getElementById("search-form");
 const input = document.getElementById("search-input");
 const fixtureBanner = document.getElementById("fixture-banner");
+const toggleVehiclePickerBtn = document.getElementById("toggle-vehicle-picker");
+const vehiclePickerContainer = document.getElementById("vehicle-picker-container");
 
 function clearResults() {
   resultsEl.innerHTML = "";
@@ -186,6 +190,53 @@ async function runSearch(rawQuery) {
 form.addEventListener("submit", (ev) => {
   ev.preventDefault();
   runSearch(input.value);
+});
+
+// --- Botón "¿No tienes tu VIN a mano? Elige tu vehículo" ---
+// Muestra/oculta el wizard de marca→año→modelo (vehiclePicker.js). Al
+// completarse, busca el vehículo en NUESTRO catálogo
+// (matchVehicleByMakeModelYear, vía dataClient.js) y entra al MISMO árbol
+// de categorías que usa el flujo VIN (runVinFlow), para que ambos caminos
+// terminen en la misma pantalla.
+let vehiclePickerInstance = null;
+
+function closeVehiclePicker() {
+  vehiclePickerContainer.hidden = true;
+  vehiclePickerContainer.innerHTML = "";
+  vehiclePickerInstance = null;
+  toggleVehiclePickerBtn.setAttribute("aria-expanded", "false");
+  toggleVehiclePickerBtn.textContent = "¿No tienes tu VIN a mano? Elige tu vehículo";
+}
+
+function openVehiclePicker() {
+  vehiclePickerContainer.innerHTML = "";
+  vehiclePickerInstance = renderVehiclePicker(async (make, model, year) => {
+    closeVehiclePicker();
+    clearResults();
+
+    const vehicle = await matchVehicleByMakeModelYear(make, model, year);
+    if (!vehicle) {
+      renderEmptyState(
+        `Todavía no tenemos piezas registradas para ${make} ${model} ${year} en el catálogo. ` +
+          "Si tienes el VIN, intenta buscar con él, o revisa el número de parte directamente."
+      );
+      return;
+    }
+    await runVinFlow(vehicle);
+  });
+  vehiclePickerContainer.appendChild(vehiclePickerInstance.element);
+  vehiclePickerContainer.hidden = false;
+  toggleVehiclePickerBtn.setAttribute("aria-expanded", "true");
+  toggleVehiclePickerBtn.textContent = "Ocultar selector de vehículo";
+  vehiclePickerInstance.focusFirstField();
+}
+
+toggleVehiclePickerBtn.addEventListener("click", () => {
+  if (vehiclePickerContainer.hidden) {
+    openVehiclePicker();
+  } else {
+    closeVehiclePicker();
+  }
 });
 
 // Estado inicial: mensaje de bienvenida (no hace ninguna búsqueda todavía,
