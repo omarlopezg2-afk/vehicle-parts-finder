@@ -470,15 +470,16 @@ def fetch_vehicles(vins: list[str], timeout: int = DEFAULT_TIMEOUT_S) -> list[di
     return [fetch_vehicle(vin, timeout=timeout) for vin in vins]
 
 
-def _http_get_with_retry(url: str, timeout: int, max_reintentos: int = 2) -> bytes:
+def _http_get_with_retry(url: str, timeout: int, max_reintentos: int = 4) -> bytes:
     """GET con reintento corto para HTTP 403/429 (verificado en vivo: vPIC
     aplica un rate-limit que a veces devuelve 403 de forma transitoria -- la
     MISMA url responde 200 segundos después sin cambiar nada). No es
     específico de T-A4: afecta tanto fetch_vehicle como get_all_makes/
     get_models_for_make_year, así que se centraliza aquí. Reintenta solo
-    403/429 (no otros códigos HTTP, que sí son errores reales); backoff fijo
-    corto porque esto corre en un pipeline con timeout de proceso acotado
-    (GitHub Actions), no puede esperar minutos.
+    403/429 (no otros códigos HTTP, que sí son errores reales); backoff
+    incremental acotado (máx. ~30s de espera total) porque esto corre en un
+    pipeline con timeout de proceso finito (GitHub Actions), no puede
+    esperar minutos.
 
     Lanza la excepción tal cual si se agotan los reintentos, para que el
     llamador (_vpic_get_json / fetch_vehicle) la capture con su manejo
@@ -494,7 +495,7 @@ def _http_get_with_retry(url: str, timeout: int, max_reintentos: int = 2) -> byt
             ultimo_error = exc
             if exc.code not in (403, 429) or intento == max_reintentos:
                 raise
-            time.sleep(2 * (intento + 1))
+            time.sleep(min(3 * (intento + 1), 10))
     assert ultimo_error is not None
     raise ultimo_error
 
