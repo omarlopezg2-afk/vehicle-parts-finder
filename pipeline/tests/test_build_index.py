@@ -96,7 +96,7 @@ class TestBuildPartsOffline(unittest.TestCase):
         claves_esperadas = {
             "id", "part_number", "part_number_norm", "type", "brand", "name",
             "category", "epc_link", "image", "equivalents", "fitment_ids",
-            "offers", "updated_at",
+            "other_names", "offers", "updated_at",
         }
         for parte in parts:
             self.assertEqual(claves_esperadas, set(parte.keys()))
@@ -124,6 +124,33 @@ class TestBuildPartsOffline(unittest.TestCase):
         for parte in parts:
             for offer in parte["offers"]:
                 self.assertEqual(offer["store"], "eBay")
+
+    def test_other_names_siempre_presente_como_clave(self):
+        # T-D2 / CONTRACTS.md: other_names es opcional en el seed pero la
+        # clave debe estar SIEMPRE presente en el resultado (mismo patrón
+        # que epc_link), con [] como default cuando el seed no la trae.
+        parts = build_index.build_parts(self.vehiculo_ejemplo)
+        for parte in parts:
+            self.assertIn("other_names", parte)
+            self.assertIsInstance(parte["other_names"], list)
+
+    def test_other_names_se_propaga_tal_cual_desde_el_seed(self):
+        parts = build_index.build_parts(self.vehiculo_ejemplo)
+        seed = build_index._load_seed_parts()
+        seed_por_id = {p["id"]: p for p in seed}
+        con_sinonimos = [p for p in parts if seed_por_id[p["id"]].get("other_names")]
+        self.assertTrue(con_sinonimos, "El seed debería traer al menos una parte con other_names")
+        for parte in con_sinonimos:
+            self.assertEqual(parte["other_names"], seed_por_id[parte["id"]]["other_names"])
+
+    def test_other_names_default_vacio_si_el_seed_no_lo_trae(self):
+        parts = build_index.build_parts(self.vehiculo_ejemplo)
+        seed = build_index._load_seed_parts()
+        seed_por_id = {p["id"]: p for p in seed}
+        sin_sinonimos = [p for p in parts if "other_names" not in seed_por_id[p["id"]]]
+        self.assertTrue(sin_sinonimos, "Debería haber al menos una parte de seed sin other_names")
+        for parte in sin_sinonimos:
+            self.assertEqual(parte["other_names"], [])
 
     def test_mitsubishi_del_seed_resuelve_7zap_para_outlander_sport(self):
         # El seed trae una parte Mitsubishi de filtro-aceite; para el

@@ -83,6 +83,13 @@ _PART_REQUIRED_KEYS = {
     "offers", "updated_at",
 }
 
+# other_names (CONTRACTS.md, agregado 04/10/2026) es OPCIONAL a propósito:
+# no está en _PART_REQUIRED_KEYS y no se exige como clave faltante. Pero SI
+# existe en una parte, debe ser list[str] (ver _validate_other_names). El
+# build (build_index.py) siempre la deja presente como [] por defecto, pero
+# validate.py no debe fallar datos de seed/parts.json de otros orígenes que
+# todavía no la incluyan.
+
 _OFFER_REQUIRED_KEYS = {"store", "url", "price", "currency", "condition", "updated_at"}
 
 
@@ -213,6 +220,10 @@ def validate_parts(data: Any, errores: ValidationErrors) -> None:
         if "fitment_ids" in parte:
             if not isinstance(parte["fitment_ids"], list) or not all(isinstance(x, str) for x in parte["fitment_ids"]):
                 errores.add(contexto_id, "'fitment_ids' debería ser list[str]")
+
+        if "other_names" in parte:
+            if not isinstance(parte["other_names"], list) or not all(isinstance(x, str) for x in parte["other_names"]):
+                errores.add(contexto_id, "'other_names' debería ser list[str]")
 
         if "offers" in parte:
             if not isinstance(parte["offers"], list):

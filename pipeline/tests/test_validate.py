@@ -106,6 +106,34 @@ class TestValidateParts(unittest.TestCase):
         validate.validate_parts({"no": "es una lista"}, errores)
         self.assertTrue(any("debería ser una lista" in e for e in errores))
 
+    def test_other_names_ausente_no_genera_error(self):
+        # T-D2: other_names es opcional -- no debe exigirse como clave.
+        parte = _parte_valida()
+        self.assertNotIn("other_names", parte)
+        errores = validate.ValidationErrors()
+        validate.validate_parts([parte], errores)
+        self.assertEqual(list(errores), [])
+
+    def test_other_names_lista_de_strings_es_valido(self):
+        parte = _parte_valida(other_names=["Bumper Cover Retainer Clip", "Grille Clip"])
+        errores = validate.ValidationErrors()
+        validate.validate_parts([parte], errores)
+        self.assertEqual(list(errores), [])
+
+    def test_other_names_como_string_es_error(self):
+        # Tipo incorrecto explícito del enunciado de T-D2: other_names como
+        # string en vez de array debe fallar validate.py.
+        parte = _parte_valida(other_names="Grille Clip")
+        errores = validate.ValidationErrors()
+        validate.validate_parts([parte], errores)
+        self.assertTrue(any("other_names" in e for e in errores))
+
+    def test_other_names_con_elemento_no_string_es_error(self):
+        parte = _parte_valida(other_names=["Grille Clip", 123])
+        errores = validate.ValidationErrors()
+        validate.validate_parts([parte], errores)
+        self.assertTrue(any("other_names" in e for e in errores))
+
 
 class TestValidateVehicles(unittest.TestCase):
     def test_vehiculo_valido_no_genera_errores(self):
