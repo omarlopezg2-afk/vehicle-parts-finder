@@ -33,6 +33,7 @@ Array de objetos. Cada parte:
   },
   "equivalents": ["id", "id"],
   "fitment_ids": ["id", "id"],
+  "other_names": ["string", "string"],
   "offers": [
     {
       "store": "eBay",
@@ -52,6 +53,14 @@ obligatorio como clave (puede ir `null` dentro si todavía no se resolvió), por
 producto es "VIN → ensamblaje → deep link a la fuente del diagrama/número de fábrica", no
 solo "ya tengo el número, dame precio". Ningún agente debe quitar este campo ni tratarlo
 como opcional/secundario.
+
+**`other_names`** (agregado 04/10/2026, inspirado en el patrón "Other Names" de
+factorymitsubishiparts.com/RevolutionParts): lista de sinónimos/nombres alternativos de la
+misma pieza (ej. para un clip de parachoques: "Bumper Cover Retainer Clip", "Sight Shield
+Clip", "Grille Clip"...). Opcional — puede ser `[]` si no se conocen sinónimos. `searchPart`
+en `dataClient.js` debe matchear también contra este campo, no solo contra
+`part_number_norm`/`name`, para que alguien que busca "clip de parrilla" encuentre la pieza
+aunque el nombre canónico sea otro.
 
 ## `data/build/vehicles.json`
 
