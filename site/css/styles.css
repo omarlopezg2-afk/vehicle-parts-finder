@@ -246,6 +246,74 @@ main {
   background: var(--color-surface-alt);
 }
 
+/* --- T-E7: acordeón de grupos (group_slug) -> slugs hoja --- */
+.category-groups {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.category-group {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.category-group-toggle {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--color-surface);
+  border: none;
+  color: var(--color-text);
+  cursor: pointer;
+  text-align: left;
+  padding: 0.7rem 0.85rem;
+  min-height: 44px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.category-group-toggle:hover {
+  background: var(--color-surface-alt);
+}
+
+.category-group-name {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: break-word;
+}
+
+.category-group-count {
+  flex: 0 0 auto;
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: var(--color-text-dim);
+  background: var(--color-surface-alt);
+  border-radius: 999px;
+  padding: 0.1rem 0.5rem;
+}
+
+.category-group-chevron {
+  flex: 0 0 auto;
+  transition: transform 0.15s ease;
+}
+
+.category-group-toggle[aria-expanded="true"] .category-group-chevron {
+  transform: rotate(180deg);
+}
+
+.category-group-panel {
+  padding: 0.75rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.category-group-panel[hidden] {
+  display: none;
+}
+
 /* --- Ficha de parte --- */
 .part-card {
   background: var(--color-surface);
