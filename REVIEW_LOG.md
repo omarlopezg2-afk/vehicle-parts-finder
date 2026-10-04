@@ -195,3 +195,67 @@ no de datos propietarios).
 
 Pendiente de Omar: cuenta eBay Developer (en trámite), Advance Auto Parts vía Impact.com
 (Fase 3).
+
+---
+
+## 04/10/2026 — Ronda 3 (marcas, trim, categorías jerárquicas) — Líder
+
+**Resultado: T-A3, T-F2, T-E7 aprobadas y fusionadas (PR #14, #13, #15). T-C2 cerrada sin
+código, hallazgo documentado en TASKS.md.**
+
+**Incidente de cuota**: la ventana de 5h de Anthropic se agotó anoche justo cuando los 3
+agentes de la ronda terminaban. T-A3 y T-C2 quedaron a medias (código listo pero sin PR
+abierto, o investigación cortada a mitad). Al retomar: T-A3 se revisó y su PR se abrió
+manualmente por el líder (el código ya estaba completo y verificado); T-C2 se relanzó con
+contexto explícito de dónde se había cortado, para no repetir investigación ya hecha.
+
+**T-A3 (filtro de marcas)**: lista de exclusión explícita (no heurística), investigada
+contra la API real de vPIC — de ~207 fabricantes de camión/bus, solo 3 se colaban en
+car+MPV (Freightliner, Blue Bird, Orion Bus); se agregaron esos + una lista de fabricantes
+industriales conocidos como defensa en profundidad. Comparación por nombre EXACTO, no
+substring — verificado por el líder que esto es necesario: existe una marca legítima
+"Sprinter (Dodge Or Freightliner)" que se habría filtrado por error con un match de
+substring. Verificado post-merge contra la API real: Freightliner (solo) ya no aparece,
+el Sprinter sigue ahí, Mitsubishi/Toyota/Isuzu presentes. 98+43 tests.
+
+**T-C2 (Trim)**: durante la ejecución se detectó en vivo que el agente había quedado
+**enganchado en un bucle real** — 4 reintentos seguidos de `browser_exec` contra un perfil
+de Chrome bloqueado (mismo error de lock de SQLite que el líder ya había visto antes en
+esta sesión), sin avanzar. Corregido con `delegate_task(action='steer')`: se le ordenó
+dejar de usar el navegador, cambiar a `curl`/`web_search` como alternativa, y cerrar con
+una conclusión honesta si no lograba nada concluyente en pocos intentos más — en vez de
+dejarlo reintentando indefinidamente. El agente respondió bien a la corrección. Conclusión
+final: 7zap confirmado que NO tiene el dato en su catálogo público (solo infraestructura
+i18n sin poblar); Partsouq ni confirmado ni descartado (Cloudflare bloqueó el acceso
+directo, pero hay evidencia indirecta de que su esquema de datos sí lo tiene para modelos
+hermanos del Outlander Sport). No se construye nada; el wizard se queda en 3 niveles.
+
+**Verificación adicional pedida por Omar**: tras cerrar T-C2, Omar preguntó qué requeriría
+"cambiar a Partsouq". El líder intentó verificar en vivo el link de Partsouq que el
+proyecto ya genera, con el navegador real (no headless) — 3 intentos, incluyendo clic en
+el checkbox de Cloudflare Turnstile tras que Omar cerrara su Chrome personal para liberar
+el perfil. Ni siquiera con perfil real y clic humano-simulado se pasó el challenge (quedó
+en "Verificando..." y volvió al estado inicial) — confirma que el bloqueo no es solo
+cuestión de clic, hay algo del entorno CDP/automatizado que Cloudflare detecta. Queda
+pendiente que Omar lo pruebe él mismo en su navegador normal para confirmar si un usuario
+real sin automatización sí pasa. Conclusión para el proyecto: aunque se resolviera el
+acceso, Partsouq no tiene URLs de catálogo construibles de antemano (usa un token `ssd`
+generado por su servidor al resolver un VIN en su buscador) — el cuello de botella real es
+arquitectónico, no solo de acceso.
+
+**T-F2 (categorías jerárquicas)**: 13 slugs agrupados en 8 grupos + "Otros" con criterio
+técnico-automotriz razonable (Frenos, Motor, Eléctrico, Suspensión y dirección,
+Refrigeración, Mantenimiento, Iluminación, Carrocería y exterior). `validate.py` sigue en
+verde (no valida el campo nuevo contra tipo todavía, documentado honestamente por el
+agente, no bloqueante).
+
+**T-E7 (árbol agrupado)**: patrón estándar de disclosure widget (`aria-expanded` +
+`aria-controls` + atributo `hidden`), sin reinventar roles ARIA complejos para una
+jerarquía de 2 niveles — decisión correcta. No tocó `app.js` (mismo componente reutilizado
+sin cambiar firma). Verificado por el líder con el navegador real tras el merge: 8 grupos
+renderizados, toggle de `aria-expanded` funciona (`false`→`true` al click, panel se
+revela). 52/52 tests.
+
+Pendiente de Omar: cuenta eBay Developer (en trámite), Advance Auto Parts vía Impact.com
+(Fase 3), y confirmar si el link de Partsouq pasa el challenge de Cloudflare en su
+navegador normal.
