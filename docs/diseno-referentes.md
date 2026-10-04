@@ -57,3 +57,63 @@
   **285 marcas** y no aparece ningún mensaje de error.
 - Dije *"no hay una sola imagen"*: impreciso. Hay 33, pero son los iconos de categoría; lo que
   falta es **fotografía de piezas**. La conclusión se mantiene; el dato estaba mal dicho.
+
+---
+
+## Segundo barrido (04/10/2026, noche)
+
+### Autodoc (autodoc.es) — entró; es la referencia del sector en español
+
+- **Barra de promoción** arriba del todo, en rojo, con una oferta y un reloj: *"¡Este otoño sigue
+  sumando kilómetros! Hasta un -37 % en comparación con el PVRP"*.
+- **Un solo campo de búsqueda**: *"Introduzca el número o el nombre de la pieza"* — acepta número
+  **o** nombre, igual que debería hacer el nuestro.
+- **Selector de vehículo en 3 pasos numerados**: marca → modelo → tipo de motor. Y además busca
+  por **matrícula** (que en Europa es el equivalente práctico a nuestro VIN).
+- **Barra de categorías con etiquetas de estado**: *Limpiaparabrisas (Trending)*,
+  *Limpieza y Cuidado (New)*, Neumáticos, Herramientas, Aceite de motor, PLUS.
+- **Bloque de marca en posición principal**: un banner grande de *RIDEX PLUS — "Mejora tu
+  frenada"* con foto de discos. **Es exactamente lo que planteó Omar**: promocionar marcas en
+  grande, en el cuerpo de la página.
+
+### MercadoLibre República Dominicana (móvil) — el hábito local
+
+- **Arriba, solo el buscador**: logo + *"Estoy buscando…"* + menú. Nada compite con la búsqueda.
+- **Banner de promoción con foto** y una frase: *"¡Encuentra lo que buscas! Hay miles de
+  productos publicados, las mejores marcas y los precios más bajos."*
+- **Fila de iconos circulares** de categorías (Moda, Vehículos, Inmuebles, Historial, Celulares).
+- **Tarjetas con beneficio + botón**: *"Zapatillas — Encuentra el estilo que se adapta a ti"* +
+  *Buscar Zapatillas*. Enseñan **para qué sirve** y dan el botón, en vez de solo listar.
+
+### Los que NO se dejaron capturar (barreras antibot, no fallos míos)
+
+| Sitio | Resultado | Nota |
+|---|---|---|
+| Advance Auto Parts | **0 bytes**, dos intentos | Rechaza el navegador automatizado de plano. **La captura de Omar es la que sirve**, y es justo donde él vio el bloque de marcas |
+| Oscaro.es | Página de *"Verificación de seguridad en curso"* de Cloudflare | Identifica el navegador como bot |
+| AutoZone | 24 KB (cáscara vacía) | Muro antibot |
+| O'Reilly | 25 KB (cáscara vacía) | Muro antibot |
+
+## Canal de marcas (idea de Omar, 04/10/2026)
+
+Omar lo planteó viendo el bloque de marcas de Advance Auto Parts: **promocionar marcas en grande
+—aceites, filtros, correas— acercándose a las marcas que se distribuyen en RD aunque sean
+extranjeras**. La evidencia lo respalda: Autodoc hace exactamente eso (banner de RIDEX PLUS en
+posición principal) y eBay también (hero con personalización).
+
+**Por qué es estratégicamente valioso**: es una **segunda vía de ingreso que no depende de eBay
+ni de EPN** — justo lo que falta desde que declinaron la solicitud. No reemplaza la comisión,
+la complementa.
+
+**Pero, con la verdad por delante**: las marcas **pagan por audiencia**, y hoy no hay audiencia.
+Es Fase 2, igual que el producto B2B: primero el veredicto de tráfico, después la venta de
+espacios. Lo que sí se puede hacer **ahora y gratis**:
+
+1. **Dejar el hueco de marca en el diseño** (un bloque visible y con jerarquía, no un rincón).
+2. **Que Comercial arme la lista** de marcas distribuidas en RD (aceites, filtros, correas,
+   frenos, encendido) y quién las distribuye localmente.
+3. **Regla de transparencia, no negociable**: un espacio pagado se muestra **etiquetado como
+   publicidad** y **no puede alterar el orden** de las ofertas. Nuestro propio texto legal
+   promete que mostramos las mismas ofertas a todos, con o sin comisión; un bloque de marca
+   pagado y sin etiquetar contradiría esa promesa y es exactamente el tipo de cosa que después
+   se convierte en un problema legal.
