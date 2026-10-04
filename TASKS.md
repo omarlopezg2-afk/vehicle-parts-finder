@@ -42,3 +42,36 @@ aunque esté vacío en el build actual.
 - Entrega = Pull Request con descripción (qué hiciste / cómo probarlo / supuestos y
   problemas conocidos) + mover la fila de este tablero a "en revisión".
 - El líder revisa con la checklist de PLAN.md y anota el resultado en REVIEW_LOG.md.
+
+## Backlog — próxima ronda (04/10/2026, pedido explícito de Omar, no lanzar todavía)
+
+Omar probó el drill-down y encontró 3 huecos reales, verificados contra vPIC antes de
+anotarlos (no son solo opinión):
+
+1. **Filtro de marcas sucio.** `get_all_makes()`/`getAllMakes()` usan `GetMakesForVehicleType`
+   con tipos `car`+`mpv`, pero eso TODAVÍA mezcla fabricantes industriales (confirmado:
+   `FREIGHTLINER` aparece en ambos tipos junto a Toyota/BMW). Hace falta una lista de
+   exclusión explícita o un criterio más fino — no hay endpoint de vPIC que lo resuelva solo.
+
+2. **Falta el nivel de Trim/Submodelo.** Omar mandó una imagen de factorymitsubishiparts.com
+   mostrando, para su Outlander Sport 2020: trims BE, ES, GT, SE, SP — un 4º nivel después
+   de marca→modelo→año que hoy no existe en nuestro wizard. **Verificado que vPIC NO lo
+   resuelve de forma confiable**: no hay endpoint para listar trims por marca+modelo+año
+   (solo aparece a veces decodificando un VIN específico — probé el propio VIN de Omar y
+   el campo `Trim` vino vacío, mientras que otro VIN de prueba sí lo trajo). Esos BE/ES/GT/
+   SE/SP salen de la base de datos propia de RevolutionParts/el dealer, no de una fuente
+   gratuita equivalente. Investigar antes de prometerlo: ¿lo tiene 7zap o Partsouq en su
+   propia navegación por generación? Si no, puede quedar fuera de alcance del MVP o
+   resolverse solo cuando el usuario ya trae VIN completo (ahí si vPIC a veces lo da).
+
+3. **Categorías del catálogo, más granulares.** Hoy son 13 slugs planos (filtro-aceite,
+   pastillas-freno...). Omar sugirió mirar factorymitsubishiparts.com (ya revisado, son
+   ~20 categorías de reemplazo + accesorios) y RockAuto (taxonomía estándar de la industria:
+   sistema → subsistema → pieza, ej. "Frenos y buje de rueda" → "Pastilla de freno" — esto
+   es terminología genérica del sector, no contenido propietario de RockAuto, así que se
+   puede adoptar la estructura sin copiar nada). Evaluar pasar de 13 slugs planos a una
+   jerarquía de 2 niveles; implica tocar `categories.json`, los SVG (T-F1, puede necesitar
+   más iconos) y `categoryTree.js`.
+
+No lanzar estas 3 hasta que Omar lo pida — quedan aquí documentadas para no perder el
+contexto ni repetir la investigación de vPIC que ya se hizo hoy.
