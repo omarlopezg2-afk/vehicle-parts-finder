@@ -516,6 +516,23 @@ propia lista de países — **sin verificar** todavía si acepta publicadores en
 Pendiente de Omar: (1) comprobar si ya existe una cuenta EPN con ese correo, (2) escribir a
 `epnhelp@ebay.com` preguntando por el criterio exacto.
 
+**Actualización (misma fecha) — la cuenta SÍ existe, y eso apunta al motivo (b)**: Omar entró a
+partnernetwork.ebay.com con su cuenta de eBay y encontró un panel con una cuenta
+**`PartExact` (ID 7896370)** ya creada (pantalla de *Account Settings* con las secciones
+General / Profile / Technical, y **sin campos rellenos**). El correo de rechazo afirma que
+*"an account has not been created"*, así que esa cuenta **es anterior a la solicitud**: encaja
+con el motivo (b) de la plantilla (*"your email address has already been used to register for
+an eBay Partner Network account"*). Los números que traía el correo (`1354875`, `9356`) **no
+coinciden** con el ID de la cuenta, así que parecen referencias internas del ticket, no la
+cuenta — no sirven para cruzarlos.
+
+**Lo que hay que averiguar ahora, antes de escribir a soporte**: si esa cuenta está
+**operativa** (se pueden crear campañas/enlaces → habría campaign ID y T-B5 se desbloquea sin
+apelar nada) o si está **pendiente/rechazada** (limbo). Señales a mirar en el panel:
+*Account Information* (país, zona horaria trabada en MST, estado), *Media Properties* (si
+`partexact.com` ya está declarada) y, sobre todo, dónde se generan los **enlaces/campañas** y
+si esa opción está disponible o bloqueada. La campana de notificaciones puede tener el aviso.
+
 ---
 
 ## 04/10/2026 — T-B5 revisada y fusionada (PR #16): enlaces de afiliado listos, esperando el ID — Líder
