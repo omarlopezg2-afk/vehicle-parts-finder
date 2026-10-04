@@ -207,6 +207,23 @@ eBay Partner Network** (orden invertido respecto al plan externo, por la evidenc
 24/09), revisión de términos, aviso de afiliados/privacidad, accesibilidad, prueba con
 catálogo grande simulado (decide si hace falta Supabase).
 
+**Monetización multi-tienda (decidido 03/10/2026, investigación con fuentes oficiales):**
+ninguna cadena grande (AutoZone, O'Reilly Auto Parts, Advance Auto Parts, RockAuto) tiene
+API pública de precio/stock — solo eBay la tiene. De las 4, **solo Advance Auto Parts** se
+agrega a Fase 3: tiene programa de afiliados oficial confirmado y corre en **Impact.com**,
+la misma plataforma que eBay EPN, así que es un "brand" más dentro de la misma cuenta
+(aplicar primero al Marketplace de Impact, luego al programa específico de Advance). Es
+solo un enlace de salida con comisión por venta (hasta 10%, cookie 30 días) — **no** permite
+mostrar precio/stock propio en la ficha de producto, igual que eBay sin la API Browse.
+Descartados: AutoZone (programa real pero en red distinta — Pepperjam/Ascend —, no vale el
+costo de gestionar una segunda cuenta solo por un link sin precio); O'Reilly Auto Parts (no
+tiene programa de afiliados de venta, solo un "Ambassador Program" de influencers sin
+comisión — *no confundir con O'Reilly Media, la editorial de libros técnicos, que sí tiene
+afiliados pero es una empresa totalmente distinta*); RockAuto (sin programa oficial
+verificable — su propio newsletter dice explícitamente "We don't sell parts on any
+marketplace or affiliate sites"; los sitios que lo listan como afiliado son agregadores de
+cupones de terceros sin relación confirmada).
+
 **Fase 4 — Lanzamiento y mejoras.** Dominio propio (~10-12 USD/año, pendiente de decidir),
 analítica respetuosa de privacidad. Backlog: más fuentes, proveedor de pago para
 equivalencias (ACES/PIES), Supabase, búsqueda multi-idioma.
