@@ -21,17 +21,88 @@ Ejecutar:
 
 from __future__ import annotations
 
+import json
 import os
+import pathlib
 import sys
 import unittest
+import urllib.parse
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+import fetch_vehicles  # noqa: E402
 from fetch_vehicles import (  # noqa: E402
     _es_fabricante_cascaron,
     _normalizar_nombre_marca,
     get_all_makes,
 )
+
+# Respuestas REALES de vPIC, grabadas una vez (ver el fixture). Se reproducen
+# para que estas pruebas no dependan de la red: el CI se puso rojo precisamente
+# porque vPIC devolvió HTTP 403 a los servidores de GitHub y una prueba que sale
+# a internet puede fallar por causas ajenas al código.
+_FIXTURE_MODELOS = (
+    pathlib.Path(__file__).resolve().parents[1] / "fixtures" / "vpic_models_for_make.sample.json"
+)
+
+# Para resolver la URL pedida sin ambigüedad.
+_ID_A_NOMBRE = {
+    8395: "Autocar Ltd",
+    5545: "Execucoach Inc",
+    629: "Creative Coachworks",
+    448: "Toyota",
+    481: "Mitsubishi",
+}
+
+
+def _registrar_limpieza(destino, funcion, *args):
+    """En una clase se usa addClassCleanup; en una instancia, addCleanup."""
+    if hasattr(destino, "addClassCleanup"):
+        destino.addClassCleanup(funcion, *args)
+    else:
+        destino.addCleanup(funcion, *args)
+
+
+def _instalar_doble_todo_offline(caso_de_prueba):
+    """Simula que vPIC no responde NADA: fuerza el camino offline del pipeline
+    (snapshot -> fixture commiteado), que es exactamente lo que corre en producción
+    cuando el servicio está caído o devuelve 403, como pasó en el CI."""
+    original = fetch_vehicles._vpic_get_json
+    _registrar_limpieza(caso_de_prueba, setattr, fetch_vehicles, "_vpic_get_json", original)
+    fetch_vehicles._vpic_get_json = lambda url, timeout=30: None
+
+
+def _instalar_doble_sin_red(caso_de_prueba, sin_datos=()):
+    """Sustituye la descarga de vPIC por las respuestas grabadas.
+
+    Cualquier intento de salir a la red hace fallar la prueba a propósito: si el
+    doble no tuviera respuesta, una prueba que "pasa" podría estar pasando por una
+    llamada real, que es justo lo que no queremos volver a tener.
+    """
+    original = fetch_vehicles._vpic_get_json
+    _registrar_limpieza(caso_de_prueba, setattr, fetch_vehicles, "_vpic_get_json", original)
+    grabado = json.loads(_FIXTURE_MODELOS.read_text(encoding="utf-8"))
+
+    def sin_red(url, timeout=30):
+        if "GetModelsForMake/" in url:
+            nombre = urllib.parse.unquote(url.split("GetModelsForMake/")[1].split("?")[0])
+            if nombre in sin_datos:
+                return None  # simula que vPIC no tiene datos para esa marca
+            for make_id, conocido in _ID_A_NOMBRE.items():
+                if conocido == nombre:
+                    return grabado.get(f"models_for_make__{make_id}")
+            raise AssertionError(
+                f"la prueba pidió {nombre!r} y no hay respuesta grabada: "
+                "no debe salir a la red"
+            )
+        if "GetMakesForVehicleType" in url or "GetAllMakes" in url:
+            # El catálogo completo son cientos de marcas: se devuelve None para que
+            # get_all_makes() use su camino offline (snapshot -> fixture).
+            return None
+        raise AssertionError(f"la prueba intentó salir a la red: {url}")
+
+    fetch_vehicles._vpic_get_json = sin_red
+
 
 # Casos fijos por TASKS.md T-A4.
 _DEBEN_EXCLUIRSE = [
@@ -59,6 +130,10 @@ class TestCriterioDeDatosFabricanteCascaron(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
+        # Sin red: se fuerza el camino offline (snapshot -> fixture), que es el que
+        # corre en producción cuando vPIC no responde. Así la prueba es rápida y no
+        # depende de un servicio de terceros.
+        _instalar_doble_todo_offline(cls)
         cls.marcas = get_all_makes()
         cls.nombres = {m["name"] for m in cls.marcas}
 
@@ -110,6 +185,9 @@ class TestEsFabricanteCascaron(unittest.TestCase):
     get_all_makes completo), para los 3 casos del criterio que SÍ detecta por
     patrón automático (no por la lista residual explícita)."""
 
+    def setUp(self):
+        _instalar_doble_sin_red(self)
+
     def test_autocar_ltd_es_cascaron(self):
         self.assertTrue(_es_fabricante_cascaron("Autocar Ltd", 8395, timeout=10))
 
@@ -124,6 +202,12 @@ class TestEsFabricanteCascaron(unittest.TestCase):
 
     def test_mitsubishi_no_es_cascaron(self):
         self.assertFalse(_es_fabricante_cascaron("Mitsubishi", 481, timeout=10))
+
+    def test_sin_respuesta_no_inventa_datos(self):
+        """Sin dato de vPIC el criterio devuelve None, nunca False: excluir por
+        suposición sería peor que no excluir. El llamador decide qué hacer."""
+        _instalar_doble_sin_red(self, sin_datos={"Marca Inexistente Xyz"})
+        self.assertIsNone(_es_fabricante_cascaron("Marca Inexistente Xyz", 999999, timeout=10))
 
 
 class TestNormalizarNombreMarca(unittest.TestCase):
