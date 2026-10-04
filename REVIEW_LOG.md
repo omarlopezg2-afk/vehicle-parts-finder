@@ -338,6 +338,28 @@ performance/anti-bot, hay que asumir el certificado de Cloudflare y pasar el mod
 **Lo que NO se hizo, a propósito**: renombrar el repo (`vehicle-parts-finder` →
 `partexact`) y el logo. Ninguno bloquea nada; ambos quedan anotados en `PLAN.md`.
 
+**Correo del dominio (misma fecha, pedido por Omar al ver las recomendaciones del panel)**:
+Cloudflare mostraba 3 recomendaciones y solo una era real — las dos de "los visitantes no
+pueden llegar a partexact.com / www" eran **cálculos viejos** hechos con la zona vacía
+(el panel no las recalcula al instante); el sitio ya servía y `dig` lo confirmaba. La real
+era la de correo: el dominio no tenía ni MX ni SPF ni DMARC, o sea que cualquiera podía
+falsificar `@partexact.com` (phishing con la marca) y no había forma de recibir un
+`soporte@` cuando lo pida una tienda o eBay Partner Network.
+
+Se activó **Email Routing** (gratis): 3 MX `route1/2/3.mx.cloudflare.net`, SPF
+`v=spf1 include:_spf.mx.cloudflare.net ~all`, DKIM en `cf2024-1._domainkey`, y reglas
+`soporte@`, `hola@` y `support@partexact.com` → la dirección verificada de Omar (la
+verificación fue automática, sin correo de confirmación que clicar). Y **DMARC Management**
+con `p=none` (solo monitoreo, no bloquea nada) + reportes a Cloudflare. Todo verificado por
+DNS público; el *catch-all* se dejó en `Drop` a propósito (que no entre spam de direcciones
+inventadas).
+
+**Nota para pruebas futuras**: desde la red de casa **no se puede** probar la entrega
+entrante hablándole directo al MX: Cloudflare rechaza la conexión con *"Sender IP reverse
+lookup rejected"* (la IP residencial no tiene rDNS válido). La prueba de punta a punta hay
+que hacerla enviando desde un correo real (Gmail) a `soporte@partexact.com` y mirando el
+**Activity log** de Email Routing para confirmar el reenvío.
+
 Pendiente de Omar para cerrar Fase 3: keyset de **Production** de eBay (la cuenta de
 Developer ya fue aprobada el 04/10) — con Client ID + Client Secret se activa el modo real
 de `fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo).

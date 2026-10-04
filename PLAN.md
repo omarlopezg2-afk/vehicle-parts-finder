@@ -314,6 +314,12 @@ GitHub pueda emitir su propio certificado TLS. El sitio se sirve en `https://par
 Registrador: Cloudflare Registrar (la misma cuenta que ya tenía `wifimonitor.app`), 10,46
 USD/año con renovación automática. Orden de compra: `ea1d18dd-15b0-44cc-93f0-81c0ca732c22`.
 
+**Correo del dominio: activo (04/10/2026).** Con Cloudflare Email Routing (gratis) —
+`soporte@`, `hola@` y `support@partexact.com` reenvían a la dirección verificada de Omar;
+no hay buzón propio. Además SPF, DKIM y DMARC (`p=none`, monitoreo) están publicados, así
+que nadie puede falsificar la marca por correo. Esto es lo que se le da a una tienda o a
+un programa de afiliados cuando piden contacto del proyecto, en vez de un Gmail suelto.
+
 Pendiente: el logo (trabajo de diseño, no bloquea nada técnico) y renombrar el repo de
 GitHub si se quiere que coincida (`vehicle-parts-finder` → `partexact`, opcional, no
 urgente — cambiar el nombre del repo NO rompe el sitio porque GitHub Pages redirige el
