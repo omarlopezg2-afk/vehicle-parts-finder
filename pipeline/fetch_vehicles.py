@@ -46,6 +46,7 @@ import json
 import os
 import re
 import sys
+import time
 import urllib.error
 import urllib.parse
 import urllib.request
@@ -55,6 +56,13 @@ from typing import Any, Optional
 VPIC_BASE_URL = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues"
 VPIC_API_ROOT = "https://vpic.nhtsa.dot.gov/api/vehicles"
 DEFAULT_TIMEOUT_S = 10
+
+# vPIC empezó a devolver HTTP 403 para peticiones sin User-Agent (verificado en
+# vivo 04/10/2026: el default de urllib -- sin header -- recibe 403 de forma
+# consistente; con este header, 200). No es específico de T-A4: afecta
+# fetch_vehicle igual que get_all_makes/get_models_for_make_year, así que se
+# corrige una sola vez aquí y se usa en todas las peticiones del módulo.
+_HTTP_HEADERS = {"User-Agent": "PartExact-pipeline/1.0 (+https://github.com/omarlopezg2-afk/vehicle-parts-finder)"}
 
 # Caché en disco de respuestas de vPIC (T-A4). Vive en data/raw/ (ya ignorado por
 # git, ver .gitignore) para no depender de la red en cada build: la primera
@@ -400,8 +408,7 @@ def fetch_vehicle(vin: str, timeout: int = DEFAULT_TIMEOUT_S) -> dict[str, Any]:
     url = f"{VPIC_BASE_URL}/{urllib.parse.quote(vin_normalizado)}?format=json"
 
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
-            cuerpo = resp.read()
+        cuerpo = _http_get_with_retry(url, timeout=timeout)
     except urllib.error.HTTPError as exc:
         salida["error"] = f"vPIC devolvió HTTP {exc.code} para VIN {vin_normalizado}."
         return salida
@@ -463,6 +470,35 @@ def fetch_vehicles(vins: list[str], timeout: int = DEFAULT_TIMEOUT_S) -> list[di
     return [fetch_vehicle(vin, timeout=timeout) for vin in vins]
 
 
+def _http_get_with_retry(url: str, timeout: int, max_reintentos: int = 2) -> bytes:
+    """GET con reintento corto para HTTP 403/429 (verificado en vivo: vPIC
+    aplica un rate-limit que a veces devuelve 403 de forma transitoria -- la
+    MISMA url responde 200 segundos después sin cambiar nada). No es
+    específico de T-A4: afecta tanto fetch_vehicle como get_all_makes/
+    get_models_for_make_year, así que se centraliza aquí. Reintenta solo
+    403/429 (no otros códigos HTTP, que sí son errores reales); backoff fijo
+    corto porque esto corre en un pipeline con timeout de proceso acotado
+    (GitHub Actions), no puede esperar minutos.
+
+    Lanza la excepción tal cual si se agotan los reintentos, para que el
+    llamador (_vpic_get_json / fetch_vehicle) la capture con su manejo
+    habitual.
+    """
+    ultimo_error: Optional[Exception] = None
+    for intento in range(max_reintentos + 1):
+        try:
+            req = urllib.request.Request(url, headers=_HTTP_HEADERS)
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                return resp.read()
+        except urllib.error.HTTPError as exc:
+            ultimo_error = exc
+            if exc.code not in (403, 429) or intento == max_reintentos:
+                raise
+            time.sleep(2 * (intento + 1))
+    assert ultimo_error is not None
+    raise ultimo_error
+
+
 def _vpic_get_json(url: str, timeout: int) -> Optional[dict[str, Any]]:
     """Helper interno compartido por get_all_makes/get_models_for_make_year.
 
@@ -471,8 +507,7 @@ def _vpic_get_json(url: str, timeout: int) -> Optional[dict[str, Any]]:
     lo traduce en lista vacía).
     """
     try:
-        with urllib.request.urlopen(url, timeout=timeout) as resp:
-            cuerpo = resp.read()
+        cuerpo = _http_get_with_retry(url, timeout=timeout)
     except urllib.error.HTTPError as exc:
         print(f"vPIC devolvió HTTP {exc.code} para {url}.", file=sys.stderr)
         return None
