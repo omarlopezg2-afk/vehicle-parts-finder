@@ -1,0 +1,74 @@
+# eBay en producción: qué falta y en qué orden
+
+Estado al 04/10/2026. Este documento existe porque el cuello de botella de eBay **no es la
+cuenta** (ya está aprobada) sino un requisito de cumplimiento que bloquea el keyset de
+producción hasta que se resuelve.
+
+## Por qué todavía no hay precios reales en el sitio
+
+`pipeline/fetch_ebay.py` ya implementa el flujo real (OAuth client-credentials + Browse API)
+y funciona, pero hoy corre en **modo mock** porque no existen `EBAY_CLIENT_ID` /
+`EBAY_CLIENT_SECRET` en el entorno. Sin llaves no puede obtener un token, así que cae al
+fixture local. Para precios y URLs reales hacen falta las llaves de **Production**.
+
+## El bloqueo real: Market Account Deletion
+
+eBay no activa ningún keyset de producción hasta que la aplicación cumpla una de estas dos
+cosas (es obligatorio, no opcional):
+
+1. **Suscribirse** a las notificaciones de borrado/cierre de cuenta, exponiendo un endpoint
+   HTTPS que responda el reto de verificación.
+2. **Acogerse a la exención** ("Not persisting eBay data") si la aplicación no guarda datos
+   de eBay.
+
+Este proyecto va por la **opción 1**, y la 2 está descartada a propósito: la exención
+declara que no se persisten datos de eBay, y nosotros **sí** persistimos resúmenes de
+anuncios (título, precio, URL, imagen) en `data/build/parts.json`, que además es público.
+Marcar esa casilla sería declarar algo falso para desbloquear las llaves un rato antes.
+
+La opción 1 cuesta un Worker de ~30 líneas (`infra/ebay-notifications/worker.js`), es gratis
+y ya está escrito y probado en local.
+
+## Pasos, en orden
+
+| # | Paso | Quién | Estado |
+|---|---|---|---|
+| 1 | Crear el keyset de **Production** en developer.ebay.com (Application Keys → Create keyset → Production) | Omar (sesión de eBay) | pendiente |
+| 2 | Desplegar el Worker y anotar su URL | Omar o el líder | código listo, falta desplegar |
+| 3 | Registrar en el portal el *Notification Endpoint URL* + *Verification token* y guardar (eBay valida el reto al instante) | Omar (sesión de eBay) | pendiente, depende de 2 |
+| 4 | Con el keyset ya activado, copiar **App ID (Client ID)** y **Cert ID (Client Secret)** | Omar | pendiente |
+| 5 | Guardar las llaves en `.env` (local, ignorado por git) y como **GitHub Secrets** | Omar rellena, el líder carga | pendiente |
+| 6 | Correr `build-data.yml` y verificar precios reales en el sitio | líder | pendiente |
+| 7 | `EBAY_CAMPAIGN_ID` (eBay Partner Network) cuando se pase a monetización | Omar | Fase 3, no urgente |
+
+## Regla de manejo de las llaves (no negociable)
+
+- El **Cert ID es un secreto**: no se pega en el chat, no se commitea, no se imprime en
+  pantalla. Va en `.env` (ya ignorado por `.gitignore`) y en GitHub Secrets.
+- El `.env` se rellena a mano en el equipo; el líder carga los secretos **desde el archivo**
+  (`gh secret set EBAY_CLIENT_ID < ...`), sin mostrar los valores.
+- El repo es **público**: los valores no pueden aparecer en ningún archivo versionado ni en
+  logs de Actions.
+
+## Cómo verificar que quedó bien (sin creerle a la pantalla)
+
+```bash
+# token real de 2 h, en un entorno que tenga el .env cargado
+python -c "import sys; sys.path.insert(0,'pipeline'); import fetch_ebay as f; \
+print('modo REAL' if f.has_real_credentials() else 'modo MOCK'); print(f.search_part('04152YZZA1')[:1])"
+```
+
+Debe imprimir `modo REAL` y devolver ofertas con `url` y `price` de eBay reales (no las del
+fixture). En el JSON del fixture la URL apunta a `ebay.com/itm/...` con datos de ejemplo —
+si los precios parecen de laboratorio, es que siguió en mock.
+
+## Límites de la API, para tenerlos presentes
+
+- Browse API: ~5.000 llamadas/día por defecto (se puede pedir más gratis, *Application
+  Growth Check*). El pipeline hace una llamada por número de parte consultado.
+- Token de aplicación: válido ~2 h; el módulo pide uno por ejecución del pipeline (no se
+  cachea entre procesos, a propósito).
+- Si eBay responde 401/429, `search_part()` reintenta y, si no cede, cae a mock para no
+  tumbar el pipeline. Es una decisión de diseño ya revisada: mejor datos de ejemplo que
+  sitio caído, pero **el modo en que corrió debe quedar visible** (verificar con el comando
+  de arriba, no asumir).

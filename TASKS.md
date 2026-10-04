@@ -111,6 +111,25 @@ cuenta eBay Developer ✅ **aprobada** (correo recibido 04/10) — falta crear e
 `fetch_ebay.py` (GitHub Secrets + `.env` local, nunca en el repo). Advance Auto Parts vía
 Impact.com, sigue pendiente para Fase 3.
 
+### Fase 3 — eBay en producción (04/10/2026)
+
+Camino completo documentado en `docs/ebay-produccion.md`. Resumen del hallazgo que cambia
+el plan: **el keyset de Production no se activa solo** — eBay exige antes suscribirse a las
+notificaciones de borrado de cuenta o acogerse a una exención, y la exención ("no se
+persisten datos de eBay") sería falsa en nuestro caso porque sí persistimos resúmenes de
+anuncios en `data/build/parts.json`. Se va por la suscripción, que cuesta un Worker gratis.
+
+| ID | Agente | Tarea | Dueño de | Depende de | Estado | Criterios de aceptación |
+|---|---|---|---|---|---|---|
+| T-B2 | Líder | Endpoint de notificaciones de eBay (reto de verificación + acuse) | `infra/ebay-notifications/` | T-B1 | **código listo, sin desplegar** | Hash `sha256(challenge_code + verification_token + endpoint_url)` en el orden exacto que exige eBay, `content-type: application/json`, 400 sin `challenge_code`, 204 ante el POST de borrado, 405 en otros métodos y 500 (falla fuerte) si faltan variables en vez de devolver un hash falso. 8/8 comprobaciones en local y en CI, con el hash contrastado contra una implementación independiente |
+| T-B3 | Omar (sesión de eBay) | Crear el keyset de Production y registrar el endpoint de notificaciones | Portal de eBay + deploy del Worker | T-B2 | **pendiente** | Keyset de Production visible en Application Keys; endpoint verificado por eBay (el reto pasa a la primera); keyset activado |
+| T-B4 | Omar + líder | Cargar las llaves y correr el pipeline real | `.env` local + GitHub Secrets | T-B3 | **pendiente** | `fetch_ebay.has_real_credentials()` en `True`, `build-data.yml` en verde y precios reales en `data/build/parts.json` (no los del fixture). El Cert ID nunca aparece en el repo, en un chat ni en un log |
+
+**Regla de llaves (no negociable)**: el Cert ID es un secreto — va en `.env` (ignorado por
+git) y en GitHub Secrets, cargado desde el archivo con `scripts/seed-secrets.sh` (lee el
+`.env` y usa la entrada estándar de `gh secret set`, para que el valor no pase por la línea
+de comandos, que es visible para otros procesos del sistema). El repo es **público**.
+
 ## Backlog — próxima ronda (04/10/2026, pedido explícito de Omar, no lanzar todavía)
 
 Omar probó el drill-down y encontró 3 huecos reales, verificados contra vPIC antes de

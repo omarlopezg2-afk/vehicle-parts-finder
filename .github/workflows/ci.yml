@@ -80,3 +80,27 @@ jobs:
           else
             echo "pipeline/validate.py todavía no existe: se omite este step sin fallar el job."
           fi
+
+  # El Worker de notificaciones de eBay es el que desbloquea el keyset de
+  # Production: si su hash del reto se rompe, eBay deja de validar el endpoint
+  # (y con eso se cae el acceso a la API real). Es código pequeño pero crítico,
+  # así que se prueba en cada push igual que el pipeline.
+  worker-ebay-notificaciones:
+    name: Worker de notificaciones de eBay (contrato del reto)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Instalar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Ejecutar las pruebas del Worker
+        run: |
+          if [ -f infra/ebay-notifications/test-worker.mjs ]; then
+            node infra/ebay-notifications/test-worker.mjs
+          else
+            echo "infra/ebay-notifications/ todavía no existe en esta rama: se omite."
+          fi

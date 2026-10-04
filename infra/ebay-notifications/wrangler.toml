@@ -1,0 +1,15 @@
+name = "ebay-notifications"
+main = "worker.js"
+compatibility_date = "2026-10-04"
+
+# EBAY_ENDPOINT_URL no es un secreto (es la URL pública del endpoint), pero
+# tiene que ser EXACTAMENTE la misma cadena que se guarda en el portal de eBay,
+# porque entra en el hash del reto. Si se despliega en workers.dev, el valor es
+# https://ebay-notifications.<tu-subdominio>.workers.dev/ (con barra final si
+# así se registró en el portal).
+[vars]
+EBAY_ENDPOINT_URL = "https://ebay-notifications.CAMBIAR.workers.dev/"
+
+# EBAY_VERIFICATION_TOKEN es un secreto y NO va aquí:
+#   npx wrangler secret put EBAY_VERIFICATION_TOKEN
+# Token de 32 a 80 caracteres, solo letras, números, guion y guion bajo.
