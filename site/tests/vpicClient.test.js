@@ -54,6 +54,32 @@ describe("vpicClient.js", () => {
     assert.deepEqual(makes, []);
   });
 
+  test("getAllMakes excluye fabricantes industriales aunque vPIC los liste en car/mpv", async () => {
+    // T-A3: simula el caso real confirmado contra vPIC (Freightliner
+    // aparece en GetMakesForVehicleType/mpv junto a marcas de consumo).
+    const fetchImpl = fakeFetchFor({
+      "GetMakesForVehicleType/car": {
+        Results: [
+          { MakeId: 448, MakeName: "TOYOTA" },
+          { MakeId: 1, MakeName: "BMW" },
+        ],
+      },
+      "GetMakesForVehicleType/multipurpose": {
+        Results: [
+          { MakeId: 481, MakeName: "MITSUBISHI" },
+          { MakeId: 582, MakeName: "FREIGHTLINER" }, // debe excluirse
+          { MakeId: 999, MakeName: "PETERBILT" }, // defensa en profundidad
+        ],
+      },
+    });
+
+    const makes = await getAllMakes({ fetchImpl });
+    const names = makes.map((m) => m.name);
+    assert.deepEqual(names, ["Bmw", "Mitsubishi", "Toyota"]);
+    assert.ok(!names.includes("Freightliner"));
+    assert.ok(!names.includes("Peterbilt"));
+  });
+
   test("getModelsForMakeYear devuelve modelos ordenados y deduplicados", async () => {
     const fetchImpl = fakeFetchFor({
       "GetModelsForMakeYear/make/Mitsubishi/modelyear/2020": {

@@ -55,6 +55,26 @@ class TestGetAllMakes(unittest.TestCase):
         self.assertNotIn("Harley-Davidson", nombres)
         self.assertNotIn("Harley Davidson", nombres)
 
+    def test_fabricantes_de_camiones_pesados_excluidos(self):
+        # T-A3: Freightliner aparece en car+MPV sin este filtro (verificado
+        # contra la API real); Peterbilt y Kenworth nunca aparecen en
+        # car+MPV pero están en la lista de exclusión explícita como
+        # defensa en profundidad. Ninguno de los tres debe aparecer.
+        marcas = get_all_makes()
+        nombres = {m["name"] for m in marcas}
+        self.assertNotIn("Freightliner", nombres)
+        self.assertNotIn("Peterbilt", nombres)
+        self.assertNotIn("Kenworth", nombres)
+
+    def test_marcas_de_auto_consumo_conocidas_si_aparecen(self):
+        # T-A3: el filtro de fabricantes industriales no debe tocar marcas
+        # de auto/SUV/pickup de consumo reales.
+        marcas = get_all_makes()
+        nombres = {m["name"] for m in marcas}
+        self.assertIn("Mitsubishi", nombres)
+        self.assertIn("Toyota", nombres)
+        self.assertIn("Ford", nombres)
+
 
 class TestGetModelsForMakeYear(unittest.TestCase):
     def test_outlander_sport_esta_en_los_modelos_2020(self):

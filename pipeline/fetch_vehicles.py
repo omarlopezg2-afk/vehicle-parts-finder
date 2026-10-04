@@ -59,10 +59,76 @@ DEFAULT_TIMEOUT_S = 10
 # los pickups/SUV grandes (ej. Mitsubishi Outlander Sport) caen bajo "Multipurpose
 # Passenger Vehicle (MPV)", no bajo "Passenger Car". Por eso se pide la unión de
 # ambos tipos. Ver docstring de get_all_makes() para el detalle de qué tan limpio
-# queda este filtro (no es perfecto: algunas marcas de camión también fabrican
-# vehículos MPV y por lo tanto aparecen, ej. FREIGHTLINER NO aparece pero sí podrían
-# aparecer marcas límite).
+# queda este filtro.
 _TIPOS_VEHICULO_AUTO = ("car", "multipurpose passenger vehicle (mpv)")
+
+# T-A3 — MISMO CRITERIO REPLICADO EN site/js/vpicClient.js (función
+# `MARCAS_INDUSTRIALES_EXCLUIDAS` / `getAllMakes`). Si se cambia esta lista,
+# cambiar la de allá IDÉNTICA, o Python y JS mostrarán marcas distintas para
+# el mismo usuario (camino VIN vs camino drill-down).
+#
+# POR QUÉ EXISTE ESTA LISTA (investigación contra la API real de vPIC, no
+# asumida — ver PR de T-A3 para el detalle completo):
+# La unión car+MPV (arriba) ya filtra la enorme mayoría de fabricantes
+# industriales: de ~207 marcas que vPIC devuelve bajo el tipo "truck", solo
+# 3 "se cuelan" también en car+MPV al momento de escribir esto (verificado a
+# mano contra GetMakesForVehicleType/car, .../multipurpose%20passenger...,
+# y .../truck): FREIGHTLINER, BLUE BIRD y ORION BUS. Las ~204 restantes
+# (Peterbilt, Kenworth, Mack, International, Western Star, Autocar, Capacity
+# Trucks, Thomas Built, Oshkosh, Navistar, Hino, etc.) NUNCA aparecen en
+# car/MPV y ya quedan fuera solo con el filtro de tipos — no necesitan estar
+# en esta lista para que el resultado hoy sea correcto, pero se agregan
+# igual como lista de exclusión EXPLÍCITA (no heurística) para no depender
+# de que vPIC nunca reclasifique una marca de camión/bus hacia car/MPV en el
+# futuro; es más fácil de auditar y de extender a mano que inventar una
+# regla automática (ej. "solo aparece bajo truck" ya es cierto para casi
+# todas sin necesidad de código, así que no hay heurística frágil que
+# mantener).
+#
+# Fuente de la lista: fabricantes de camiones pesados/semirremolques/buses
+# comerciales ampliamente conocidos (dominio público, ninguno vende autos ni
+# SUV de consumo), más los 3 confirmados arriba que sí aparecen en car/MPV
+# hoy. Comparación exacta por nombre en MAYÚSCULAS tal como lo devuelve
+# vPIC (NO por substring, para no atrapar por accidente nombres legítimos
+# que contienen la palabra, ej. "SPRINTER (DODGE OR FREIGHTLINER)" es una
+# van MPV real de Mercedes-Benz/Dodge y debe quedarse).
+#
+# MARCAS LÍMITE que se decidió NO excluir (ver razonamiento en el PR):
+# - ISUZU: vPIC la clasifica bajo car Y bajo MPV (no solo truck), y vendió
+#   SUVs de consumo en EE. UU. por décadas (Trooper, Rodeo, Axiom, Ascender)
+#   hasta 2009. Aunque hoy en EE. UU. solo vende camiones medianos
+#   comerciales, el filtro aquí es sobre el catálogo vPIC (que incluye
+#   histórico), así que se mantiene DENTRO.
+_MARCAS_INDUSTRIALES_EXCLUIDAS = frozenset(
+    {
+        # Confirmadas: aparecen en car/MPV hoy pero son 100% industriales.
+        "FREIGHTLINER",
+        "BLUE BIRD",
+        "ORION BUS",
+        # Defensa en profundidad: fabricantes de camiones pesados/buses
+        # ampliamente conocidos que hoy NO aparecen en car/MPV (confirmado
+        # contra la API real), pero se excluyen explícitamente por si vPIC
+        # cambia su clasificación más adelante.
+        "PETERBILT",
+        "KENWORTH",
+        "MACK",
+        "INTERNATIONAL",
+        "WESTERN STAR",
+        "AUTOCAR",
+        "AUTOCAR INDUSTRIES",
+        "CAPACITY TRUCKS",
+        "THOMAS BUILT",
+        "OSHKOSH",
+        "NAVISTAR",
+        "HINO",
+        "SPARTAN MOTORS",
+        "PIERCE MANUFACTURING",
+        "CRANE CARRIER COMPANY (CCC)",
+        "E-ONE",
+        "KALMAR",
+        "DENNIS EAGLE",
+    }
+)
 
 # Un VIN válido: 17 caracteres alfanuméricos, sin I, O ni Q (se confunden con 1 y 0).
 _VIN_RE = re.compile(r"^[A-HJ-NPR-Z0-9]{17}$", re.IGNORECASE)
@@ -278,19 +344,24 @@ def get_all_makes(timeout: int = DEFAULT_TIMEOUT_S) -> list[dict[str, Any]]:
     caen SUVs/crossovers como el Outlander Sport) y deduplica por nombre.
     Verificado a mano: "MITSUBISHI" aparece en ambos tipos; "HARLEY-DAVIDSON"
     (moto) NO aparece en ninguno de los dos — el filtro funciona para el caso
-    moto. Para camiones pesados el filtro es imperfecto: marcas que SOLO hacen
-    camiones pesados (ej. "FREIGHTLINER") no aparecen en car/mpv y quedan fuera
-    correctamente, pero una marca mixta (que vPIC catalogue bajo car/mpv Y
-    truck a la vez, ej. "FORD", "CHEVROLET", "GMC") sí entra, lo cual es
-    correcto porque esas marcas efectivamente venden autos/SUV. No se filtró
-    también por "truck" a propósito (pickups ligeras como F-150/Silverado caen
-    bajo "truck" en vPIC, no bajo car/mpv) — si el frontend más adelante quiere
-    incluir pickups, se puede ampliar `_TIPOS_VEHICULO_AUTO` agregando "truck",
-    pero eso metería de vuelta fabricantes de camiones pesados/remolques
-    (ej. varias decenas de marcas industriales), así que se dejó fuera por ahora
-    y se deja esta nota para quien integre el frontend: "si faltan pickups
-    comunes (F-150, Silverado, Ram, Tacoma) en el selector, es por este filtro,
-    no por un bug."
+    moto. No se filtró también por "truck" a propósito (pickups ligeras como
+    F-150/Silverado caen bajo "truck" en vPIC, no bajo car/mpv) — si el
+    frontend más adelante quiere incluir pickups, se puede ampliar
+    `_TIPOS_VEHICULO_AUTO` agregando "truck", pero eso metería de vuelta
+    fabricantes de camiones pesados/remolques (varias decenas de marcas
+    industriales), así que se dejó fuera por ahora y se deja esta nota para
+    quien integre el frontend: "si faltan pickups comunes (F-150, Silverado,
+    Ram, Tacoma) en el selector, es por este filtro, no por un bug."
+
+    FILTRO ADICIONAL (T-A3): la unión car+MPV por sí sola deja colar algunos
+    fabricantes 100% industriales (camiones pesados/buses comerciales) que
+    vPIC también cataloga bajo esos tipos — confirmado contra la API real:
+    FREIGHTLINER, BLUE BIRD y ORION BUS aparecen en car/MPV junto a
+    Toyota/BMW/Mitsubishi. Por eso, después de la unión, se excluyen por
+    nombre exacto las marcas en `_MARCAS_INDUSTRIALES_EXCLUIDAS` (lista
+    explícita y auditable, no heurística — ver el comentario junto a esa
+    constante para el razonamiento completo y las marcas límite que se
+    decidió mantener, ej. Isuzu).
     """
     marcas_por_nombre: dict[str, int] = {}
     for tipo in _TIPOS_VEHICULO_AUTO:
@@ -305,6 +376,8 @@ def get_all_makes(timeout: int = DEFAULT_TIMEOUT_S) -> list[dict[str, Any]]:
             nombre_crudo = (item.get("MakeName") or "").strip()
             id_crudo = item.get("MakeId")
             if not nombre_crudo or id_crudo is None:
+                continue
+            if nombre_crudo.upper() in _MARCAS_INDUSTRIALES_EXCLUIDAS:
                 continue
             nombre = nombre_crudo.title() if nombre_crudo.isupper() else nombre_crudo
             # Si la misma marca aparece en ambos tipos, se queda con el primer id visto.

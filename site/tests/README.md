@@ -16,6 +16,12 @@ Qué tan automatizado quedó, con honestidad:
   `saveVehicle`/`loadVehicle`/`clearVehicle`/`formatVehicleLabel` de
   vehicleSession.js (con un polyfill mínimo de `localStorage` en memoria,
   porque Node sin `--experimental-webstorage` no define ese global).
+  Adicionalmente, `site/tests/vpicClient.real.test.js` (T-A3) SÍ pega
+  contra vPIC real (sin `fetchImpl`) para verificar el filtro de
+  fabricantes industriales (`MARCAS_INDUSTRIALES_EXCLUIDAS`) con datos
+  reales, no con un fixture que ya asume el resultado — requiere red y NO
+  está incluido en el conteo de 40 de abajo; correrlo aparte con
+  `node --test tests/vpicClient.real.test.js`.
 - **NO automatizado (manual):** todo lo visual/DOM (formulario, árbol de
   categorías, ficha de parte, wizard de marca/año/modelo, responsive,
   navegación por teclado). No hay Playwright/Cypress/Puppeteer instalado
@@ -38,8 +44,11 @@ node --test tests/*.test.js
 # o: npm test
 ```
 
-Debe imprimir 40 tests, 0 fallos (`dataClient.js`: 20, `vehicleSession.js`:
-8, `vin.js`: 6, `vpicClient.js`: 6).
+Debe imprimir 43 tests, 0 fallos (`dataClient.js`: 20, `vehicleSession.js`:
+8, `vin.js`: 6, `vpicClient.js`: 7, `vpicClient.real.test.js`: 2). Los
+últimos 2 (T-A3, filtro de marcas industriales contra vPIC real) requieren
+red — mismo trade-off que ya acepta el lado Python en
+`pipeline/tests/test_fetch_vehicles_makes.py`.
 
 ## 2. Probar el sitio a mano
 
