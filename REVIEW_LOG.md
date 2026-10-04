@@ -474,5 +474,37 @@ acabábamos de arreglar. Regla: al documentar esta marca, escribirla de forma qu
 literal en el mensaje de commit (o citarla sin corchetes). La verificación buena, otra vez,
 fue mirar los runs por SHA y no conformarse con que el push dijera «ok».
 
-Pendiente de Omar para cerrar Fase 3: `EBAY_CAMPAIGN_ID` (eBay Partner Network) cuando se
-pase a monetización, y Advance Auto Parts vía Impact.com.
+---
+
+## 04/10/2026 — T-B5 revisada y fusionada (PR #16): enlaces de afiliado listos, esperando el ID — Líder
+
+**Entrega (agente B)**: `pipeline/fetch_ebay.py` con `_build_affiliate_header()` (header
+`X-EBAY-C-ENDUSERCTX: affiliateCampaignId=<id>[,affiliateReferenceId=<ref>]`, y **sin header**
+si no hay campaign id) y `_map_item_summary_to_offer` que ahora prefiere
+`itemAffiliateWebUrl` sobre `itemWebUrl`. 9 pruebas nuevas, `docs/ebay-produccion.md` y su
+fila de `TASKS.md`.
+
+**Lo que verifiqué yo, con la API real, en vez de creerle al autoinforme** (era el punto
+crítico de la tarea: si el mecanismo no funciona, el ID real no serviría de nada):
+
+| Prueba | Resultado |
+|---|---|
+| `python -m pytest pipeline/ -q` en la rama, corrido por el líder | **105/105 en verde** |
+| Búsqueda real **sin** `EBAY_CAMPAIGN_ID` | URL plana, sin `campid` — comportamiento de hoy intacto |
+| Búsqueda real **con** campaign id inventado (`5338800000`) y reference id | eBay devuelve la URL con `mkevt=1&mkcid=1&mkrid=711-53200-19255-0&campid=...` — el mecanismo funciona tal como dice su documentación |
+| Diff de la rama | solo sus 4 archivos; la fila `T-B5` fue la única de `TASKS.md` tocada |
+| Secretos | ninguno en el diff; `.env` nunca versionado |
+
+La pieza de código que importa es una línea: `item.get("itemAffiliateWebUrl") or
+item.get("itemWebUrl") or ""` — preferir la afiliada y caer a la normal, sin inventar
+parámetros de tracking en el cliente.
+
+**Lo que sigue sin poder verificarse, y hay que decirlo**: con un campaign id **real** no se
+puede probar hasta que EPN apruebe la cuenta. El ID de prueba demuestra que eBay devuelve la
+URL de afiliado cuando se pide, no que la comisión se vaya a pagar a esta cuenta. Esa parte
+solo se confirma con el ID de verdad y, más adelante, con el primer reporte de conversiones
+de EPN.
+
+**Estado**: T-B5 aprobada y fusionada (9638d73). T-H2 (aviso de afiliados en el footer) sigue
+bloqueada a propósito hasta que el ID real esté activo: el aviso tiene que aparecer el mismo
+día que los enlaces de afiliado, ni antes ni después.
