@@ -1,8 +1,9 @@
-# Buscador de piezas de vehículos (multimarca)
+# PartExact — buscador de piezas de vehículos (multimarca)
 
-VIN o marca/modelo/año/versión → ensamblaje correcto → diagrama y número de parte OEM
-(enlazado a la fuente, no copiado) → esa pieza a la venta en eBay con fotos reales →
-enlace de afiliado. Multimarca desde el diseño, gratis para el usuario.
+La pieza exacta de tu vehículo, confirmada por VIN. VIN o marca/modelo/año/versión →
+ensamblaje correcto → diagrama y número de parte OEM (enlazado a la fuente, no copiado) →
+esa pieza a la venta en eBay con fotos reales → enlace de afiliado. Multimarca desde el
+diseño, gratis para el usuario.
 
 **Estado del proyecto y decisiones: ver `PLAN.md`** (la memoria completa vive ahí).
 **Contratos de datos entre agentes: ver `CONTRACTS.md`.**

@@ -97,6 +97,13 @@ header.app-header p {
   font-size: 0.95rem;
 }
 
+header.app-header .app-tagline {
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 0.35rem;
+}
+
 main {
   max-width: var(--max-width);
   margin: 0 auto;

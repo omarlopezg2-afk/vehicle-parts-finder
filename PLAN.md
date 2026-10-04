@@ -271,13 +271,13 @@ Secrets (Actions) + `.env` local ignorado por git para pruebas. Nunca en el repo
 | EPN rechaza por sitio no funcional | Por eso se aplica en Fase 3, no en Fase 0 (evidencia del 24/09) |
 | Aviso legal/afiliados faltante | Criterio de aceptación en Fase 3 |
 
-## Recursos y costos (verificado 24/09, ajustado 25/09)
+## Recursos y costos (verificado 24/09, ajustado 25/09, nombre decidido 04/10)
 
 | Partida | Costo |
 |---|---|
 | Desarrollar y probar | **0** |
 | Hosting MVP (GitHub Pages + Actions) | **0** |
-| Dominio propio (opcional, pendiente de decidir) | ~10-12 USD/año |
+| Dominio propio: **partexact.com** (verificado libre 04/10/2026) | ~12 USD/año, pendiente de comprar |
 | Cuenta de desarrollador de eBay | 0 |
 | vPIC (NHTSA) | 0 |
 | eBay Partner Network (Fase 3) | 0 |
@@ -285,6 +285,28 @@ Secrets (Actions) + `.env` local ignorado por git para pruebas. Nunca en el repo
 
 El techo de escalado llegaría por cuotas de llamadas de eBay (se suben pidiéndolo), no por
 servidor ni GPU.
+
+## Nombre y marca (decidido 04/10/2026)
+
+**PartExact** — dominio `partexact.com` (verificado libre el 04/10/2026, pendiente de
+comprar; también libres `.net`, `.io`, y los equivalentes en español `partexacto.com` /
+`parteexacto.com` si se quiere asegurar una landing hispana más adelante).
+
+Por qué: corto, fácil de decir y teclear sin errores, comunica el diferenciador real del
+producto sin necesitar explicación — "exacto por tu VIN", frente a la compatibilidad
+"probable" por año/modelo genérico que dan RockAuto/PartsGeek/AutoZone. Bonus notado por
+Omar: la unión "Part" + "Exact" se lee naturalmente como "parte exacta" en español,
+atractivo para el mercado hispanohablante sin tener que traducir el nombre.
+
+Restricción verificada antes de proponer candidatos: ningún nombre puede usar "eBay" ni
+sugerir asociación oficial con ninguna marca de auto (Mitsubishi, Toyota, etc.) — ambas
+cosas violarían los términos de marca de eBay Partner Network y de los propios
+fabricantes. El nombre elegido no toca ninguna de las dos.
+
+Pendiente: comprar el dominio, actualizar el `<title>` y textos de marca en `site/`
+(ya iniciado, ver `REVIEW_LOG.md`), el logo (queda para después de tener el nombre
+asentado — es trabajo de diseño, no bloquea nada técnico), y renombrar el repo de GitHub
+si se quiere que coincida (`vehicle-parts-finder` → `partexact`, opcional, no urgente).
 
 ## Historial de documentos
 - `investigacion-ebay-24sep2026.md` — verificación de cuenta developer, EPN y evidencia real.
