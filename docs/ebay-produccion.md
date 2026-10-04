@@ -86,11 +86,12 @@ camino de afiliado no se ejercita por el fixture; sí está cubierto con mocks s
 Se corrige y amplía aquí lo que quedó en `investigacion-ebay-24sep2026.md`, porque dos datos
 de esa investigación estaban desactualizados:
 
-1. **El pago NO llega el mes siguiente.** La página oficial de EPN (`partnernetwork.ebay.com`,
-   *Our partnership*) dice textualmente: *"you will be paid on the 10th for the month before
-   the previous month"* — o sea, lo que generes en enero se paga **el 10 de marzo**. Es un
-   desfase de dos meses, no de uno. Consecuencia práctica: la primera comisión tarda ~2 meses
-   desde la primera venta, y eso hay que tenerlo claro antes de usar el ingreso para nada.
+1. **El pago NO llega el mes siguiente.** Los *Program Terms* del alta lo detallan: las
+   acciones se **bloquean 30 días después del fin del mes** en que se rastrean, y se pagan
+   **10 días después de ese bloqueo**. Traducido: una venta de octubre se bloquea a fines de
+   noviembre y se cobra **alrededor del 10 de diciembre**. Son ~2 meses desde la venta, no
+   uno. Consecuencia práctica: no cuentes con ese dinero para nada hasta bien pasado el
+   segundo mes.
 2. **Cobrar por PayPal cuesta 2 %** (con tope de 20 USD al mes); por transferencia bancaria
    (direct deposit / EFT) **no hay comisión**. Si el banco lo permite, transferencia.
 3. **Umbral mínimo de pago: 10 USD.** Por debajo, se acumula.
@@ -110,14 +111,14 @@ de esa investigación estaban desactualizados:
    **vehículos completos**, no de piezas — de ahí el tope bajo, para que un coche de 20.000
    USD no pague 800. Con piezas, el tope de 550 no se alcanza nunca (haría falta un artículo
    de 18.333 USD).
-8. **Ventana de atribución: 24 horas** (ayuda oficial de EPN, *How Long Does an EPN Cookie
-   Last?*): desde el clic, el comprador tiene 24 h para cerrar una compra (Buy It Now); en
-   subasta, pujar dentro de esas 24 h y ganarla dentro de 10 días. Se paga por **último
-   clic**. Dato a favor y importante: **no hace falta que compre la pieza que enlazamos** —
-   cualquier transacción válida suya en esa ventana cuenta. Las transacciones tardan hasta
-   48 h en aparecer en los reportes. *(Un sitio de afiliados afirma que en mayo de 2026 la
-   bajaron a 12 h; la ayuda oficial de eBay sigue diciendo 24 y no hay anuncio oficial:
-   comprobarlo en los Program Terms que se descarguen al aplicar.)*
+8. **Ventana de atribución: 24 horas — confirmada en los Program Terms del alta**
+   (*"Attribution Window: allow attribution from clicks within 1 day(s)"*), con **último clic**
+   (*"Credit Policy: Last Click"*). Desde el clic, el comprador tiene 24 h para cerrar una
+   compra (Buy It Now); en subasta, pujar dentro de esas 24 h y ganarla dentro de 10 días.
+   Dato a favor y importante: **no hace falta que compre la pieza que enlazamos** — cualquier
+   transacción válida suya en esa ventana cuenta. Las transacciones tardan hasta 48 h en
+   aparecer en los reportes. *(Queda descartada la afirmación de un sitio de afiliados de que
+   la ventana se había reducido a 12 h: los términos de esta cuenta dicen 1 día.)*
 9. **La cuenta honesta, con los precios reales del sitio** (3 %): filtro de aceite de 28 USD
    → **0,84 USD**; pieza de 69,35 USD → **2,08 USD**; las más caras de las nuestras, 129 USD
    → **3,87 USD**. El umbral de pago de 10 USD son ~12 ventas de filtro; **100 USD al mes
