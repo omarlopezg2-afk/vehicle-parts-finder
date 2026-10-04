@@ -1,15 +1,15 @@
 [
-  { "slug": "filtro-aceite", "name_es": "Filtro de aceite", "svg": "filtro-aceite.svg" },
-  { "slug": "filtro-aire", "name_es": "Filtro de aire", "svg": "filtro-aire.svg" },
-  { "slug": "pastillas-freno", "name_es": "Pastillas de freno", "svg": "pastillas-freno.svg" },
-  { "slug": "discos-freno", "name_es": "Discos de freno", "svg": "discos-freno.svg" },
-  { "slug": "bujia", "name_es": "Bujía", "svg": "bujia.svg" },
-  { "slug": "amortiguador", "name_es": "Amortiguador", "svg": "amortiguador.svg" },
-  { "slug": "bateria", "name_es": "Batería", "svg": "bateria.svg" },
-  { "slug": "correa", "name_es": "Correa (banda)", "svg": "correa.svg" },
-  { "slug": "bomba-agua", "name_es": "Bomba de agua", "svg": "bomba-agua.svg" },
-  { "slug": "alternador", "name_es": "Alternador", "svg": "alternador.svg" },
-  { "slug": "faro", "name_es": "Faro", "svg": "faro.svg" },
-  { "slug": "limpiaparabrisas", "name_es": "Limpiaparabrisas", "svg": "limpiaparabrisas.svg" },
-  { "slug": "generico-sin-foto", "name_es": "Genérico (sin foto)", "svg": "generico-sin-foto.svg" }
+  { "slug": "filtro-aceite", "name_es": "Filtro de aceite", "svg": "filtro-aceite.svg", "group_slug": "mantenimiento", "group_name_es": "Mantenimiento" },
+  { "slug": "filtro-aire", "name_es": "Filtro de aire", "svg": "filtro-aire.svg", "group_slug": "mantenimiento", "group_name_es": "Mantenimiento" },
+  { "slug": "pastillas-freno", "name_es": "Pastillas de freno", "svg": "pastillas-freno.svg", "group_slug": "frenos", "group_name_es": "Frenos" },
+  { "slug": "discos-freno", "name_es": "Discos de freno", "svg": "discos-freno.svg", "group_slug": "frenos", "group_name_es": "Frenos" },
+  { "slug": "bujia", "name_es": "Bujía", "svg": "bujia.svg", "group_slug": "motor", "group_name_es": "Motor" },
+  { "slug": "amortiguador", "name_es": "Amortiguador", "svg": "amortiguador.svg", "group_slug": "suspension-direccion", "group_name_es": "Suspensión y dirección" },
+  { "slug": "bateria", "name_es": "Batería", "svg": "bateria.svg", "group_slug": "electrico", "group_name_es": "Eléctrico" },
+  { "slug": "correa", "name_es": "Correa (banda)", "svg": "correa.svg", "group_slug": "motor", "group_name_es": "Motor" },
+  { "slug": "bomba-agua", "name_es": "Bomba de agua", "svg": "bomba-agua.svg", "group_slug": "refrigeracion", "group_name_es": "Refrigeración" },
+  { "slug": "alternador", "name_es": "Alternador", "svg": "alternador.svg", "group_slug": "electrico", "group_name_es": "Eléctrico" },
+  { "slug": "faro", "name_es": "Faro", "svg": "faro.svg", "group_slug": "iluminacion", "group_name_es": "Iluminación" },
+  { "slug": "limpiaparabrisas", "name_es": "Limpiaparabrisas", "svg": "limpiaparabrisas.svg", "group_slug": "carroceria-exterior", "group_name_es": "Carrocería y exterior" },
+  { "slug": "generico-sin-foto", "name_es": "Genérico (sin foto)", "svg": "generico-sin-foto.svg", "group_slug": "otros", "group_name_es": "Otros" }
 ]
