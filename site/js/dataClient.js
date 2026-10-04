@@ -229,6 +229,47 @@ export async function matchVehicleByVIN(vin) {
 }
 
 /**
+ * Busca un vehículo por marca/modelo/año exactos (sin distinguir
+ * mayúsculas/minúsculas ni espacios extra), para el flujo "elige tu
+ * vehículo sin VIN" (drill-down marca → año → modelo, ver
+ * site/js/vehiclePicker.js). Igual que matchVehicleByVIN, es una extensión
+ * del contrato original de CONTRACTS.md, documentada aquí y en el PR de
+ * T-E2 (drill-down UI).
+ *
+ * Nota: el drill-down llega a vPIC (vía site/js/vpicClient.js, un módulo
+ * aparte — ver su comentario de cabecera para la excepción deliberada a la
+ * regla de escalado) y por lo tanto a nombres de marca/modelo con la
+ * capitalización/ortografía de vPIC. Esta función normaliza ambos lados
+ * (trim + mayúsculas) para que "Mitsubishi"/"mitsubishi" o "Outlander
+ * Sport"/"OUTLANDER SPORT" coincidan igual con lo que haya en
+ * vehicles.json.
+ *
+ * @param {string} make
+ * @param {string} model
+ * @param {number|string} year
+ * @returns {Promise<object|null>} el vehículo si existe en el catálogo
+ *   (data/build/vehicles.json o su fixture), o null si no hay match. Null
+ *   NO es un error: significa "todavía no tenemos piezas para ese
+ *   vehículo en el catálogo", algo esperado mientras el catálogo crece.
+ */
+export async function matchVehicleByMakeModelYear(make, model, year) {
+  const vehicles = await getVehicles();
+  const needleMake = String(make || "").trim().toUpperCase();
+  const needleModel = String(model || "").trim().toUpperCase();
+  const needleYear = Number(year);
+  if (!needleMake || !needleModel || !Number.isInteger(needleYear)) return null;
+
+  return (
+    vehicles.find((v) => {
+      const vMake = String(v.make || "").trim().toUpperCase();
+      const vModel = String(v.model || "").trim().toUpperCase();
+      const vYear = Number(v.year);
+      return vMake === needleMake && vModel === needleModel && vYear === needleYear;
+    }) || null
+  );
+}
+
+/**
  * Piezas que ajustan a un vehículo (por fitment_ids) y, opcionalmente, que
  * pertenecen a una categoría dada.
  * @param {string} vehicleId

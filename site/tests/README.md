@@ -2,18 +2,24 @@
 
 Qué tan automatizado quedó, con honestidad:
 
-- **Automatizado:** `site/js/dataClient.js` y `site/js/vin.js` tienen tests
-  unitarios con `node --test` (nativo de Node, sin dependencias) en
-  `site/tests/*.test.js`. Cubren `searchPart`, `getPart`, `getVehicles`,
-  `getCategories`, `matchVehicleByVIN`, `getPartsByFitment`, y la detección
-  de VIN.
+- **Automatizado:** `site/js/dataClient.js`, `site/js/vin.js` y
+  `site/js/vpicClient.js` tienen tests unitarios con `node --test`
+  (nativo de Node, sin dependencias) en `site/tests/*.test.js`. Cubren
+  `searchPart`, `getPart`, `getVehicles`, `getCategories`,
+  `matchVehicleByVIN`, `matchVehicleByMakeModelYear`, `getPartsByFitment`,
+  la detección de VIN, y `getAllMakes`/`getModelsForMakeYear`/
+  `getYearRange` de vpicClient.js (con un `fetchImpl` falso inyectado —
+  no pegan contra vPIC real en los tests, para no depender de red en CI;
+  la verificación de que vPIC responde con CORS abierto y datos reales se
+  hizo a mano, ver el PR de T-E2).
 - **NO automatizado (manual):** todo lo visual/DOM (formulario, árbol de
-  categorías, ficha de parte, responsive, navegación por teclado). No hay
-  Playwright/Cypress/Puppeteer instalado en este proyecto — se decidió no
-  agregar una dependencia de build/test pesada para un sitio que
-  explícitamente no debe tener build step. Si el líder quiere cobertura E2E
-  real, lo siguiente sería agregar Playwright como devDependency solo para
-  `site/` (no afecta cómo se sirve en producción).
+  categorías, ficha de parte, wizard de marca/año/modelo, responsive,
+  navegación por teclado). No hay Playwright/Cypress/Puppeteer instalado
+  en este proyecto — se decidió no agregar una dependencia de build/test
+  pesada para un sitio que explícitamente no debe tener build step. Si el
+  líder quiere cobertura E2E real, lo siguiente sería agregar Playwright
+  como devDependency solo para `site/` (no afecta cómo se sirve en
+  producción).
 
 ## 1. Correr los tests automatizados
 
@@ -23,7 +29,8 @@ node --test tests/*.test.js
 # o: npm test
 ```
 
-Debe imprimir 18 tests, 0 fallos (`dataClient.js`: 12, `vin.js`: 6).
+Debe imprimir 28 tests, 0 fallos (`dataClient.js`: 16, `vin.js`: 6,
+`vpicClient.js`: 6).
 
 ## 2. Probar el sitio a mano
 
@@ -63,25 +70,48 @@ mejor probar con un servidor real para que coincida con producción).
    - Prueba un número que no existe, ej. `ZZZZZZZZZZ` → mensaje de "no
      encontramos piezas", sin romperse.
 
-3. **Responsive / sin scroll horizontal** — con las herramientas de
+3. **Flujo "elige tu vehículo sin VIN" (drill-down marca → año → modelo)**
+   — junto al buscador, presiona el botón "¿No tienes tu VIN a mano? Elige
+   tu vehículo" (debe cambiar `aria-expanded` a `true` y mostrar el
+   wizard).
+   - Espera a que cargue la lista de marcas (viene de vPIC en vivo —
+     requiere internet). Elige **Mitsubishi**, luego **2020**, luego
+     **Outlander Sport**, y presiona "Ver piezas para este vehículo".
+   - Debe llevarte al MISMO árbol de categorías que el flujo VIN (compara
+     con el punto 1 usando el VIN real `JA4AP4AU3LU023739`: ambos caminos
+     deben mostrar "Mitsubishi Outlander Sport 2020" con el mismo motor).
+   - El botón "Buscar" de vuelta se oculta y el wizard se cierra al
+     completarse.
+   - Prueba un año/marca sin modelos (poco común, pero si vPIC no tiene
+     datos para esa combinación) → debe mostrar un mensaje claro, sin
+     romperse.
+   - Prueba con internet desconectada (o bloqueando vpic.nhtsa.dot.gov) →
+     el mensaje de estado debe decir que no se pudo cargar, sin dejar la
+     pantalla en blanco ni tirar un error no manejado en consola.
+
+4. **Responsive / sin scroll horizontal** — con las herramientas de
    desarrollador del navegador, prueba el modo de dispositivo móvil (ej.
    375px de ancho, iPhone SE). Verifica que no aparezca una barra de
-   scroll horizontal en ninguna pantalla (buscador, árbol de categorías,
-   ficha de parte con ofertas).
+   scroll horizontal en ninguna pantalla (buscador, wizard de
+   marca/año/modelo, árbol de categorías, ficha de parte con ofertas).
 
-4. **Navegación por teclado** — usando solo Tab/Shift+Tab/Enter/Espacio
+5. **Navegación por teclado** — usando solo Tab/Shift+Tab/Enter/Espacio
    (sin mouse):
    - Desde que carga la página, Tab debe llevarte primero al enlace
      "Saltar al contenido", luego al campo de búsqueda, luego al botón
-     "Buscar".
+     "Buscar", luego al botón "¿No tienes tu VIN a mano?...".
+   - Al abrir el wizard con Enter/Espacio, Tab debe llevarte a los tres
+     `<select>` (marca, año, modelo — cada uno navegable con flechas como
+     cualquier `<select>` nativo) y luego al botón "Ver piezas para este
+     vehículo".
    - En el árbol de categorías, cada botón de categoría debe ser
      alcanzable con Tab y activable con Enter/Espacio.
-   - Cada botón/enlace enfocado debe tener un contorno amarillo visible
-     (`:focus`, ver `site/css/styles.css`).
+   - Cada botón/enlace/select enfocado debe tener un contorno amarillo
+     visible (`:focus`, ver `site/css/styles.css`).
    - Los enlaces "Ver diagrama…" y "Comprar en…" deben ser alcanzables con
      Tab y abrir en pestaña nueva con Enter.
 
-5. **Aviso de datos de ejemplo** — como `data/build/parts.json` y
+6. **Aviso de datos de ejemplo** — como `data/build/parts.json` y
    `data/build/vehicles.json` reales de T-D1 todavía no existen al momento
    de esta entrega, debe aparecer una franja amarilla arriba del todo:
    "Mostrando datos de ejemplo (fixture de desarrollo)...". Esto es
