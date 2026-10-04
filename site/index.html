@@ -11,39 +11,62 @@
 
     <header class="app-header">
       <h1>Buscador de piezas de vehículos</h1>
-      <p>Pon tu VIN o el número de tu pieza para encontrarla.</p>
+      <p>Pon tu VIN, tu número de pieza, o elige tu vehículo abajo.</p>
     </header>
 
     <main id="main-content">
       <div id="fixture-banner" class="fixture-banner" hidden></div>
 
-      <form id="search-form" class="search-form" autocomplete="off">
-        <label for="search-input">Busca por VIN (17 caracteres) o número de parte</label>
-        <input
-          id="search-input"
-          name="q"
-          type="search"
-          placeholder="Ej: JA4AP3AW9LZ012345 o 1230A114"
-          aria-describedby="search-hint"
-          required
-        />
-        <button type="submit" class="btn">Buscar</button>
-      </form>
-      <p id="search-hint" class="search-hint">
-        Si escribes 17 caracteres alfanuméricos lo tratamos como VIN; si no, lo
-        buscamos como número de parte.
-      </p>
+      <div id="vehicle-bar" class="vehicle-bar" hidden>
+        <p class="vehicle-bar-text">
+          Tu vehículo: <strong id="vehicle-bar-label"></strong>
+        </p>
+        <button id="vehicle-bar-change" type="button" class="btn btn-secondary">
+          Cambiar vehículo
+        </button>
+      </div>
 
-      <button
-        id="toggle-vehicle-picker"
-        type="button"
-        class="btn btn-secondary vehicle-picker-toggle"
-        aria-expanded="false"
-        aria-controls="vehicle-picker-container"
+      <div id="home-paths" class="dual-path">
+        <section class="path-col" aria-labelledby="path-vin-title">
+          <h2 id="path-vin-title">¿Conoces tu VIN?</h2>
+          <form id="search-form" class="search-form" autocomplete="off">
+            <label for="search-input"
+              >Busca por VIN (17 caracteres) o número de parte</label
+            >
+            <input
+              id="search-input"
+              name="q"
+              type="search"
+              placeholder="Ej: JA4AP3AW9LZ012345 o 1230A114"
+              aria-describedby="search-hint"
+              required
+            />
+            <button type="submit" class="btn">Buscar</button>
+          </form>
+          <p id="search-hint" class="search-hint">
+            Si escribes 17 caracteres alfanuméricos lo tratamos como VIN; si
+            no, lo buscamos como número de parte.
+          </p>
+        </section>
+
+        <section class="path-col" aria-labelledby="path-picker-title">
+          <h2 id="path-picker-title">O elige tu vehículo</h2>
+          <div id="vehicle-picker-container"></div>
+        </section>
+      </div>
+
+      <section
+        id="home-categories"
+        class="home-categories"
+        aria-labelledby="home-categories-title"
       >
-        ¿No tienes tu VIN a mano? Elige tu vehículo
-      </button>
-      <div id="vehicle-picker-container" hidden></div>
+        <h2 id="home-categories-title">Categorías populares</h2>
+        <p class="search-hint">
+          Explora por tipo de pieza. Si ya elegiste tu vehículo arriba, te
+          mostramos directamente las piezas que le quedan.
+        </p>
+        <div id="home-categories-grid"></div>
+      </section>
 
       <div id="results" aria-live="polite"></div>
     </main>

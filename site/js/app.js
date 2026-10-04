@@ -1,33 +1,59 @@
 // site/js/app.js
 //
 // Orquestador de la UI. Este archivo (y categoryTree.js / partCard.js /
-// pegarNumero.js) NUNCA hace fetch directo a data/build/*.json: todo pasa
-// por las funciones de dataClient.js (searchPart, getPart, getVehicles, y
-// las dos extensiones documentadas ahí: matchVehicleByVIN,
-// getPartsByFitment, además de getCategories para los SVG/nombres de
-// categoría). Ver CONTRACTS.md, sección "Regla de escalado".
+// pegarNumero.js / vehiclePicker.js) NUNCA hace fetch directo a
+// data/build/*.json: todo pasa por las funciones de dataClient.js
+// (searchPart, getPart, getVehicles, y las extensiones documentadas ahí:
+// matchVehicleByVIN, matchVehicleByMakeModelYear, getPartsByFitment,
+// getPartsByCategory, getCategories). Ver CONTRACTS.md, sección "Regla de
+// escalado". vehicleSession.js tampoco hace fetch: solo lee/escribe
+// localStorage (ver su propia cabecera).
+//
+// --- Fase 2.5 (T-E3/T-E4/T-E5/T-E6), resumen de las decisiones de layout ---
+// T-E3: el buscador (VIN/número de parte) y el selector de vehículo
+//   (vehiclePicker.js) viven AMBOS, siempre visibles, lado a lado en
+//   #home-paths (apilados en móvil por CSS, ver styles.css) — ya no hay
+//   botón que oculte uno de los dos. vehiclePicker.js se monta una sola
+//   vez al cargar la página (ver mountVehiclePicker()).
+// T-E4: en cuanto se resuelve un vehículo (por VIN o por el wizard), se
+//   guarda con vehicleSession.saveVehicle() y se muestra en una barra fija
+//   (#vehicle-bar) con botón "Cambiar vehículo". Al recargar la página
+//   dentro de la misma sesión del navegador, loadVehicle() lo recupera y
+//   se salta directo al árbol de categorías de ese vehículo.
+// T-E5: el grid de categorías (#home-categories) se muestra siempre en el
+//   home, ANTES de resolver un vehículo. Clic en una categoría SIN
+//   vehículo resuelto -> runCategoryBrowse() (ver esa función para la
+//   justificación de la decisión: mostrar directo las piezas de esa
+//   categoría, en vez de forzar a elegir vehículo primero). Clic CON
+//   vehículo ya resuelto -> runCategorySelection() (fitment real).
 
 import {
   searchPart,
   getPart,
+  getVehicles,
   getCategories,
   matchVehicleByVIN,
   matchVehicleByMakeModelYear,
   getPartsByFitment,
+  getPartsByCategory,
   _isUsingFixture,
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
-import { renderVehicleTree } from "./categoryTree.js";
+import { renderVehicleTree, renderCategoryGrid } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
 import { renderVehiclePicker } from "./vehiclePicker.js";
+import { saveVehicle, loadVehicle, clearVehicle, formatVehicleLabel } from "./vehicleSession.js";
 
 const resultsEl = document.getElementById("results");
 const form = document.getElementById("search-form");
 const input = document.getElementById("search-input");
 const fixtureBanner = document.getElementById("fixture-banner");
-const toggleVehiclePickerBtn = document.getElementById("toggle-vehicle-picker");
 const vehiclePickerContainer = document.getElementById("vehicle-picker-container");
+const vehicleBar = document.getElementById("vehicle-bar");
+const vehicleBarLabel = document.getElementById("vehicle-bar-label");
+const vehicleBarChangeBtn = document.getElementById("vehicle-bar-change");
+const homeCategoriesGrid = document.getElementById("home-categories-grid");
 
 function clearResults() {
   resultsEl.innerHTML = "";
@@ -78,6 +104,26 @@ async function showFixtureBannerIfNeeded() {
   }
 }
 
+// --- T-E4: barra "Mi vehículo" persistente ---
+
+function showVehicleBar(vehicle) {
+  vehicleBarLabel.textContent = formatVehicleLabel(vehicle);
+  vehicleBar.hidden = false;
+}
+
+function hideVehicleBar() {
+  vehicleBar.hidden = true;
+  vehicleBarLabel.textContent = "";
+}
+
+vehicleBarChangeBtn.addEventListener("click", () => {
+  clearVehicle();
+  hideVehicleBar();
+  renderEmptyState(
+    "Escribe un VIN de 17 caracteres o un número de parte arriba, o elige tu vehículo."
+  );
+});
+
 async function runPartNumberSearch(query) {
   clearResults();
   resultsEl.appendChild(
@@ -103,7 +149,7 @@ async function runPartNumberSearch(query) {
   resultsEl.appendChild(countP);
 
   for (const part of matches) {
-    const card = await renderPartCard(part, categories, getPart);
+    const card = await renderPartCard(part, categories, getPart, getVehicles);
     resultsEl.appendChild(card);
   }
 }
@@ -131,7 +177,7 @@ async function runCategorySelection(vehicle, categorySlug, categories) {
     resultsEl.appendChild(p);
   } else {
     for (const part of parts) {
-      const card = await renderPartCard(part, categories, getPart);
+      const card = await renderPartCard(part, categories, getPart, getVehicles);
       resultsEl.appendChild(card);
     }
   }
@@ -141,6 +187,43 @@ async function runCategorySelection(vehicle, categorySlug, categories) {
     runSearch(value);
   });
   resultsEl.appendChild(box);
+}
+
+// --- T-E5: clic en una categoría destacada del home SIN vehículo resuelto ---
+//
+// Decisión de diseño (ver PR para más detalle): en vez de bloquear al
+// usuario pidiéndole primero el vehículo, se muestran directamente TODAS
+// las piezas del catálogo en esa categoría (vía getPartsByCategory, sin
+// filtrar por fitment). Razón: el objetivo de "categorías destacadas" es
+// dejar explorar el catálogo como en factorymitsubishiparts.com/
+// RevolutionParts (navegar por tipo de pieza es más natural que obligar
+// "primero dime tu auto"); exigir vehículo primero duplicaría el flujo
+// VIN/wizard que ya está justo al lado. Se deja un aviso y un atajo claro
+// para resolver el vehículo y ver piezas garantizadas por fitment.
+async function runCategoryBrowse(categorySlug, categories) {
+  clearResults();
+  const categoryName = categories.find((c) => c.slug === categorySlug)?.name_es || categorySlug;
+  resultsEl.appendChild(renderBreadcrumb([{ label: `Categoría: ${categoryName}` }]));
+
+  const hint = document.createElement("p");
+  hint.className = "search-hint";
+  hint.textContent =
+    "Mostrando piezas de esta categoría para todo el catálogo. Resuelve tu VIN o " +
+    "elige tu vehículo arriba para ver solo las que le quedan a tu auto.";
+  resultsEl.appendChild(hint);
+
+  const parts = await getPartsByCategory(categorySlug);
+  if (parts.length === 0) {
+    const p = document.createElement("p");
+    p.className = "empty-state";
+    p.textContent = "Todavía no tenemos piezas registradas en esta categoría.";
+    resultsEl.appendChild(p);
+  } else {
+    for (const part of parts) {
+      const card = await renderPartCard(part, categories, getPart, getVehicles);
+      resultsEl.appendChild(card);
+    }
+  }
 }
 
 async function runVinFlow(vehicle) {
@@ -163,6 +246,12 @@ async function runVinFlow(vehicle) {
   resultsEl.appendChild(box);
 }
 
+async function resolveVehicleAndShowTree(vehicle) {
+  saveVehicle(vehicle);
+  showVehicleBar(vehicle);
+  await runVinFlow(vehicle);
+}
+
 async function runSearch(rawQuery) {
   const query = rawQuery.trim();
   if (!query) {
@@ -181,7 +270,7 @@ async function runSearch(rawQuery) {
       );
       return;
     }
-    await runVinFlow(vehicle);
+    await resolveVehicleAndShowTree(vehicle);
   } else {
     await runPartNumberSearch(query);
   }
@@ -192,28 +281,14 @@ form.addEventListener("submit", (ev) => {
   runSearch(input.value);
 });
 
-// --- Botón "¿No tienes tu VIN a mano? Elige tu vehículo" ---
-// Muestra/oculta el wizard de marca→año→modelo (vehiclePicker.js). Al
-// completarse, busca el vehículo en NUESTRO catálogo
-// (matchVehicleByMakeModelYear, vía dataClient.js) y entra al MISMO árbol
-// de categorías que usa el flujo VIN (runVinFlow), para que ambos caminos
-// terminen en la misma pantalla.
-let vehiclePickerInstance = null;
-
-function closeVehiclePicker() {
-  vehiclePickerContainer.hidden = true;
+// --- T-E3: selector de vehículo (vehiclePicker.js) SIEMPRE visible ---
+// Ya no vive detrás de un botón "¿No tienes tu VIN a mano?": se monta una
+// sola vez al cargar la página, en la columna "O elige tu vehículo" junto
+// al buscador (ver #home-paths en index.html).
+function mountVehiclePicker() {
   vehiclePickerContainer.innerHTML = "";
-  vehiclePickerInstance = null;
-  toggleVehiclePickerBtn.setAttribute("aria-expanded", "false");
-  toggleVehiclePickerBtn.textContent = "¿No tienes tu VIN a mano? Elige tu vehículo";
-}
-
-function openVehiclePicker() {
-  vehiclePickerContainer.innerHTML = "";
-  vehiclePickerInstance = renderVehiclePicker(async (make, model, year) => {
-    closeVehiclePicker();
+  const picker = renderVehiclePicker(async (make, model, year) => {
     clearResults();
-
     const vehicle = await matchVehicleByMakeModelYear(make, model, year);
     if (!vehicle) {
       renderEmptyState(
@@ -222,27 +297,50 @@ function openVehiclePicker() {
       );
       return;
     }
-    await runVinFlow(vehicle);
+    await resolveVehicleAndShowTree(vehicle);
   });
-  vehiclePickerContainer.appendChild(vehiclePickerInstance.element);
-  vehiclePickerContainer.hidden = false;
-  toggleVehiclePickerBtn.setAttribute("aria-expanded", "true");
-  toggleVehiclePickerBtn.textContent = "Ocultar selector de vehículo";
-  vehiclePickerInstance.focusFirstField();
+  vehiclePickerContainer.appendChild(picker.element);
 }
 
-toggleVehiclePickerBtn.addEventListener("click", () => {
-  if (vehiclePickerContainer.hidden) {
-    openVehiclePicker();
-  } else {
-    closeVehiclePicker();
-  }
-});
+// --- T-E5: grid de categorías destacadas en el home ---
+async function mountHomeCategories() {
+  const categories = await getCategories();
+  // No se muestra la categoría "genérico (sin foto)" como destacada: es un
+  // comodín de respaldo para fotos faltantes, no una categoría real para
+  // navegar desde el home.
+  const featured = categories.filter((c) => c.slug !== "generico-sin-foto");
+  homeCategoriesGrid.innerHTML = "";
+  homeCategoriesGrid.appendChild(
+    renderCategoryGrid(featured, async (slug) => {
+      const savedVehicle = loadVehicle();
+      if (savedVehicle) {
+        await runCategorySelection(savedVehicle, slug, categories);
+      } else {
+        await runCategoryBrowse(slug, categories);
+      }
+    })
+  );
+}
 
-// Estado inicial: mensaje de bienvenida (no hace ninguna búsqueda todavía,
-// pero sí comprueba y muestra el aviso de fixture para que quede claro
-// desde el primer segundo que son datos de ejemplo).
-showFixtureBannerIfNeeded();
-renderEmptyState(
-  "Escribe un VIN de 17 caracteres o un número de parte arriba y presiona Buscar."
-);
+// --- Estado inicial ---
+// Si hay un vehículo recordado (T-E4), se salta directo a su árbol de
+// categorías sin pedir VIN ni repetir el wizard. Si no, mensaje de
+// bienvenida normal. El buscador y el selector de vehículo (T-E3) y el
+// grid de categorías (T-E5) se montan siempre, pase lo que pase.
+async function init() {
+  mountVehiclePicker();
+  await mountHomeCategories();
+  await showFixtureBannerIfNeeded();
+
+  const savedVehicle = loadVehicle();
+  if (savedVehicle) {
+    showVehicleBar(savedVehicle);
+    await runVinFlow(savedVehicle);
+  } else {
+    renderEmptyState(
+      "Escribe un VIN de 17 caracteres o un número de parte arriba, o elige tu vehículo."
+    );
+  }
+}
+
+init();
