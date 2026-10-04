@@ -1,15 +1,24 @@
-"""Cliente vPIC (NHTSA) para resolver un VIN a los campos de `vehicles.json`.
+"""Cliente vPIC (NHTSA) para resolver un VIN a los campos de `vehicles.json`, y para el
+camino alterno de selección sin VIN (drill-down marca → modelo → año, ver PLAN.md línea
+~58: "VIN, o marca/modelo/año/versión" son las dos formas de entrar al buscador).
 
-API usada (pública, sin llave):
+APIs usadas (todas públicas, sin llave):
     GET https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues/<VIN>?format=json
+    GET https://vpic.nhtsa.dot.gov/api/vehicles/GetMakesForVehicleType/<tipo>?format=json
+    GET https://vpic.nhtsa.dot.gov/api/vehicles/GetModelsForMakeYear/make/<marca>/modelyear/<año>?format=json
 
-Uso típico:
+Uso típico (VIN):
     from pipeline.fetch_vehicles import fetch_vehicle
     vehiculo = fetch_vehicle("JA4AP3AU0LU000302")
     if vehiculo["error"] is None:
         ...  # vehiculo cumple el esquema de CONTRACTS.md (vehicles.json)
     else:
         ...  # VIN inválido / problema de red: manejar sin tumbar el pipeline
+
+Uso típico (drill-down sin VIN):
+    from pipeline.fetch_vehicles import get_all_makes, get_models_for_make_year
+    marcas = get_all_makes()                              # [{"id": 481, "name": "Mitsubishi"}, ...]
+    modelos = get_models_for_make_year("Mitsubishi", 2020)  # [{"id": 13867, "name": "Outlander Sport"}, ...]
 
 Ejecutado directamente (`python pipeline/fetch_vehicles.py VIN1 VIN2 ...`) imprime un
 JSON con la lista de resultados (uno por VIN), útil para pruebas manuales rápidas.
@@ -22,6 +31,13 @@ Diseño de errores (ver T-A1 en TASKS.md: "VIN inválido no rompe el pipeline"):
   `None`. El pipeline (build_index.py u otro consumidor) debe filtrar por
   `error is None` antes de escribir `data/build/vehicles.json`, ya que ese
   esquema (CONTRACTS.md) no incluye la clave `error`.
+- `get_all_makes` y `get_models_for_make_year` siguen el MISMO patrón defensivo
+  (nunca lanzan excepción), pero como devuelven `list[dict]` en vez de un dict con
+  clave `error`, cualquier problema de red/HTTP/JSON se traduce en **lista vacía**
+  más un aviso por `sys.stderr` (no hay forma de distinguir "0 resultados legítimos"
+  de "falló la llamada" solo con la lista; si el llamador necesita esa distinción,
+  debe revisar stderr o se puede extender después agregando un modo que devuelva
+  también el error, igual que `fetch_vehicle`).
 """
 
 from __future__ import annotations
@@ -35,7 +51,18 @@ import urllib.request
 from typing import Any, Optional
 
 VPIC_BASE_URL = "https://vpic.nhtsa.dot.gov/api/vehicles/DecodeVinValues"
+VPIC_API_ROOT = "https://vpic.nhtsa.dot.gov/api/vehicles"
 DEFAULT_TIMEOUT_S = 10
+
+# Tipos de vehículo vPIC que se consideran "auto/SUV" para el drill-down sin VIN
+# (ver get_all_makes). vPIC no tiene un único tipo "Car" que cubra SUVs/crossovers:
+# los pickups/SUV grandes (ej. Mitsubishi Outlander Sport) caen bajo "Multipurpose
+# Passenger Vehicle (MPV)", no bajo "Passenger Car". Por eso se pide la unión de
+# ambos tipos. Ver docstring de get_all_makes() para el detalle de qué tan limpio
+# queda este filtro (no es perfecto: algunas marcas de camión también fabrican
+# vehículos MPV y por lo tanto aparecen, ej. FREIGHTLINER NO aparece pero sí podrían
+# aparecer marcas límite).
+_TIPOS_VEHICULO_AUTO = ("car", "multipurpose passenger vehicle (mpv)")
 
 # Un VIN válido: 17 caracteres alfanuméricos, sin I, O ni Q (se confunden con 1 y 0).
 _VIN_RE = re.compile(r"^[A-HJ-NPR-Z0-9]{17}$", re.IGNORECASE)
@@ -201,6 +228,150 @@ def fetch_vehicles(vins: list[str], timeout: int = DEFAULT_TIMEOUT_S) -> list[di
     """Resuelve una lista de VINs, uno por uno. Un VIN con error no detiene
     la resolución de los demás (cada llamada a fetch_vehicle ya es segura)."""
     return [fetch_vehicle(vin, timeout=timeout) for vin in vins]
+
+
+def _vpic_get_json(url: str, timeout: int) -> Optional[dict[str, Any]]:
+    """Helper interno compartido por get_all_makes/get_models_for_make_year.
+
+    Mismo patrón defensivo que fetch_vehicle: nunca lanza excepción. Si algo
+    sale mal (red, HTTP, JSON), avisa por stderr y devuelve None (el llamador
+    lo traduce en lista vacía).
+    """
+    try:
+        with urllib.request.urlopen(url, timeout=timeout) as resp:
+            cuerpo = resp.read()
+    except urllib.error.HTTPError as exc:
+        print(f"vPIC devolvió HTTP {exc.code} para {url}.", file=sys.stderr)
+        return None
+    except urllib.error.URLError as exc:
+        print(f"No se pudo contactar vPIC ({exc.reason}) para {url}.", file=sys.stderr)
+        return None
+    except TimeoutError:
+        print(f"Timeout consultando vPIC: {url}.", file=sys.stderr)
+        return None
+    except Exception as exc:  # defensivo: nunca debe tumbar el pipeline
+        print(f"Error de red inesperado consultando vPIC ({url}): {exc}", file=sys.stderr)
+        return None
+
+    try:
+        return json.loads(cuerpo)
+    except (json.JSONDecodeError, UnicodeDecodeError) as exc:
+        print(f"Respuesta de vPIC no es JSON válido ({url}): {exc}", file=sys.stderr)
+        return None
+
+
+def get_all_makes(timeout: int = DEFAULT_TIMEOUT_S) -> list[dict[str, Any]]:
+    """Devuelve la lista de marcas de auto/SUV disponibles en vPIC, para el
+    drill-down "marca → modelo → año" (camino alterno al VIN, ver PLAN.md).
+
+    Cada elemento: {"id": int, "name": str} (nombre con capitalización "Title
+    Case" en vez del MAYÚSCULAS que devuelve vPIC crudo, igual que fetch_vehicle
+    hace con `make`). Lista ordenada alfabéticamente por `name`.
+
+    SOBRE EL FILTRADO (documentado como pide la tarea, porque NO quedó perfecto):
+    vPIC's `GetAllMakes` devuelve ~12,000 "marcas" (incluye fabricantes de
+    remolques, carrocerías de buses, golf carts, motos, camiones pesados, etc. —
+    cualquier entidad que haya registrado un VIN con NHTSA). No hay un endpoint
+    `GetAllMakes` con parámetro de filtro por tipo. Lo que SÍ existe es
+    `GetMakesForVehicleType/<tipo>`, así que esta función pide la UNIÓN de los
+    tipos "car" (Passenger Car) y "multipurpose passenger vehicle (mpv)" (donde
+    caen SUVs/crossovers como el Outlander Sport) y deduplica por nombre.
+    Verificado a mano: "MITSUBISHI" aparece en ambos tipos; "HARLEY-DAVIDSON"
+    (moto) NO aparece en ninguno de los dos — el filtro funciona para el caso
+    moto. Para camiones pesados el filtro es imperfecto: marcas que SOLO hacen
+    camiones pesados (ej. "FREIGHTLINER") no aparecen en car/mpv y quedan fuera
+    correctamente, pero una marca mixta (que vPIC catalogue bajo car/mpv Y
+    truck a la vez, ej. "FORD", "CHEVROLET", "GMC") sí entra, lo cual es
+    correcto porque esas marcas efectivamente venden autos/SUV. No se filtró
+    también por "truck" a propósito (pickups ligeras como F-150/Silverado caen
+    bajo "truck" en vPIC, no bajo car/mpv) — si el frontend más adelante quiere
+    incluir pickups, se puede ampliar `_TIPOS_VEHICULO_AUTO` agregando "truck",
+    pero eso metería de vuelta fabricantes de camiones pesados/remolques
+    (ej. varias decenas de marcas industriales), así que se dejó fuera por ahora
+    y se deja esta nota para quien integre el frontend: "si faltan pickups
+    comunes (F-150, Silverado, Ram, Tacoma) en el selector, es por este filtro,
+    no por un bug."
+    """
+    marcas_por_nombre: dict[str, int] = {}
+    for tipo in _TIPOS_VEHICULO_AUTO:
+        url = f"{VPIC_API_ROOT}/GetMakesForVehicleType/{urllib.parse.quote(tipo)}?format=json"
+        datos = _vpic_get_json(url, timeout=timeout)
+        if not datos:
+            continue
+        resultados = datos.get("Results") if isinstance(datos, dict) else None
+        if not resultados:
+            continue
+        for item in resultados:
+            nombre_crudo = (item.get("MakeName") or "").strip()
+            id_crudo = item.get("MakeId")
+            if not nombre_crudo or id_crudo is None:
+                continue
+            nombre = nombre_crudo.title() if nombre_crudo.isupper() else nombre_crudo
+            # Si la misma marca aparece en ambos tipos, se queda con el primer id visto.
+            marcas_por_nombre.setdefault(nombre, id_crudo)
+
+    return [
+        {"id": marcas_por_nombre[nombre], "name": nombre}
+        for nombre in sorted(marcas_por_nombre, key=str.casefold)
+    ]
+
+
+def get_models_for_make_year(
+    make: str, year: int, timeout: int = DEFAULT_TIMEOUT_S
+) -> list[dict[str, Any]]:
+    """Devuelve los modelos de `make` para el año `year` según vPIC, para el
+    paso siguiente del drill-down "marca → modelo → año".
+
+    Cada elemento: {"id": int, "name": str}. Lista ordenada alfabéticamente por
+    `name`. `make` acepta cualquier capitalización (vPIC no distingue
+    mayúsculas/minúsculas para este endpoint). Si `make`/`year` no existen o no
+    hay modelos para esa combinación, o si hay un problema de red/HTTP/JSON,
+    se devuelve lista vacía (mismo patrón defensivo que get_all_makes/
+    fetch_vehicle: nunca lanza excepción).
+
+    PROBLEMA CONOCIDO (documentado, no se resolvió acá): vPIC no hace match
+    exacto por marca en este endpoint. `get_models_for_make_year("Mitsubishi",
+    2020)` devuelve también los modelos de camiones "Mitsubishi Fuso" (otra
+    marca con su propio Make_ID en vPIC) mezclados con los del Mitsubishi de
+    pasajeros, porque vPIC compara por substring/prefijo de nombre de marca,
+    no por igualdad exacta. Esta función NO filtra eso (se mantiene fiel a lo
+    que devuelve vPIC para no introducir falsos negativos con otras marcas
+    cuyo nombre varía), así que quien integre el frontend debe saber que la
+    lista de modelos puede incluir series de otra sub-marca con nombre similar.
+    """
+    marca = (make or "").strip()
+    if not marca:
+        print("get_models_for_make_year: 'make' vacío.", file=sys.stderr)
+        return []
+    try:
+        anio = int(year)
+    except (TypeError, ValueError):
+        print(f"get_models_for_make_year: año inválido: {year!r}.", file=sys.stderr)
+        return []
+
+    url = (
+        f"{VPIC_API_ROOT}/GetModelsForMakeYear/make/{urllib.parse.quote(marca)}"
+        f"/modelyear/{anio}?format=json"
+    )
+    datos = _vpic_get_json(url, timeout=timeout)
+    if not datos:
+        return []
+    resultados = datos.get("Results") if isinstance(datos, dict) else None
+    if not resultados:
+        return []
+
+    modelos_por_nombre: dict[str, int] = {}
+    for item in resultados:
+        nombre = (item.get("Model_Name") or "").strip()
+        id_crudo = item.get("Model_ID")
+        if not nombre or id_crudo is None:
+            continue
+        modelos_por_nombre.setdefault(nombre, id_crudo)
+
+    return [
+        {"id": modelos_por_nombre[nombre], "name": nombre}
+        for nombre in sorted(modelos_por_nombre, key=str.casefold)
+    ]
 
 
 def _main(argv: list[str]) -> int:
