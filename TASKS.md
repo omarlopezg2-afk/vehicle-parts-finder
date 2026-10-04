@@ -43,10 +43,39 @@ Las 3 del backlog de abajo, ahora activas. `CONTRACTS.md` ya tiene `group_slug`/
 
 | ID | Agente | Tarea | Dueño de | Depende de | Estado | Criterios de aceptación |
 |---|---|---|---|---|---|---|
-| T-A3 | A. Datos-Vehículos | Filtrar marcas industriales del drill-down (Python + JS) | `pipeline/fetch_vehicles.py`, `site/js/vpicClient.js` | T-A2, T-E2 | **en revisión** (PR pendiente de merge, rama `agent/a3-filtro-marcas`) | `FREIGHTLINER` y fabricantes de camiones/buses pesados equivalentes ya no aparecen en `get_all_makes()`/`getAllMakes()`; Mitsubishi, Toyota, Honda, Ford, etc. siguen presentes; criterio de exclusión documentado (lista explícita o heurística) y con tests que prueben al menos 3 exclusiones y 3 inclusiones reales contra la API |
-| T-C2 | C. EPC-Puente | Investigar si 7zap/Partsouq exponen Trim/submodelo por generación | `pipeline/fetch_epc_links.py` (solo si hay hallazgo que justifique código; si no, el entregable es el hallazgo documentado) | — | pendiente | Responde con evidencia (no opinión) si alguna fuente gratuita da trims tipo BE/ES/GT/SE/SP para Mitsubishi Outlander Sport 2020; si existe, expone una función que lo devuelva; si NO existe en ninguna fuente gratuita verificada, lo dice explícitamente en el PR en vez de inventar, y la tarea se cierra como "no viable con fuentes gratuitas" sin bloquear nada más |
-| T-F2 | F. Diseño-Assets | Categorías jerárquicas: agrupar los 13 slugs existentes en grupos + `categories.json` con `group_slug`/`group_name_es` | `data/build/categories.json` | CONTRACTS.md (jerarquía agregada 04/10) | pendiente | Los 13 slugs actuales quedan agrupados en 6-9 grupos tipo industria (Frenos, Motor, Eléctrico, Suspensión y dirección, Refrigeración, Mantenimiento...); `categories.json` válido contra el nuevo esquema; no hace falta SVG nuevos en esta tarea (son los mismos 13 iconos, solo se agrupan) |
-| T-E7 | E. Frontend | `categoryTree.js` agrupado por `group_slug` | `site/js/categoryTree.js` | T-F2 | pendiente | El árbol de categorías (tanto en el home T-E5 como dentro del flujo vehículo→categoría) muestra primero el grupo y despliega los slugs hoja al expandir, en vez de una lista plana de 13; responsive y navegable por teclado igual que el resto |
+| T-A3 | A. Datos-Vehículos | Filtrar marcas industriales del drill-down (Python + JS) | `pipeline/fetch_vehicles.py`, `site/js/vpicClient.js` | T-A2, T-E2 | **aprobada** (PR #14, merge 04/10) | `FREIGHTLINER` y fabricantes de camiones/buses pesados equivalentes ya no aparecen en `get_all_makes()`/`getAllMakes()`; Mitsubishi, Toyota, Honda, Ford, etc. siguen presentes; criterio de exclusión documentado (lista explícita o heurística) y con tests que prueben al menos 3 exclusiones y 3 inclusiones reales contra la API |
+| T-C2 | C. EPC-Puente | Investigar si 7zap/Partsouq exponen Trim/submodelo por generación | `pipeline/fetch_epc_links.py` (solo si hay hallazgo que justifique código; si no, el entregable es el hallazgo documentado) | — | **cerrada — ver hallazgo abajo** (04/10, sin código) | Responde con evidencia (no opinión) si alguna fuente gratuita da trims tipo BE/ES/GT/SE/SP para Mitsubishi Outlander Sport 2020; si existe, expone una función que lo devuelva; si NO existe en ninguna fuente gratuita verificada, lo dice explícitamente en el PR en vez de inventar, y la tarea se cierra como "no viable con fuentes gratuitas" sin bloquear nada más |
+| T-F2 | F. Diseño-Assets | Categorías jerárquicas: agrupar los 13 slugs existentes en grupos + `categories.json` con `group_slug`/`group_name_es` | `data/build/categories.json` | CONTRACTS.md (jerarquía agregada 04/10) | **aprobada** (PR #13, merge 04/10) | Los 13 slugs actuales quedan agrupados en 6-9 grupos tipo industria (Frenos, Motor, Eléctrico, Suspensión y dirección, Refrigeración, Mantenimiento...); `categories.json` válido contra el nuevo esquema; no hace falta SVG nuevos en esta tarea (son los mismos 13 iconos, solo se agrupan) |
+| T-E7 | E. Frontend | `categoryTree.js` agrupado por `group_slug` | `site/js/categoryTree.js` | T-F2 | pendiente — **ya puede arrancar**, T-F2 está en main | El árbol de categorías (tanto en el home T-E5 como dentro del flujo vehículo→categoría) muestra primero el grupo y despliega los slugs hoja al expandir, en vez de una lista plana de 13; responsive y navegable por teclado igual que el resto |
+
+### T-C2 — hallazgo final (04/10/2026, investigación cerrada sin código)
+
+**Conclusión: el nivel de Trim/Submodelo (BE/ES/GT/SE/SP) NO está disponible de forma
+gratuita y confiable en ninguna de las dos fuentes EPC del proyecto**, para este vehículo
+específico (Mitsubishi Outlander Sport 2020 / GA4W / North America):
+
+- **7zap — confirmado que NO existe en la navegación pública.** Se recorrió la jerarquía
+  completa (generación → las 8 categorías de pieza) sin encontrar ningún selector de
+  "modification"/trim intermedio. El JSON embebido del sitio sí tiene las claves i18n
+  "Trim Code"/"Trim Color" y una función `choose_modification`, pero viven detrás del flujo
+  premium "Add to Garage por VIN" (ya confirmado bloqueado con 401/404 en el intento
+  anterior) — son infraestructura de la plantilla del sitio, sin datos poblados para este
+  vehículo en el catálogo gratuito.
+- **Partsouq — ni confirmado ni descartado, bloqueado por Cloudflare.** El acceso directo
+  (incluso con curl + headers de navegador real, que en una sesión anterior sí había
+  funcionado) devolvió 403/challenge en todas las rutas probadas hoy. Vía resultados ya
+  indexados (búsqueda web, no navegación directa) sí se confirma que el **esquema** de
+  Partsouq incluye trim real para la familia Mitsubishi North America (ej. Outlander
+  hermano del Sport: "SE(4WD,7SEATER)", "ES(2WD,7SEATER)"), y un TSB oficial de NHTSA
+  confirma que Mitsubishi sí usa BE/ES/SE/LE/GT como trims reales del Outlander Sport —
+  pero no se encontró el registro específico de GA4W/Outlander Sport poblado con el trim
+  real, por el bloqueo de acceso.
+
+**Decisión del líder**: no se construye nada para esto ahora. Si en el futuro se quiere
+reintentar, el camino más prometedor es Partsouq (su esquema sí tiene el dato), con otra
+técnica anti-Cloudflare o otra IP — no vale la pena insistir con 7zap, ahí sí está
+confirmado que no está disponible gratis. El wizard de drill-down se queda en 3 niveles
+(marca→año→modelo) sin Trim por ahora.
 
 Depende de orden: T-F2 (el dato) antes de T-E7 (la UI que lo consume). T-A3 y T-C2 son
 independientes entre sí y de las otras dos — pueden ir todas en paralelo salvo esa
