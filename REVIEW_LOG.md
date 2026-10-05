@@ -658,6 +658,44 @@ declarar y qué aprobación previa hace falta**.
 
 ---
 
+## 05/10/2026 — **Ronda 4 cerrada** (T-A4, el criterio de marcas) — Líder
+
+Entró el último PR de la ronda (**#20**, rama `agent/a-t-a4`) y traía una lección que valía más
+que el propio código.
+
+**Qué hace el criterio**: una marca es "fabricante-cascarón" (y se excluye del selector) si su
+catálogo completo en vPIC tiene **≤2 modelos distintos y al menos uno se llama como la propia
+marca**, normalizando sufijos (Inc, Ltd, Corp). Del selector salen **244 → 222 marcas**: 20
+detectadas por el criterio y 2 residuales por nombre exacto. Antes se había probado un criterio
+por año fijo y se descartó con evidencia (Byd, Sprinter, Morgan y Sterling tienen su último
+registro en años distintos).
+
+**El problema que trajo, y que era de fondo**: sus pruebas llamaban a **vPIC en vivo**. El CI
+recibió **HTTP 403** (los runners de GitHub están limitados) y quedó en rojo sin que el código
+tuviera nada malo. La prueba definitiva de que eran una lotería: **con el mismo código, Python
+3.12 pasó y 3.11 falló**. Y la suite tardaba **39 minutos**.
+
+**Lo que hice al revisar**:
+1. Grabé las respuestas **reales** de vPIC para las marcas que se prueban
+   (`pipeline/fixtures/vpic_models_for_make.sample.json`).
+2. Reescribí las pruebas para reproducirlas, con un **guardián que revienta si algo intenta salir
+   a la red**: así ninguna prueba puede pasar "por casualidad" contra la API en vivo.
+3. Al volver a fallar el CI (misma causa, en las pruebas viejas de T-A2/T-A3), apliqué el mismo
+   tratamiento a **todo** el pipeline, con un módulo compartido (`pipeline/tests/_vpic_sin_red.py`).
+4. Prueba nueva: sin dato de vPIC el criterio devuelve `None`, nunca `False` — excluir por
+   suposición sería peor que no excluir.
+
+**Resultado medido**: el trabajo de pruebas del CI pasó de **39m24s a 13s**, y la suite completa
+de **414s a 2,04s** (137 pruebas en verde). El PR se fusionó además con un conflicto resuelto:
+era un artefacto de build (`parts.json`) y se conservó el de main, según la regla ya escrita.
+
+**Pendiente que deja la ronda (T-A5)**: el filtro vive solo en el pipeline; el desplegable del
+sitio (`site/js/vpicClient.js`) sigue pidiendo las marcas en el navegador **sin aplicar el
+criterio**, así que los fabricantes-cascarón pueden reaparecer ante el usuario. Queda anotado con
+su criterio de aceptación, incluida la condición de no duplicar la lógica en dos lenguajes.
+
+---
+
 ## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
 
 Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó
