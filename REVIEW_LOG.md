@@ -881,6 +881,45 @@ Los límites reales son otros: (a) **decidir qué vehículos y categorías** cub
 Queda anotado como **T-B7** con criterio de piloto: 3 vehículos × 5 categorías (~15 llamadas), medir
 el rendimiento real y **solo después** decidir el escalado. Medir antes de escalar, como en Fase 5.
 
+---
+
+## 05/10/2026 — **"El sitio da error", que no era el sitio** — Líder
+
+**Reporte del usuario** desde la PC del trabajo: la página no abre y Chrome muestra
+`ERR_CONNECTION_RESET`. Captura revisada (estaba en `~/.hermes/images/`, no donde la busqué
+primero — mi buscador ignora las carpetas ocultas).
+
+**Medido, y por eso se pudo descartar el sitio en dos minutos:**
+
+| Dónde | Resultado |
+|---|---|
+| El sitio, desde dos redes distintas | **200** en HTML, datos, JS y CSS |
+| TLS | 1.2 y 1.3, certificado válido (`CN=partexact.com`), sin cabeceras raras |
+| DNS interno de la red donde falla | **Resuelve bien** (las 4 IPs de GitHub Pages) |
+| Teléfono del usuario, con datos móviles | **Abre perfecto** |
+
+Es decir: no era el sitio ni la resolución de nombres. El corte ocurre al abrir la conexión,
+y **sin página de bloqueo** — que es la firma de los filtros que bloquean por defecto lo que
+**no está categorizado**. `partexact.com` tiene días de vida.
+
+**Hallazgo colateral**: el proveedor de internet de esa red **secuestra el DNS** (responde las
+consultas dirigidas a `8.8.8.8` con una IP suya de aparcamiento: `74.119.26.99`, de
+**OSNET/PRWIFI-FLEXTEL, AS21559**, Puerto Rico). No es nuestro problema y no se puede arreglar
+desde aquí, pero es la razón por la que el sitio va **solo en HTTPS con certificado válido**:
+con DNS secuestrado, un sitio sin certificado sí puede ser suplantado por una página de
+aparcamiento; con certificado válido, no.
+
+**Acciones**: queda escrito en `docs/dominio-bloqueado-en-redes.md` con el análisis y las
+solicitudes de categoría de dominio (Fortinet, Zscaler, Palo Alto, Talos, BlueCoat), más un
+texto listo para el ticket de IT de quien tenga el filtro (que además verá en su registro qué
+aparato bloqueó y por qué). **Es un tema de negocio, no una anécdota**: los talleres y
+repuesteras —o sea, los compradores naturales— trabajan detrás de esos mismos cortafuegos.
+
+**Lección**: un `ERR_CONNECTION_RESET` reportado como *"el sitio está caído"* no significa que
+el sitio esté caído. La primera prueba que separa las dos cosas es entrar **desde otra red**
+(el teléfono con datos móviles), y la segunda, medir el DNS de la red que falla. Las dos se
+hacen en dos minutos y evitan buscar un problema donde no está.
+
 
 
 ---
