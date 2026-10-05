@@ -823,6 +823,65 @@ todo lo que cambia y por qué.
 de capturas — las capturas del arnés venían en caché y llegaron a mostrar el diseño viejo.
 **72 pruebas del frontend en verde.** Ida y vuelta probada: buscar → atrás → vuelve la portada.
 
+---
+
+## 05/10/2026 — **T-B6: las fotos de los anuncios (y de paso, por qué el catálogo es de 28)** — Líder
+
+**Empezó con una corrección mía.** Yo le había dicho al usuario que teníamos "1.190 ofertas con foto
+sin mostrar". Al ir a mirarlo: **falso**. Las ofertas guardaban `store`, `url`, `price`, `currency`,
+`condition` y `updated_at`, pero **ninguna imagen**, y `part.image` era `{url: null, source: "generic"}`.
+
+**Causa**: `fetch_ebay.py::_map_item_summary_to_offer` mapeaba esos seis campos y **descartaba
+`image.imageUrl`**, que eBay ya devolvía — el fixture de desarrollo ya lo traía. El contrato
+(`CONTRACTS.md`) incluso definía `part.image.source: "ebay"|"generic"`: estaba previsto y nunca se hizo.
+
+**Arreglado**
+
+| Pieza | Qué hace |
+|---|---|
+| `fetch_ebay.py` | Guarda `offer.image` con la URL tal cual: no se descarga ni se re-aloja ninguna imagen (ver `docs/legal.md`) |
+| Blindaje | Si eBay devolviera `image` como texto en vez de objeto, **antes se caía el pipeline entero** con `AttributeError`. Lo encontró la prueba nueva, no un usuario |
+| `validate.py` + `CONTRACTS.md` | El campo se valida si viene (URL http) y queda documentado |
+| Ficha | Foto del **anuncio más barato** + **una miniatura por oferta**, con carga diferida (una ficha puede traer 50 ofertas) |
+
+`object-fit: contain` y no `cover`: las fotos de anuncio tienen formas muy distintas y recortarlas a
+un cuadrado deja piezas irreconocibles. Y el texto alternativo dice *"Foto del anuncio de X"* a
+propósito: es la foto **del anuncio**, no una foto canónica de la pieza. Ese matiz importa en un
+comparador de precios.
+
+**Verificado**: **1.192 de 1.196 ofertas (100 %) traen foto real**, y esas URLs responden `200
+image/jpeg` desde el CDN de eBay. En la ficha del filtro `04152-YZZA1` la foto se lee hasta el número
+impreso en la caja del filtro. **53 pruebas del pipeline + 72 del frontend en verde.**
+
+### La pregunta de fondo: ¿por qué el catálogo es de 28?
+
+*(El usuario preguntó si es porque el sitio no está acabado o si hay que hacer algo más.)*
+
+**No es el sitio.** El pipeline es una **consulta** sobre una lista de 28 números de parte que escribió
+una persona (`data/seed/parts.sample.json`), una llamada a eBay por número. Nada **descubre** piezas: el
+catálogo crece exactamente a la velocidad a la que alguien teclee números. Y de las 28, **ninguna tiene
+fitment** (`fitment_ids` vacío en todas) con **un solo vehículo** en el catálogo — por eso hoy no se
+puede afirmar pieza por pieza "esta le queda a tu carro".
+
+Lo que falta es un paso de **descubrimiento**, y la documentación de eBay confirma que el mecanismo ya
+existe, gratis y en la misma API que ya usamos:
+
+> `compatibility_filter` = `q` + una categoría con fitment + `Year/Make/Model` → devuelve los anuncios
+> **con su grado de compatibilidad** (`compatibilityMatch`) para ese vehículo.
+
+O sea: **una consulta por (vehículo × categoría) da las ofertas Y el fitment a la vez.** Y la cuota no
+es el límite: ~5.000 llamadas/día ampliables gratis, contra las ~30 que gastamos hoy (200 vehículos ×
+34 categorías serían ~6.800 llamadas, día y medio de trabajo del pipeline).
+
+Los límites reales son otros: (a) **decidir qué vehículos y categorías** cubrir primero, (b) la
+**calidad del número de parte** que hay que extraer del título del anuncio (eBay no lo da limpio), y
+(c) que el **índice del sitio** aguante miles de piezas en vez de 28 — la "regla de escalado" de
+`CONTRACTS.md` ya aisló ese cambio en `dataClient.js`, pero está sin probar a esa escala.
+
+Queda anotado como **T-B7** con criterio de piloto: 3 vehículos × 5 categorías (~15 llamadas), medir
+el rendimiento real y **solo después** decidir el escalado. Medir antes de escalar, como en Fase 5.
+
+
 
 ---
 

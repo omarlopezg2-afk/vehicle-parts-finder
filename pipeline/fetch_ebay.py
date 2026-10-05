@@ -2,7 +2,7 @@
 
 Expone `search_part(part_number_norm) -> list[dict]`, que devuelve resultados en
 la forma del campo `offers` de CONTRACTS.md:
-    { "store": "eBay", "url", "price", "currency", "condition", "updated_at" }
+    { "store": "eBay", "url", "price", "currency", "condition", "updated_at", "image" }
 
 Dos modos:
 - MOCK (por defecto): no requiere llaves. Usa el fixture
@@ -239,6 +239,18 @@ def _map_item_summary_to_offer(item: dict[str, Any]) -> dict[str, Any]:
 
     url = item.get("itemAffiliateWebUrl") or item.get("itemWebUrl") or ""
 
+    # Foto del anuncio (T-B6). eBay ya la devuelve en `image.imageUrl` y hasta ahora
+    # se estaba descartando: por eso el sitio no podía enseñar una sola foto de pieza.
+    # Se guarda la URL tal cual (no se descarga ni se re-aloja nada, ver legal.md) y
+    # puede venir vacía, así que se normaliza a None en vez de dejar "".
+    # Defensivo a propósito: si eBay devolviera `image` como texto en vez de objeto,
+    # `(item["image"] or {}).get(...)` lanzaría AttributeError y tumbaría el pipeline
+    # entero. Sin foto se sigue, que es justo lo que se hacía antes de T-B6.
+    imagen = item.get("image")
+    image_url = imagen.get("imageUrl") if isinstance(imagen, dict) else None
+    if not isinstance(image_url, str) or not image_url:
+        image_url = None
+
     return {
         "store": "eBay",
         "url": url,
@@ -246,6 +258,7 @@ def _map_item_summary_to_offer(item: dict[str, Any]) -> dict[str, Any]:
         "currency": price_obj.get("currency") or "USD",
         "condition": item.get("condition"),
         "updated_at": _now_iso(),
+        "image": image_url,
     }
 
 

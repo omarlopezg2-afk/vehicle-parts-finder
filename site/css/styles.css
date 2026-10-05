@@ -996,6 +996,47 @@ body:not([data-vista="inicio"]) .buscador {
   margin: 0;
 }
 
+/* --- Fotos de anuncio (T-B6) ---
+ * Ya no son iconos: son las fotos de los propios anuncios de eBay, servidas desde su
+ * CDN (no se descarga ni se re-aloja ninguna imagen, ver docs/legal.md). Tres
+ * decisiones de aspecto y una de honestidad:
+ *   - `contain` y no `cover`: las fotos de anuncio tienen formas muy distintas y
+ *     recortarlas a un cuadrado deja piezas irreconocibles.
+ *   - fondo blanco detrás: muchas fotos de eBay son de producto sobre blanco, así el
+ *     recuadro no se ve como un parche gris.
+ *   - la miniatura por oferta es lo que hace comparable la lista de precios.
+ *   - y la foto es del ANUNCIO, no de la pieza: el texto alternativo lo dice.
+ */
+.part-card .part-image-foto {
+  padding: 0;
+  overflow: hidden;
+  background: #fff;
+  border: 1px solid var(--color-border);
+}
+
+.part-card .part-image-foto img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.offer-thumb {
+  flex: 0 0 auto;
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+
+/* La información ocupa el hueco que deja la miniatura: así el botón queda anclado
+   a la derecha y los precios siguen cayendo en columna. */
+.offer-row > span {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
 /* --- Estrecho: el teléfono es el caso principal, no el caso raro --- */
 @media (max-width: 700px) {
   .hero {
@@ -1027,5 +1068,16 @@ body:not([data-vista="inicio"]) .buscador {
 
   .category-grid {
     grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  }
+
+  .part-card .part-image-foto {
+    flex: 0 0 76px;
+    width: 76px;
+    height: 76px;
+  }
+
+  .offer-thumb {
+    width: 38px;
+    height: 38px;
   }
 }

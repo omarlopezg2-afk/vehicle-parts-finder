@@ -5,6 +5,26 @@
 // ofertas. No hace fetch directo: recibe la parte y funciones ya conectadas
 // a dataClient.js por app.js (regla de escalado, CONTRACTS.md).
 
+// Orden por precio ascendente (dirección B). El visitante viene a COMPARAR, y una
+// lista en el orden en que la devuelve la API lo obliga a leerla entera para saber
+// cuál es la más barata. Además el más barato es el que va destacado en verde y el
+// que pone la foto en la ficha, así que ese destacado tiene que ser verdad.
+// Se ordena una copia: no se toca el dato del catálogo. Las ofertas sin precio van
+// al final, porque no se pueden comparar con las demás.
+function _ordenarOfertasPorPrecio(offers) {
+  const lista = Array.isArray(offers) ? [...offers] : [];
+  return lista.sort((a, b) => {
+    const precioA = Number(a && a.price);
+    const precioB = Number(b && b.price);
+    const aTiene = Number.isFinite(precioA);
+    const bTiene = Number.isFinite(precioB);
+    if (!aTiene && !bTiene) return 0;
+    if (!aTiene) return 1;
+    if (!bTiene) return -1;
+    return precioA - precioB;
+  });
+}
+
 function formatPrice(offer) {
   if (typeof offer.price !== "number") return "Precio no disponible";
   const currency = offer.currency || "USD";
@@ -30,12 +50,27 @@ export async function renderPartCard(part, categories, resolveEquivalent, getAll
   const card = document.createElement("article");
   card.className = "part-card";
 
+  // Las ofertas se ordenan antes de pintar nada: la foto de la ficha es la del
+  // anuncio más barato (T-B6), así que la lista ya tiene que estar ordenada.
+  const ofertas = _ordenarOfertasPorPrecio(part.offers);
+
   const imgWrap = document.createElement("div");
   imgWrap.className = "part-image";
   const img = document.createElement("img");
-  if (part.image && part.image.url) {
-    img.src = part.image.url;
-    img.alt = `Foto de ${part.name}`;
+
+  // Se prefiere la FOTO REAL del anuncio. Ojo con qué es esa foto: es la del
+  // anuncio, no una foto canónica de la pieza, y el texto alternativo lo dice así.
+  // Si no hay ninguna foto, se cae al icono de la categoría (lo que se hacía antes).
+  const fotoCanonica = part.image && part.image.url ? part.image.url : null;
+  const fotoDelAnuncio = ofertas.find((o) => o && o.image)?.image || null;
+  const foto = fotoCanonica || fotoDelAnuncio;
+
+  if (foto) {
+    imgWrap.classList.add("part-image-foto"); // el CSS cambia con foto y sin foto
+    img.src = foto;
+    img.alt = `Foto del anuncio de ${part.name}`;
+    img.loading = "eager"; // está sobre el pliegue: interesa que llegue ya
+    img.decoding = "async";
   } else {
     const cat = categories.find((c) => c.slug === part.category);
     const svgFile = cat ? cat.svg : "generico-sin-foto.svg";
@@ -128,26 +163,23 @@ export async function renderPartCard(part, categories, resolveEquivalent, getAll
     const offersList = document.createElement("ul");
     offersList.className = "offers-list";
 
-    // Orden por precio ascendente (dirección B). El visitante viene a COMPARAR, y
-    // una lista en el orden en que la devuelve la API lo obliga a leerla entera
-    // para saber cuál es la más barata; además el precio más bajo es el único que
-    // va destacado en verde, así que ese destacado tiene que ser verdad.
-    // Se ordena una copia: no se toca el dato del catálogo. Las ofertas sin precio
-    // van al final, porque no se pueden comparar con las demás.
-    const ofertasOrdenadas = [...offers].sort((a, b) => {
-      const precioA = Number(a && a.price);
-      const precioB = Number(b && b.price);
-      const aTiene = Number.isFinite(precioA);
-      const bTiene = Number.isFinite(precioB);
-      if (!aTiene && !bTiene) return 0;
-      if (!aTiene) return 1;
-      if (!bTiene) return -1;
-      return precioA - precioB;
-    });
-
-    ofertasOrdenadas.forEach((offer) => {
+    ofertas.forEach((offer) => {
       const li = document.createElement("li");
       li.className = "offer-row";
+
+      // Miniatura de esa oferta concreta (T-B6). Carga diferida: una ficha puede
+      // traer 50 ofertas y no tiene sentido pedir 50 fotos para las que están
+      // fuera de pantalla. Sin alt a propósito: el texto de al lado ya nombra la
+      // pieza, así que para un lector de pantalla sería una repetición.
+      if (offer.image) {
+        const thumb = document.createElement("img");
+        thumb.className = "offer-thumb";
+        thumb.src = offer.image;
+        thumb.alt = "";
+        thumb.loading = "lazy";
+        thumb.decoding = "async";
+        li.appendChild(thumb);
+      }
 
       const info = document.createElement("span");
       info.innerHTML = "";

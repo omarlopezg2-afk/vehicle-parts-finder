@@ -41,12 +41,20 @@ Array de objetos. Cada parte:
       "price": 0.0,
       "currency": "USD",
       "condition": "string|null",
-      "updated_at": "ISO-8601"
+      "updated_at": "ISO-8601",
+      "image": "string (URL de la foto del anuncio) | null"
     }
   ],
   "updated_at": "ISO-8601"
 }
 ```
+
+**`offers[].image`** (agregado 05/10/2026, T-B6): URL de la foto del anuncio, tal como la
+devuelve eBay en `image.imageUrl`. Puede ser `null` (el anuncio no trae foto, o eBay cambió la
+forma del campo). Es la foto **de ese anuncio**, no una foto canónica de la pieza: el sitio debe
+tratarla como tal. No se descarga ni se re-aloja ninguna imagen (ver `docs/legal.md`), solo se
+guarda su URL. El `image` de la parte (arriba) sigue siendo `null`/"generic" hasta que haya una
+fuente de imagen canónica (p. ej. el producto del catálogo de eBay por ePID).
 
 **Importante — el campo que preserva el flujo principal del proyecto**: `epc_link` es
 obligatorio como clave (puede ir `null` dentro si todavía no se resolvió), porque el

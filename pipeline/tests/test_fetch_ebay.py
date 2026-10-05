@@ -17,7 +17,15 @@ sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import fetch_ebay
 from normalize import normalize_part_number
 
-_EXPECTED_OFFER_KEYS = {"store", "url", "price", "currency", "condition", "updated_at"}
+_EXPECTED_OFFER_KEYS = {
+    "store",
+    "url",
+    "price",
+    "currency",
+    "condition",
+    "updated_at",
+    "image",  # T-B6: foto del anuncio
+}
 
 
 class TestHasRealCredentials(unittest.TestCase):
@@ -228,6 +236,56 @@ class TestMapItemAffiliateUrl(unittest.TestCase):
         }
         offer = fetch_ebay._map_item_summary_to_offer(item)
         self.assertEqual(offer["url"], "https://www.ebay.com/itm/1")
+
+
+class TestMapItemImage(unittest.TestCase):
+    """T-B6: la foto del anuncio ya no se descarta.
+
+    Antes de esto, `_map_item_summary_to_offer` tiraba `image.imageUrl` de la respuesta
+    de eBay, y por eso el sitio no podía enseñar ni una foto de pieza.
+    """
+
+    def test_conserva_la_url_de_la_foto(self):
+        item = {
+            "price": {"value": "9.99", "currency": "USD"},
+            "itemWebUrl": "https://www.ebay.com/itm/1",
+            "image": {"imageUrl": "https://i.ebayimg.com/images/g/abc/s-l500.jpg"},
+        }
+        offer = fetch_ebay._map_item_summary_to_offer(item)
+        self.assertEqual(offer["image"], "https://i.ebayimg.com/images/g/abc/s-l500.jpg")
+
+    def test_sin_foto_queda_en_none_no_en_cadena_vacia(self):
+        item = {
+            "price": {"value": "9.99", "currency": "USD"},
+            "itemWebUrl": "https://www.ebay.com/itm/1",
+        }
+        self.assertIsNone(fetch_ebay._map_item_summary_to_offer(item)["image"])
+
+    def test_foto_vacia_queda_en_none(self):
+        item = {
+            "price": {"value": "9.99", "currency": "USD"},
+            "itemWebUrl": "https://www.ebay.com/itm/1",
+            "image": {"imageUrl": ""},
+        }
+        self.assertIsNone(fetch_ebay._map_item_summary_to_offer(item)["image"])
+
+    def test_foto_con_forma_inesperada_no_rompe(self):
+        # Si eBay cambia la forma del campo, el pipeline no se cae: se queda sin foto.
+        for raro in ({"imageUrl": 123}, {"otra": "cosa"}, "https://i.ebayimg.com/x.jpg", None):
+            item = {
+                "price": {"value": "9.99", "currency": "USD"},
+                "itemWebUrl": "https://www.ebay.com/itm/1",
+                "image": raro,
+            }
+            with self.subTest(image=raro):
+                self.assertIsNone(fetch_ebay._map_item_summary_to_offer(item)["image"])
+
+    def test_el_mock_tambien_trae_fotos(self):
+        # El fixture ya tenía `image.imageUrl`; ahora debe llegar hasta la oferta.
+        with mock.patch.dict(os.environ, {}, clear=True):
+            offers = fetch_ebay.search_part("04152YZZA1")
+        self.assertTrue(offers)
+        self.assertTrue(all(o["image"] and o["image"].startswith("http") for o in offers))
 
 
 if __name__ == "__main__":

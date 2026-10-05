@@ -112,6 +112,13 @@ def _validate_offer(contexto: str, offer: Any, errores: ValidationErrors) -> Non
         errores.add(contexto, "oferta.currency debería ser str")
     if "condition" in offer and offer["condition"] is not None and not isinstance(offer["condition"], str):
         errores.add(contexto, "oferta.condition debería ser str|null")
+    if "image" in offer:
+        img = offer["image"]
+        if img is not None:
+            if not isinstance(img, str):
+                errores.add(contexto, "offer.image debería ser str|null")
+            elif not img.startswith("http"):
+                errores.add(contexto, f"offer.image debería ser una URL http(s), es {img[:40]!r}")
     if "updated_at" in offer:
         if not isinstance(offer["updated_at"], str) or not _ISO8601_RE.match(offer["updated_at"]):
             errores.add(contexto, f"oferta.updated_at '{offer.get('updated_at')!r}' no es ISO-8601")
