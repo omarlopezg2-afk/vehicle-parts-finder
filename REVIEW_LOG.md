@@ -729,6 +729,21 @@ archivos derivados** antes de commitear en un worktree.
 
 ---
 
+## 05/10/2026 — Bug reportado por un usuario real: "atrás" pierde el estado — Líder
+
+Alguien que probó el sitio reportó: buscó una pieza, pulsó **atrás** y el sitio **volvió al
+inicio**, no a donde estaba. Diagnóstico por código (no por suposición): `site/js/*.js` **no usa
+en ningún punto** `pushState`, `replaceState`, `location.hash` ni `popstate` — ninguna vista deja
+entrada en el historial del navegador, así que "atrás" no tiene a dónde volver y sale de la
+página. Queda como **T-E5**, con el arreglo propuesto (router por hash + restauración) y su
+criterio de aceptación, incluida la verificación con navegador real.
+
+Nota de método: este bug **no lo habría encontrado ninguna prueba automática** que tuviéramos —
+ninguna simula el botón atrás. Lo encontró una persona usándolo. Vale la pena tenerlo presente
+cuando midamos el embudo: los usuarios encuentran lo que las pruebas no buscan.
+
+---
+
 ## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
 
 Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó
