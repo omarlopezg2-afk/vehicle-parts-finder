@@ -25,6 +25,24 @@ Desde el teléfono con datos móviles, abre perfecto.
    comportamiento típico de los filtros que bloquean por defecto lo que **no está
    categorizado**, y `partexact.com` tiene días de vida y todavía no aparece en las listas
    de categorías de los fabricantes de filtros.
+
+**Y se pudo precisar dónde muere la conexión** (prueba del propio usuario con `curl.exe -v`,
+05/10/2026):
+
+```
+* IPv4: 185.199.110.153, 185.199.109.153, 185.199.111.153, 185.199.108.153
+*   Trying 185.199.110.153:443...      <- resuelve bien y CONECTA
+* ALPN: curl offers http/1.1
+* Recv failure: Connection was reset
+* schannel: failed to receive handshake, SSL/TLS connection failed
+curl: (35) Recv failure: Connection was reset
+```
+
+Traducido: el DNS resuelve, la conexión **sí se establece**, y lo que se corta es **el saludo
+TLS**. Eso descarta de una vez el bloqueo por IP y el bloqueo por DNS, y confirma un filtro que
+deja pasar la conexión y **después la mata por el nombre del dominio** (bloqueo por SNI o por
+categoría). Encaja con lo demás: el dominio está en la lista de "no permitido" y por eso no hay
+página de bloqueo — no hay nadie que conteste.
 4. **El proveedor de internet de esa red secuestra el DNS** (contesta consultas dirigidas a
    `8.8.8.8`). Es una práctica fea de los ISP pequeños, no algo que nosotros podamos
    arreglar; y es también la razón por la que el sitio va **solo en HTTPS con certificado
@@ -56,7 +74,7 @@ dominio nuevo. Conviene pedirla **una sola vez** y queda para todos sus clientes
 - **Fortinet (FortiGuard)** — https://url.fortinet.net/rate/submit.php (confirmado el 05/10/2026; pide URL, categoría, captura, nombre, correo y empresa)
 - **Zscaler** — https://sitereview.zscaler.com/
 - **Palo Alto Networks** — https://urlfiltering.paloaltonetworks.com/
-- **Cisco Talos** — https://talosintelligence.com/reputation_center/support
+- **Cisco Talos** — https://talosintelligence.com/reputation_center/web_categorization (formulario de categorización) y su política web en `/web_reputation`
 - **Broadcom/Symantec (BlueCoat)** — https://sitereview.bluecoat.com/
 
 Datos que piden: la URL, la categoría sugerida (**Negocios/Referencia**, no "Compras" ni
