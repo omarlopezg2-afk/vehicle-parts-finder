@@ -879,5 +879,180 @@
       }
     ],
     "SearchCriteria": "Make:Autocar Ltd"
+  },
+  "models_for_make_year__mitsubishi__2020": {
+    "Count": 28,
+    "Message": "Results returned successfully",
+    "Results": [
+      {
+        "Make_ID": 481,
+        "Make_Name": "MITSUBISHI",
+        "Model_ID": 2163,
+        "Model_Name": "Outlander"
+      },
+      {
+        "Make_ID": 481,
+        "Make_Name": "MITSUBISHI",
+        "Model_ID": 2336,
+        "Model_Name": "RVR"
+      },
+      {
+        "Make_ID": 481,
+        "Make_Name": "MITSUBISHI",
+        "Model_ID": 2342,
+        "Model_Name": "Mirage"
+      },
+      {
+        "Make_ID": 481,
+        "Make_Name": "MITSUBISHI",
+        "Model_ID": 13842,
+        "Model_Name": "Mirage G4"
+      },
+      {
+        "Make_ID": 481,
+        "Make_Name": "MITSUBISHI",
+        "Model_ID": 13867,
+        "Model_Name": "Outlander Sport"
+      },
+      {
+        "Make_ID": 481,
+        "Make_Name": "MITSUBISHI",
+        "Model_ID": 17617,
+        "Model_Name": "Eclipse Cross"
+      },
+      {
+        "Make_ID": 481,
+        "Make_Name": "MITSUBISHI",
+        "Model_ID": 27241,
+        "Model_Name": "Low Speed Vehicle"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2287,
+        "Model_Name": "FE83D"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2288,
+        "Model_Name": "FE84D"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2289,
+        "Model_Name": "FE85D"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2290,
+        "Model_Name": "FE84DW"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2291,
+        "Model_Name": "FG84D"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2292,
+        "Model_Name": "FK61F"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2293,
+        "Model_Name": "FM61F"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2294,
+        "Model_Name": "FM64F"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2295,
+        "Model_Name": "FM65F"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2296,
+        "Model_Name": "FK62F"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2297,
+        "Model_Name": "FK65F"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2308,
+        "Model_Name": "FEC52S"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2309,
+        "Model_Name": "FEC72S"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2310,
+        "Model_Name": "FEC72W"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2311,
+        "Model_Name": "FEC92S"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2312,
+        "Model_Name": "FGB72S"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 2317,
+        "Model_Name": "FECX2S"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 22798,
+        "Model_Name": "FE140 (FECZTS)"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 22799,
+        "Model_Name": "FE160 (FEC7TS)"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 22800,
+        "Model_Name": "FE180 (FEC9TS)"
+      },
+      {
+        "Make_ID": 528,
+        "Make_Name": "MITSUBISHI FUSO",
+        "Model_ID": 25778,
+        "Model_Name": "FE160 (FEC7TW)"
+      }
+    ],
+    "SearchCriteria": "Make:Mitsubishi | ModelYear:2020"
   }
 }

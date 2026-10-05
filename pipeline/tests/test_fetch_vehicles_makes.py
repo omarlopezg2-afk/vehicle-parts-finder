@@ -1,10 +1,12 @@
 """Tests del camino sin VIN (drill-down marca → modelo → año) de
 pipeline/fetch_vehicles.py (T-A2).
 
-Igual que test_fetch_vehicles.py, usa unittest (stdlib) y hace llamadas HTTP
-reales a vPIC (API pública, sin llave). Si no hay red disponible, estos tests
-fallarán con un error de conexión — es esperado y documentado (no hay modo
-mock para este cliente porque vPIC no requiere llave).
+Estas pruebas **no salen a la red**: reproducen respuestas reales de vPIC grabadas en
+`pipeline/fixtures/vpic_models_for_make.sample.json` (ver `_vpic_sin_red.py`).
+
+Antes llamaban a vPIC en vivo y eso las volvía inestables: el CI de GitHub recibió
+HTTP 403 por límite de peticiones y fallaron sin que el código tuviera nada malo
+(con el mismo código, Python 3.12 pasó y 3.11 falló), además de tardar ~39 minutos.
 
 Ejecutar:
     python3 -m unittest pipeline/tests/test_fetch_vehicles_makes.py -v
@@ -19,9 +21,14 @@ import unittest
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from fetch_vehicles import get_all_makes, get_models_for_make_year
+from _vpic_sin_red import doble_con_fixture, doble_todo_offline
 
 
 class TestGetAllMakes(unittest.TestCase):
+    def setUp(self):
+        # Sin red: camino offline (snapshot -> fixture), el que corre si vPIC falla.
+        doble_todo_offline(self)
+
     def test_mitsubishi_esta_en_la_lista(self):
         marcas = get_all_makes()
         nombres = [m["name"] for m in marcas]
@@ -77,6 +84,10 @@ class TestGetAllMakes(unittest.TestCase):
 
 
 class TestGetModelsForMakeYear(unittest.TestCase):
+    def setUp(self):
+        # Respuestas reales grabadas; cualquier salida a la red revienta la prueba.
+        doble_con_fixture(self)
+
     def test_outlander_sport_esta_en_los_modelos_2020(self):
         modelos = get_models_for_make_year("Mitsubishi", 2020)
         nombres = [m["name"] for m in modelos]
