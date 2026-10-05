@@ -193,16 +193,24 @@ class TestBuildIndexEndToEnd(unittest.TestCase):
     sin red ni llaves de eBay (requisito explícito de T-D1)."""
 
     def test_main_genera_los_4_archivos_validos_sin_llaves(self):
-        with mock.patch.dict(os.environ, {}, clear=True):
-            exit_code = build_index.main()
-        self.assertEqual(exit_code, 0)
+        # IMPORTANTE: el build se escribe en una carpeta TEMPORAL, nunca en data/build
+        # del repo. Antes esta prueba (que corre en modo mock, sin llaves) escribía en
+        # data/build del checkout y dejaba los datos de laboratorio ahí: un `git add -A`
+        # posterior se los llevó a main y **el sitio llegó a servir 84 ofertas falsas**.
+        import tempfile
 
-        # Reusa el validador real (pipeline/validate.py) para confirmar
-        # que el resultado de este build cumple CONTRACTS.md. pipeline/ ya
-        # está en sys.path (insert al tope de este archivo).
         import validate  # noqa: E402
 
-        errores = validate.run_validation()
+        with tempfile.TemporaryDirectory() as temporal:
+            with mock.patch.object(build_index, "BUILD_DIR", temporal), mock.patch.object(
+                validate, "BUILD_DIR", temporal
+            ):
+                with mock.patch.dict(os.environ, {}, clear=True):
+                    exit_code = build_index.main()
+                self.assertEqual(exit_code, 0)
+                # Reusa el validador real para confirmar que el resultado de este build
+                # cumple CONTRACTS.md.
+                errores = validate.run_validation()
         self.assertEqual(list(errores), [], msg="\n".join(errores))
 
 

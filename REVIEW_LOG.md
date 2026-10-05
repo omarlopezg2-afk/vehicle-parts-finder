@@ -696,6 +696,39 @@ su criterio de aceptación, incluida la condición de no duplicar la lógica en 
 
 ---
 
+## 05/10/2026 — **Incidente: el sitio sirvió datos de laboratorio (84 ofertas falsas)** — Líder
+
+**Qué pasó.** Al cerrar la ronda verifiqué el sitio en vivo, como siempre, y en vez de las ~1.190
+ofertas reales de eBay servía **84 ofertas inventadas** (URLs tipo
+`https://www.ebay.com/itm/110123456789`). Producción estuvo mostrando datos de laboratorio.
+
+**La cadena exacta, que es lo útil:**
+1. `pipeline/tests/test_build_index.py` corría el build **en modo mock** (sin llaves, a propósito)
+   y escribía el resultado en `data/build/` **del checkout** — no en una carpeta temporal.
+2. Yo corrí la suite completa en el worktree de la rama y luego hice `git add -A`. Eso se llevó
+   los `data/build/*.json` de laboratorio al commit.
+3. El PR pasó el CI **en verde** (el CI valida la *forma* de los datos, no si son reales) y se
+   fusionó. El deploy publicó los datos falsos.
+
+**Cómo se detectó**: verificando el sitio publicado. Si me hubiera fiado del CI en verde, no lo
+veo. El CI estaba verde porque `validate.py` comprueba el contrato (esquema), no la veracidad.
+
+**Arreglos:**
+1. **Causa raíz**: esa prueba ahora escribe en una **carpeta temporal** (`BUILD_DIR` de
+   `build_index` y `validate` parcheados), así que una corrida de la suite ya no puede tocar los
+   artefactos del repo.
+2. **Guardián en el CI**: si hay ofertas y ninguna trae `hash=item` (firma inequívoca de datos de
+   laboratorio), el job **falla**. Un build de mock ya no puede llegar a main sin que alguien lo vea.
+3. **Datos restaurados**: regenerados con las llaves reales y verificados en el sitio en vivo.
+
+**La lección, que es mía y no de las pruebas.** La regla ya estaba escrita en esta misma bitácora
+("los artefactos derivados no se aceptan de una rama; se regeneran en main"), y la incumplí al
+hacer `git add -A` en un worktree que acababa de correr la suite. Un `git add -A` no distingue
+código de artefactos: hay que **añadir rutas explícitas** o mirar `git status` **buscando los
+archivos derivados** antes de commitear en un worktree.
+
+---
+
 ## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
 
 Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó

@@ -81,6 +81,33 @@ jobs:
             echo "pipeline/validate.py todavía no existe: se omite este step sin fallar el job."
           fi
 
+      # Guardián contra un accidente que ya ocurrió (04/10/2026): una prueba corrió el
+      # build en modo mock y escribió data/build del checkout; un `git add -A` se llevó
+      # esos datos de laboratorio a main y el sitio llegó a servir 84 ofertas falsas.
+      # Firmas de datos reales: la URL de cada oferta viene de eBay con `hash=item`.
+      - name: Verificar que data/build no traiga datos de laboratorio
+        run: |
+          python - <<'PY'
+          import json, pathlib, sys
+
+          archivo = pathlib.Path("data/build/parts.json")
+          if not archivo.exists():
+              print("No hay data/build/parts.json: nada que comprobar.")
+              sys.exit(0)
+
+          partes = json.loads(archivo.read_text(encoding="utf-8"))
+          ofertas = [o for parte in partes for o in (parte.get("offers") or [])]
+          reales = [o for o in ofertas if "hash=item" in (o.get("url") or "")]
+
+          if ofertas and not reales:
+              print("::error::data/build/parts.json parece un build de laboratorio (modo mock): "
+                    f"ninguna de sus {len(ofertas)} ofertas trae una URL real de eBay. "
+                    "Regenera el build con las llaves reales antes de commitear.")
+              sys.exit(1)
+
+          print(f"OK: {len(ofertas)} ofertas, con URL real de eBay: {len(reales)}.")
+          PY
+
   # El Worker de notificaciones de eBay es el que desbloquea el keyset de
   # Production: si su hash del reto se rompe, eBay deja de validar el endpoint
   # (y con eso se cae el acceso a la API real). Es código pequeño pero crítico,
