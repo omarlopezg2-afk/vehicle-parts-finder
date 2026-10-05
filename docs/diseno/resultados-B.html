@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PartExact — resultados B (marketplace de confianza)</title>
+<style>
+  /* B — PANTALLA DE RESULTADOS. Es la que decide: aquí el visitante compara y sale
+     a eBay. Todo el lenguaje va a favor de comparar rápido: precio grande, condición
+     como etiqueta, un solo botón por oferta y el mejor precio marcado. */
+  :root{
+    --fondo:#fff; --fondo-2:#f8fafc; --tinta:#0f172a; --gris:#64748b;
+    --azul:#1d4ed8; --azul-claro:#eff4ff; --linea:#e2e8f0; --verde:#059669;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fondo);color:var(--tinta);font-family:var(--sans)}
+  .marco{max-width:1000px;margin:0 auto;padding:0 22px 70px}
+  header{display:flex;align-items:center;justify-content:space-between;padding:16px 0;
+         border-bottom:1px solid var(--linea)}
+  .logo{font-weight:800;font-size:1.2rem}.logo b{color:var(--azul)}
+  .mini-buscar{display:flex;gap:8px;align-items:center;border:1px solid var(--linea);
+               border-radius:10px;padding:7px 10px;font-size:.88rem;color:var(--gris)}
+  .mini-buscar code{font-family:var(--mono);color:var(--tinta)}
+  .mini-buscar button{border:0;background:var(--azul);color:#fff;border-radius:7px;
+                      padding:7px 14px;font-weight:600;font-size:.84rem;cursor:pointer}
+  .miga{display:flex;gap:8px;align-items:center;font-size:.84rem;color:var(--gris);
+        padding:16px 0 4px}
+  .miga a{color:var(--azul);text-decoration:none}
+  h1{font-size:1.5rem;letter-spacing:-.02em;margin:8px 0 4px}
+  h1 code{font-family:var(--mono);font-weight:600}
+  .resumen{color:var(--gris);font-size:.92rem;margin:0 0 18px}
+  .confirma{display:flex;gap:12px;align-items:center;background:var(--fondo-2);
+            border:1px solid var(--linea);border-radius:12px;padding:14px 16px;margin-bottom:20px}
+  .confirma .ico{width:36px;height:36px;border-radius:50%;background:#eafaf1;color:var(--verde);
+                 display:grid;place-items:center;font-weight:800;flex:none}
+  .confirma b{display:block;font-size:.94rem}
+  .confirma span{color:var(--gris);font-size:.86rem}
+  .confirma a{margin-left:auto;color:var(--azul);text-decoration:none;font-size:.88rem;
+              font-weight:600;white-space:nowrap}
+  .aviso{display:flex;gap:9px;align-items:center;font-size:.78rem;color:var(--gris);
+         background:var(--azul-claro);border:1px solid #dbe6ff;border-radius:9px;
+         padding:9px 12px;margin-bottom:16px}
+  .lista{display:flex;flex-direction:column;gap:12px}
+  .oferta{display:grid;grid-template-columns:96px 1fr auto;gap:18px;align-items:center;
+          border:1px solid var(--linea);border-radius:14px;padding:16px;
+          box-shadow:0 1px 2px rgba(15,23,42,.04)}
+  .oferta.mejor{border-color:#a7f3d0;background:linear-gradient(180deg,#f0fdf7,#fff)}
+  .foto{width:96px;height:96px;border-radius:11px;background:var(--fondo-2);
+        border:1px solid var(--linea);display:grid;place-items:center;text-align:center;
+        font-family:var(--mono);font-size:.6rem;color:var(--gris);padding:6px;line-height:1.25}
+  .cond{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:600;
+        color:var(--verde);background:#eafaf1;border-radius:999px;padding:3px 10px}
+  .vendedor{font-size:.86rem;color:var(--gris);margin:7px 0 0}
+  .vendedor code{font-family:var(--mono)}
+  .precio{text-align:right}
+  .precio b{font-size:1.55rem;letter-spacing:-.03em;display:block}
+  .precio span{font-size:.76rem;color:var(--gris);display:block;margin-bottom:9px}
+  .precio button{border:0;background:var(--azul);color:#fff;font-weight:700;font-size:.9rem;
+                 padding:11px 20px;border-radius:9px;cursor:pointer}
+  .precio button:hover{background:#1740b8}
+  .insignia{display:inline-block;font-size:.68rem;font-weight:700;text-transform:uppercase;
+            letter-spacing:.08em;color:var(--verde);margin-bottom:6px}
+  footer{margin-top:30px;border-top:1px solid var(--linea);padding-top:16px;font-size:.78rem;
+         color:var(--gris);display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+  @media(max-width:680px){
+    .oferta{grid-template-columns:72px 1fr;row-gap:12px}
+    .foto{width:72px;height:72px}
+    .precio{grid-column:1/-1;text-align:left;display:flex;align-items:center;gap:14px}
+    .precio span{margin:0}.precio b{font-size:1.3rem}
+  }
+</style>
+</head>
+<body>
+<div class="marco">
+  <header>
+    <div class="logo">Part<b>Exact</b></div>
+    <div class="mini-buscar">N.º <code>04152-YZZA1</code><button>Buscar</button></div>
+  </header>
+
+  <div class="miga"><a href="#">Inicio</a> › <a href="#">Filtro de aceite</a> › Toyota 04152-YZZA1</div>
+  <h1>Filtro de aceite · <code>04152-YZZA1</code></h1>
+  <p class="resumen">Encontramos <strong>1 pieza</strong> y <strong>4 ofertas reales</strong> de eBay.
+     Ordenadas de menor a mayor precio.</p>
+
+  <div class="confirma">
+    <div class="ico">✓</div>
+    <div>
+      <b>Confirmado para tu Mitsubishi Outlander Sport 2020</b>
+      <span>Motor 2.0L 4cil Gasoline 148HP (MIVEC) · dato de tu VIN</span>
+    </div>
+    <a href="#">Cambiar vehículo</a>
+  </div>
+
+  <div class="aviso">
+    <strong>Publicidad:</strong> al comprar en eBay podemos ganar una comisión. El precio
+    que pagas es el mismo. No cambia el orden de las ofertas.
+  </div>
+
+  <div class="lista">
+    <div class="oferta mejor">
+      <div class="foto">FOTO DE PIEZA<br>pendiente T-B6</div>
+      <div>
+        <span class="insignia">Mejor precio</span>
+        <div><span class="cond">✓ Nuevo</span></div>
+        <p class="vendedor">Vendido en eBay · <code>820055463160</code></p>
+      </div>
+      <div class="precio"><b>US$28.00</b><span>sin impuestos ni envío</span>
+        <button>Ver en eBay</button></div>
+    </div>
+
+    <div class="oferta">
+      <div class="foto">FOTO DE PIEZA<br>pendiente T-B6</div>
+      <div>
+        <div><span class="cond">✓ Nuevo</span></div>
+        <p class="vendedor">Vendido en eBay · <code>197598229241</code></p>
+      </div>
+      <div class="precio"><b>US$31.99</b><span>sin impuestos ni envío</span>
+        <button>Ver en eBay</button></div>
+    </div>
+
+    <div class="oferta">
+      <div class="foto">FOTO DE PIEZA<br>pendiente T-B6</div>
+      <div>
+        <div><span class="cond">✓ Nuevo</span></div>
+        <p class="vendedor">Vendido en eBay · <code>407177566423</code></p>
+      </div>
+      <div class="precio"><b>US$43.90</b><span>sin impuestos ni envío</span>
+        <button>Ver en eBay</button></div>
+    </div>
+
+    <div class="oferta">
+      <div class="foto">FOTO DE PIEZA<br>pendiente T-B6</div>
+      <div>
+        <div><span class="cond">✓ Nuevo</span></div>
+        <p class="vendedor">Vendido en eBay · <code>237082302160</code></p>
+      </div>
+      <div class="precio"><b>US$65.00</b><span>sin impuestos ni envío</span>
+        <button>Ver en eBay</button></div>
+    </div>
+  </div>
+
+  <footer>
+    <span>Precios en USD, tomados de eBay. Sin impuestos ni envío · Actualizado hoy</span>
+    <span>Sin cookies ni analítica</span>
+  </footer>
+</div>
+</body>
+</html>

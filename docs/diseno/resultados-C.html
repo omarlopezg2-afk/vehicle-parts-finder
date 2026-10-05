@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PartExact — resultados C (técnico oscuro)</title>
+<style>
+  /* C — PANTALLA DE RESULTADOS. La misma información que B, pero leída como una
+     tabla de comparación: precios en columna, mono alineada, densidad alta. Aquí
+     se ve la ventaja real del oscuro: la atención cae en los precios, no en el
+     marco — que es exactamente lo que el visitante vino a comparar. */
+  :root{
+    --fondo:#0b0f14; --panel:#121821; --panel-2:#182130; --tinta:#e6edf3;
+    --apagado:#9aa7b4; --verde:#22c55e; --linea:#243040; --ambar:#f59e0b;
+    --mono:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fondo);color:var(--tinta);font-family:var(--sans)}
+  .marco{max-width:1060px;margin:0 auto;padding:0 22px 70px}
+  .barra{display:flex;align-items:center;gap:14px;padding:13px 0;border-bottom:1px solid var(--linea)}
+  .barra b{font-size:1.1rem;letter-spacing:-.02em}
+  .barra b i{font-style:normal;color:var(--verde)}
+  .caja{display:flex;gap:8px;align-items:center;margin-left:auto;background:var(--panel);
+        border:1px solid var(--linea);border-radius:8px;padding:6px 6px 6px 12px;
+        font-family:var(--mono);font-size:.84rem}
+  .caja code{color:var(--tinta)}
+  .caja button{border:0;border-radius:6px;background:var(--verde);color:#04140a;font-weight:700;
+               font-size:.8rem;padding:7px 13px;cursor:pointer;font-family:var(--sans)}
+  .cabecera{padding:20px 0 14px}
+  .miga{font-family:var(--mono);font-size:.76rem;color:var(--apagado);margin-bottom:10px}
+  .miga a{color:var(--verde);text-decoration:none}
+  h1{font-size:1.32rem;margin:0 0 6px;letter-spacing:-.02em}
+  h1 code{font-family:var(--mono);color:var(--verde)}
+  .resumen{color:var(--apagado);font-size:.88rem;margin:0}
+  .fila-datos{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:12px;margin:18px 0}
+  .dato{background:var(--panel);border:1px solid var(--linea);border-radius:8px;padding:11px 13px}
+  .dato span{display:block;font-family:var(--mono);font-size:.68rem;color:var(--apagado);
+             text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+  .dato b{font-size:.9rem;font-weight:600}
+  .dato b.ok{color:var(--verde)}
+  .aviso{display:flex;gap:9px;align-items:center;font-family:var(--mono);font-size:.74rem;
+         color:var(--apagado);border:1px dashed var(--linea);border-radius:8px;padding:9px 12px;
+         margin-bottom:14px}
+  .aviso b{color:var(--tinta);font-family:var(--sans)}
+  table{width:100%;border-collapse:collapse}
+  thead th{font-family:var(--mono);font-size:.68rem;text-transform:uppercase;letter-spacing:.1em;
+           color:var(--apagado);text-align:left;padding:0 14px 9px;font-weight:500}
+  thead th.der{text-align:right}
+  tbody tr{background:var(--panel);border:1px solid var(--linea)}
+  tbody td{padding:14px;border-top:1px solid var(--linea);vertical-align:middle}
+  tbody tr.mejor{background:linear-gradient(90deg,rgba(34,197,94,.10),var(--panel) 55%)}
+  tbody tr.mejor td:first-child{box-shadow:inset 3px 0 0 var(--verde)}
+  .foto{width:60px;height:60px;border-radius:7px;background:var(--panel-2);
+        border:1px solid var(--linea);display:grid;place-items:center;text-align:center;
+        font-family:var(--mono);font-size:.52rem;color:var(--apagado);padding:4px;line-height:1.2}
+  .cond{display:inline-block;font-family:var(--mono);font-size:.7rem;color:var(--verde);
+        border:1px solid rgba(34,197,94,.35);border-radius:999px;padding:2px 9px}
+  .id{font-family:var(--mono);font-size:.74rem;color:var(--apagado);display:block;margin-top:6px}
+  .p{font-family:var(--mono);font-size:1.28rem;text-align:right;letter-spacing:-.02em}
+  .p small{display:block;font-family:var(--sans);font-size:.68rem;color:var(--apagado);
+           margin-top:3px;letter-spacing:0}
+  .accion{text-align:right;white-space:nowrap}
+  .accion button{border:1px solid var(--verde);background:transparent;color:var(--verde);
+                 font-weight:700;font-size:.84rem;padding:10px 18px;border-radius:7px;cursor:pointer}
+  .accion button:hover{background:var(--verde);color:#04140a}
+  .mejor-tag{font-family:var(--mono);font-size:.66rem;color:var(--verde);letter-spacing:.08em;
+             text-transform:uppercase;display:block;margin-bottom:7px}
+  footer{margin-top:26px;border-top:1px solid var(--linea);padding-top:14px;
+         font-family:var(--mono);font-size:.72rem;color:var(--apagado);display:flex;
+         justify-content:space-between;gap:14px;flex-wrap:wrap}
+  @media(max-width:780px){
+    .fila-datos{grid-template-columns:1fr 1fr}
+    thead{display:none}
+    tbody td{display:block;border-top:0;padding:6px 14px}
+    tbody tr{display:block;border-radius:10px;margin-bottom:12px;border:1px solid var(--linea)}
+    .foto{width:100%;height:64px}.p,.accion{text-align:left}
+    .accion button{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <b>Part<i>Exact</i></b>
+    <div class="caja">N.º <code>04152-YZZA1</code><button>Buscar</button></div>
+  </div>
+
+  <div class="cabecera">
+    <div class="miga"><a href="#">inicio</a> / <a href="#">filtro-aceite</a> / toyota 04152-yzza1</div>
+    <h1>Filtro de aceite · <code>04152-YZZA1</code></h1>
+    <p class="resumen">1 pieza encontrada · 4 ofertas reales de eBay · ordenadas por precio</p>
+  </div>
+
+  <div class="fila-datos">
+    <div class="dato"><span>Vehículo</span><b>Mitsubishi Outlander Sport 2020</b></div>
+    <div class="dato"><span>Motor</span><b>2.0L 4cil Gasoline 148HP</b></div>
+    <div class="dato"><span>Origen del dato</span><b class="ok">tu VIN</b></div>
+    <div class="dato"><span>Precio desde</span><b class="ok">US$28.00</b></div>
+  </div>
+
+  <div class="aviso"><b>Publicidad:</b> al comprar en eBay podemos ganar una comisión. El precio
+    que pagas es el mismo y no cambia el orden de las ofertas.</div>
+
+  <table>
+    <thead>
+      <tr><th>Pieza</th><th>Condición</th><th class="der">Precio</th><th class="der">Acción</th></tr>
+    </thead>
+    <tbody>
+      <tr class="mejor">
+        <td><div class="foto">FOTO<br>pendiente T-B6</div></td>
+        <td><span class="mejor-tag">Mejor precio</span><span class="cond">✓ nuevo</span>
+            <span class="id">eBay · 820055463160</span></td>
+        <td class="p">US$28.00<small>sin impuestos ni envío</small></td>
+        <td class="accion"><button>Ver en eBay</button></td>
+      </tr>
+      <tr>
+        <td><div class="foto">FOTO<br>pendiente T-B6</div></td>
+        <td><span class="cond">✓ nuevo</span><span class="id">eBay · 197598229241</span></td>
+        <td class="p">US$31.99<small>sin impuestos ni envío</small></td>
+        <td class="accion"><button>Ver en eBay</button></td>
+      </tr>
+      <tr>
+        <td><div class="foto">FOTO<br>pendiente T-B6</div></td>
+        <td><span class="cond">✓ nuevo</span><span class="id">eBay · 407177566423</span></td>
+        <td class="p">US$43.90<small>sin impuestos ni envío</small></td>
+        <td class="accion"><button>Ver en eBay</button></td>
+      </tr>
+      <tr>
+        <td><div class="foto">FOTO<br>pendiente T-B6</div></td>
+        <td><span class="cond">✓ nuevo</span><span class="id">eBay · 237082302160</span></td>
+        <td class="p">US$65.00<small>sin impuestos ni envío</small></td>
+        <td class="accion"><button>Ver en eBay</button></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <footer>
+    <span>fuente: eBay · precios USD sin impuestos ni envío · actualizado hoy</span>
+    <span>sin cookies · sin analítica</span>
+  </footer>
+</div>
+</body>
+</html>
