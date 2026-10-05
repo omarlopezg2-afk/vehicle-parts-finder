@@ -744,6 +744,42 @@ cuando midamos el embudo: los usuarios encuentran lo que las pruebas no buscan.
 
 ---
 
+## 05/10/2026 — **T-E5 resuelto: el estado del sitio vive en la URL** — Líder
+
+**Qué era**: el botón "atrás" del navegador dejaba al visitante al principio del sitio. No era un
+fallo exótico: **ninguna vista escribía en la URL**, así que no dejaban entrada en el historial y
+"atrás" solo podía salir de la página.
+
+**Cómo se arregló**: un router por hash (`site/js/router.js`) con un estado canónico por vista
+(`#/numero/<n>`, `#/categoria/<slug>`, `#/vehiculo/<marca>/<modelo>/<año>[/<slug>]` y `#/vin/<vin>`).
+La decisión de diseño que evita los dos problemas clásicos de esto:
+- `navegar()` se llama **solo en los 6 puntos donde el usuario actúa** (enviar el buscador, elegir
+  vehículo, clic en categoría, clic en el árbol, breadcrumb, "cambiar vehículo") — así la
+  restauración nunca reescribe la URL ni puede provocar un bucle de renders.
+- La restauración escucha `popstate` **y** `hashchange` con deduplicación por último hash atendido,
+  porque un mismo "atrás" puede disparar los dos.
+
+**Verificación con navegador real** (en local y **en el sitio en vivo**, que es lo que cuenta):
+
+| Paso | URL | Lo que se ve |
+|---|---|---|
+| Al cargar | *(vacía)* | Bienvenida |
+| Buscar `04152YZZA1` | `#/numero/04152YZZA1` | "1 resultado encontrado: Filtro de aceite — Toyota" |
+| **Atrás** | *(vacía)* | **Vuelve a la bienvenida** (antes salía del sitio) |
+| Enlace directo a esa pieza | igual | Renderiza la pieza |
+| Enlace directo a `#/categoria/pastillas-freno` | igual | Renderiza la categoría |
+| Enlace directo a `#/vehiculo/Mitsubishi/Outlander%20Sport/2020` | igual | Resuelve el vehículo y muestra su árbol, con la barra activa |
+
+**Beneficio que no estaba en el encargo**: los enlaces ahora son **compartibles**. Antes no se podía
+mandar a nadie "mira esta pieza"; ahora cada pieza, categoría y vehículo tiene su URL. Para un
+buscador de piezas eso vale tanto como el arreglo.
+
+**Pruebas**: 20 nuevas en `site/tests/router.test.js` (ida y vuelta URL↔estado, incluidos los casos
+feos: espacios, paréntesis y acentos de marcas reales como "Sprinter (Dodge Or Freightliner)").
+Frontend completo: **72 pruebas en verde** (eran 52).
+
+---
+
 ## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
 
 Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó
