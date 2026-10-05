@@ -44,6 +44,7 @@ import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
 import { renderVehiclePicker } from "./vehiclePicker.js";
 import { saveVehicle, loadVehicle, clearVehicle, formatVehicleLabel } from "./vehicleSession.js";
+import { navegar, alCambiarRuta, estadoDesdeHash } from "./router.js";
 
 const resultsEl = document.getElementById("results");
 const form = document.getElementById("search-form");
@@ -119,6 +120,7 @@ function hideVehicleBar() {
 vehicleBarChangeBtn.addEventListener("click", () => {
   clearVehicle();
   hideVehicleBar();
+  navegar({ vista: "inicio" }); // T-E5: la URL vuelve al inicio con la vista
   renderEmptyState(
     "Escribe un VIN de 17 caracteres o un número de parte arriba, o elige tu vehículo."
   );
@@ -160,7 +162,15 @@ async function runCategorySelection(vehicle, categorySlug, categories) {
     renderBreadcrumb([
       {
         label: `${vehicle.make} ${vehicle.model} ${vehicle.year}`,
-        onClick: () => runVinFlow(vehicle),
+        onClick: () => {
+          navegar({
+            vista: "vehiculo",
+            make: vehicle.make,
+            model: vehicle.model,
+            year: String(vehicle.year),
+          });
+          runVinFlow(vehicle);
+        },
       },
       {
         label: categories.find((c) => c.slug === categorySlug)?.name_es || categorySlug,
@@ -235,6 +245,15 @@ async function runVinFlow(vehicle) {
   );
 
   const tree = renderVehicleTree(vehicle, categories, (slug) => {
+    // T-E5: la categoría dentro del vehículo tiene su propia URL, así que "atrás"
+    // devuelve al árbol en vez de salir del sitio.
+    navegar({
+      vista: "vehiculo",
+      make: vehicle.make,
+      model: vehicle.model,
+      year: String(vehicle.year),
+      categoria: slug,
+    });
     runCategorySelection(vehicle, slug, categories);
   });
   resultsEl.appendChild(tree);
@@ -270,8 +289,10 @@ async function runSearch(rawQuery) {
       );
       return;
     }
+    navegar({ vista: "vin", vin });
     await resolveVehicleAndShowTree(vehicle);
   } else {
+    navegar({ vista: "numero", numero: query });
     await runPartNumberSearch(query);
   }
 }
@@ -297,6 +318,12 @@ function mountVehiclePicker() {
       );
       return;
     }
+    navegar({
+      vista: "vehiculo",
+      make: vehicle.make,
+      model: vehicle.model,
+      year: String(vehicle.year),
+    });
     await resolveVehicleAndShowTree(vehicle);
   });
   vehiclePickerContainer.appendChild(picker.element);
@@ -314,27 +341,117 @@ async function mountHomeCategories() {
     renderCategoryGrid(featured, async (slug) => {
       const savedVehicle = loadVehicle();
       if (savedVehicle) {
+        navegar({
+          vista: "vehiculo",
+          make: savedVehicle.make,
+          model: savedVehicle.model,
+          year: String(savedVehicle.year),
+          categoria: slug,
+        });
         await runCategorySelection(savedVehicle, slug, categories);
       } else {
+        navegar({ vista: "categoria", categoria: slug });
         await runCategoryBrowse(slug, categories);
       }
     })
   );
 }
 
+// --- T-E5: restaurar la vista que dice la URL ---
+//
+// Esta es la pieza que hace que el botón "atrás" funcione y que los enlaces sean
+// compartibles. Se llama (a) al cargar la página si la URL trae una vista y (b) cada
+// vez que el usuario navega con atrás/adelante.
+//
+// Clave del diseño: aquí NO se llama a `navegar()`. La URL ya es la correcta; volver a
+// escribirla ensuciaría el historial y podría provocar un bucle de renders.
+async function restaurarVista(estado) {
+  switch (estado.vista) {
+    case "numero":
+      input.value = estado.numero;
+      await runPartNumberSearch(estado.numero);
+      return;
+
+    case "categoria": {
+      const categories = await getCategories();
+      await runCategoryBrowse(estado.categoria, categories);
+      return;
+    }
+
+    case "vin": {
+      const vehicle = await matchVehicleByVIN(estado.vin);
+      if (vehicle) {
+        await resolveVehicleAndShowTree(vehicle);
+      } else {
+        renderEmptyState(
+          `No encontramos un vehículo para el VIN "${estado.vin}" en el catálogo actual.`
+        );
+      }
+      return;
+    }
+
+    case "vehiculo": {
+      const vehicle = await matchVehicleByMakeModelYear(estado.make, estado.model, estado.year);
+      if (!vehicle) {
+        renderEmptyState(
+          `Todavía no tenemos piezas registradas para ${estado.make} ${estado.model} ${estado.year}.`
+        );
+        return;
+      }
+      if (estado.categoria) {
+        saveVehicle(vehicle);
+        showVehicleBar(vehicle);
+        const categories = await getCategories();
+        await runCategorySelection(vehicle, estado.categoria, categories);
+      } else {
+        await resolveVehicleAndShowTree(vehicle);
+      }
+      return;
+    }
+
+    default:
+      renderEmptyState(
+        "Escribe un VIN de 17 caracteres o un número de parte arriba, o elige tu vehículo."
+      );
+  }
+}
+
 // --- Estado inicial ---
-// Si hay un vehículo recordado (T-E4), se salta directo a su árbol de
-// categorías sin pedir VIN ni repetir el wizard. Si no, mensaje de
-// bienvenida normal. El buscador y el selector de vehículo (T-E3) y el
+// Orden de prioridad: (1) la URL manda (enlace compartido o recarga con estado);
+// (2) si no hay vista en la URL pero hay vehículo recordado (T-E4), se salta a su
+// árbol de categorías —y se deja la URL a tono, sin añadir entrada al historial—;
+// (3) si no, mensaje de bienvenida. El buscador, el selector de vehículo (T-E3) y el
 // grid de categorías (T-E5) se montan siempre, pase lo que pase.
 async function init() {
   mountVehiclePicker();
   await mountHomeCategories();
   await showFixtureBannerIfNeeded();
 
+  alCambiarRuta((estado) => {
+    restaurarVista(estado).catch((error) => {
+      console.error("No se pudo restaurar la vista", estado, error);
+      renderEmptyState("No pudimos restaurar esa vista. Prueba a buscarlo otra vez.");
+    });
+  });
+
+  const estadoInicial = estadoDesdeHash(window.location.hash);
+  if (estadoInicial.vista !== "inicio") {
+    await restaurarVista(estadoInicial);
+    return;
+  }
+
   const savedVehicle = loadVehicle();
   if (savedVehicle) {
     showVehicleBar(savedVehicle);
+    navegar(
+      {
+        vista: "vehiculo",
+        make: savedVehicle.make,
+        model: savedVehicle.model,
+        year: String(savedVehicle.year),
+      },
+      { reemplazar: true }
+    );
     await runVinFlow(savedVehicle);
   } else {
     renderEmptyState(
