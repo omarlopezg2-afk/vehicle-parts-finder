@@ -127,7 +127,25 @@ export async function renderPartCard(part, categories, resolveEquivalent, getAll
 
     const offersList = document.createElement("ul");
     offersList.className = "offers-list";
-    offers.forEach((offer) => {
+
+    // Orden por precio ascendente (dirección B). El visitante viene a COMPARAR, y
+    // una lista en el orden en que la devuelve la API lo obliga a leerla entera
+    // para saber cuál es la más barata; además el precio más bajo es el único que
+    // va destacado en verde, así que ese destacado tiene que ser verdad.
+    // Se ordena una copia: no se toca el dato del catálogo. Las ofertas sin precio
+    // van al final, porque no se pueden comparar con las demás.
+    const ofertasOrdenadas = [...offers].sort((a, b) => {
+      const precioA = Number(a && a.price);
+      const precioB = Number(b && b.price);
+      const aTiene = Number.isFinite(precioA);
+      const bTiene = Number.isFinite(precioB);
+      if (!aTiene && !bTiene) return 0;
+      if (!aTiene) return 1;
+      if (!bTiene) return -1;
+      return precioA - precioB;
+    });
+
+    ofertasOrdenadas.forEach((offer) => {
       const li = document.createElement("li");
       li.className = "offer-row";
 

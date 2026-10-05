@@ -309,6 +309,36 @@ export async function getPartsByFitment(vehicleId, categorySlug = null) {
  * @returns {Promise<Array<object>>} piezas de esa categoría (puede ser
  *   vacío si el catálogo todavía no tiene piezas ahí).
  */
+/**
+ * Resumen del catálogo para la banda de confianza del inicio (dirección B).
+ *
+ * Vive aquí y no en confianza.js a propósito: este módulo es el ÚNICO de site/
+ * que puede leer data/build/*.json (regla de escalado, CONTRACTS.md).
+ *
+ * @returns {Promise<{partes:number, ofertas:number, categorias:number, usandoFixture:boolean}>}
+ */
+export async function getResumenCatalogo() {
+  const [partesRes, categoriasRes] = await Promise.all([
+    _loadJSON("parts"),
+    _loadJSON("categories"),
+  ]);
+
+  const partes = Array.isArray(partesRes.data) ? partesRes.data : [];
+  const categorias = Array.isArray(categoriasRes.data) ? categoriasRes.data : [];
+
+  const ofertas = partes.reduce(
+    (total, parte) => total + ((parte && parte.offers) || []).length,
+    0
+  );
+
+  return {
+    partes: partes.length,
+    ofertas,
+    categorias: categorias.length,
+    usandoFixture: Boolean(partesRes.usedFixture || categoriasRes.usedFixture),
+  };
+}
+
 export async function getPartsByCategory(categorySlug) {
   if (!categorySlug) return [];
   const { data: parts } = await _loadJSON("parts");

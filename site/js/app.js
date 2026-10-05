@@ -44,7 +44,8 @@ import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
 import { renderVehiclePicker } from "./vehiclePicker.js";
 import { saveVehicle, loadVehicle, clearVehicle, formatVehicleLabel } from "./vehicleSession.js";
-import { navegar, alCambiarRuta, estadoDesdeHash } from "./router.js";
+import { navegar, alCambiarRuta, alNavegar, estadoDesdeHash } from "./router.js";
+import { renderBandaDeConfianza } from "./confianza.js";
 
 const resultsEl = document.getElementById("results");
 const form = document.getElementById("search-form");
@@ -357,6 +358,19 @@ async function mountHomeCategories() {
   );
 }
 
+// --- Portada vs. vista activa (dirección B) ---
+//
+// Sin esto, tras buscar el visitante seguía viendo la portada: el bloque de
+// resultados vive al final del documento, más de mil píxeles abajo, así que
+// pulsaba "Buscar" y no pasaba nada visible. Con `data-vista` en el <body>, el CSS
+// recoge la portada (titular, lema, banda de confianza, selector de vehículo y
+// categorías) y deja arriba el buscador y los resultados.
+//
+// Se marca aquí, en un único sitio, y no en cada flujo.
+function sincronizarVista() {
+  document.body.dataset.vista = estadoDesdeHash(window.location.hash).vista;
+}
+
 // --- T-E5: restaurar la vista que dice la URL ---
 //
 // Esta es la pieza que hace que el botón "atrás" funcione y que los enlaces sean
@@ -366,6 +380,7 @@ async function mountHomeCategories() {
 // Clave del diseño: aquí NO se llama a `navegar()`. La URL ya es la correcta; volver a
 // escribirla ensuciaría el historial y podría provocar un bucle de renders.
 async function restaurarVista(estado) {
+  document.body.dataset.vista = estado.vista;
   switch (estado.vista) {
     case "numero":
       input.value = estado.numero;
@@ -426,6 +441,22 @@ async function init() {
   mountVehiclePicker();
   await mountHomeCategories();
   await showFixtureBannerIfNeeded();
+
+  // Banda de confianza (dirección B): cifras contadas del catálogo real.
+  await renderBandaDeConfianza(document.getElementById("trust-band"));
+
+  // Chips de ejemplo del hero: un visitante que no sabe qué escribir tiene por
+  // dónde entrar. Son números que EXISTEN en el catálogo (comprobado), no adornos.
+  for (const chip of document.querySelectorAll("[data-ejemplo]")) {
+    chip.addEventListener("click", () => {
+      input.value = chip.dataset.ejemplo;
+      navegar({ vista: "numero", numero: chip.dataset.ejemplo });
+      runPartNumberSearch(chip.dataset.ejemplo);
+    });
+  }
+
+  alNavegar(sincronizarVista);
+  sincronizarVista();
 
   alCambiarRuta((estado) => {
     restaurarVista(estado).catch((error) => {

@@ -77,6 +77,16 @@ export function hashDesdeEstado(estado) {
 // mismo cambio (atrás/adelante), y no queremos renderizar dos veces.
 let ultimoHashAtendido = null;
 
+// Aviso de que la vista cambió. Existe para que la app ajuste el aspecto (por
+// ejemplo recoger la portada cuando hay resultados) sin tener que acordarse de
+// llamar en los seis puntos donde se navega: se registra una vez y ya.
+let _alNavegar = null;
+
+/** Registra `fn(estado)` para que se llame en cada navegación. */
+export function alNavegar(fn) {
+  _alNavegar = fn;
+}
+
 /** Escribe la vista en la URL. `reemplazar` evita dejar entrada nueva (por
  *  ejemplo al corregir la URL tras una búsqueda fallida). No dispara render:
  *  el hash se marca como atendido para que los eventos no vuelvan a pintarlo. */
@@ -89,6 +99,7 @@ export function navegar(estado, { reemplazar = false } = {}) {
   if (reemplazar) window.history.replaceState(null, "", destino);
   else window.history.pushState(null, "", destino);
   ultimoHashAtendido = destino;
+  if (_alNavegar) _alNavegar(estado);
 }
 
 /** Estado actual según la URL. */

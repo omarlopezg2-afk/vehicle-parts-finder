@@ -4,15 +4,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PartExact — Encuentra la pieza exacta de tu vehículo</title>
+    <meta
+      name="description"
+      content="Busca por VIN, por número de parte o eligiendo tu vehículo. Confirmamos que la pieza le queda a tu carro y te mostramos las ofertas reales de eBay, con precio y condición."
+    />
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
-  <body>
+  <body data-vista="inicio">
     <a class="skip-link" href="#main-content">Saltar al contenido</a>
 
+    <!-- Cabecera: la marca, no un titular. La promesa va en el hero de abajo
+         (dirección B: primero lo que el visitante gana, la marca acompaña). -->
     <header class="app-header">
-      <h1>PartExact</h1>
-      <p class="app-tagline">La pieza exacta de tu vehículo, confirmada por VIN.</p>
-      <p>Pon tu VIN, tu número de pieza, o elige tu vehículo abajo.</p>
+      <a class="app-logo" href="#/">Part<b>Exact</b></a>
     </header>
 
     <main id="main-content">
@@ -27,44 +31,62 @@
         </button>
       </div>
 
-      <div id="home-paths" class="dual-path">
-        <section class="path-col" aria-labelledby="path-vin-title">
-          <h2 id="path-vin-title">¿Conoces tu VIN?</h2>
-          <form id="search-form" class="search-form" autocomplete="off">
-            <label for="search-input"
-              >Busca por VIN (17 caracteres) o número de parte</label
-            >
-            <input
-              id="search-input"
-              name="q"
-              type="search"
-              placeholder="Ej: JA4AP3AW9LZ012345 o 1230A114"
-              aria-describedby="search-hint"
-              required
-            />
-            <button type="submit" class="btn">Buscar</button>
-          </form>
-          <p id="search-hint" class="search-hint">
-            Si escribes 17 caracteres alfanuméricos lo tratamos como VIN; si
-            no, lo buscamos como número de parte.
-          </p>
-        </section>
+      <section class="hero" aria-labelledby="promesa">
+        <h1 id="promesa">Encuentra la pieza exacta de tu vehículo</h1>
+        <p class="hero-sub">
+          Sin adivinar. Confirmamos que la pieza le queda a tu carro y te mostramos
+          las ofertas reales de eBay, con su precio y su condición.
+        </p>
 
-        <section class="path-col" aria-labelledby="path-picker-title">
-          <h2 id="path-picker-title">O elige tu vehículo</h2>
-          <div id="vehicle-picker-container"></div>
-        </section>
-      </div>
+        <form id="search-form" class="buscador" autocomplete="off">
+          <label for="search-input" class="visually-hidden"
+            >Busca por VIN (17 caracteres) o número de parte</label
+          >
+          <input
+            id="search-input"
+            name="q"
+            type="search"
+            placeholder="VIN, número de parte, o marca y modelo"
+            aria-describedby="search-hint"
+            required
+          />
+          <button type="submit" class="btn">Buscar</button>
+        </form>
+
+        <p class="ejemplos">
+          Prueba con:
+          <button type="button" class="chip" data-ejemplo="04152YZZA1">04152YZZA1</button>
+          <button type="button" class="chip" data-ejemplo="1230A114">1230A114</button>
+          <button type="button" class="chip" data-ejemplo="17801-21060">17801-21060</button>
+        </p>
+        <p id="search-hint" class="search-hint">
+          Si escribes 17 caracteres alfanuméricos lo tratamos como VIN; si no, lo
+          buscamos como número de parte.
+        </p>
+      </section>
+
+      <!-- Las cifras las calcula confianza.js del catálogo real en cada carga:
+           así no se quedan viejas cuando el pipeline trae más piezas. -->
+      <section
+        id="trust-band"
+        class="confianza"
+        aria-label="Qué contiene el catálogo hoy"
+      ></section>
+
+      <section class="path-col" aria-labelledby="path-picker-title">
+        <h2 id="path-picker-title">O elige tu vehículo</h2>
+        <div id="vehicle-picker-container"></div>
+      </section>
 
       <section
         id="home-categories"
         class="home-categories"
         aria-labelledby="home-categories-title"
       >
-        <h2 id="home-categories-title">Categorías populares</h2>
+        <h2 id="home-categories-title">Explora por tipo de pieza</h2>
         <p class="search-hint">
-          Explora por tipo de pieza. Si ya elegiste tu vehículo arriba, te
-          mostramos directamente las piezas que le quedan.
+          Si ya elegiste tu vehículo arriba, te mostramos directamente las piezas
+          que le quedan.
         </p>
         <div id="home-categories-grid"></div>
       </section>

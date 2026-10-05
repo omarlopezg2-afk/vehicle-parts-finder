@@ -11,3 +11,9 @@ data/raw/*
 
 # caché local de Wrangler (incluye el id/nombre de la cuenta de Cloudflare)
 **/.wrangler/
+
+# La copia que lee el frontend (site/data/build/*.json) es un ARTEFACTO del
+# deploy: deploy-site.yml la regenera desde data/build/ antes de publicar.
+# Estaba versionada a mano y se quedo vieja: decia 2 piezas mientras el catalogo
+# real tenia 28. Se queda solo el README, que explica como se sirve en local.
+site/data/build/*.json

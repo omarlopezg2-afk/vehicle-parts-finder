@@ -2,21 +2,36 @@
  * Estilos del buscador de piezas. Mobile-first, sin frameworks.
  * Reglas clave: nunca scroll horizontal, focus siempre visible, tamaños
  * táctiles >= 44px.
+ *
+ * DIRECCIÓN VISUAL: "B — marketplace de confianza" (decidida el 05/10/2026 por
+ * criterio de negocio: blanco, azul profundo, aire y foto donde el visitante
+ * decide). Es el idioma que la gente ya reconoce al comparar y comprar, y baja
+ * la desconfianza de una compra por internet. El sitio se llamaba a sí mismo
+ * oscuro antes de esto; las reglas nuevas van al final del archivo, en la
+ * sección "DIRECCIÓN B", para que se vea qué cambió y por qué.
  */
 
 :root {
-  --color-bg: #0f172a;
-  --color-surface: #1e293b;
-  --color-surface-alt: #273449;
-  --color-text: #e2e8f0;
-  --color-text-dim: #94a3b8;
-  --color-primary: #38bdf8;
-  --color-primary-dark: #0ea5e9;
-  --color-accent: #4ade80;
-  --color-border: #334155;
-  --radius: 10px;
-  --focus-ring: 3px solid #facc15;
-  --max-width: 960px;
+  /* lienzo claro */
+  --color-bg: #ffffff;
+  --color-surface: #ffffff;
+  --color-surface-alt: #f8fafc;
+  --color-text: #0f172a;
+  --color-text-dim: #64748b;
+  --color-primary: #1d4ed8;
+  --color-primary-dark: #1740b8;
+  --color-accent: #059669;
+  --color-border: #e2e8f0;
+  --radius: 14px;
+  --radius-sm: 9px;
+  --shadow-card: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-alza: 0 12px 28px -14px rgba(29, 78, 216, 0.4);
+  --shadow-flotante: 0 10px 30px -12px rgba(15, 23, 42, 0.25);
+  /* Anillo de foco: oscuro, para que se vea igual sobre blanco y sobre el azul
+     de los botones (el amarillo de antes era invisible sobre blanco). */
+  --focus-ring: 3px solid #0f172a;
+  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --max-width: 1040px;
 }
 
 * {
@@ -71,7 +86,7 @@ a {
   left: -9999px;
   top: 0;
   background: var(--color-primary);
-  color: #0f172a;
+  color: #fff;
   padding: 0.5rem 1rem;
   z-index: 100;
 }
@@ -112,9 +127,9 @@ main {
 }
 
 .fixture-banner {
-  background: #422006;
-  border: 1px solid #a16207;
-  color: #fde68a;
+  background: #fffbeb;
+  border: 1px solid #fcd34d;
+  color: #78350f;
   padding: 0.6rem 0.9rem;
   border-radius: var(--radius);
   font-size: 0.85rem;
@@ -152,13 +167,14 @@ main {
   border-radius: var(--radius);
   border: 1px solid transparent;
   background: var(--color-primary);
-  color: #0f172a;
+  color: #fff;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
   text-decoration: none;
   min-height: 44px;
   line-height: 1.2;
+  transition: background 0.15s ease;
 }
 
 .btn:hover {
@@ -634,5 +650,382 @@ footer.app-footer {
 @media (min-width: 640px) {
   .vehicle-picker-form .btn {
     flex: 0 0 auto;
+  }
+}
+
+/* ==========================================================================
+ * DIRECCIÓN B — "marketplace de confianza" (decidida el 05/10/2026)
+ * ==========================================================================
+ * El sitio se llamaba a sí mismo oscuro (lienzo #0f172a, textos claros). La
+ * decisión fue POR NEGOCIO, no por gusto: todos los referentes del rubro
+ * (RockAuto, AutoZone, eBay Motors, Partsouq, Autodoc, MercadoLibre) usan lienzo
+ * claro, porque es el idioma que la gente ya reconoce al comparar y comprar, y
+ * baja la desconfianza de pagar por internet. El modo oscuro es hoy el idioma de
+ * las herramientas y de los productos de IA, no del comercio.
+ *
+ * Reglas de esta sección: solo pinta; la estructura y el comportamiento son los
+ * mismos de antes. Los componentes nuevos son tres: .hero (promesa + buscador),
+ * .confianza (cifras reales, las calcula confianza.js) y .chip (ejemplos).
+ * ========================================================================== */
+
+/* --- Cabecera: la marca, no un titular --- */
+header.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app-logo {
+  font-weight: 800;
+  font-size: 1.22rem;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  text-decoration: none;
+}
+
+.app-logo b {
+  color: var(--color-primary);
+}
+
+/* El lema y la instrucción viejos del header viven ahora en el hero. */
+header.app-header h1,
+header.app-header p {
+  display: none;
+}
+
+/* --- Hero: la promesa primero --- */
+.hero {
+  text-align: center;
+  padding: 2rem 0 0.5rem;
+}
+
+.hero h1 {
+  font-size: clamp(1.85rem, 4.8vw, 3rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+  margin: 0 auto 0.85rem;
+  max-width: 22ch;
+}
+
+.hero-sub {
+  color: var(--color-text-dim);
+  font-size: 1.04rem;
+  max-width: 60ch;
+  margin: 0 auto 1.7rem;
+}
+
+/* --- Buscador principal: un solo campo dominante --- */
+.buscador {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  max-width: 620px;
+  margin: 0 auto;
+  background: var(--color-surface);
+  border: 2px solid var(--color-text);
+  border-radius: var(--radius);
+  padding: 0.5rem;
+  box-shadow: var(--shadow-flotante);
+}
+
+.buscador input[type="search"] {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 1.04rem;
+  padding: 0.75rem 0.85rem;
+}
+
+.buscador .btn {
+  flex: 0 0 auto;
+  border-radius: var(--radius-sm);
+}
+
+/* --- Chips de ejemplo --- */
+.ejemplos {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  margin: 1rem 0 0.35rem;
+  font-size: 0.88rem;
+  color: var(--color-text-dim);
+}
+
+.chip {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.8rem;
+  color: var(--color-primary);
+  cursor: pointer;
+  min-height: 34px;
+}
+
+.chip:hover {
+  border-color: var(--color-primary);
+}
+
+.hero .search-hint {
+  margin: 0.5rem auto 1.6rem;
+  max-width: 58ch;
+}
+
+/* --- Banda de confianza (cifras reales, ver confianza.js) --- */
+.confianza {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.85rem;
+  margin-bottom: 2rem;
+}
+
+.confianza[hidden] {
+  display: none;
+}
+
+.confianza .cifra {
+  background: var(--color-surface-alt);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.1rem 0.9rem;
+  text-align: center;
+}
+
+.confianza .cifra b {
+  display: block;
+  font-size: 1.65rem;
+  letter-spacing: -0.03em;
+  color: var(--color-text);
+}
+
+.confianza .cifra span {
+  display: block;
+  margin-top: 0.3rem;
+  font-size: 0.78rem;
+  line-height: 1.35;
+  color: var(--color-text-dim);
+}
+
+.confianza .cifra-verde b {
+  color: var(--color-accent);
+}
+
+/* --- Camino secundario: elegir el vehículo sin VIN --- */
+.path-col {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1.1rem 1.2rem;
+  margin-bottom: 1.75rem;
+  min-width: 0;
+}
+
+/* --- Parrilla de categorías: tarjetas que invitan a tocar --- */
+.category-grid {
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.85rem;
+}
+
+.category-btn {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1rem 0.75rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.category-btn:hover {
+  border-color: var(--color-primary);
+  box-shadow: var(--shadow-alza);
+  transform: translateY(-2px);
+}
+
+.category-btn img {
+  width: 40px;
+  height: 40px;
+  opacity: 0.9;
+}
+
+.category-btn .category-name {
+  font-size: 0.87rem;
+  font-weight: 600;
+}
+
+.category-btn[aria-pressed="true"] {
+  border-color: var(--color-primary);
+  background: #eff4ff;
+}
+
+/* --- Acordeón de grupos, en claro --- */
+.category-group {
+  box-shadow: var(--shadow-card);
+}
+
+.category-group-toggle:hover {
+  background: var(--color-surface-alt);
+}
+
+.category-group-count {
+  color: var(--color-text-dim);
+}
+
+/* --- Ficha de parte y ofertas: la columna de precio manda --- */
+.part-card {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+  padding: 1.1rem 1.2rem;
+}
+
+.part-card h3 {
+  font-size: 1.1rem;
+  letter-spacing: -0.01em;
+}
+
+.part-card h3 code,
+.part-number {
+  font-family: var(--mono);
+}
+
+.part-card .part-image {
+  border: 1px solid var(--color-border);
+}
+
+.offers-list {
+  gap: 0.6rem;
+}
+
+.offer-row {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem 0.9rem;
+}
+
+.offer-price {
+  color: var(--color-text);
+  font-size: 1.12rem;
+  letter-spacing: -0.02em;
+}
+
+/* Al mejor precio se le da la única señal verde de la pantalla: es el dato que
+   el visitante viene a comparar. */
+.offer-row:first-child .offer-price {
+  color: var(--color-accent);
+}
+
+/* --- Cajas que ya existían: mismo radio y borde que el resto --- */
+.vehicle-card,
+.pegar-numero-box {
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-card);
+}
+
+.pegar-numero-box {
+  border: 1px dashed var(--color-primary);
+}
+
+.vehicle-bar {
+  background: #eff4ff;
+  border: 1px solid #bfdbfe;
+}
+
+.vehicle-bar-text strong {
+  color: var(--color-primary);
+}
+
+.breadcrumb button {
+  color: var(--color-primary);
+}
+
+.btn.btn-secondary {
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  background: var(--color-surface);
+}
+
+.btn.btn-secondary:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.empty-state {
+  font-size: 1rem;
+}
+
+footer.app-footer {
+  border-top: 1px solid var(--color-border);
+  margin-top: 1.5rem;
+}
+
+/* --- Portada recogida cuando hay una vista activa ---
+ * `data-vista` lo pone app.js en el <body> en cada navegación. Sin esto, los
+ * resultados quedaban más de mil píxeles abajo: el visitante pulsaba "Buscar" y no
+ * veía ningún cambio. El buscador se queda arriba a propósito, para poder buscar
+ * otra cosa sin volver atrás.
+ * El valor por defecto ("inicio") va escrito en el HTML para que no haya un
+ * parpadeo: si el atributo no existiera al cargar, esto ocultaría la portada
+ * antes de que el JS arranque. */
+body:not([data-vista="inicio"]) .hero h1,
+body:not([data-vista="inicio"]) .hero-sub,
+body:not([data-vista="inicio"]) .ejemplos,
+body:not([data-vista="inicio"]) .confianza,
+body:not([data-vista="inicio"]) .path-col,
+body:not([data-vista="inicio"]) .home-categories,
+body:not([data-vista="inicio"]) .hero .search-hint {
+  display: none;
+}
+
+body:not([data-vista="inicio"]) .hero {
+  padding: 1rem 0 0.8rem;
+  text-align: left;
+}
+
+body:not([data-vista="inicio"]) .buscador {
+  margin: 0;
+}
+
+/* --- Estrecho: el teléfono es el caso principal, no el caso raro --- */
+@media (max-width: 700px) {
+  .hero {
+    padding-top: 1.5rem;
+  }
+
+  .buscador {
+    border-width: 1px;
+    box-shadow: var(--shadow-card);
+    padding: 0.4rem;
+  }
+
+  .buscador .btn {
+    flex: 1 1 100%;
+  }
+
+  .confianza {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+  }
+
+  .confianza .cifra {
+    padding: 0.85rem 0.7rem;
+  }
+
+  .confianza .cifra b {
+    font-size: 1.35rem;
+  }
+
+  .category-grid {
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
   }
 }

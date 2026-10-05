@@ -780,6 +780,52 @@ Frontend completo: **72 pruebas en verde** (eran 52).
 
 ---
 
+## 05/10/2026 — **Dirección B en el sitio real: de oscuro a claro** — Líder
+
+**La decisión fue del usuario y fue de negocio, no de gusto**: *"por decisión de negocio me quedo con
+B, si fuera por gusto me quedaría con C, pero el negocio está primero"*. B es el lienzo claro que usan
+todos los referentes del rubro (RockAuto, AutoZone, eBay Motors, Partsouq, Autodoc, MercadoLibre); C
+(el oscuro con verde) es el idioma que hoy predomina en herramientas y productos de IA.
+
+**Dato que no estaba a la vista**: el sitio **ya era oscuro** (`#0f172a`, texto claro, azul cielo).
+Elegir B no era retocar: era cambiar el lienzo de todo el sitio. Ayudó que el CSS estuviera gobernado
+por variables, así que el cambio se hizo en `:root` + una sección nueva al final de `styles.css` con
+todo lo que cambia y por qué.
+
+**Lo que se construyó**
+
+| Pieza | Qué es |
+|---|---|
+| Hero | La promesa como titular ("Encuentra la pieza exacta de tu vehículo") y **un solo** buscador dominante |
+| Ejemplos clicables | `04152YZZA1`, `1230A114`, `17801-21060` — números que **existen** en el catálogo, no adornos |
+| Banda de confianza | `confianza.js` cuenta el catálogo real en cada carga: **28 / 1.194 / 34 / 0 cookies**. Si los datos son de desarrollo, la banda **se oculta**: no se presume de cifras que no son del producto |
+| Categorías | Tarjetas con radio y realce al pasar el ratón, con los SVG que ya existían |
+| Ofertas | Ordenadas por precio y el más barato destacado |
+
+**Los tres hallazgos que salieron de trabajar esto** (ninguno se buscaba; los tres eran defectos reales)
+
+1. **Después de buscar, el visitante no veía nada.** El bloque de resultados vive al final del
+   documento: más de **1.400 px** abajo. Se escribía el número, se pulsaba Buscar y la pantalla no
+   cambiaba. La portada ahora **se recoge** cuando hay una vista activa (`data-vista` en el `<body>`,
+   marcado en un solo sitio vía `alNavegar` del router) y el primer resultado quedó en **y≈333**.
+   El buscador se queda arriba a propósito, para poder buscar otra cosa sin volver atrás.
+2. **`site/data/build/*.json` estaba versionado y desactualizado**: decía **2 piezas y 6 ofertas**
+   mientras el catálogo real tenía **28 y 1.194**. Cualquiera que levantara el sitio en su máquina
+   veía cifras que no son las del producto. El propio `README` de esa carpeta lo avisaba: *"temporal
+   y manual, a decidir en T-G2"*, y T-G2 terminó hace días. **Sacado de git**: es un artefacto que el
+   deploy regenera; un artefacto no debe vivir en el historial, donde envejece sin que nadie lo note.
+3. **El destacado en verde mentía.** Se puso el precio más barato en verde *y* la lista no estaba
+   ordenada: la primera oferta era 17,86 con una de 7,51 más abajo. Ahora se ordena por precio
+   (copia, no se toca el dato del catálogo) y las ofertas sin precio van al final.
+
+**Verificación** con navegador real: en escritorio y en móvil emulado a 390 px (medido, no a ojo:
+`scrollWidth === innerWidth`, sin scroll horizontal), midiendo posiciones en el DOM en vez de fiarse
+de capturas — las capturas del arnés venían en caché y llegaron a mostrar el diseño viejo.
+**72 pruebas del frontend en verde.** Ida y vuelta probada: buscar → atrás → vuelve la portada.
+
+
+---
+
 ## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
 
 Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó
