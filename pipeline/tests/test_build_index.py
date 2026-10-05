@@ -19,6 +19,8 @@ CI (con o sin red disponible, el resultado debe ser válido).
 from __future__ import annotations
 
 import os
+import pathlib
+import shutil
 import sys
 import unittest
 from unittest import mock
@@ -202,6 +204,14 @@ class TestBuildIndexEndToEnd(unittest.TestCase):
         import validate  # noqa: E402
 
         with tempfile.TemporaryDirectory() as temporal:
+            # `categories.json` es una ENTRADA, no una salida del build: la taxonomía se
+            # escribe a mano (T-F3) y build_index solo la lee (si no está, revienta en
+            # build_index.py:287). En data/build real ya existe, así que la prueba la
+            # copia desde el repo para poder construir en la carpeta temporal.
+            origen_categorias = pathlib.Path(build_index.BUILD_DIR) / "categories.json"
+            if origen_categorias.exists():
+                shutil.copy(origen_categorias, pathlib.Path(temporal) / "categories.json")
+
             with mock.patch.object(build_index, "BUILD_DIR", temporal), mock.patch.object(
                 validate, "BUILD_DIR", temporal
             ):
