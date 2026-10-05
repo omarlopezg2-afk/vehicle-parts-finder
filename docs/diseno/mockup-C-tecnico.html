@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PartExact — dirección C (técnico oscuro)</title>
+<style>
+  /* DIRECCIÓN C — TÉCNICO OSCURO
+     Grafito, verde señal y monoespaciada por todos lados: la estética de una
+     herramienta de trabajo, no de una tienda. A la gente de taller le gusta, y
+     aguanta mucha densidad. El riesgo conocido: si se pasa, parece herramienta
+     de programador en vez de herramienta de mecánico. */
+  :root{
+    --fondo:#0b0f14; --panel:#121821; --panel-2:#182130; --tinta:#e6edf3;
+    --apagado:#8b98a5; --verde:#22c55e; --verde-dim:#166534; --linea:#243040;
+    --ambar:#f59e0b;
+    --mono:ui-monospace,SFMono-Regular,"JetBrains Mono",Menlo,Consolas,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fondo);color:var(--tinta);font-family:var(--sans)}
+  body::before{content:"";position:fixed;inset:0;pointer-events:none;
+    background:radial-gradient(900px 500px at 12% -10%,rgba(34,197,94,.07),transparent 70%)}
+  .marco{position:relative;max-width:1120px;margin:0 auto;padding:0 22px 76px}
+  .barra{display:flex;align-items:center;gap:14px;padding:14px 0;
+         border-bottom:1px solid var(--linea);font-family:var(--mono);font-size:.82rem}
+  .punto{width:9px;height:9px;border-radius:50%;background:var(--verde);
+         box-shadow:0 0 10px var(--verde)}
+  .barra b{font-family:var(--sans);font-size:1.15rem;letter-spacing:-.02em}
+  .barra .apagado{color:var(--apagado)}
+  .barra .estado{margin-left:auto;color:var(--verde)}
+  h1{font-size:clamp(1.8rem,4.4vw,2.9rem);line-height:1.06;letter-spacing:-.03em;
+     margin:32px 0 10px;max-width:20ch}
+  h1 span{color:var(--verde)}
+  .sub{color:var(--apagado);max-width:62ch;margin:0 0 26px;font-size:1rem;line-height:1.55}
+  .consola{display:flex;align-items:center;gap:12px;background:var(--panel);
+           border:1px solid var(--linea);border-radius:10px;padding:6px 6px 6px 14px;
+           font-family:var(--mono)}
+  .consola .signo{color:var(--verde);font-size:1.05rem}
+  .consola input{flex:1;background:transparent;border:0;outline:0;color:var(--tinta);
+                 font-family:var(--mono);font-size:1rem;padding:12px 0}
+  .consola input::placeholder{color:#5b6875}
+  .consola button{border:0;border-radius:7px;background:var(--verde);color:#04140a;
+                  font-weight:700;font-size:.94rem;padding:12px 22px;cursor:pointer;
+                  font-family:var(--sans)}
+  .consola button:hover{background:#16a34a}
+  .ejemplos{margin:12px 0 30px;font-family:var(--mono);font-size:.82rem;color:var(--apagado)}
+  .ejemplos a{color:var(--ambar);text-decoration:none;border-bottom:1px dotted var(--ambar)}
+  .rejilla{display:grid;grid-template-columns:2fr 1fr;gap:20px;margin-bottom:32px}
+  .panel{background:var(--panel);border:1px solid var(--linea);border-radius:10px;padding:16px 18px}
+  .panel h2{margin:0 0 12px;font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;
+            color:var(--apagado);font-family:var(--mono)}
+  .metricas{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;font-family:var(--mono)}
+  .metrica b{display:block;font-size:1.45rem;color:var(--verde);letter-spacing:-.02em}
+  .metrica span{font-size:.72rem;color:var(--apagado);line-height:1.35;display:block;
+                margin-top:3px;font-family:var(--sans)}
+  .pasos{display:flex;flex-direction:column;gap:8px;font-family:var(--mono);font-size:.86rem}
+  .paso{display:flex;gap:10px;align-items:center;background:var(--panel-2);
+        border:1px solid var(--linea);border-radius:7px;padding:9px 12px;color:var(--apagado)}
+  .paso b{color:var(--verde)}
+  h2.seccion{font-size:.74rem;text-transform:uppercase;letter-spacing:.14em;color:var(--apagado);
+             font-family:var(--mono);margin:0 0 14px;display:flex;justify-content:space-between}
+  .parrilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:10px}
+  .cat{background:var(--panel);border:1px solid var(--linea);border-radius:9px;padding:13px 10px;
+       display:flex;gap:10px;align-items:center;font-size:.85rem}
+  .cat img{width:26px;height:26px;flex:none;filter:invert(1) hue-rotate(90deg);opacity:.85}
+  .cat:hover{border-color:var(--verde)}
+  .marca{margin-top:30px;border:1px dashed var(--linea);border-radius:10px;padding:16px 18px;
+         display:flex;gap:18px;align-items:center;background:var(--panel)}
+  .marca .foto{width:84px;height:84px;border-radius:8px;background:var(--panel-2);
+               border:1px solid var(--linea);display:grid;place-items:center;text-align:center;
+               font-family:var(--mono);font-size:.62rem;color:var(--apagado);padding:6px;flex:none}
+  .marca b{display:block;margin-bottom:4px}
+  .marca p{margin:0;color:var(--apagado);font-size:.88rem;line-height:1.5}
+  .pub{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;
+       color:var(--apagado);border:1px solid var(--linea);border-radius:5px;padding:3px 7px}
+  footer{margin-top:40px;border-top:1px solid var(--linea);padding-top:16px;
+         font-family:var(--mono);font-size:.74rem;color:var(--apagado);display:flex;
+         justify-content:space-between;gap:14px;flex-wrap:wrap}
+  @media(max-width:760px){.rejilla{grid-template-columns:1fr}.metricas{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="marco">
+  <div class="barra">
+    <span class="punto"></span>
+    <b>Part<span style="color:var(--verde)">Exact</span></b>
+    <span class="apagado">v0.1 · catálogo de piezas</span>
+    <span class="estado">● conectado a eBay</span>
+  </div>
+
+  <h1>La pieza exacta, <span>sin adivinar</span>.</h1>
+  <p class="sub">Escribe el VIN o el número de parte. Confirmamos el vehículo con los datos de
+     NHTSA y buscamos las ofertas reales en eBay — 1.194 ahora mismo, sobre 28 números de parte
+     ya verificados.</p>
+
+  <div class="consola">
+    <span class="signo">›</span>
+    <input placeholder="VIN · número de parte · marca modelo año" aria-label="Buscar pieza">
+    <button>Buscar</button>
+  </div>
+  <p class="ejemplos">$ prueba con <a href="#">04152YZZA1</a> · <a href="#">MR297182</a> · <a href="#">0446502070</a></p>
+
+  <div class="rejilla">
+    <div class="panel">
+      <h2>Estado del catálogo</h2>
+      <div class="metricas">
+        <div class="metrica"><b>28</b><span>números de parte verificados</span></div>
+        <div class="metrica"><b>1.194</b><span>ofertas reales de eBay</span></div>
+        <div class="metrica"><b>34</b><span>categorías</span></div>
+        <div class="metrica"><b>0</b><span>cookies · 0 rastreo</span></div>
+      </div>
+    </div>
+    <div class="panel">
+      <h2>Si no tienes el VIN</h2>
+      <div class="pasos">
+        <div class="paso"><b>1</b> Marca</div>
+        <div class="paso"><b>2</b> Modelo</div>
+        <div class="paso"><b>3</b> Año</div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="seccion"><span>Explora por tipo de pieza</span><span>34 categorías</span></h2>
+  <div class="parrilla">
+    <div class="cat"><img src="../../site/assets/categories/filtro-aceite.svg" alt="">Filtro de aceite</div>
+    <div class="cat"><img src="../../site/assets/categories/filtro-aire.svg" alt="">Filtro de aire</div>
+    <div class="cat"><img src="../../site/assets/categories/filtro-cabina.svg" alt="">Filtro de cabina</div>
+    <div class="cat"><img src="../../site/assets/categories/filtro-combustible.svg" alt="">Filtro combustible</div>
+    <div class="cat"><img src="../../site/assets/categories/pastillas-freno.svg" alt="">Pastillas de freno</div>
+    <div class="cat"><img src="../../site/assets/categories/discos-freno.svg" alt="">Discos de freno</div>
+    <div class="cat"><img src="../../site/assets/categories/tambor-freno.svg" alt="">Tambor de freno</div>
+    <div class="cat"><img src="../../site/assets/categories/caliper.svg" alt="">Caliper</div>
+    <div class="cat"><img src="../../site/assets/categories/radiador.svg" alt="">Radiador</div>
+    <div class="cat"><img src="../../site/assets/categories/motor-arranque.svg" alt="">Motor de arranque</div>
+    <div class="cat"><img src="../../site/assets/categories/bobina-encendido.svg" alt="">Bobina encendido</div>
+    <div class="cat"><img src="../../site/assets/categories/sensor-oxigeno.svg" alt="">Sensor de oxígeno</div>
+  </div>
+
+  <div class="marca">
+    <div class="foto">FOTO DE PIEZA<br>pendiente T-B6</div>
+    <div>
+      <b>Hueco reservado: marcas que se distribuyen en RD</b>
+      <p>Aceites, filtros y correas con distribuidor local. Se activa con acuerdo firmado y
+         siempre etiquetado como publicidad — sin tocar el orden de las ofertas.</p>
+    </div>
+    <span class="pub">Publicidad</span>
+  </div>
+
+  <footer>
+    <span>fuente: eBay Browse API · NHTSA vPIC · precios USD sin impuestos ni envío</span>
+    <span>sin cookies · aviso de afiliados</span>
+  </footer>
+</div>
+</body>
+</html>

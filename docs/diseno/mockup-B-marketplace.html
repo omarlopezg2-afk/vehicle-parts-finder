@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PartExact — dirección B (marketplace de confianza)</title>
+<style>
+  /* DIRECCIÓN B — MARKETPLACE DE CONFIANZA
+     Blanco, azul profundo, mucho aire y foto donde el usuario decide. Es el idioma
+     que la gente ya reconoce (Amazon, eBay, MercadoLibre): reduce la desconfianza
+     de comprar/comparar. Más comercial que A, menos carácter propio. */
+  :root{
+    --fondo:#ffffff; --fondo-2:#f8fafc; --tinta:#0f172a; --gris:#64748b;
+    --azul:#1d4ed8; --azul-claro:#eff4ff; --linea:#e2e8f0; --verde:#059669;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,monospace;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--fondo);color:var(--tinta);font-family:var(--sans);
+       -webkit-font-smoothing:antialiased}
+  .marco{max-width:1100px;margin:0 auto;padding:0 22px 76px}
+  header{display:flex;align-items:center;justify-content:space-between;padding:18px 0}
+  .logo{font-weight:800;font-size:1.3rem;letter-spacing:-.02em}
+  .logo b{color:var(--azul)}
+  nav a{color:var(--gris);text-decoration:none;font-size:.9rem;margin-left:20px}
+  .hero{text-align:center;padding:34px 0 8px}
+  .insignia{display:inline-flex;align-items:center;gap:8px;background:var(--azul-claro);
+            color:var(--azul);font-size:.8rem;font-weight:600;padding:6px 13px;
+            border-radius:999px;margin-bottom:18px}
+  h1{font-size:clamp(1.9rem,4.6vw,3.1rem);line-height:1.08;letter-spacing:-.03em;
+     margin:0 auto 14px;max-width:22ch}
+  .sub{color:var(--gris);font-size:1.06rem;max-width:62ch;margin:0 auto 28px}
+  .buscador{display:flex;gap:10px;max-width:620px;margin:0 auto;background:#fff;
+            border:2px solid var(--tinta);border-radius:14px;padding:8px;
+            box-shadow:0 10px 30px -12px rgba(15,23,42,.25)}
+  .buscador input{flex:1;border:0;outline:0;font-size:1.05rem;padding:12px 14px;
+                  background:transparent;color:var(--tinta)}
+  .buscador button{border:0;background:var(--azul);color:#fff;font-weight:700;font-size:1rem;
+                   padding:14px 28px;border-radius:9px;cursor:pointer}
+  .buscador button:hover{background:#1740b8}
+  .chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:16px 0 34px;
+         font-size:.85rem;color:var(--gris)}
+  .chip{font-family:var(--mono);background:var(--fondo-2);border:1px solid var(--linea);
+        border-radius:999px;padding:5px 12px;color:var(--azul);text-decoration:none}
+  .cifras{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:0 0 40px}
+  .cifra{background:var(--fondo-2);border:1px solid var(--linea);border-radius:14px;
+         padding:18px;text-align:center}
+  .cifra b{display:block;font-size:1.7rem;letter-spacing:-.03em}
+  .cifra span{font-size:.78rem;color:var(--gris);display:block;margin-top:4px;line-height:1.35}
+  .cifra.verde b{color:var(--verde)}
+  h2.seccion{font-size:.8rem;text-transform:uppercase;letter-spacing:.12em;color:var(--gris);
+             margin:0 0 16px}
+  .parrilla{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:14px}
+  .cat{background:#fff;border:1px solid var(--linea);border-radius:16px;padding:18px 12px;
+       text-align:center;box-shadow:0 1px 2px rgba(15,23,42,.04);transition:.15s}
+  .cat:hover{border-color:var(--azul);box-shadow:0 12px 28px -14px rgba(29,78,216,.4);
+             transform:translateY(-2px)}
+  .cat img{width:38px;height:38px;display:block;margin:0 auto 10px;opacity:.9}
+  .cat b{font-size:.88rem;font-weight:600;line-height:1.3}
+  .destacado{margin:38px 0 0;background:linear-gradient(135deg,#eff6ff,#fff);
+             border:1px solid #bfdbfe;border-radius:18px;padding:20px;display:flex;gap:20px;
+             align-items:center}
+  .destacado .foto{width:92px;height:92px;border-radius:12px;background:#e2e8f0;
+                   display:grid;place-items:center;font-size:.66rem;color:var(--gris);
+                   text-align:center;font-family:var(--mono);padding:6px;flex:none}
+  .destacado b{display:block;font-size:1.06rem;margin-bottom:5px}
+  .destacado p{margin:0;color:var(--gris);font-size:.9rem;line-height:1.5}
+  .pub{font-size:.64rem;text-transform:uppercase;letter-spacing:.1em;color:var(--gris);
+       border:1px solid var(--linea);background:#fff;border-radius:6px;padding:3px 7px}
+  footer{margin-top:44px;border-top:1px solid var(--linea);padding-top:18px;
+         display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+         font-size:.8rem;color:var(--gris)}
+  @media(max-width:720px){
+    .cifras{grid-template-columns:1fr 1fr}.buscador{flex-direction:column}
+    .buscador button{width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="marco">
+  <header>
+    <div class="logo">Part<b>Exact</b></div>
+    <nav><a href="#">Cómo funciona</a><a href="#">Categorías</a><a href="#">Sin cookies</a></nav>
+  </header>
+
+  <div class="hero">
+    <div class="insignia">✓ 28 números de parte verificados uno por uno</div>
+    <h1>Encuentra la pieza exacta de tu vehículo</h1>
+    <p class="sub">Sin adivinar. Confirmamos que la pieza le queda a tu carro y te mostramos
+       las ofertas reales de eBay, con su precio y su condición.</p>
+    <form class="buscador" onsubmit="return false">
+      <input placeholder="VIN, número de parte, o marca y modelo" aria-label="Buscar pieza">
+      <button>Buscar</button>
+    </form>
+    <div class="chips">
+      Prueba con: <a class="chip" href="#">04152YZZA1</a>
+      <a class="chip" href="#">MR297182</a><a class="chip" href="#">0446502070</a>
+    </div>
+  </div>
+
+  <div class="cifras">
+    <div class="cifra"><b>28</b><span>números de parte verificados contra la API real</span></div>
+    <div class="cifra"><b>1.194</b><span>ofertas reales de eBay ahora mismo</span></div>
+    <div class="cifra"><b>34</b><span>categorías de piezas</span></div>
+    <div class="cifra verde"><b>0</b><span>cookies: tu vehículo se queda en tu navegador</span></div>
+  </div>
+
+  <h2 class="seccion">Compra por tipo de pieza</h2>
+  <div class="parrilla">
+    <div class="cat"><img src="../../site/assets/categories/filtro-aceite.svg" alt=""><b>Filtro de aceite</b></div>
+    <div class="cat"><img src="../../site/assets/categories/filtro-aire.svg" alt=""><b>Filtro de aire</b></div>
+    <div class="cat"><img src="../../site/assets/categories/filtro-cabina.svg" alt=""><b>Filtro de cabina</b></div>
+    <div class="cat"><img src="../../site/assets/categories/filtro-combustible.svg" alt=""><b>Filtro de combustible</b></div>
+    <div class="cat"><img src="../../site/assets/categories/pastillas-freno.svg" alt=""><b>Pastillas de freno</b></div>
+    <div class="cat"><img src="../../site/assets/categories/discos-freno.svg" alt=""><b>Discos de freno</b></div>
+    <div class="cat"><img src="../../site/assets/categories/radiador.svg" alt=""><b>Radiador</b></div>
+    <div class="cat"><img src="../../site/assets/categories/sensor-oxigeno.svg" alt=""><b>Sensor de oxígeno</b></div>
+  </div>
+
+  <div class="destacado">
+    <div class="foto">FOTO DE PIEZA<br>pendiente T-B6</div>
+    <div>
+      <b>Espacio para las marcas que se distribuyen en RD</b>
+      <p>Aceites, filtros y correas tienen distribuidor local aunque la marca sea extranjera.
+         Este bloque se activa con acuerdo firmado y se muestra <strong>siempre etiquetado
+         como publicidad</strong>, sin alterar el orden de las ofertas.</p>
+    </div>
+    <span class="pub">Publicidad</span>
+  </div>
+
+  <footer>
+    <span>Datos de eBay (Browse API) y NHTSA vPIC · Precios en USD sin impuestos ni envío</span>
+    <span>Aviso de afiliados · Sin cookies ni analítica</span>
+  </footer>
+</div>
+</body>
+</html>
