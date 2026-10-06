@@ -66,10 +66,32 @@ nuestros catálogos de autopartes originales"* para que "tus clientes los encuen
 VIN y/o diagramas de partes". O sea: **el dato del catálogo es su foso**, y el dinero sale de los
 vendedores y los talleres, no del comprador.
 
-**Lo que enseñó el intento de usarlo desde aquí**: la búsqueda anónima por VIN no devuelve resultados
-sin cuenta (su buscador exige sesión, y ya se sabe que cobra pasado cierto número de consultas). No
-se forzó más: son consultas pagadas del usuario, no nuestras. **La precisión real de su fitment solo
-la puede contar quien lo ha usado** — y esa es la pregunta abierta de este teardown.
+### Lo que se vio DESDE DENTRO (con sesión del usuario, 05/10/2026)
+
+Entrando con la cuenta del usuario (Google SSO; su cuenta es de tipo **proveedor**, id 79363), su
+página de cuenta muestra **cinco contadores de consultas, todos de pago y todos agotados**:
+
+| Contador (tipos de consulta que se venden) | Estado en la cuenta |
+|---|---|
+| Consultas Generales (OEM + AM + Placa) | Realizadas: 0 (últimos 30 días) · **Disponibles: 0** |
+| Consultas de vehículos por placa | **Disponibles: 0** |
+| Consultas de catálogos de autopartes | **Disponibles: 0** |
+| Consultas de sustituciones de autopartes | **Disponibles: 0** |
+| Consultas de compatibilidades | **Disponibles: 0** |
+
+Con "Hasta:" (caducidad) al lado de cada uno: o sea, **paquetes por tipo de consulta y por ciclo
+mensual**. **No se gastó ni una consulta del usuario** (no había ninguna disponible; se comprobó
+antes de buscar, a propósito).
+
+**El hallazgo estratégico más importante de toda la investigación**: lo que iMotriz le **vende al
+comprador** es exactamente lo que el proyecto quiere dar —el número de parte, el diagrama, los
+sustitutos y la compatibilidad—, y hay gente pagándolo. Y lo que le vende al vendedor (posicionamiento,
+leads, software de taller) es exactamente lo que el usuario propuso como modelo de ingreso.
+
+**Precisión, contada por quien lo usó** (no medible sin gastar consultas): iMotriz **da el número
+exacto de la pieza y un diagrama pequeño, y el usuario compró con ese número**. O sea: el producto
+funciona, y el listón está alto. No es un hueco por falta de solución: es un hueco **geográfico**
+(ellos no están en RD) y **de precio** (ellos le cobran al comprador; nosotros podemos no hacerlo).
 
 ## Lo que dicen los datos sobre nuestro hueco
 
