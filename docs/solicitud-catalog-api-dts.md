@@ -49,8 +49,12 @@ declinó. Antes de volver a esa puerta, conviene (1) saber si la Catalog API tie
 
 ## Lo que falta para enviarla
 
-1. **Entrar al portal de desarrolladores** con la cuenta del usuario (no hay credenciales guardadas
-   en la bóveda; su sesión no está en el perfil del navegador que uso).
+1. **Entrar al portal de desarrolladores.** La bóveda de Hermes **no pudo rellenar** el formulario de
+   eBay (su página de ingreso tiene dos campos de contraseña — uno de ellos del registro, oculto — y
+   nombres de campo atípicos), y no se insiste: una contraseña no se teclea a mano nunca. El camino
+   que sí funciona, y que ya funcionó con Google y con iMotriz, es que **el usuario inicie sesión en
+   su propio Chrome y lo cierre**; el navegador del agente trabaja sobre una copia de ese perfil, así
+   que hereda la sesión sin que nadie vea una clave.
 2. De ahí sacar dos datos: el **user ID de desarrollador** y las **llaves de sandbox** de la app
    (las de sandbox son distintas de las de producción, y son las que permitirían probar la Catalog
    API gratis).
