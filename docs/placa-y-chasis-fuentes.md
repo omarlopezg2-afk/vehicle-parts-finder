@@ -69,6 +69,57 @@ ese enlace o ese código y quedarse con el chasis sin que nadie teclee nada.
   Además se romperían el día que la DGII cambie el portal.
 - **No** scrapear el portal de la DGII: mismo problema y mata cualquier conversación con ellos.
 
+
+## 7. VERIFICADO EN VIVO (06/10/2026) — la página existe, pero no se puede automatizar
+
+**Sí existe y sí da el chasis.** El usuario escaneó el QR de su propio marbete con el teléfono y la
+captura muestra la ficha **servida desde `dgii.gov.do/c/icv.aspx`**: *Sistema Datamatrix /
+Validación de Documentos*, con **Código, Marbete, Marca, Modelo, Color, Año, Placa y Chasis** — la
+marca y el modelo exactos de su vehículo. La DGII además promueve el mecanismo en sus propias redes:
+*"verifica los datos del vehículo a través de la consulta de placa en la web de la DGII o escanea el
+QR"*. O sea: **el Estado publica el chasis para quien tenga el vehículo delante.**
+
+**No se puede automatizar.** La página es una cascarita vacía de 1.264 bytes que rellena JavaScript,
+y su servicio de seguridad **bloquea el acceso automatizado**. Las pruebas —incluido un Chrome real
+sin interfaz— devolvieron `Acceso Denegado - Error 403 ... bloqueada por nuestros servicios de
+seguridad. Tu IP: 148.255.42.182`. Se probaron los nombres de parámetro habituales **solo con el
+código del propio usuario** (nunca valores de terceros) y ninguno devolvió datos.
+
+**No se insiste, y queda escrito**: forzar la barrera de seguridad de un portal del Estado está
+fuera de lo que hacemos. Consecuencia: esa página sirve **a los ojos del dueño**, no a un servidor;
+y por CORS tampoco la puede leer nuestro sitio desde el navegador del usuario.
+
+### 7.1 Y por eso la placa no hace falta: el **VIN** identifica mejor
+
+El objetivo nunca fue la placa: era **identificar el vehículo**. El VIN lo identifica mejor, está en
+la matrícula (que todo dueño tiene) y sale en esa misma página de la DGII. Y decodificarlo es
+**gratis, público y sin llave**:
+
+    https://vpic.nhtsa.dot.gov/api/vehicles/decodevinvalues/<VIN>?format=json      (NHTSA vPIC)
+
+Probado con el VIN del usuario: **MITSUBISHI / Outlander Sport / 2020 / SUV / 4x2 / 4 cilindros /
+2,0 L / 148 HP / gasolina / transmisión CVT / fabricado en Japón** — 154 campos, y la respuesta
+confirma *"0 - VIN decoded clean. Check Digit (9th position) is correct"*.
+
+Da **más precisión que la placa**: trae motor, cilindrada, transmisión y tracción, que son
+exactamente los criterios que separan una pieza de otra.
+
+### 7.2 Cómo se une con lo que ya funciona
+
+La Browse API de eBay **no acepta VIN** en `compatibility_filter`: exige `q` + una categoría con
+fitment + al menos un atributo de producto (`Year/Make/Model/Trim/Engine`; el VIN no está en la
+lista, y los KType son del lado vendedor y de sitios europeos). Entonces la cadena queda así:
+
+> **VIN → vPIC (gratis) → Year/Make/Model/Trim/Engine → `compatibility_filter` de eBay (ya
+> funcionando) → piezas que le quedan EXACT**
+
+Todo con piezas ya construidas y probadas (T-B8). Lo único nuevo es el decodificador.
+
+**Efecto en el producto**: la entrada deja de ser "buscar por placa" y pasa a ser **"pegar el VIN de
+tu matrícula"** — sin permisos, sin scraping y sin depender de la DGII. La página del QR queda como
+lo que es: el paso de **verificación** que el propio Estado recomienda antes de comprar, al que
+podemos enlazar para dar confianza. La placa sigue siendo fase 2 (DGI/INTRANT), ya no un requisito.
+
 ## 6. Conclusión honesta para el producto
 
 La placa **no** puede ser hoy la llave de entrada (el registro dominicano está cerrado). Pero el
