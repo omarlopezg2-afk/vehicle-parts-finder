@@ -924,6 +924,48 @@ hacen en dos minutos y evitan buscar un problema donde no está.
 
 ---
 
+## 06/10/2026 — **El VIN entra como entrada de verdad, y la placa sale del camino**
+
+**Lo que preguntó el usuario**: ofrecer piezas buscando por **placa**, con la DGII como única
+fuente posible. **Lo que se encontró**, y cambió la respuesta entera:
+
+- **La DGII sí tiene el dato y sí lo publica** — el QR del marbete abre `dgii.gov.do/c/icv.aspx` con
+  marca, modelo, color, año, **placa y chasis** (verificado con la captura del propio usuario, y la
+  DGII lo promueve en sus redes). Pero **no se puede automatizar**: la página es una cascarita que
+  rellena JavaScript y su seguridad responde `403 Acceso Denegado … bloqueada por nuestros servicios
+  de seguridad`, incluso con un Chrome real. Se probaron nombres de parámetro **solo con el código
+  del propio usuario** y no se insistió: forzar la seguridad de un portal del Estado queda fuera.
+- **No existe servicio público placa → chasis en RD** (ni API, ni datos abiertos); los artículos de
+  *"consultar la placa sin cédula"* son contenido SEO que termina pidiendo la cédula. En Colombia sí
+  existe y se alquila (RUNT / PlacApi), y Brasil tiene decenas de apps: el negocio nace donde el
+  registro es abierto, y aquí no lo es.
+- **El VIN resuelve el problema mejor que la placa**: está en la matrícula, y decodificarlo es gratis
+  y público (NHTSA vPIC, sin llave, con CORS abierto). Con el VIN real del usuario devuelve 154
+  campos: marca, modelo, año, **versión, motor, cilindrada, HP, transmisión y tracción** — más preciso
+  que la placa para lo que importa (que la pieza le quede).
+
+**Lo que se construyó** (T-B9): `decodeVIN()` en `site/js/vpicClient.js` y el flujo del sitio
+reescrito. Antes un VIN solo servía si ese vehículo ya estaba en `data/build/vehicles.json` (con un
+catálogo de un vehículo, cualquier otro VIN recibía un "no encontramos"). Ahora: primero se busca en
+el catálogo; si no está, **se decodifica** y se busca el fitment por año/marca/modelo (que es como lo
+pide eBay, cuya API **no acepta VIN**). Y cuando el vehículo no está en el catálogo, el sitio muestra
+**su ficha técnica real** con un mensaje honesto, en vez de un callejón sin salida. El marbete queda
+como **sugerencia escrita** (con el enlace oficial de la DGII al lado), sin cámara ni dependencias.
+
+**Verificación (no la pantalla de confirmación: el navegador)**: 77 pruebas del frontend en verde (5
+nuevas del decodificador) y cuatro caminos probados con Chrome real contra el sitio servido en local —
+(a) VIN del usuario, que **sí** está en el catálogo -> vehículo y árbol de categorías; (b) VIN ajeno
+con dígito verificador malo -> ficha + aviso de revisar; (c) VIN ajeno **válido** -> ficha con
+*"Identificamos tu vehículo por el VIN (datos oficiales de la NHTSA)"*; y la barra "Tu vehículo" queda
+vacía, porque no se puede afirmar que está en el catálogo cuando no lo está.
+
+**Dos errores propios, corregidos en el camino**: el primero fue mío y lo cazó el propio sitio —se
+construyó un VIN de prueba con la **tabla de conversión equivocada** del dígito verificador (ISO 3779)
+y el sitio lo marcó como inválido, que era lo correcto; la tabla se corrigió y la prueba se repitió. El
+segundo, la tentación de automatizar la consulta de la DGII: se descartó y quedó escrito por qué.
+
+---
+
 ## 05/10/2026 (cierre) — **T-B8 terminado, y la puerta del número aparece donde menos se esperaba**
 
 **T-B8 quedó construido, medido y en `main`** (commit `649c810`): `pipeline/fetch_fitment.py`

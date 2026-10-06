@@ -60,8 +60,27 @@
           <button type="button" class="chip" data-ejemplo="17801-21060">17801-21060</button>
         </p>
         <p id="search-hint" class="search-hint">
-          Si escribes 17 caracteres alfanuméricos lo tratamos como VIN; si no, lo
-          buscamos como número de parte.
+          Si escribes 17 caracteres alfanuméricos lo tratamos como VIN y te decimos
+          qué vehículo es; si no, lo buscamos como número de parte.
+        </p>
+
+        <!-- Sugerencia, no función: el sitio NO enciende la cámara. El dato del
+             vehículo lo muestra la propia DGII en su página, que no se puede leer
+             desde aquí (bloquea a los servidores y el navegador no deja leerla
+             entre sitios). Por eso se recomienda como camino alternativo para
+             conseguir el VIN, con el enlace oficial al lado. Ver
+             docs/placa-y-chasis-fuentes.md. -->
+        <p class="vin-ayuda">
+          <strong>¿No sabes tu VIN?</strong> Está en la matrícula del vehículo. También
+          puedes escanear el <strong>marbete</strong> con la cámara del teléfono: la ficha
+          oficial de la DGII te muestra marca, modelo, año y chasis, y de ahí lo copias y
+          lo pegas aquí.
+          <a
+            href="https://dgii.gov.do/vehiculosMotor/consultas/Paginas/default.aspx"
+            target="_blank"
+            rel="noopener"
+            >Consultas de vehículos de la DGII</a
+          >.
         </p>
       </section>
 

@@ -199,6 +199,66 @@ export async function getAllMakes(opts = {}) {
 }
 
 /**
+ * Decodifica un VIN completo (17 caracteres) contra el servicio público de la
+ * NHTSA (vPIC) y devuelve los datos del vehículo que ese VIN identifica.
+ *
+ * POR QUÉ EXISTE: hasta ahora el flujo VIN dependía por completo de
+ * data/build/vehicles.json (matchVehicleByVIN) — solo funcionaba si ESE VIN ya
+ * estaba en nuestro catálogo. Con el decodificador, **cualquier** VIN válido del
+ * mercado estadounidense identifica su vehículo (marca, modelo, año, versión,
+ * carrocería, motor, tracción, transmisión), y con eso se busca el fitment por
+ * año/marca/modelo, que es exactamente como lo pide el `compatibility_filter` de
+ * eBay (esa API NO acepta VIN — ver docs/placa-y-chasis-fuentes.md).
+ *
+ * Es la pieza que hace posible el texto de la portada: "pega el VIN de tu
+ * matrícula". Verificado a mano: el VIN real de un Mitsubishi Outlander Sport
+ * 2020 devuelve 154 campos con ErrorCode 0 (dígito verificador correcto).
+ *
+ * @param {string} vin VIN ya limpio (ver site/js/vin.js -> cleanVIN)
+ * @param {object} [opts] { timeoutMs, fetchImpl } — para tests
+ * @returns {Promise<object|null>} null si la red falla, si el VIN no tiene 17
+ *   caracteres o si vPIC no devuelve nada; nunca lanza excepción.
+ */
+export async function decodeVIN(vin, opts = {}) {
+  const limpio = String(vin || "").trim().toUpperCase().replace(/\s+/g, "");
+  if (!/^[A-Z0-9]{17}$/.test(limpio)) return null;
+
+  const url = `${VPIC_API_ROOT}/decodevinvalues/${encodeURIComponent(limpio)}?format=json`;
+  let datos;
+  try {
+    datos = await _fetchJSON(url, opts);
+  } catch (err) {
+    console.warn(`vpicClient.decodeVIN: fallo para ${limpio}:`, err);
+    return null;
+  }
+
+  const crudo = Array.isArray(datos && datos.Results) ? datos.Results[0] : null;
+  if (!crudo) return null;
+
+  const texto = (v) => String(v == null ? "" : v).trim();
+  return {
+    vin: limpio,
+    // vPIC entrega ErrorCode "0" cuando el VIN se decodifica limpio, lo que
+    // incluye que el dígito verificador (9ª posición) cuadre.
+    valido: texto(crudo.ErrorCode) === "0",
+    make: _titleCaseIfUpper(texto(crudo.Make)),
+    model: _titleCaseIfUpper(texto(crudo.Model)),
+    year: texto(crudo.ModelYear),
+    trim: texto(crudo.Trim),
+    series: texto(crudo.Series),
+    bodyClass: texto(crudo.BodyClass),
+    driveType: texto(crudo.DriveType),
+    engineCylinders: texto(crudo.EngineCylinders),
+    displacementL: texto(crudo.DisplacementL),
+    engineHP: texto(crudo.EngineHP),
+    fuelType: texto(crudo.FuelTypePrimary),
+    transmission: texto(crudo.TransmissionStyle),
+    plantCountry: texto(crudo.PlantCountry),
+    errorText: texto(crudo.ErrorText),
+  };
+}
+
+/**
  * Modelos de `make` para el año `year`, para el paso 3 del drill-down
  * (después de elegir año). Mismo endpoint y mismo "problema conocido" que
  * get_models_for_make_year() en pipeline/fetch_vehicles.py: vPIC compara

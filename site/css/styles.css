@@ -193,6 +193,43 @@ main {
   margin: 0.25rem 0 1rem;
 }
 
+/* --- T-B9: ayuda del VIN y ficha del vehículo identificado por VIN --- */
+.vin-ayuda {
+  font-size: 0.85rem;
+  color: var(--color-text-dim);
+  margin: 0 0 1rem;
+  max-width: 62ch;
+}
+
+.vehiculo-card {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 1rem 1.1rem;
+  margin: 0.75rem 0;
+}
+
+.vehiculo-card h2 {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}
+
+.vehiculo-datos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.85rem;
+  margin: 0.5rem 0 0.75rem;
+}
+
+.vehiculo-datos dt {
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+}
+
+.vehiculo-datos dd {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
 .detected-badge {
   display: inline-block;
   font-size: 0.75rem;

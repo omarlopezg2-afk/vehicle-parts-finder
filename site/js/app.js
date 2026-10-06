@@ -39,6 +39,7 @@ import {
   _isUsingFixture,
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
+import { decodeVIN } from "./vpicClient.js";
 import { renderVehicleTree, renderCategoryGrid } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
@@ -272,6 +273,123 @@ async function resolveVehicleAndShowTree(vehicle) {
   await runVinFlow(vehicle);
 }
 
+// --- T-B9: el VIN como entrada de verdad ---
+//
+// Antes, un VIN solo servía si ese vehículo ya estaba en nuestro catálogo
+// (matchVehicleByVIN busca el id `vin-<VIN>` de data/build/vehicles.json): con
+// un catálogo de un vehículo, cualquier otro VIN recibía un "no encontramos".
+// Ahora el VIN primero se busca en el catálogo y, si no está, se DECODIFICA con
+// vPIC (servicio público de la NHTSA, sin llave y con CORS abierto) para saber
+// qué vehículo es; con marca/modelo/año se busca el fitment, que es como lo pide
+// eBay. La investigación completa (DGII, placa, QR del marbete y por qué el VIN
+// es la entrada correcta) está en docs/placa-y-chasis-fuentes.md.
+async function resolverVehiculoPorVIN(vin) {
+  const enCatalogo = await matchVehicleByVIN(vin);
+  if (enCatalogo) {
+    return { vehicle: enCatalogo, decodificado: null, origen: "catalogo" };
+  }
+
+  const decodificado = await decodeVIN(vin);
+  if (!decodificado || !decodificado.make || !decodificado.model || !decodificado.year) {
+    return { vehicle: null, decodificado, origen: null };
+  }
+
+  const porAtributos = await matchVehicleByMakeModelYear(
+    decodificado.make,
+    decodificado.model,
+    decodificado.year
+  );
+  return {
+    vehicle: porAtributos || null,
+    decodificado,
+    origen: porAtributos ? "fitment" : null,
+  };
+}
+
+// El VIN identifica un vehículo aunque su fitment todavía no esté en nuestro
+// catálogo. En ese caso se muestra la ficha del vehículo (datos oficiales de la
+// NHTSA) y un mensaje honesto: sabemos exactamente qué carro es, pero todavía no
+// tenemos piezas suyas registradas. Es información real, no un callejón sin
+// salida: el visitante confirma que leímos bien su VIN.
+function renderVehiculoDecodificado(d) {
+  clearResults();
+  resultsEl.appendChild(renderBreadcrumb([{ label: `VIN ${d.vin}` }]));
+
+  const card = document.createElement("div");
+  card.className = "vehiculo-card";
+
+  const h = document.createElement("h2");
+  h.textContent = [d.make, d.model, d.year].filter(Boolean).join(" ");
+  card.appendChild(h);
+
+  const aviso = document.createElement("p");
+  aviso.className = "search-hint";
+  aviso.textContent = d.valido
+    ? "Identificamos tu vehículo por el VIN (datos oficiales de la NHTSA). Todavía no tenemos piezas registradas para él."
+    : "El VIN no pasó la verificación oficial (dígito de control). Revísalo: un VIN tiene 17 caracteres y no usa las letras I, O ni Q.";
+  card.appendChild(aviso);
+
+  const filas = [
+    ["Marca", d.make],
+    ["Modelo", d.model],
+    ["Año", d.year],
+    ["Versión", d.trim || d.series],
+    ["Carrocería", d.bodyClass],
+    [
+      "Motor",
+      [
+        d.displacementL ? `${d.displacementL} L` : "",
+        d.engineCylinders ? `${d.engineCylinders} cil.` : "",
+        d.engineHP ? `${d.engineHP} HP` : "",
+      ]
+        .filter(Boolean)
+        .join(" · "),
+    ],
+    ["Tracción", d.driveType],
+    ["Transmisión", d.transmission],
+    ["Combustible", d.fuelType],
+    ["Fabricado en", d.plantCountry],
+  ].filter(([, valor]) => valor);
+
+  const dl = document.createElement("dl");
+  dl.className = "vehiculo-datos";
+  for (const [etiqueta, valor] of filas) {
+    const dt = document.createElement("dt");
+    dt.textContent = etiqueta;
+    const dd = document.createElement("dd");
+    dd.textContent = valor;
+    dl.appendChild(dt);
+    dl.appendChild(dd);
+  }
+  card.appendChild(dl);
+
+  const siguiente = document.createElement("p");
+  siguiente.className = "search-hint";
+  siguiente.textContent =
+    "Mientras tanto puedes buscar por número de parte, o elegir tu vehículo en el selector de arriba.";
+  card.appendChild(siguiente);
+
+  resultsEl.appendChild(card);
+}
+
+async function runVinSearch(vin) {
+  clearResults();
+  const { vehicle, decodificado } = await resolverVehiculoPorVIN(vin);
+
+  if (vehicle) {
+    await resolveVehicleAndShowTree(vehicle);
+    return;
+  }
+  if (!decodificado) {
+    renderEmptyState(
+      `No pudimos identificar el VIN "${vin}". Comprueba que sean 17 caracteres ` +
+        "(un VIN no usa las letras I, O ni Q) o busca por número de parte."
+    );
+    return;
+  }
+  renderVehiculoDecodificado(decodificado);
+}
+
 async function runSearch(rawQuery) {
   const query = rawQuery.trim();
   if (!query) {
@@ -283,15 +401,8 @@ async function runSearch(rawQuery) {
 
   if (isLikelyVIN(query)) {
     const vin = cleanVIN(query);
-    const vehicle = await matchVehicleByVIN(vin);
-    if (!vehicle) {
-      renderEmptyState(
-        `No encontramos un vehículo para el VIN "${vin}". Si estás probando con datos de ejemplo, usa un VIN de 17 caracteres que exista en el catálogo actual (ver data/build/vehicles.json), o busca directamente por número de parte.`
-      );
-      return;
-    }
     navegar({ vista: "vin", vin });
-    await resolveVehicleAndShowTree(vehicle);
+    await runVinSearch(vin);
   } else {
     navegar({ vista: "numero", numero: query });
     await runPartNumberSearch(query);
@@ -394,14 +505,10 @@ async function restaurarVista(estado) {
     }
 
     case "vin": {
-      const vehicle = await matchVehicleByVIN(estado.vin);
-      if (vehicle) {
-        await resolveVehicleAndShowTree(vehicle);
-      } else {
-        renderEmptyState(
-          `No encontramos un vehículo para el VIN "${estado.vin}" en el catálogo actual.`
-        );
-      }
+      // T-B9: el mismo camino que la búsqueda, para que un enlace compartido
+      // (#/vin/<VIN>) se resuelva igual que si se hubiera tecleado.
+      input.value = estado.vin;
+      await runVinSearch(estado.vin);
       return;
     }
 
