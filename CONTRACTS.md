@@ -70,6 +70,68 @@ en `dataClient.js` debe matchear también contra este campo, no solo contra
 `part_number_norm`/`name`, para que alguien que busca "clip de parrilla" encuentre la pieza
 aunque el nombre canónico sea otro.
 
+---
+
+## `data/build/fitment.json` (agregado 05/10/2026, T-B8)
+
+**Opcional**: lo genera `pipeline/fetch_fitment.py` cuando hay credenciales de eBay, y lo
+refresca el build programado junto con los demás. Si no existe, la validación no falla.
+
+```json
+{
+  "updated_at": "ISO-8601",
+  "fuente": "eBay Browse API (compatibility_filter, árbol de eBay Motors)",
+  "nota_numero_de_parte": "texto que aclara que esta fuente NO da el número de parte",
+  "vehiculos": [
+    {
+      "vehiculo_id": "id de vehicles.json",
+      "make": "string", "model": "string", "year": 2020,
+      "categorias": [
+        {
+          "slug": "slug de categories.json (o propio del catálogo)",
+          "nombre": "string",
+          "category_id": "id de categoría del árbol de eBay Motors (100)",
+          "total_en_ebay": 3435,
+          "leidos": 200,
+          "exactos": 49,
+          "ofertas": [
+            {
+              "titulo": "string",
+              "url": "https://www.ebay.com/itm/...",
+              "precio": 12.99,
+              "moneda": "USD",
+              "condicion": "string|null",
+              "compatibilidad": "EXACT",
+              "foto": "string|null",
+              "item_id": "string"
+            }
+          ]
+        }
+      ],
+      "categorias_con_ofertas": 8,
+      "ofertas_totales": 200
+    }
+  ]
+}
+```
+
+**Reglas que el validador hace cumplir** (y por qué):
+
+1. **Solo `compatibilidad: "EXACT"`.** La promesa del producto es "esto le queda a tu carro";
+   meter un `POSSIBLE` sería mentir con el dato.
+2. **Los enlaces tienen que ser de eBay** (`ebay.com/itm/`): evita que un build raro meta datos
+   de laboratorio, el mismo tipo de guardián que ya existe para `parts.json`.
+3. **`nota_numero_de_parte` es obligatoria y tiene que decir qué NO da esta fuente.** Es la
+   constancia escrita de que el número de parte no se obtiene por aquí (ver
+   `docs/piloto-tb7.md`), para que nadie lo prometa sin volver a medir.
+4. **`error` y ofertas son excluyentes** en una categoría: si la API falló, va el error y no
+   hay ofertas que mostrar.
+
+**Cobertura medida (05/10/2026)**: funciona en modelos del mercado estadounidense y en los que
+los vendedores cubren globalmente (el Hilux dio 47 compatibilidades EXACT); **no** hay datos
+para modelos exclusivos de otros mercados (un Corolla Axio japonés dio 0). Antes de añadir
+vehículos, comprobarlos con el mismo método.
+
 ## `data/build/vehicles.json`
 
 Array de objetos, uno por combinación vehículo resuelta vía vPIC:

@@ -326,10 +326,32 @@ def main() -> int:
     _write_json("parts.json", parts)
     _write_json("search_index.json", search_index)
 
+    # Catálogo por fitment (T-B8): no sale de la semilla, sino de preguntarle a eBay qué le
+    # queda EXACTAMENTE a cada vehículo. Va aparte a propósito, y nunca es fatal: si no hay
+    # credenciales o la API falla, el build sigue y solo se avisa. Ver docs/piloto-tb7.md.
+    fitment = None
+    if os.environ.get("EBAY_CLIENT_ID") and os.environ.get("EBAY_CLIENT_SECRET"):
+        try:
+            import fetch_fitment
+
+            fitment = fetch_fitment.build_fitment(vehicles)
+            _write_json("fitment.json", fitment)
+        except Exception as exc:  # red, cuota, forma inesperada: no tumba el build
+            print(f"[build_index] aviso: no se construyó fitment.json ({type(exc).__name__}: {exc})")
+    else:
+        print("[build_index] sin credenciales de eBay: se omite fitment.json")
+
+    resumen_fitment = ""
+    if fitment and fitment.get("vehiculos"):
+        v0 = fitment["vehiculos"][0]
+        resumen_fitment = (f" fitment={len(fitment['vehiculos'])} vehículo(s) "
+                           f"[{v0.get('categorias_con_ofertas')} categorías con ofertas, "
+                           f"{v0.get('ofertas_totales')} ofertas]")
+
     print(
         f"[build_index] OK: vehicles={len(vehicles)} parts={len(parts)} "
         f"search_index={len(search_index)} categories={len(categories)} (sin reescribir, "
-        f"ya existe y es válido) -> {BUILD_DIR}"
+        f"ya existe y es válido){resumen_fitment} -> {BUILD_DIR}"
     )
     return 0
 

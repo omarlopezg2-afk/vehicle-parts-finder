@@ -418,6 +418,76 @@ def validate_referential_integrity(
                     )
 
 
+def validate_fitment(errores: ValidationErrors) -> None:
+    """Valida `fitment.json` (T-B8) **si existe**. Es opcional a propósito: un build sin
+    credenciales de eBay no lo genera, y eso no debe romper la validación.
+
+    Las reglas que importan: solo entran ofertas con compatibilidad **EXACT** (prometer
+    "le queda" con un `POSSIBLE` sería mentir), los enlaces tienen que ser de eBay, y la
+    nota que aclara que esta fuente NO da el número de parte tiene que estar presente.
+    """
+    ruta = os.path.join(BUILD_DIR, "fitment.json")
+    if not os.path.exists(ruta):
+        return
+
+    try:
+        with open(ruta, "r", encoding="utf-8") as f:
+            datos = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        errores.add("fitment.json", f"no se pudo leer o parsear: {exc}")
+        return
+
+    if not isinstance(datos, dict):
+        errores.add("fitment.json", "debería ser un objeto")
+        return
+
+    for clave in ("updated_at", "vehiculos", "nota_numero_de_parte"):
+        if clave not in datos:
+            errores.add("fitment.json", f"falta la clave '{clave}'")
+    if isinstance(datos.get("nota_numero_de_parte"), str):
+        if "número de parte" not in datos["nota_numero_de_parte"]:
+            errores.add("fitment.json", "'nota_numero_de_parte' debería aclarar qué NO da esta fuente")
+    else:
+        errores.add("fitment.json", "'nota_numero_de_parte' debería ser texto")
+
+    vehiculos = datos.get("vehiculos")
+    if not isinstance(vehiculos, list):
+        errores.add("fitment.json", "'vehiculos' debería ser una lista")
+        return
+
+    for i, v in enumerate(vehiculos):
+        ctx = f"fitment.json[{i}]"
+        if not isinstance(v, dict):
+            errores.add(ctx, "cada vehículo debería ser un objeto")
+            continue
+        for clave in ("vehiculo_id", "make", "model", "year", "categorias"):
+            if clave not in v:
+                errores.add(ctx, f"falta la clave '{clave}'")
+        for cat in (v.get("categorias") or []):
+            cctx = f"{ctx}.categorias[{cat.get('slug') if isinstance(cat, dict) else '?'}]"
+            if not isinstance(cat, dict):
+                errores.add(cctx, "cada categoría debería ser un objeto")
+                continue
+            for clave in ("slug", "category_id", "total_en_ebay", "exactos", "ofertas"):
+                if clave not in cat:
+                    errores.add(cctx, f"falta la clave '{clave}'")
+            if "error" in cat and cat.get("ofertas"):
+                errores.add(cctx, "una categoría con error no debería traer ofertas")
+            for j, of in enumerate(cat.get("ofertas") or []):
+                octx = f"{cctx}.ofertas[{j}]"
+                if not isinstance(of, dict):
+                    errores.add(octx, "cada oferta debería ser un objeto")
+                    continue
+                if of.get("compatibilidad") != "EXACT":
+                    errores.add(octx, f"compatibilidad {of.get('compatibilidad')!r}: solo se aceptan EXACT")
+                url = of.get("url")
+                if not isinstance(url, str) or "ebay.com/itm/" not in url:
+                    errores.add(octx, f"url debería ser un enlace de eBay, es {str(url)[:50]!r}")
+                precio = of.get("precio")
+                if precio is not None and not isinstance(precio, (int, float)):
+                    errores.add(octx, "precio debería ser número o null")
+
+
 def run_validation() -> ValidationErrors:
     errores = ValidationErrors()
 
@@ -438,6 +508,8 @@ def run_validation() -> ValidationErrors:
     if parts is not None and categories is not None:
         validate_referential_integrity(parts, vehicles, categories, errores)
 
+    validate_fitment(errores)
+
     return errores
 
 
@@ -449,7 +521,8 @@ def main() -> int:
             print(f"  - {e}", file=sys.stderr)
         return 1
 
-    print(f"[validate] OK: los 4 archivos de {BUILD_DIR} cumplen CONTRACTS.md.")
+    extra = " + fitment.json (T-B8)" if os.path.exists(os.path.join(BUILD_DIR, "fitment.json")) else ""
+    print(f"[validate] OK: los 4 archivos de {BUILD_DIR} cumplen CONTRACTS.md{extra}.")
     return 0
 
 
