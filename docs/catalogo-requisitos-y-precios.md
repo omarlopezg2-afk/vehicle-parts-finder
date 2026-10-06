@@ -118,6 +118,40 @@ usuarios.** Y si algún día queremos probar la vía directa, el experimento hon
 marca**: pedir sus datos como revendedor y medir cuánto tardó, qué pidieron y qué llegó. Ese
 piloto de una marca dice el costo real por marca mejor que cualquier estimación mía.
 
+## 7. La puerta que sí está abierta: alquilar el catálogo (05/10/2026)
+
+**AUTODOC Parts Catalog API**, publicada en **RapidAPI** (autoservicio, precio público, sin
+negociación y sin zona gris: su propia descripción dice que es para construir
+*"auto parts lookup tools... comparison tools"*, que es exactamente nuestro caso).
+
+| Plan | Precio | Consultas/mes | Equivale a |
+|---|---|---|---|
+| Basic | **0 USD** | 100 | **11 vehículos** con catálogo completo, para probar |
+| **Pro** | **29 USD/mes** | **20.000** | **2.222 vehículos** con catálogo completo |
+| Ultra | 59 USD/mes | 100.000 | 11.111 vehículos |
+| Mega | 299 USD/mes | 1.000.000 | 111.111 vehículos |
+
+**Qué consume cada consulta**: armar el catálogo de un vehículo son **9** (1 para saber sus
+categorías + 8 para las piezas de cada una); el detalle de una pieza es 1.
+
+**Los endpoints que importan** (nombres reales de su documentación):
+`Article List by Vehicle ID & Category ID` (vehículo + categoría -> las piezas con su número),
+`Article Details`, **`Parts Cross Reference`** (número OEM <-> equivalentes de otras marcas),
+`Compatible Vehicles by Article No`, `Parts Diagram Coordinates` y `Article Media` (diagramas y
+fotos).
+
+**La cuenta que decide**: el catálogo dominicano estimado (60 modelos x 5 rangos de año = 300
+vehículos, con 8 categorías cada uno) son **2.700 consultas** — cabe **7 veces** en el plan de
+29 USD, y refrescarlo cada mes gasta el 14% de la cuota.
+
+**Y lo importante**: las búsquedas de los usuarios **no gastan ninguna consulta**, porque el
+catálogo se arma una vez al mes y el sitio lo sirve desde su propio JSON (que es justo lo que ya
+hacemos con el fitment). Los 20.000 son para **construir**, no para servir. El cargo por ancho de
+banda (1 USD por GB sobre 10 GB) no llega a aplicarse nunca a este volumen.
+
+**Único cabo suelto antes de pagar**: AUTODOC es europeo y nuestros vehículos son del mercado
+estadounidense. El plan gratis de 100 consultas existe exactamente para comprobarlo con datos.
+
 ## Nota lateral que vale la pena
 
 eBay Motors, Amazon Auto y RockAuto **exigen datos ACES para el fitment** de las publicaciones:
