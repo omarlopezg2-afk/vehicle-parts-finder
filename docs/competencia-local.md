@@ -47,6 +47,30 @@ modelo y número de parte"): Repuestos Los Bueyes, Autopieza RD, Auto Repuestos 
 28 años), Repuesto.com.do (importación bajo pedido) y los concesionarios oficiales (Santo Domingo
 Motors, que ya usa "softwares especializados" de catálogo, o sea un EPC, con atención por teléfono).
 
+## 5. Teardown de iMotriz: cómo gana dinero (verificado en sus propias páginas)
+
+Esto no es un competidor cualquiera: es **el modelo de negocio del rubro, ya funcionando**. Lo que
+vende, según sus páginas de vendedores y talleres:
+
+| Lo que cobran | Cómo lo describen ellos |
+|---|---|
+| **Comisión por venta** | *"Solo pagas una comisión por cada venta exitosa"* en el marketplace |
+| **Posicionamiento pagado** | Planes **Esencial / Profesional / Superior** para elegir "el orden de posicionamiento de tus productos en el Marketplace" |
+| **Presupuesto de leads** | *"Acelerador de clientes"*: comprar más leads eligiendo las marcas de vehículo que comercializas "y asignando un presupuesto" |
+| **Leads por WhatsApp (iMotriz Go)** | Sistema que manda solicitudes de cotización perfiladas **al WhatsApp del vendedor**, "sin necesidad de publicar tus inventarios". Cobrado (el usuario confirma que cobra tras cierta cantidad de consultas) |
+| **Software de taller ("Mi Taller")** | SaaS completo: recepción del vehículo, asignación de mecánico, diagnóstico, cotización con despiece, avisos por WhatsApp, encuesta final |
+| **Herramientas para distribuidores** | Tienda virtual B2B/B2C, tienda privada, "Tu propio Marketplace", **sincronización por API**, plataforma de compras |
+
+Y el activo de fondo: **el catálogo**. Lo que les venden a los vendedores es *"integramos en tu tienda
+nuestros catálogos de autopartes originales"* para que "tus clientes los encuentren con búsquedas por
+VIN y/o diagramas de partes". O sea: **el dato del catálogo es su foso**, y el dinero sale de los
+vendedores y los talleres, no del comprador.
+
+**Lo que enseñó el intento de usarlo desde aquí**: la búsqueda anónima por VIN no devuelve resultados
+sin cuenta (su buscador exige sesión, y ya se sabe que cobra pasado cierto número de consultas). No
+se forzó más: son consultas pagadas del usuario, no nuestras. **La precisión real de su fitment solo
+la puede contar quien lo ha usado** — y esa es la pregunta abierta de este teardown.
+
 ## Lo que dicen los datos sobre nuestro hueco
 
 1. **El espacio de marketplace ya está disputado y no debemos entrar ahí.** Cuatro intentos locales,
@@ -63,3 +87,9 @@ Motors, que ya usa "softwares especializados" de catálogo, o sea un EPC, con at
 4. **La desventaja a vigilar**: casi todos prometen "compatibilidad garantizada" — y varios sin
    datos que lo sostengan. Cuando todos prometen lo mismo, la única diferencia real es tener el dato
    de verdad y decirlo con honestidad. Esa es la apuesta pendiente (T-B7).
+5. **El modelo de ingresos ya está probado por otro**: iMotriz cobra por posicionamiento, por leads
+   (incluidos leads a WhatsApp) y por software de taller. No hay que inventar la monetización: hay
+   que **hacerla más barata para el comprador**. Nuestra ventaja estructural es que el sitio es
+   estático y las consultas a la API salen de una cuota gratuita: podemos dar **la consulta gratis**
+   donde ellos cobran, y ganar del lado del vendedor (posicionamiento, leads) — que es exactamente
+   donde ellos ya demostraron que hay dinero.
