@@ -73,6 +73,51 @@ consume. Un revendedor **pide** los datos, no los fabrica.)
    sistema. Un acuerdo con uno de ellos es, en la práctica, la versión dominicana de la
    "puerta 2" — sin tener que montar un almacén propio.
 
+## ¿Y recolectar los catálogos fabricante por fabricante? (medido 05/10/2026)
+
+La idea: *"ya tenemos el listado de fabricantes de eBay, vamos a buscarlos según esa lista"*.
+Medido antes de opinar:
+
+**1. Ese listado no es lo que parece.** El aspecto "Brand" de eBay en estas categorías tiene
+**~10.200 valores** (10.204 en limpiaparabrisas, 10.208 en filtros de aire, 10.394 en
+radiadores) — y **casi los mismos en todas**, o sea que no es una lista de fabricantes de la
+categoría: es **todo lo que los vendedores han escrito alguna vez** en ese campo. Los primeros
+valores lo delatan: `Unbranded`, `1`, `1&1`, `101 Octane`, `1-800-Radiator`. Perseguir esa lista
+es perseguir vendedores, errores de tecleo y basura.
+
+**2. La industria ya reconoce ese trabajo como un producto.** Agregar los catálogos de los
+fabricantes es exactamente lo que hacen Epicor, WHI, SEMA Data Co-op y los proveedores de
+datos — y su precio público (15.000–60.000 USD/año en las plataformas de datos) **es el costo de
+ese trabajo, empaquetado**. No es que sea imposible: es que **ya es el producto de otra gente**.
+
+**3. Por fabricante, el trabajo real es mayor que "descargar un archivo"**: encontrar su canal
+de datos (formulario, portal de distribuidor, FTP), conseguir autorización —que normalmente
+exige ser revendedor, o sea la misma puerta de la sección anterior—, descargar y **parsear
+ACES/PIES** (XML amarrado a las bases VCdb/PCdb/Qdb), validar, deduplicar y **mantenerlo
+fresco** (cada marca actualiza su catálogo varias veces al año). Realista: **de horas a días por
+fabricante**, más una obligación de mantenimiento para siempre. Para las ~40 marcas que de
+verdad pesan en el aftermarket: **semanas o meses de ingeniería, y después nunca termina**.
+
+**4. Advertencia sobre mi propia medición.** También intenté medir el "Pareto" (cuántas marcas
+cubren el 90% de los anuncios) y **el número que salió no es confiable**: mi comparador buscaba
+nombres de marca dentro del título y capturó el **nombre del vehículo** ("Mitsubishi" 150 veces)
+y palabras cortas que coinciden con marcas ("Ram", "Ring", "Stop"). La cifra de "18 marcas = 90%"
+**no la sostengo**. Lo que sí se ve en la muestra (278 anuncios) es que hay **unas pocas marcas
+reales** (Centric Parts, TRICO, Better Brake Parts, FCS, Callahan) y una cola larga de vendedores
+sueltos — consistente con "docenas, no miles", pero medido en serio requeriría otra vía.
+
+## La vuelta estratégica: el dato es valioso, pero nosotros somos la demanda
+
+Si esa información **vale dinero** (y vale), entonces también significa esto: quien la tiene
+**necesita compradores**. Nosotros no tenemos que poseer el catálogo; tenemos que **poseer al
+cliente**. Con tráfico real, el catálogo viene a nosotros — como revendedores, como socios, o
+como anunciantes que quieren aparecer delante de alguien que acaba de saber qué necesita.
+
+Por eso la recomendación no cambia, se refuerza: **no recolectemos catálogos; recolectemos
+usuarios.** Y si algún día queremos probar la vía directa, el experimento honesto es **una sola
+marca**: pedir sus datos como revendedor y medir cuánto tardó, qué pidieron y qué llegó. Ese
+piloto de una marca dice el costo real por marca mejor que cualquier estimación mía.
+
 ## Nota lateral que vale la pena
 
 eBay Motors, Amazon Auto y RockAuto **exigen datos ACES para el fitment** de las publicaciones:
