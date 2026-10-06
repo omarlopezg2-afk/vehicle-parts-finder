@@ -93,6 +93,40 @@ exacto de la pieza y un diagrama pequeño, y el usuario compró con ese número*
 funciona, y el listón está alto. No es un hueco por falta de solución: es un hueco **geográfico**
 (ellos no están en RD) y **de precio** (ellos le cobran al comprador; nosotros podemos no hacerlo).
 
+## 6. ¿Cuánto cuesta el catálogo licenciado? (indagado 05/10/2026)
+
+**Respuesta corta: no hay precio público, y eso no es casualidad.** El catálogo de autopartes
+no se vende como un producto; se entrega como **activo de distribución**.
+
+- **Epicor PartExpert** es el estándar del rubro: 17 millones de números de parte, 9.500 líneas
+  de fabricante, 1.400 millones de aplicaciones por vehículo. **No publican precios**: todo es
+  cotización por venta.
+- El detalle que lo explica todo: a través de la cooperativa **Pronto Network**, un distribuidor
+  de repuestos recibe PartExpert o ePartExpert *"with no up-front cost"* — gratis, **por ser
+  miembro**. El dato no se vende para hacer software: se regala a quien vende repuestos, porque
+  su función es mover piezas. Un proyecto de software no califica para esa puerta.
+- Del lado del taller, los precios que sí son públicos (de herramientas que **incluyen** acceso a
+  catálogo, no del dato crudo): **PartsTech** ~50 USD/mes (Plus) y ~95 USD/mes (Complete), según
+  reseñas de terceros; la integración de **Nexpart** desde **99,99 USD/mes** por Torque360. O
+  sea: del orden de **600 a 1.200 USD al año** por una herramienta con catálogo para un taller.
+
+**Las tres puertas reales, con su costo**
+
+| Puerta | Costo | ¿Nos deja pasar? |
+|---|---|---|
+| Comprar el catálogo (Epicor y similares) | Sin precio público; venta por contrato | **No**: es para distribuidores, no para software |
+| **eBay Catalog API** | **Gratis** | Está **gateada**: *"Limited Release, available only to select developers approved by business units"*. Se puede **solicitar** — es la vía limpia al número (ePID -> identificadores del producto) |
+| **Datos ACES/PIES de los fabricantes** | **0 USD de dato** + trabajo de ingeniería | **Sí**: las marcas publican su data ACES para el canal (la propia Epicor vive de que los fabricantes se la entreguen) |
+
+**Conclusión**: el dinero no es el obstáculo del catálogo; el obstáculo es que **no está a la
+venta para nosotros**. Por eso el camino correcto sigue siendo lo gratis (fitment de eBay + el
+diagrama oficial) y, si se quieren números a escala, **agregar los ACES que los fabricantes ya
+publican** — cuesta trabajo, no licencias.
+
+Dato de paso para el modelo de negocio: un taller ya paga **50–100 USD/mes** por una herramienta
+con catálogo. Los 19 USD/mes que habíamos imaginado para el software de taller eran
+**conservadores**.
+
 ## Lo que dicen los datos sobre nuestro hueco
 
 1. **El espacio de marketplace ya está disputado y no debemos entrar ahí.** Cuatro intentos locales,
