@@ -49,6 +49,30 @@ Y del título del anuncio solo se puede *adivinar* un número en una fracción d
 peor que no darlo: manda al cliente a comprar la pieza equivocada, que es justo lo que el
 producto existe para evitar.
 
+## La puerta del número, probada en los dos entornos (05/10/2026)
+
+Las llaves de sandbox se consiguen (hay que generarlas aparte en el portal, y se distinguen
+porque el **App ID lleva `SBX`** en el segmento del medio; el de producción lleva `PRD`).
+Con ellas, en **sandbox**:
+
+| Prueba | Resultado |
+|---|---|
+| Token de sandbox | **OK** (expira en 7.200 s) — las llaves funcionan |
+| Browse API en sandbox (control) | **HTTP 200**, devuelve anuncios |
+| **Catalog API: búsqueda de producto** | **HTTP 403 — "Insufficient permissions"** |
+| **Catalog API: producto por epid** | **HTTP 403 — "Insufficient permissions"** |
+
+Es decir: **la Catalog API está cerrada para nuestra aplicación en los dos entornos**, no solo
+en producción. No es un problema de llaves ni de configuración: es un permiso que nuestra app
+no tiene y que la documentación describe como *Limited Release, solo para desarrolladores
+selectos aprobados por unidades de negocio*. La nota de que "cualquiera puede usar las APIs en
+sandbox" aplica a las **Buy APIs**, no a esta, que es del grupo **Commerce**.
+
+**Consecuencia**: el número de parte vía eBay queda descartado por las dos vías (el campo no
+existe en los anuncios, y el catálogo que lo tiene está cerrado). El camino al número sigue
+siendo el diagrama oficial a un clic. La pregunta para soporte de eBay ahora es mucho más
+precisa: *"en sandbox también devuelve 403; ¿cuál es el proceso de aprobación?"*.
+
 ## Conclusión: qué prometemos y qué no
 
 **No podemos prometer "el número exacto".** Ese dato vive en un catálogo licenciado (que es

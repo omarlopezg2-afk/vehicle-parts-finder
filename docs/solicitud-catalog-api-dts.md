@@ -30,9 +30,11 @@ declinó. Antes de volver a esa puerta, conviene (1) saber si la Catalog API tie
 >    Requirements page points to the eBay Partner Network for Buy API production access — does the
 >    Catalog API follow the same path, or is there a separate approval process for this read-only
 >    use case (you are listed as the contact for this Limited Release API)?
-> 2. **Sandbox access.** The same page says anyone with a developer account can use the Buy APIs in
->    sandbox. Can we evaluate the Catalog API in sandbox without production approval? If so, we'll
->    test there first and report back what we find.
+> 2. **Sandbox access.** We already tested this, so you don't have to guess: with a valid sandbox
+>    token, the **Browse API works** (HTTP 200) but the **Catalog API returns 403 Insufficient
+>    permissions in sandbox too** (`product_summary/search` and `product/{epid}`). So the sandbox
+>    is not open for this API either. Given that, what is the correct approval path for the
+>    Catalog API, and is it available at all to a read-only, buyer-side use case like ours?
 >
 > We are not asking for special treatment, and we understand there is no guarantee of approval. We
 > just want to follow the correct procedure instead of applying where it can't be granted.
