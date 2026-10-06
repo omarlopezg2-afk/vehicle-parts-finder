@@ -924,6 +924,36 @@ hacen en dos minutos y evitan buscar un problema donde no está.
 
 ---
 
+## 05/10/2026 (cierre) — **T-B8 terminado, y la puerta del número aparece donde menos se esperaba**
+
+**T-B8 quedó construido, medido y en `main`** (commit `649c810`): `pipeline/fetch_fitment.py`
+pregunta a eBay qué le queda **EXACTAMENTE** a un vehículo, categoría por categoría, y guarda
+los más baratos. Integrado al build programado (nunca fatal), validado y documentado en
+`CONTRACTS.md`. **10 pruebas herméticas nuevas**; 63 pruebas OK en los módulos tocados. Resultado
+real para el vehículo del usuario: **6 categorías, 93 ofertas compatibles, todas EXACT**, con foto
+y precio.
+
+Dos hallazgos del propio trabajo: **los identificadores de categoría se eligen midiendo** (el de
+bujías que había puesto devolvía HTTP 400; el correcto es 174072, 8/8 EXACT), y **no todo tipo de
+pieza tiene categoría con fitment** en eBay: filtro de aceite y baterías devuelven cero en todas
+las candidatas.
+
+**Y la puerta del número, que parecía cerrada del todo, se abre alquilando.** El usuario insistió
+en que el producto es dar **el número de parte**, no comparar precios. Buscando por ahí apareció
+la **AUTODOC Parts Catalog API** en **RapidAPI**: plan gratis de 100 consultas, **29 USD/mes por
+20.000**, con vehículo -> piezas numeradas, **referencias cruzadas OEM/aftermarket**, diagramas y
+fotos; autoservicio y sin zona gris (su documentación declara que es para herramientas de
+consulta y comparación). Traducido a volumen: armar el catálogo de un vehículo son 9 consultas y
+el catálogo dominicano estimado (300 vehículos) son 2.700 — **cabe 7 veces en el plan de 29 USD**.
+Y las búsquedas de los usuarios **no gastan consultas**, porque el catálogo se arma una vez al mes
+y el sitio lo sirve desde su propio JSON.
+
+**Antes de pagar queda un cabo suelto medible**: AUTODOC es europeo y nuestros vehículos son del
+mercado estadounidense; el plan gratuito de 100 consultas está exactamente para comprobar la
+cobertura. Decisión del usuario, pendiente.
+
+---
+
 ## 04/10/2026 — Carta a EPN **enviada** (17:40) — Líder
 
 Se envió a `epnhelp@ebay.com` con las **tres preguntas en una sola carta**: qué criterio causó
