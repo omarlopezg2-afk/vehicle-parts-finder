@@ -53,7 +53,12 @@ from normalize import normalize_part_number  # noqa: E402
 
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SEED_DIR = os.path.join(REPO_ROOT, "data", "seed")
-BUILD_DIR = os.path.join(REPO_ROOT, "data", "build")
+# PVF_BUILD_DIR manda un build de PRUEBA a otra carpeta. Existe por un fallo real: el
+# 07/10/2026 un build en modo mock (sin credenciales) ejecutado en local para probar el propio
+# build sobreescribió data/build/parts.json —1.192 ofertas reales de eBay con foto por 84 de
+# laboratorio— y se coló en un commit; lo cazó el CI. Probar el build ya no es peligroso:
+#     PVF_BUILD_DIR=/tmp/prueba python3 pipeline/build_index.py
+BUILD_DIR = os.environ.get("PVF_BUILD_DIR") or os.path.join(REPO_ROOT, "data", "build")
 
 # VIN de ejemplo: el Mitsubishi Outlander Sport 2020 real de Omar (el caso
 # de prueba del proyecto, ver PLAN.md). Resuelto en vivo contra vPIC el
@@ -283,7 +288,10 @@ def load_categories() -> list[dict[str, Any]]:
     cero: solo las usa tal como están para dejar los 4 archivos consistentes
     en el mismo momento de build.
     """
-    ruta = os.path.join(BUILD_DIR, "categories.json")
+    # Se lee SIEMPRE del data/build real, no del BUILD_DIR: categories.json es entrada y salida
+    # a la vez (no se regenera, solo se lee), así que un build de prueba redirigido con
+    # PVF_BUILD_DIR tiene que seguir leyendo el archivo bueno del repo.
+    ruta = os.path.join(REPO_ROOT, "data", "build", "categories.json")
     with open(ruta, "r", encoding="utf-8") as f:
         categorias = json.load(f)
 
@@ -304,6 +312,11 @@ def load_categories() -> list[dict[str, Any]]:
 # ---------------------------------------------------------------------------
 
 def _write_json(nombre: str, datos: Any) -> None:
+    # PVF_BUILD_DIR permite mandar un build de PRUEBA a otra carpeta. Existe porque el
+    # 07/10/2026 un build en modo mock (sin credenciales) ejecutado en local para probar el
+    # propio build sobreescribió data/build/parts.json —1.192 ofertas reales de eBay con foto
+    # por 84 de laboratorio— y se coló en un commit; lo cazó el CI. Con esto, probar el build
+    # deja de ser peligroso:  PVF_BUILD_DIR=/tmp/prueba python3 pipeline/build_index.py
     os.makedirs(BUILD_DIR, exist_ok=True)
     ruta = os.path.join(BUILD_DIR, nombre)
     with open(ruta, "w", encoding="utf-8") as f:
