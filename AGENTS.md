@@ -41,7 +41,7 @@ dispara CI + deploy (el deploy copia `data/build/` a `site/data/build/` y public
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas (las tres suites; hoy: 216 + 149 + 21 en verde)
+# pruebas (las tres suites; hoy: 216 + 153 + 21 en verde)
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -82,5 +82,5 @@ ver T-B22 en `TASKS.md`.
 
 290 vehículos · 2.833 categorías con piezas · índice partido de ~840 KB · 250/250→290/290 variantes con
 combustible, cilindrada, potencia y código de motor · cuarta capa del sitio (mercado+motor+combustible)
-hecha y verificada en local y en partexact.com · 216 + 149 + 21 pruebas en verde · quedan ~6.100
+hecha y verificada en local y en partexact.com · 216 + 153 + 21 pruebas en verde · quedan ~6.100
 consultas RapidAPI este mes (el número exacto, en el panel de RapidAPI).
