@@ -9,6 +9,9 @@ el contexto al día sin cargar horas de historial.
 
 ## Bloque para pegar
 
+> Si en vez de pegar un bloque prefieres que la sesión nueva lo tenga todo (incluido el plan de trabajo
+> con su coste y las trampas), empieza por **`AGENTS.md`** y **`docs/TRASPASO.md`**.
+
 ```
 Trabajamos en PartExact: dar el número exacto de parte para cualquier vehículo y verificar que le
 queda. En español.
