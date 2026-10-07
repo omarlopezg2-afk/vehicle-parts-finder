@@ -38,12 +38,12 @@ entorno de staging: `main` **es** producción.
 
 | Qué | Valor | Cómo se comprueba |
 |---|---|---|
-| Catálogo | **288 vehículos · 2.813 categorías con piezas** | `python3 -c "import json;d=json.load(open('data/build/catalogo/index.json'));print(len(d['vehiculos']), sum(len(v['categorias']) for v in d['vehiculos']))"` |
+| Catálogo | **290 vehículos · 2.833 categorías con piezas** | `python3 -c "import json;d=json.load(open('data/build/catalogo/index.json'));print(len(d['vehiculos']), sum(len(v['categorias']) for v in d['vehiculos']))"` |
 | Mercado del catálogo | **67 = República Dominicana** | `pais_filtro` del índice y del monolito; `"pais": 67` en `data/seed/catalogo/vehiculos.json` |
-| Identidad de cada variante | **288/288 con combustible, cilindrada, potencia (PS) y código de motor** | `python3 pipeline/completar_variantes.py` (dice "ya estaban: 288", 0 consultas) |
+| Identidad de cada variante | **290/290 con combustible, cilindrada, potencia (PS) y código de motor** | `python3 pipeline/completar_variantes.py` (dice "ya estaban: 290", 0 consultas) |
 | Duplicados peligrosos | 0 combustibles contradictorios por `vehicleId` (918 revisados) | el mismo script, línea "cache: … 0 con combustible contradictorio" |
 | Pruebas | **212 pipeline + 118 sitio + 10 Worker, en verde** | los tres comandos de la sección 6 |
-| Cuota RapidAPI | **~6.200 de 20.000** este mes | panel de RapidAPI (el campo `consultas` del monolito es el **acumulado del catálogo**, no el del mes: 13.693) |
+| Cuota RapidAPI | **~6.100 de 20.000** este mes | panel de RapidAPI (el campo `consultas` del monolito es el **acumulado del catálogo**, no el del mes: 13.693) |
 | Tope del Worker | 2.000 consultas/mes propias (`TOPE_MES` en `wrangler.toml`) | `/salud` del Worker |
 | Verificado en navegador | local (8765) **y** partexact.com | la tabla de la sección 5 |
 | Pendiente de producto | el sitio **no está para un cliente**: falta elegir mercado, avisos legales y los números originales en pantalla | sección 4 |
@@ -183,22 +183,29 @@ catálogo** (ATE y BENDIX sin cruce) → salen los de reemplazo; los **discos** 
 cruce por número de reemplazo (`articles-oem/...` ≈ 1 consulta por artículo; **dry-run y coste antes**,
 regla 4) o el original por posición del vehículo. No se ha gastado ninguna consulta.
 
-### 4.3 · Ronda 2 de motores (el criterio actual es bueno pero no perfecto)
+### 4.3 · Ronda 2 de motores (HECHA el 07/10/2026 — solo lo seguro; el resto, por demanda)
 
-El 07/10/2026 se añadieron **43 variantes** con el criterio acordado con el usuario (***la gasolina de
-más potencia de cada modelo-año***), porque la flota se había armado cogiendo *los dos primeros motores
-que devolvía la API, sin criterio* y **79 modelo-año no tenían el motor que se ve en RD** (el Corolla
-2016/2017 sin el 1.8, el Hilux/Fortuner con solo diésel y sin el 4.0 V6, el Accent sin el 1.6 GDI).
+**Qué se midió (0 consultas):** con el criterio `alta` ya **no queda nada por añadir** (las 43 variantes
+entraron). De los tres modelos dudosos, **solo el Lancer 2018/2019 tenía el hueco real**: tenía 1.6, 1.8 y el
+EVO X de 402 PS, y le faltaba el **2.0 (4B11)**. El Grand Cherokee (3.6 y 5.7) y el Yaris (1.5) ya tenían
+sus motores normales; lo raro era el extra que metió el criterio (6.2 de 717 PS, GR 4WD de 272 PS).
+**No hay datos de la flota de la DGII en el repo** (`docs/placa-y-chasis-fuentes.md` trata de consultar
+la placa, no de estadísticas del parque), así que "lo que entró de verdad al parque" no se puede aplicar
+todavía.
 
-Lo que queda mal y hay que afinar: en **tres modelos** esa "gasolina de más potencia" es una serie de
-escaparate que en RD casi no se ve (`Lancer EVO X` 402 PS, `Grand Cherokee 6.2` 717 PS, `Yaris GR 4WD`
-272 PS), y ahí **el motor común puede seguir faltando**. El criterio tiene que salir de **lo que entró
-de verdad al parque** (registro de la DGII; hay investigación en `docs/`), no de los caballos.
+**Qué se hizo:** `python3 pipeline/agregar_variantes.py --vehicle-id 6741:25106 --ejecutar` (opción nueva;
+elige un motor concreto y 0 consultas para elegirlo). El Lancer 2.0 de **150 PS** (CY4A, 4B11) es el que se
+parece al Lancer ES de EE.UU. (decisión de Omar: "tu intuición es correcta"). TecDoc trae otras cuatro
+versiones del 4B11 (147-160 PS); no hay dato que diga cuál es la de RD. Costó **94 consultas**
+(13.693 → 13.787 en el acumulado) → 290 vehículos.
 
-- Herramienta: `python3 pipeline/agregar_variantes.py --listar` (plan y coste, **0 consultas**). El
-  criterio vive en `candidatos(..., criterio=...)` y hoy solo acepta `"alta"`: hay que añadir el nuevo.
-- Coste de cada variante nueva: **~48 consultas** (guía: 1.635 para 43, ya con la caché de
-  especificaciones puesta). **No se gasta sin decirlo y sin el OK del usuario.**
+**Lo que NO se hizo, a propósito:** cubrir los 89 motores distintos que faltan en 40 modelos (diésel, 2.4,
+etc.): ≈ 4.272 consultas, dos tercios de lo que queda del mes. **Regla de Omar:** el hueco se llena **en vivo**
+(el Worker, T-B21) cuando alguien consulte un motor que no esté.
+
+**Trampa nueva:** `agregar_variantes.py --ejecutar` carga el monolito (428 MB) y se cae por memoria en la
+sesión remota de ~3,9 GB (murió dos veces sin dejar rastro, con el catálogo intacto); correrlo en el PC
+de Omar funcionó a la primera.
 
 ### 4.4 · Verificar SIEMPRE en navegador (y contra partexact.com tras el deploy)
 
@@ -249,7 +256,7 @@ Para ver el aspecto real, `--screenshot=/tmp/x.png --window-size=1100,860` y mir
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas: las tres suites. Hoy 212 + 149 + 21 en verde.
+# pruebas: las tres suites. Hoy 216 + 149 + 21 en verde.
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -346,7 +353,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 ## 9. Presupuesto: cómo no gastar de más
 
-- **RapidAPI: 20.000 consultas/mes.** Van ~13.750 → quedan **~6.200**. El número exacto, en el panel.
+- **RapidAPI: 20.000 consultas/mes.** Van ~13.790 → quedan **~6.100**. El número exacto, en el panel.
 - El catálogo acumula `consultas` en el monolito (13.693) — **es el total histórico, no el del mes**.
 - **Caché que baja el coste a 0**: `data/raw/autodoc_variantes/` (listas de variantes por modelo),
   `data/raw/vpic_cache/` (VIN de NHTSA) y el propio monolito (caché de especificaciones por `articleId`).
@@ -363,13 +370,13 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 1. `cat AGENTS.md docs/TRASPASO.md` y `TASKS.md` (T-B22 → T-B27). *(Lo que estás leyendo.)*
 2. `git log --oneline -8` y `git status` para ver dónde quedó el árbol.
-3. Las tres suites de pruebas (sección 6): 212 + 149 + 21 en verde antes de tocar nada.
-4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 288" y
+3. Las tres suites de pruebas (sección 6): 216 + 149 + 21 en verde antes de tocar nada.
+4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 290" y
    "0 con combustible contradictorio".
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor
    elegido" pinta números, algo se rompió en T-B22.
 6. `curl -s https://partexact.com/data/build/catalogo/index.json | head -c 300` para ver el índice
-   desplegado (288 vehículos, `pais_filtro: 67`).
+   desplegado (290 vehículos, `pais_filtro: 67`).
 7. Preguntarle al usuario qué quiere priorizar: **(a)** el mercado/Worker (4.1), **(b)** los originales
    en pantalla (4.2) o **(c)** la ronda 2 de motores (4.3). Los tres están listos para empezar; (a) y
    (b) no gastan cuota para desarrollarse y (c) sí.
