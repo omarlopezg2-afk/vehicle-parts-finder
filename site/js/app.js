@@ -36,6 +36,8 @@ import {
   matchVehicleByMakeModelYear,
   getPartsByFitment,
   getPartsByCategory,
+  consultarWorker,
+  workerActivo,
   _isUsingFixture,
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
@@ -693,6 +695,115 @@ function renderVehiculoDecodificado(d) {
   resultsEl.appendChild(card);
 }
 
+// --- T-B21: los carros que NO están en el catálogo precalculado ---
+//
+// Se le pregunta al Worker (api.partexact.com) qué carro es y con qué motores salió. Dos reglas:
+//  1) Con más de un motor y ningún dato que lo decida, SE PREGUNTA. Nunca se elige uno.
+//  2) Todavía no hay piezas por demanda: se identifica el carro con sus tres datos y se dice, sin
+//     rodeos, que sus números aún no los tenemos. Prometer menos (regla 5).
+// Devuelve true si pintó algo (el que llama deja de buscar), false si no hizo nada.
+async function intentarConWorker(consulta, { vin } = {}) {
+  if (!workerActivo()) return false;
+  const res = await consultarWorker(consulta);
+  if (!res) return false;
+  if (!res.ok) {
+    if (res.cuotaAgotada) {
+      renderEmptyState(
+        "Estamos al límite de consultas de este mes para carros fuera de nuestro catálogo. " +
+          "Vuelve el mes que viene, o busca por número de parte."
+      );
+      return true;
+    }
+    return false; // el Worker no lo reconoce: sigue el mensaje de siempre
+  }
+  if (res.requiereMotor) {
+    renderPreguntaDeMotorDelWorker(res, vin, consulta);
+  } else {
+    renderCarroDelWorker(res, vin);
+  }
+  return true;
+}
+
+function renderPreguntaDeMotorDelWorker(res, vin, consulta) {
+  clearResults();
+  const seccion = document.createElement("section");
+  seccion.className = "pregunta-variante";
+
+  const h = document.createElement("h2");
+  h.textContent = "¿Cuál es tu carro exactamente?";
+  seccion.appendChild(h);
+
+  const nota = document.createElement("p");
+  nota.className = "search-hint";
+  nota.textContent =
+    `Tu ${res.make} ${res.model} ${res.year} salió con más de un motor y el número de la pieza ` +
+    "cambia de uno a otro. Elige el tuyo. Mientras no lo elijas no enseñamos ningún número: uno para " +
+    "el motor equivocado no le sirve a nadie.";
+  seccion.appendChild(nota);
+
+  const lista = document.createElement("div");
+  lista.className = "variante-opciones";
+  for (const variante of res.variantes) {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "variante-opcion";
+    boton.dataset.clave = variante.clave;
+    boton.textContent = variante.etiqueta;
+    boton.addEventListener("click", async () => {
+      // La lista ya está en la caché del Worker: elegir una variante cuesta 0 consultas.
+      const elegida = await consultarWorker({ ...consulta, vehicleId: variante.vehicleId });
+      if (elegida && elegida.ok && !elegida.requiereMotor) renderCarroDelWorker(elegida, vin);
+      else renderEmptyState("No pudimos confirmar esa versión. Intenta de nuevo o busca por número de parte.");
+    });
+    lista.appendChild(boton);
+  }
+  seccion.appendChild(lista);
+
+  if (res.variantes.some((v) => !v.combustible)) {
+    const aviso = document.createElement("p");
+    aviso.className = "search-hint";
+    aviso.textContent = "En las versiones que no dicen combustible, el catálogo no lo tiene confirmado.";
+    seccion.appendChild(aviso);
+  }
+  resultsEl.appendChild(seccion);
+}
+
+function renderCarroDelWorker(res, vin) {
+  clearResults();
+  const v = res.vehiculo;
+  const card = document.createElement("div");
+  card.className = "vehiculo-card";
+
+  const h = document.createElement("h2");
+  h.textContent = [res.make, res.model, res.year].filter(Boolean).join(" ");
+  card.appendChild(h);
+
+  const filas = [
+    ["Motor", v.etiqueta],
+    ["Combustible", v.combustible || "sin confirmar en el catálogo"],
+    ["Fabricado en", vin ? (origenDeVin(vin) || {}).pais : ""],
+  ].filter(([, valor]) => valor);
+  const dl = document.createElement("dl");
+  dl.className = "vehiculo-datos";
+  for (const [etiqueta, valor] of filas) {
+    const dt = document.createElement("dt");
+    dt.textContent = etiqueta;
+    const dd = document.createElement("dd");
+    dd.textContent = valor;
+    dl.appendChild(dt);
+    dl.appendChild(dd);
+  }
+  card.appendChild(dl);
+
+  const aviso = document.createElement("p");
+  aviso.className = "search-hint";
+  aviso.textContent =
+    "Identificamos tu carro y su motor, pero todavía no tenemos los números de pieza de esta versión. " +
+    "Con estos datos cualquier tienda te confirma la pieza, o busca por número de parte.";
+  card.appendChild(aviso);
+  resultsEl.appendChild(card);
+}
+
 async function runVinSearch(vin) {
   clearResults();
   const { vehicle, decodificado } = await resolverVehiculoPorVIN(vin);
@@ -701,6 +812,7 @@ async function runVinSearch(vin) {
     await resolveVehicleAndShowTree(vehicle);
     return;
   }
+  if (await intentarConWorker({ vin }, { vin })) return;
   if (!decodificado) {
     // El país de fabricación sale del propio VIN (sin red). Lo decimos, pero sin dar ningún número:
     // saber dónde se fabricó no dice qué motor lleva.
@@ -766,6 +878,7 @@ function mountVehiclePicker() {
     clearResults();
     const vehicle = await matchVehicleByMakeModelYear(make, model, year);
     if (!vehicle) {
+      if (await intentarConWorker({ make, model, year })) return;
       renderEmptyState(
         `Todavía no tenemos piezas registradas para ${make} ${model} ${year} en el catálogo. ` +
           "Si tienes el VIN, intenta buscar con él, o revisa el número de parte directamente."
