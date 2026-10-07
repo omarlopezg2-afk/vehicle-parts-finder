@@ -38,12 +38,12 @@ entorno de staging: `main` **es** producción.
 
 | Qué | Valor | Cómo se comprueba |
 |---|---|---|
-| Catálogo | **288 vehículos · 2.813 categorías con piezas** | `python3 -c "import json;d=json.load(open('data/build/catalogo/index.json'));print(len(d['vehiculos']), sum(len(v['categorias']) for v in d['vehiculos']))"` |
+| Catálogo | **290 vehículos · 2.833 categorías con piezas** | `python3 -c "import json;d=json.load(open('data/build/catalogo/index.json'));print(len(d['vehiculos']), sum(len(v['categorias']) for v in d['vehiculos']))"` |
 | Mercado del catálogo | **67 = República Dominicana** | `pais_filtro` del índice y del monolito; `"pais": 67` en `data/seed/catalogo/vehiculos.json` |
-| Identidad de cada variante | **288/288 con combustible, cilindrada, potencia (PS) y código de motor** | `python3 pipeline/completar_variantes.py` (dice "ya estaban: 288", 0 consultas) |
+| Identidad de cada variante | **290/290 con combustible, cilindrada, potencia (PS) y código de motor** | `python3 pipeline/completar_variantes.py` (dice "ya estaban: 290", 0 consultas) |
 | Duplicados peligrosos | 0 combustibles contradictorios por `vehicleId` (918 revisados) | el mismo script, línea "cache: … 0 con combustible contradictorio" |
 | Pruebas | **212 pipeline + 118 sitio + 10 Worker, en verde** | los tres comandos de la sección 6 |
-| Cuota RapidAPI | **~6.200 de 20.000** este mes | panel de RapidAPI (el campo `consultas` del monolito es el **acumulado del catálogo**, no el del mes: 13.693) |
+| Cuota RapidAPI | **~6.000 de 20.000** este mes | panel de RapidAPI (el campo `consultas` del monolito es el **acumulado del catálogo**, no el del mes: 13.693) |
 | Tope del Worker | 2.000 consultas/mes propias (`TOPE_MES` en `wrangler.toml`) | `/salud` del Worker |
 | Verificado en navegador | local (8765) **y** partexact.com | la tabla de la sección 5 |
 | Pendiente de producto | el sitio **no está para un cliente**: falta elegir mercado, avisos legales y los números originales en pantalla | sección 4 |
@@ -138,39 +138,121 @@ todavía no lo llama (T-B21), así que nada de esto cambia producción hasta ent
 **Aceptación:** un VIN `KMH…` muestra "Fabricado en Corea del Sur" y pregunta el motor; un chasis
 `NZE141-…` explica que es JDM y avisa solo de la dirección; ningún carro "con gas" cambia números.
 
-### 4.2 · Pintar los NÚMEROS ORIGINALES del vehículo (es el número que el cliente pide en la tienda)
+**Hecho:** `site/js/vinOrigen.js` + `site/tests/vinOrigen.test.js` (9 pruebas), "Fabricado en" en la ficha
+por VIN, mensaje para VIN que vPIC no decodifica y aviso de dirección para chasis japonés (en `app.js`).
 
-Hoy `originales.json` (100-190 números del fabricante **por coche**) viaja al sitio y **ninguna pantalla
-lo lee**: `getOriginalesDelVehiculo()` existe en `site/js/dataClient.js:266` y **nadie lo llama**.
+**Worker, HECHO el 07/10/2026 (15 pruebas en verde; AÚN SIN DESPLEGAR: falta `npx wrangler deploy`, que
+lo hace Omar con su login de Cloudflare):** ya no elige la primera variante (devuelve `variantes` y
+`requiereMotor`; sin motor conocido no pide ni da piezas), acepta `&vehicleId=` para la variante que
+elige el visitante, arregló el `paisAlterno` y dice en `filtroPais` con qué filtro se resolvió. El sitio
+todavía no lo llama (T-B21), así que nada de esto cambia producción hasta entonces.
 
-- Forma del archivo: `{originales: [{buscado: "brake pad", numeros: [{numero, pieza, equivalentes: []}]}, …]}`.
-- El `buscado` de cada bloque usa los **mismos términos** que el sitio ya usa para emparejar categorías
-  (`FRAGMENTOS_POR_SLUG` en `catalogoMap.js`: "brake pad", "oil filter", "spark plug").
-- Dónde pintarlos: en el bloque de la categoría, ya con el motor elegido, como "Números originales de
-  TOYOTA para este motor". Es pesado (hasta ~1,9 MB por coche): **se baja solo al abrir esa categoría**,
-  nunca en la portada.
-- **Por qué el motor importa aquí:** un número original del motor equivocado es exactamente el fallo que
-  se quiere evitar; por eso este bloque va **después** de elegir variante, nunca antes.
+**Falta:**
+1. ~~Arreglar el Worker~~ (hecho, ver arriba). Lo que se corrigió:
+   - `construir()` usa `paisAlterno` sin recibirlo: si el modelo no existe en el mercado pedido lanza un
+     error de variable no definida en vez de probar el otro mercado.
+   - Devuelve **una sola** variante (`elegirVariante`) y, sin motor, elige la primera (el 1.3 del
+     Corolla, no el 1.8 que se ve en RD): debe devolver **la lista** y dejar que el sitio pregunte.
+   - Quitar `?pais=` como si filtrara, o decir en la respuesta qué mercado se usó realmente.
+2. **T-B21 — el sitio llama al Worker: HECHO el 07/10/2026 pero APAGADO** (`WORKER.activo = false` en
+   `site/js/dataClient.js`). Qué hay: el Worker cachea la lista de motores en KV (clave `var:`), así
+   que un modelo-año o VIN se paga **una vez** (~3-4 consultas) y elegir motor cuesta 0;
+   `consultarWorker()` es el único cliente; `app.js` (`intentarConWorker`) lo usa **solo** cuando el carro
+   no está en el catálogo, pregunta "¿Cuál es tu carro exactamente?" y, elegido el motor, muestra el
+   carro con motor y combustible. **Por qué apagado:** todavía NO hay piezas por demanda. Encenderlo hoy
+   gastaría cupo en identificar carros sin dar ningún número (regla 5: prometer solo lo que se cumple).
+   **Lo que falta para encenderlo (siguiente trabajo):**
+   - Piezas por demanda en el Worker: el árbol de categorías por vehículo
+     (`/api/category/type-id/1/products-groups-variant-1/{vehicleId}/lang-id/4`, 1 consulta) para sacar
+     el `categoryId` del término buscado (`FRAGMENTOS_POR_SLUG`), luego artículos + detalle (hasta ~4).
+     Orden de magnitud: **~6-10 consultas por (carro, categoría)**; con el tope de 2.000/mes son
+     ~200-300 búsquedas nuevas al mes. Eso es una decisión de cupo del usuario.
+   - La variante elegida en el Worker aún no vive en la URL (`router.js`): recargar pierde el motor.
+   - La UI de `intentarConWorker` no tiene prueba automática (los tests del sitio son de funciones
+     puras): verificar en navegador con `_setWorkerParaTests` o poniendo `activo: true` en local.
+3. Verificar en navegador con un VIN japonés, uno coreano y un chasis `NZE141-…` (sección 5).
 
-**Aceptación:** en `…/2016/pastillas-freno/v109621` (Corolla 1.8) se ven los originales de Toyota de
-ese motor (`04465-02570`, `04465-06150`…) y no los del 1.3 ni los del diésel.
+**Aceptación:** un VIN `KMH…` muestra "Fabricado en Corea del Sur" y pregunta el motor; un chasis
+`NZE141-…` explica que es JDM y avisa solo de la dirección; ningún carro "con gas" cambia números.
 
-### 4.3 · Ronda 2 de motores (el criterio actual es bueno pero no perfecto)
+**Verificado en partexact.com el 07/10/2026 (con el Worker APAGADO — para esto no hace falta encenderlo):**
+- Chasis `NZE141-1234567`: explica que es un chasis japonés de mercado interno y avisa de la dirección. ✔
+- VIN `KMHD35LH0GU123456` → Hyundai Elantra 2016 con sus categorías. ✔ `JA4AP4AU3LU023739` → Outlander
+  Sport 2020. ✔ VIN inválido → mensaje de dígito de control. ✔
+- **Hueco encontrado y corregido** (`site/js/vinFicha.js`): con el carro EN el catálogo no se decía dónde se
+  fabricó, y la ficha de un VIN fuera del catálogo enseñaba `Motor: 2.998832712 L`, `Combustible: Gasoline`
+  y `Fabricado en: UNITED STATES (USA)` (la NHTSA contesta en inglés y sin redondear). Ahora: `3.0 L`,
+  `Gasolina` y país en español por el inicio del VIN, y la línea de origen también sale para los VIN del
+  catálogo ("dice dónde se hizo, no a qué mercado se vendió").
+- Lo que NO está: la prueba en vivo de `intentarConWorker` (Worker apagado a propósito, ver T-B21).
+  Encenderlo hoy solo identificaría carros sin dar ningún número (regla 5); se enciende cuando existan las
+  piezas por demanda.
 
-El 07/10/2026 se añadieron **43 variantes** con el criterio acordado con el usuario (***la gasolina de
-más potencia de cada modelo-año***), porque la flota se había armado cogiendo *los dos primeros motores
-que devolvía la API, sin criterio* y **79 modelo-año no tenían el motor que se ve en RD** (el Corolla
-2016/2017 sin el 1.8, el Hilux/Fortuner con solo diésel y sin el 4.0 V6, el Accent sin el 1.6 GDI).
+### 4.2 · Números ORIGINALES en pantalla (HECHO el 07/10/2026 — versión por pieza, no por vehículo)
 
-Lo que queda mal y hay que afinar: en **tres modelos** esa "gasolina de más potencia" es una serie de
-escaparate que en RD casi no se ve (`Lancer EVO X` 402 PS, `Grand Cherokee 6.2` 717 PS, `Yaris GR 4WD`
-272 PS), y ahí **el motor común puede seguir faltando**. El criterio tiene que salir de **lo que entró
-de verdad al parque** (registro de la DGII; hay investigación en `docs/`), no de los caballos.
+**Regla de Omar:** se enseñan **primero los números originales** del fabricante del carro siempre que
+los tengamos; si no, vale el de reemplazo (aftermarket) mientras sea la pieza correcta. Las pastillas
+siempre se venden en juego por eje (delantero **o** trasero), nunca por lado.
 
-- Herramienta: `python3 pipeline/agregar_variantes.py --listar` (plan y coste, **0 consultas**). El
-  criterio vive en `candidatos(..., criterio=...)` y hoy solo acepta `"alta"`: hay que añadir el nuevo.
-- Coste de cada variante nueva: **~48 consultas** (guía: 1.635 para 43, ya con la caché de
-  especificaciones puesta). **No se gasta sin decirlo y sin el OK del usuario.**
+**Lo que se descubrió al medir (y por qué NO se pintó `originales.json`):** la versión que pedía este
+apartado ("los originales del motor correcto", `04465-02570`…) **no se puede dar con los datos actuales**.
+`data/build/catalogo/v<id>/originales.json` es la lista del *vehículo* (`articles-oem/selecting-oem-
+parts-vehicle-modification-description-product-group`): 113 números de pastilla para el Corolla 1.8, **sin
+posición ni marca de pieza**, mezclados con kits y juntas (en "spark plug" hay anillos de sellado), y solo
+cubre 3 productos (pastilla, filtro de aceite, bujía). Volcarla en pantalla sería enseñar 111 números
+"probablemente de tu carro", que rompe la regla 2. `getOriginalesDelVehiculo()` sigue sin llamarse a
+propósito.
+
+**Lo que sí se hizo:** cada artículo del catálogo trae su propio cruce `oem` (TecDoc), atado a ESA pieza
+(~74 % de los 6.662 artículos; hasta 584 números en algunos). `site/js/numerosOriginales.js`:
+- `separarOriginales`: deja solo los de la **marca del vehículo** (sin duplicados, `04466-02170` =
+  `0446602170`); los de otras marcas (Subaru, Pontiac…) **no** se llaman "original" del carro.
+- `numerosDeLaFicha`: con original → arriba "ORIGINAL TOYOTA n1 · n2 · n3 · n4" (tope 4, el resto se
+  cuenta "+ N originales más") y debajo "Reemplazo MARCA número"; sin original → sube el de reemplazo.
+- `ordenarPiezasConOriginalPrimero`: primero las normales con original de la marca, luego las normales sin
+  original y al final las **de alto rendimiento** (`High Performance…`, `Sports…`): TecDoc les cruza el original
+  del carro porque le montan, pero no son la pieza original; salen con su número y "Equivale al original …".
+
+**Cobertura real (verificada en navegador):** Corolla 1.3 (`v52438`): las pastillas salen con original
+Toyota, delantera y trasera por separado. Corolla 1.8 (`v109621`): tras detallar las pastillas (abajo) las 3
+que se publican ya traen original Toyota; solo una dice su posición (Trasera).
+
+**Detallar lo que ya se publica (HECHO el 07/10/2026, 112 consultas):** `pipeline/enriquecer_detalles.py
+--producto "brake pad"` pide el detalle (posición + originales) de las pastillas que el sitio ya enseña y no
+lo tenían, porque `construir` solo detalla los 3 primeros artículos de cada categoría y en la de pastillas a
+veces son discos (13.787 → 13.899 consultas acumuladas; 133 artículos completados, 65 con posición). No cambia
+qué piezas se publican. Se usa igual para otro producto (`--producto "oil filter"`: 82 pendientes, `brake disc`:
+84…); primero en seco (plan = nº de articleId), luego el OK.
+
+**LÍMITE CONOCIDO (importante):** el sitio publica como máximo **3 pastillas por vehículo** (`tope_del_producto`
+en `partir_catalogo.py`), elegidas por el orden de la lista de TecDoc, no por posición. El Corolla 1.8 tiene
+**61 pastillas** en la lista y se enseñan 3; puede que no salga la delantera. Para enseñar "un juego delantero
+y uno trasero con original" hay que detallar más pastillas por vehículo (≈ 60 consultas por vehículo) o elegir
+con otra señal. No se ha hecho; decidirlo con Omar.
+
+### 4.3 · Ronda 2 de motores (HECHA el 07/10/2026 — solo lo seguro; el resto, por demanda)
+
+**Qué se midió (0 consultas):** con el criterio `alta` ya **no queda nada por añadir** (las 43 variantes
+entraron). De los tres modelos dudosos, **solo el Lancer 2018/2019 tenía el hueco real**: tenía 1.6, 1.8 y el
+EVO X de 402 PS, y le faltaba el **2.0 (4B11)**. El Grand Cherokee (3.6 y 5.7) y el Yaris (1.5) ya tenían
+sus motores normales; lo raro era el extra que metió el criterio (6.2 de 717 PS, GR 4WD de 272 PS).
+**No hay datos de la flota de la DGII en el repo** (`docs/placa-y-chasis-fuentes.md` trata de consultar
+la placa, no de estadísticas del parque), así que "lo que entró de verdad al parque" no se puede aplicar
+todavía.
+
+**Qué se hizo:** `python3 pipeline/agregar_variantes.py --vehicle-id 6741:25106 --ejecutar` (opción nueva;
+elige un motor concreto y 0 consultas para elegirlo). El Lancer 2.0 de **150 PS** (CY4A, 4B11) es el que se
+parece al Lancer ES de EE.UU. (decisión de Omar: "tu intuición es correcta"). TecDoc trae otras cuatro
+versiones del 4B11 (147-160 PS); no hay dato que diga cuál es la de RD. Costó **94 consultas**
+(13.693 → 13.787 en el acumulado) → 290 vehículos.
+
+**Lo que NO se hizo, a propósito:** cubrir los 89 motores distintos que faltan en 40 modelos (diésel, 2.4,
+etc.): ≈ 4.272 consultas, dos tercios de lo que queda del mes. **Regla de Omar:** el hueco se llena **en vivo**
+(el Worker, T-B21) cuando alguien consulte un motor que no esté.
+
+**Trampa nueva:** `agregar_variantes.py --ejecutar` carga el monolito (428 MB) y se cae por memoria en la
+sesión remota de ~3,9 GB (murió dos veces sin dejar rastro, con el catálogo intacto); correrlo en el PC
+de Omar funcionó a la primera.
 
 ### 4.4 · Verificar SIEMPRE en navegador (y contra partexact.com tras el deploy)
 
@@ -318,7 +400,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 ## 9. Presupuesto: cómo no gastar de más
 
-- **RapidAPI: 20.000 consultas/mes.** Van ~13.750 → quedan **~6.200**. El número exacto, en el panel.
+- **RapidAPI: 20.000 consultas/mes.** Van ~13.900 → quedan **~6.000**. El número exacto, en el panel.
 - El catálogo acumula `consultas` en el monolito (13.693) — **es el total histórico, no el del mes**.
 - **Caché que baja el coste a 0**: `data/raw/autodoc_variantes/` (listas de variantes por modelo),
   `data/raw/vpic_cache/` (VIN de NHTSA) y el propio monolito (caché de especificaciones por `articleId`).
@@ -341,7 +423,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor
    elegido" pinta números, algo se rompió en T-B22.
 6. `curl -s https://partexact.com/data/build/catalogo/index.json | head -c 300` para ver el índice
-   desplegado (288 vehículos, `pais_filtro: 67`).
+   desplegado (290 vehículos, `pais_filtro: 67`).
 7. Preguntarle al usuario qué quiere priorizar: **(a)** el mercado/Worker (4.1), **(b)** los originales
    en pantalla (4.2) o **(c)** la ronda 2 de motores (4.3). Los tres están listos para empezar; (a) y
    (b) no gastan cuota para desarrollarse y (c) sí.

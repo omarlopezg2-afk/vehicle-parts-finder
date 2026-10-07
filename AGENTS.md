@@ -80,7 +80,7 @@ ver T-B22 en `TASKS.md`.
 
 ## Estado en una línea (07/10/2026)
 
-288 vehículos · 2.813 categorías con piezas · índice partido de ~840 KB · 250/250→288/288 variantes con
+290 vehículos · 2.833 categorías con piezas · índice partido de ~840 KB · 250/250→290/290 variantes con
 combustible, cilindrada, potencia y código de motor · cuarta capa del sitio (mercado+motor+combustible)
 hecha y verificada en local y en partexact.com · 212 + 127 + 15 pruebas en verde · quedan ~6.200
 consultas RapidAPI este mes (el número exacto, en el panel de RapidAPI).

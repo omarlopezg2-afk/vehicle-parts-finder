@@ -339,6 +339,14 @@ function topeDe(env) {
   return Number.isFinite(n) && n > 0 ? n : TOPE_MES_POR_DEFECTO;
 }
 
+async function leerCache(env, clave) {
+  try {
+    return await env.CATALOGO.get(clave, "json");
+  } catch (_e) {
+    return null; // sin caché se sigue: mejor pagar consultas que no dar servicio
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -351,16 +359,8 @@ export default {
     let make = (q.get("make") || "").trim();
     let model = (q.get("model") || "").trim();
     let year = (q.get("year") || "").trim();
-    // OJO: el defecto tiene que ser el MISMO país con el que se armó el catálogo, porque los
-    // vehículo-tipos (y hasta los nombres comerciales: el Outlander aquí es ASX) cambian de un filtro
-    // a otro, y mezclarlos parte el catálogo en dos.
-    //
-    // CORREGIDO el 07/10/2026 (T-B25), con la medida delante: el catálogo se armó con el filtro 67 =
-    // REPÚBLICA DOMINICANA (data/seed/catalogo/vehiculos.json dice "pais": 67 y el monolito dice
-    // "pais_filtro": 67). Este archivo decía 261 (EE.UU.) por un error de los documentos, y el
-    // defecto estaba puesto a 261 por esa creencia equivocada. Ahora el defecto es 67, que es el
-    // mercado del producto y el del catálogo precalculado; el otro mercado se sigue probando abajo
-    // antes de decir que un modelo no existe, y el sitio puede pasar ?pais= cuando lo sepa.
+    // El defecto es el MISMO filtro con el que se armó el catálogo (67 = República Dominicana;
+    // T-B25). Ver `resolver()`: el filtro NO separa mercados.
     const pais = parseInt(q.get("pais") || "67", 10) || 67;
     // El visitante, al elegir su motor de la lista, manda el `vehicleId` de esa variante.
     const vehicleIdPedido = parseInt(q.get("vehicleId") || "", 10) || null;
@@ -396,14 +396,38 @@ export default {
     }
 
     const c = cliente(env, TOPE_MES - usadas);
-    let decodificado = null;
     try {
-      if (vin) {
-        decodificado = await decodificarVin(c, vin);
-        if (!decodificado) return json({ error: `no pudimos identificar el VIN ${vin}` }, 404);
-        make = decodificado.make;
-        model = decodificado.model;
-        year = decodificado.year;
+      if (!resolucion) {
+        let decodificado = null;
+        if (vin) {
+          decodificado = await decodificarVin(c, vin);
+          if (!decodificado) {
+            await registrarGasto(env, mes, usadas, c.estado.consultas);
+            return json({ error: `no pudimos identificar el VIN ${vin}`, consultas: c.estado.consultas }, 404);
+          }
+          make = decodificado.make;
+          model = decodificado.model;
+          year = decodificado.year;
+        }
+        resolucion = await resolver(c, { make, model, year, pais });
+        if (resolucion.error) {
+          await registrarGasto(env, mes, usadas, c.estado.consultas);
+          return json({ error: resolucion.error, consultas: c.estado.consultas }, 404);
+        }
+        if (decodificado) {
+          resolucion.decodificado = {
+            cilindrada: decodificado.cilindrada,
+            potencia: decodificado.potencia,
+          };
+        }
+        // Lo que costó 3-4 consultas se guarda: el siguiente visitante del mismo modelo-año no paga.
+        try {
+          await env.CATALOGO.put(claveMotores, JSON.stringify(resolucion), {
+            expirationTtl: DIAS_CACHE * 24 * 60 * 60,
+          });
+        } catch (_e) {
+          // si la caché falla, la respuesta se sirve igual
+        }
       }
       const base = await construir(c, {
         make, model, year, pais, vehicleId: vehicleIdPedido,
@@ -430,7 +454,7 @@ export default {
           // si la caché falla, la respuesta se sirve igual
         }
       }
-      return json({ fuente: "autodoc", ...respuesta });
+      return json({ fuente: cacheMotores ? "cache-motores" : "autodoc", ...respuesta });
     } catch (e) {
       await registrarGasto(env, mes, usadas, c.estado.consultas);
       return json({ error: String(e.message || e), consultas: c.estado.consultas }, 429);

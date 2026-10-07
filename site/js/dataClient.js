@@ -43,7 +43,8 @@
 
 import {
   categoriasParaSlug, etiquetaDeVariante, etiquetaDeVarianteCompleta, etiquetasDeVariantes,
-  filtrarArticulos, FRAGMENTOS_POR_SLUG, nombreDeMercado, vehiculoEnCatalogo, vehiculosEnCatalogo,
+  filtrarArticulos, FRAGMENTOS_POR_SLUG, nombreDeMercado, traducirCombustible, vehiculoEnCatalogo,
+  vehiculosEnCatalogo,
 } from "./catalogoMap.js";
 
 const REAL_PATHS = {
@@ -448,6 +449,122 @@ export async function matchVehiculoEnCatalogo(make, model, year) {
     year: Number(v.year) || year,
     variantes: candidatas.length,
     origen: "catalogo",
+  };
+}
+
+// -----------------------------------------------------------------------
+// T-B21 · El Worker (api.partexact.com): los carros que NO están en el catálogo precalculado.
+// -----------------------------------------------------------------------
+// Este es el ÚNICO lugar de site/ que hace red del lado de datos hacia el Worker. El Worker resuelve
+// por demanda un VIN o marca+modelo+año contra AUTODOC y devuelve la LISTA de motores (cacheada en
+// KV: el primer visitante de un modelo-año paga ~3 consultas, los demás 0).
+//
+// APAGADO POR DEFECTO (`activo: false`) A PROPÓSITO. Hoy el Worker sabe decir QUÉ carro es y con qué
+// motores salió, pero el sitio todavía no puede pedirle las piezas de una categoría (hacen falta los
+// `categoryId` de TecDoc por vehículo, ~6 consultas más por categoría). Encenderlo ahora gastaría
+// cupo de RapidAPI en identificar carros sin dar ningún número, y la regla 5 dice prometer solo lo
+// que se cumple. Se enciende cuando existan las piezas por demanda.
+//
+// Sin fixtures (regla 2): si el Worker no contesta, esta función devuelve null y no se inventa nada.
+
+const WORKER = { url: "https://api.partexact.com/vehiculo", activo: false };
+
+/** Solo para pruebas: cambia la URL y/o enciende el Worker. */
+export function _setWorkerParaTests(cfg = {}) {
+  if (cfg.url !== undefined) WORKER.url = cfg.url;
+  if (cfg.activo !== undefined) WORKER.activo = !!cfg.activo;
+}
+
+export function workerActivo() {
+  return WORKER.activo;
+}
+
+function numeroOnull(v) {
+  const n = parseFloat(String(v == null ? "" : v).replace(",", "."));
+  return Number.isFinite(n) ? n : null;
+}
+
+/** Una variante del Worker con la MISMA forma que una entrada del índice, para reusar las etiquetas. */
+function entradaDeVarianteDelWorker(v) {
+  const ps = numeroOnull(v.potenciaPs);
+  return {
+    clave: `v${v.vehicleId}`,
+    vehiculo: {
+      cilindrada_l: numeroOnull(v.cilindradaLt),
+      potencia_ps: ps == null ? null : Math.round(ps),
+      combustible: v.combustible || "",
+      motor: v.motor || "",
+      variante: v.variante || "",
+    },
+  };
+}
+
+/**
+ * Le pregunta al Worker qué carro es y con qué motores salió.
+ *
+ * @param {{vin?:string, make?:string, model?:string, year?:string|number, vehicleId?:number}} q
+ * @returns {Promise<null | {ok:false, status:number, error:string, cuotaAgotada:boolean}
+ *   | {ok:true, make:string, model:string, year:string, requiereMotor:boolean, filtroPais:number,
+ *      fuente:string, consultas:number,
+ *      variantes:Array<{clave:string, vehicleId:number, etiqueta:string, combustible:string}>,
+ *      vehiculo:null|{clave:string, vehicleId:number, etiqueta:string, combustible:string}}>}
+ *   `null` si el Worker está apagado o no se pudo hablar con él (nunca lanza).
+ */
+export async function consultarWorker(q = {}) {
+  if (!WORKER.activo || typeof _fetchImpl !== "function") return null;
+  const params = new URLSearchParams();
+  const vin = String(q.vin || "").trim().toUpperCase();
+  if (vin) {
+    params.set("vin", vin);
+  } else {
+    if (!q.make || !q.model || !q.year) return null;
+    params.set("make", String(q.make));
+    params.set("model", String(q.model));
+    params.set("year", String(q.year));
+  }
+  if (q.vehicleId) params.set("vehicleId", String(q.vehicleId));
+
+  let res;
+  let cuerpo;
+  try {
+    res = await _fetchImpl(`${WORKER.url}?${params.toString()}`);
+    cuerpo = await res.json();
+  } catch (_e) {
+    return null;
+  }
+  if (!res || !res.ok || !cuerpo || cuerpo.error) {
+    return {
+      ok: false,
+      status: (res && res.status) || 0,
+      error: String((cuerpo && cuerpo.error) || "sin respuesta"),
+      cuotaAgotada: !!res && res.status === 503,
+    };
+  }
+
+  const crudas = Array.isArray(cuerpo.variantes) ? cuerpo.variantes : [];
+  const entradas = crudas.map(entradaDeVarianteDelWorker);
+  const etiquetas = etiquetasDeVariantes(entradas);
+  const variantes = crudas.map((v, i) => ({
+    clave: etiquetas[i].clave,
+    vehicleId: v.vehicleId,
+    etiqueta: etiquetas[i].etiqueta,
+    combustible: v.combustible ? traducirCombustible(v.combustible) : "",
+  }));
+  const elegida = cuerpo.vehiculo
+    ? variantes.find((v) => Number(v.vehicleId) === Number(cuerpo.vehiculo.vehicleId)) || null
+    : null;
+  return {
+    ok: true,
+    make: cuerpo.make || "",
+    model: cuerpo.model || "",
+    year: String(cuerpo.year || ""),
+    // Se dice con QUÉ filtro se resolvió, pero NO es el mercado del carro (medido: no separa mercados).
+    filtroPais: cuerpo.filtroPais,
+    requiereMotor: !elegida,
+    fuente: cuerpo.fuente || "",
+    consultas: Number(cuerpo.consultas) || 0,
+    variantes,
+    vehiculo: elegida,
   };
 }
 

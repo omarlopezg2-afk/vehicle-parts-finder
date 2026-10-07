@@ -36,6 +36,8 @@ import {
   matchVehicleByMakeModelYear,
   getPartsByFitment,
   getPartsByCategory,
+  consultarWorker,
+  workerActivo,
   _isUsingFixture,
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
@@ -49,6 +51,7 @@ import { renderVehiclePicker } from "./vehiclePicker.js";
 import { saveVehicle, loadVehicle, clearVehicle, formatVehicleLabel } from "./vehicleSession.js";
 import { navegar, alCambiarRuta, alNavegar, estadoDesdeHash } from "./router.js";
 import { renderBandaDeConfianza } from "./confianza.js";
+import { numerosDeLaFicha, ordenarPiezasConOriginalPrimero } from "./numerosOriginales.js";
 
 const resultsEl = document.getElementById("results");
 const form = document.getElementById("search-form");
@@ -320,32 +323,6 @@ function detallesDeLaPieza(pieza, vehiculo) {
     if (lineas.length >= 3) break;
   }
 
-  // El número original del fabricante: lo que la gente reconoce y lo que pide en la tienda.
-  // Cuidado con la etiqueta: TecDoc cruza los números de OTRAS marcas que usaron la misma pieza
-  // (una pastilla de este Mitsubishi también es "original" de un Chrysler). Llamar "Original" a
-  // un número de Chrysler bajo un Mitsubishi confunde, así que se prefiere el de la marca del
-  // vehículo y, si no lo hay, se dice claramente de quién es.
-  const originales = Array.isArray(pieza.originales) ? pieza.originales.slice() : [];
-  if (originales.length) {
-    const marcaVehiculo = String((vehiculo && vehiculo.make) || "").toUpperCase();
-    originales.sort((a, b) => {
-      const sa = String(a.marca || "").toUpperCase() === marcaVehiculo ? 0 : 1;
-      const sb = String(b.marca || "").toUpperCase() === marcaVehiculo ? 0 : 1;
-      return sa - sb;
-    });
-    const primero = originales[0];
-    const numeros = originales.slice(0, 2).map((o) => o.numero).filter(Boolean);
-    if (numeros.length) {
-      const suya = String(primero.marca || "").toUpperCase() === marcaVehiculo;
-      const marca = primero.marca ? `${primero.marca} ` : "";
-      lineas.push({
-        clase: "numero-original",
-        texto: suya
-          ? `Original ${marca}${numeros.join(" · ")}`.trim()
-          : `También original de ${marca}${numeros.join(" · ")}`.trim(),
-      });
-    }
-  }
   return lineas;
 }
 
@@ -462,12 +439,13 @@ function renderNumerosDeParte(numeros, vehiculo) {
   nota.className = "search-hint";
   nota.textContent =
     "Confirmado por catálogo técnico (TecDoc) para tu vehículo exacto. Con este número cualquier " +
-    "tienda te da la pieza correcta.";
+    "tienda te da la pieza correcta. Cuando la pieza tiene número original del fabricante, va primero; " +
+    "el de reemplazo (otra marca, misma pieza) queda debajo.";
   seccion.appendChild(nota);
 
   const grid = document.createElement("div");
   grid.className = "numeros-grid";
-  for (const pieza of numeros) {
+  for (const pieza of ordenarPiezasConOriginalPrimero(numeros, vehiculo && vehiculo.make)) {
     const ficha = document.createElement("div");
     ficha.className = "numero-ficha";
 
@@ -482,14 +460,19 @@ function renderNumerosDeParte(numeros, vehiculo) {
       ficha.appendChild(img);
     }
 
+    // Originales primero (regla de Omar, 07/10/2026): si tenemos el número del fabricante del carro,
+    // es el que va arriba; el de reemplazo queda debajo. Si no lo tenemos, va el de reemplazo.
+    const datos = numerosDeLaFicha(pieza, vehiculo && vehiculo.make);
+    ficha.classList.add(datos.tipo === "original" ? "con-original" : "solo-reemplazo");
+
     const numero = document.createElement("div");
     numero.className = "numero";
-    numero.textContent = pieza.numero;
+    numero.textContent = datos.principal.numeros.join(" · ");
     ficha.appendChild(numero);
 
     const marca = document.createElement("div");
     marca.className = "numero-marca";
-    marca.textContent = pieza.marca;
+    marca.textContent = datos.principal.etiqueta;
     ficha.appendChild(marca);
 
     const nombre = document.createElement("div");
@@ -504,6 +487,31 @@ function renderNumerosDeParte(numeros, vehiculo) {
       d.className = linea.clase;
       d.textContent = linea.texto;
       ficha.appendChild(d);
+    }
+
+    if (datos.masOriginales > 0) {
+      const mas = document.createElement("div");
+      mas.className = "numero-detalle";
+      mas.textContent = `+ ${datos.masOriginales} originales más para esta pieza`;
+      ficha.appendChild(mas);
+    }
+    if (datos.reemplazo && datos.reemplazo.numero) {
+      const r = document.createElement("div");
+      r.className = "numero-original";
+      r.textContent = `Reemplazo ${datos.reemplazo.marca} ${datos.reemplazo.numero}`.replace(/\s+/g, " ").trim();
+      ficha.appendChild(r);
+    }
+    if (datos.sustituyeA) {
+      const q = document.createElement("div");
+      q.className = "numero-original";
+      q.textContent = `Pieza de alto rendimiento. Equivale al original ${datos.sustituyeA.marca} ${datos.sustituyeA.numeros.join(" · ")}`;
+      ficha.appendChild(q);
+    }
+    if (datos.tambienOriginalDe) {
+      const t = document.createElement("div");
+      t.className = "numero-original";
+      t.textContent = `También original de ${datos.tambienOriginalDe.marca} ${datos.tambienOriginalDe.numeros.join(" · ")}`;
+      ficha.appendChild(t);
     }
 
     grid.appendChild(ficha);
@@ -693,14 +701,132 @@ function renderVehiculoDecodificado(d) {
   resultsEl.appendChild(card);
 }
 
+// --- T-B21: los carros que NO están en el catálogo precalculado ---
+//
+// Se le pregunta al Worker (api.partexact.com) qué carro es y con qué motores salió. Dos reglas:
+//  1) Con más de un motor y ningún dato que lo decida, SE PREGUNTA. Nunca se elige uno.
+//  2) Todavía no hay piezas por demanda: se identifica el carro con sus tres datos y se dice, sin
+//     rodeos, que sus números aún no los tenemos. Prometer menos (regla 5).
+// Devuelve true si pintó algo (el que llama deja de buscar), false si no hizo nada.
+async function intentarConWorker(consulta, { vin } = {}) {
+  if (!workerActivo()) return false;
+  const res = await consultarWorker(consulta);
+  if (!res) return false;
+  if (!res.ok) {
+    if (res.cuotaAgotada) {
+      renderEmptyState(
+        "Estamos al límite de consultas de este mes para carros fuera de nuestro catálogo. " +
+          "Vuelve el mes que viene, o busca por número de parte."
+      );
+      return true;
+    }
+    return false; // el Worker no lo reconoce: sigue el mensaje de siempre
+  }
+  if (res.requiereMotor) {
+    renderPreguntaDeMotorDelWorker(res, vin, consulta);
+  } else {
+    renderCarroDelWorker(res, vin);
+  }
+  return true;
+}
+
+function renderPreguntaDeMotorDelWorker(res, vin, consulta) {
+  clearResults();
+  const seccion = document.createElement("section");
+  seccion.className = "pregunta-variante";
+
+  const h = document.createElement("h2");
+  h.textContent = "¿Cuál es tu carro exactamente?";
+  seccion.appendChild(h);
+
+  const nota = document.createElement("p");
+  nota.className = "search-hint";
+  nota.textContent =
+    `Tu ${res.make} ${res.model} ${res.year} salió con más de un motor y el número de la pieza ` +
+    "cambia de uno a otro. Elige el tuyo. Mientras no lo elijas no enseñamos ningún número: uno para " +
+    "el motor equivocado no le sirve a nadie.";
+  seccion.appendChild(nota);
+
+  const lista = document.createElement("div");
+  lista.className = "variante-opciones";
+  for (const variante of res.variantes) {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "variante-opcion";
+    boton.dataset.clave = variante.clave;
+    boton.textContent = variante.etiqueta;
+    boton.addEventListener("click", async () => {
+      // La lista ya está en la caché del Worker: elegir una variante cuesta 0 consultas.
+      const elegida = await consultarWorker({ ...consulta, vehicleId: variante.vehicleId });
+      if (elegida && elegida.ok && !elegida.requiereMotor) renderCarroDelWorker(elegida, vin);
+      else renderEmptyState("No pudimos confirmar esa versión. Intenta de nuevo o busca por número de parte.");
+    });
+    lista.appendChild(boton);
+  }
+  seccion.appendChild(lista);
+
+  if (res.variantes.some((v) => !v.combustible)) {
+    const aviso = document.createElement("p");
+    aviso.className = "search-hint";
+    aviso.textContent = "En las versiones que no dicen combustible, el catálogo no lo tiene confirmado.";
+    seccion.appendChild(aviso);
+  }
+  resultsEl.appendChild(seccion);
+}
+
+function renderCarroDelWorker(res, vin) {
+  clearResults();
+  const v = res.vehiculo;
+  const card = document.createElement("div");
+  card.className = "vehiculo-card";
+
+  const h = document.createElement("h2");
+  h.textContent = [res.make, res.model, res.year].filter(Boolean).join(" ");
+  card.appendChild(h);
+
+  const filas = [
+    ["Motor", v.etiqueta],
+    ["Combustible", v.combustible || "sin confirmar en el catálogo"],
+    ["Fabricado en", vin ? (origenDeVin(vin) || {}).pais : ""],
+  ].filter(([, valor]) => valor);
+  const dl = document.createElement("dl");
+  dl.className = "vehiculo-datos";
+  for (const [etiqueta, valor] of filas) {
+    const dt = document.createElement("dt");
+    dt.textContent = etiqueta;
+    const dd = document.createElement("dd");
+    dd.textContent = valor;
+    dl.appendChild(dt);
+    dl.appendChild(dd);
+  }
+  card.appendChild(dl);
+
+  const aviso = document.createElement("p");
+  aviso.className = "search-hint";
+  aviso.textContent =
+    "Identificamos tu carro y su motor, pero todavía no tenemos los números de pieza de esta versión. " +
+    "Con estos datos cualquier tienda te confirma la pieza, o busca por número de parte.";
+  card.appendChild(aviso);
+  resultsEl.appendChild(card);
+}
+
 async function runVinSearch(vin) {
   clearResults();
   const { vehicle, decodificado } = await resolverVehiculoPorVIN(vin);
 
   if (vehicle) {
     await resolveVehicleAndShowTree(vehicle);
+    // El país de fabricación sale del propio VIN y se dice también cuando el carro SÍ está en el catálogo.
+    const origen = lineaDeOrigen(vin);
+    if (origen) {
+      const p = document.createElement("p");
+      p.className = "search-hint vin-origen";
+      p.textContent = origen;
+      resultsEl.insertBefore(p, resultsEl.firstChild);
+    }
     return;
   }
+  if (await intentarConWorker({ vin }, { vin })) return;
   if (!decodificado) {
     // El país de fabricación sale del propio VIN (sin red). Lo decimos, pero sin dar ningún número:
     // saber dónde se fabricó no dice qué motor lleva.
@@ -766,6 +892,7 @@ function mountVehiclePicker() {
     clearResults();
     const vehicle = await matchVehicleByMakeModelYear(make, model, year);
     if (!vehicle) {
+      if (await intentarConWorker({ make, model, year })) return;
       renderEmptyState(
         `Todavía no tenemos piezas registradas para ${make} ${model} ${year} en el catálogo. ` +
           "Si tienes el VIN, intenta buscar con él, o revisa el número de parte directamente."
