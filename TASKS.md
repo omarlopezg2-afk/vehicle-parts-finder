@@ -265,3 +265,45 @@ nadie lo llama.
   y diciendo de dónde vienen.
 - Comprobar en KV que el contador del mes subió exactamente lo esperado.
 - Medir cuántas consultas cuesta la primera visita y cuántas la segunda (la segunda debe ser **0**).
+
+
+---
+
+## T-B22 · La variante: que el sitio no muestre piezas de un motor sin decir cuál (pendiente, diseño cerrado)
+
+**El problema, medido:** el catálogo guarda **dos variantes por modelo-año** (ej. "Toyota Corolla
+2020 (1.8 gasolina)" y "Toyota Corolla 2020 (2.0 gasolina)", cada una con su `autodoc.vehicleId` y
+sus piezas propias). `vehiculoEnCatalogo()` devuelve **la primera que coincide** por marca/modelo/año,
+así que el sitio puede estar mostrando las pastillas del 1.8 a quien tiene el 2.0 **sin avisar**.
+Un número exacto para el motor equivocado es peor que no dar número.
+
+### 1. Datos (`site/js/catalogoMap.js` + `site/js/dataClient.js`)
+- `vehiculosEnCatalogo(catalogo, vehiculo)` -> **todas** las entradas que coinciden por marca/modelo/año
+  (hoy se queda con la primera). Devolver también, por entrada, la etiqueta de variante legible
+  (`etiqueta` ya la trae: "…2020 (1.8 gasolina)"; y `autodoc` trae `capacityLt`, `powerPs`,
+  `engineCodes`).
+- Si hay **una sola**, se sigue como hoy. Si hay **varias**, no elegir: devolverlas todas.
+
+### 2. Interfaz (`site/js/app.js` + `site/index.html` + `site/css/styles.css`)
+- Con varias variantes: un selector **"¿Cuál es tu motor?"** con las opciones legibles
+  (cilindrada + potencia + código de motor), y **las piezas no se pintan hasta que elija**.
+- Con una sola variante: pintar las piezas **diciendo cuál es** ("Piezas para 1.8 gasolina (2ZR-FE)").
+- Regla que no se rompe: **nunca** mostrar un número sin decir a qué variante corresponde.
+
+### 3. Si el visitante trae VIN
+- `vpicClient` ya da cilindrada/cilindros/potencia: usarlos para **elegir la variante** en vez de
+  preguntar (el camino `#/vin/<VIN>` queda exacto, sin selector).
+- Si el VIN no permite decidir entre dos candidatas, se pregunta igual que sin VIN. Ante la duda,
+  preguntar; nunca adivinar.
+
+### 4. Pruebas
+- Dos variantes en el índice -> se ofrecen las dos y **no** se pinta ninguna sin elegir.
+- Elegir una -> las piezas son las de esa variante y el rótulo la nombra.
+- VIN de un 2.0 con dos candidatas -> se elige la del 2.0 sin preguntar.
+- Marca/modelo/año que no está en el catálogo -> nada, como hoy (y ahí entra T-B21).
+
+### 5. Verificación antes de darlo por hecho
+- Chrome headless: `#/vehiculo/Toyota/Corolla/2020/...` debe mostrar el selector de motor; elegir
+  cada una debe cambiar las piezas, y ninguna pantalla debe mostrar un número sin su variante.
+- Contar en el índice cuántos modelos-año tienen más de una variante (debería ser la mayoría de los
+  del bloque: 2 por modelo-año).
