@@ -1,7 +1,10 @@
 # Piloto T-B10 — la prueba gratis de la API de catálogo de AUTODOC
 
 **Decidido el 06/10/2026**: antes de pagar nada, se gasta el plan **gratis (100 consultas)** y se
-mira qué dato devuelve de verdad. **No se ejecuta todavía**: lo dispara el usuario cuando diga.
+mira qué dato devuelve de verdad.
+
+**ESTADO: EJECUTADO el 07/10/2026.** 29 de 100 consultas usadas. Resultado: **la API sirve** — ver
+la sección RESULTADO más abajo. Queda pendiente la decisión del usuario de pasar al plan de 29 USD/mes.
 
 ## Por qué esta prueba decide tanto
 
@@ -43,6 +46,43 @@ decisiva a la menos):
 
 **Presupuesto de consultas**: 100 disponibles; la prueba completa son unas **20** (3 vehículos ×
 identificación + 3 categorías + 2 detalles, más el control). Sobra margen para repetir algo.
+
+
+## RESULTADO (07/10/2026) — probado con la clave real. Se gastaron 29 de las 100 consultas gratis
+
+**El criterio de decisión escrito arriba (antes de ver nada) se cumple.** Las seis preguntas,
+respondidas con datos reales:
+
+1. **¿Cómo identifica los vehículos?** Híbrido. Decodifica el VIN por su cuenta
+   (`/api/vin/decoder-v5/{vin}` -> HTTP 200 con la ficha completa del vehículo) **pero para llegar a
+   las piezas hay que resolver su jerarquía TecDoc**: fabricante -> modelo -> variante
+   (`vehicleId`) -> categoría -> artículos. El mapeo es directo.
+2. **¿Devuelve el número de parte?** Sí, y como campo propio:
+   `{"vehicleId":"126680","categoryId":"100027","countArticles":10,"articles":[{"articleNo":"ADBP450211","supplierName":"BLUE PRINT","articleProductName":"Brake Caliper","s3image":"https://..."}]}`
+   — número, marca, nombre de la pieza y **foto**.
+3. **¿La referencia cruzada?** Sí, y probada con un número de nuestro propio catálogo:
+   `04152YZZA1` (Toyota) devuelve `articleNo: 20-50517-SX` **más los otros OEM**
+   (`04152-0V010`, `04152-31050`).
+4. **¿Categorías?** El árbol TecDoc completo de ese vehículo (396 nodos con jerarquía
+   `categoryId1..4`: frenos, aire acondicionado, accesorios...).
+5. **¿El plan gratis restringe endpoints?** No se topó con ninguna restricción en 29 consultas
+   (idiomas, países, VIN, fabricantes, modelos, variantes, categorías, artículos y OEM).
+6. **¿El número viene limpio?** Sí: `articleNo` es un campo propio. No hay que sacarlo del texto
+   como pasa con la Browse API de eBay.
+
+**El mercado americano está cubierto**: el Outlander Sport del usuario está en el catálogo
+(`modelId 8631`, 30 variantes), y la del motor que dice su VIN (2.0, **148 HP**, código 4B11,
+1998 cc, gasolina) existe como `vehicleId 126680`. Detalle revelador: **el mismo modelo se llama
+`OUTLANDER SPORT` con el filtro de EE.UU. y `ASX` con el de República Dominicana** — el filtro de
+país cambia el nombre comercial, y RD está en la lista (`id 67`) igual que EE.UU. (`id 261`).
+
+**Arquitectura (crítico)**: la clave **nunca** puede viajar al frontend. El pipeline la usa como
+secreto en GitHub Actions y el sitio sigue sirviendo JSON estático — exactamente como hace hoy con
+el fitment de T-B8.
+
+**Coste real medido**: ~26 consultas por vehículo catalogado (1 del VIN + 3 de jerarquía + 1 de
+variantes + 1 de categorías + ~20 de artículos). Con el plan de 29 USD (20.000 consultas) salen
+**unos 770 vehículos al mes** con catálogo completo; con caché por (vehicleId, categoryId), más.
 
 ## Criterio de decisión (escrito antes de ver el resultado, para no engañarnos después)
 

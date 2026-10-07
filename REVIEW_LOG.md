@@ -924,6 +924,38 @@ hacen en dos minutos y evitan buscar un problema donde no está.
 
 ---
 
+## 07/10/2026 — **La prueba de AUTODOC dice que sí: el número de parte es alcanzable por 29 USD/mes**
+
+El usuario creó la cuenta de RapidAPI y puso su clave en `.env` (el asistente le abrió el archivo en el
+editor para que pegara el valor sin que pasara por el chat). Con eso se ejecutó el piloto de T-B10: **29
+de las 100 consultas gratis**, y las seis preguntas del plan quedaron respondidas **con datos reales**.
+
+Lo que se comprobó, en orden: el decodificador de VIN de la propia API reconoce el VIN del usuario y
+devuelve la ficha completa del vehículo; el catálogo es TecDoc (698 fabricantes, 244 modelos solo de
+Mitsubishi) y **el Outlander Sport está dentro**, con 30 variantes; el filtro de país existe y **cambia
+el nombre comercial** (`OUTLANDER SPORT` con EE.UU., `ASX` con República Dominicana); y la cadena
+completa termina en **piezas con `articleNo` propio, marca (`BLUE PRINT`, `BOSCH`, `FEBI BILSTEIN`),
+nombre y foto** para la variante exacta del motor del VIN (2.0, 148 HP, código 4B11). Además, la
+referencia cruzada probada con un número **de nuestro propio catálogo** (`04152YZZA1`) devuelve el
+equivalente aftermarket (`20-50517-SX`) y los otros OEM de Toyota.
+
+**Ficha nueva del proyecto**: `fetch_fitment.py` (T-B8) seguirá sirviendo como capa gratuita, pero el
+**número de parte** deja de ser un problema sin resolver: hay una API que lo da, con precio público y en
+autoservicio. Queda **una decisión de negocio** (pasar al plan de 29 USD/mes) y, tras ella, el pipeline
+de T-B13.
+
+**Detalle arquitectónico que no se puede pasar por alto**: la clave vive **solo** en el pipeline (como
+secreto de GitHub Actions). El sitio es estático y no puede llevar la clave nunca; las llamadas se harán
+en el build, exactamente como ya ocurre con el fitment.
+
+**Método**: en esta prueba hubo dos correcciones propias, y las dos las cazó el propio sistema —el
+endpoint `list-vehicles-id` devolvió 404 porque **exige un parámetro de país** que en la lista de
+endpoints aparece al final de la ruta (se corrigió leyendo la respuesta), y el nombre del campo de la
+respuesta no era el que se suponía sino `modelTypes`. Ninguna de las dos se dio por buena sin ver la
+respuesta real.
+
+---
+
 ## 06/10/2026 — **El VIN entra como entrada de verdad, y la placa sale del camino**
 
 **Lo que preguntó el usuario**: ofrecer piezas buscando por **placa**, con la DGII como única
