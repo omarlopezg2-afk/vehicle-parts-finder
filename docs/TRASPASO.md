@@ -87,42 +87,56 @@ pasa por `site/js/dataClient.js` (ver `CONTRACTS.md`, "Regla de escalado").
 
 ## 4. LO QUE HAY QUE HACER (por orden, con coste y criterio de aceptación)
 
-### 4.1 · Que el visitante pueda elegir DE DÓNDE LLEGÓ SU CARRO (el mercado) — lo siguiente
+### 4.1 · El ORIGEN del carro (país de fabricación, chasis japonés, motor) — lo siguiente
 
-**Por qué es importante y no un adorno (dicho por el usuario, 07/10/2026):** en RD entran muchísimos
-carros de **Corea** (buena parte **adaptados a gas allá**, y llegan así) y de **Japón** con la **guía a
-la derecha**, a la que aquí se le hace el **cambio a la izquierda** antes de venderlo al consumidor
-final. Y hay un dato técnico que lo hace imprescindible: **vPIC es la base de la NHTSA (EE.UU.) y no
-decodifica un chasis japonés/coreano**, así que para esos carros el VIN no sirve de entrada: **el
-mercado + el motor son la única puerta.**
+**CORREGIDO el 07/10/2026 tras medirlo y hablarlo con el usuario.** La versión anterior de esta sección
+planteaba un selector de mercado que se resolvía con `?pais=` del Worker. **Eso no funciona:** el
+Corolla 2016 y el Honda N-BOX 2016 dieron **exactamente la misma variante** con `pais=67`, `127` y `261`
+(18 consultas gastadas en la prueba). El filtro de país de TecDoc no separa mercados. Y el usuario aclaró
+que **nunca se pretendió sacar el mercado de la API**: el país sale **del propio VIN**.
 
-**Qué hay que construir:**
-1. `site/js/dataClient.js`: una función que pregunte al Worker (`api.partexact.com/vehiculo?...&pais=`)
-   con el VIN o marca+modelo+año. Es el único módulo que puede hacer red del lado de datos.
-2. `site/js/app.js`: añadir **mercado** a la pregunta única ("¿de dónde llegó tu carro?": República
-   Dominicana · EE.UU. · Japón · Corea · otro) y **el rótulo del mercado siempre visible** junto al
-   número. Con VIN, no se pregunta nada (manda el VIN), salvo que el VIN no esté en vPIC: entonces el
-   mercado es el camino.
-3. Los **dos avisos** que no se pueden callar:
-   - **Japón → guía invertida aquí:** en las categorías de **dirección** (cremallera, columna, volante,
-     mangueras) las piezas del catálogo JDM son de un coche con la guía al otro lado. Se dice y se
-     remite al taller; no se presenta ese número como "el de tu coche". El resto (motor, frenos,
-     filtros, suspensión) sí es del JDM.
-   - **Corea → gas adaptado allá:** hay **dos casos** que no se mezclan. Si el modelo tiene **versión de
-     gas del mercado coreano** (de fábrica), se ofrece ESA y se da su número (`Kia RIO IV` trae `1.25
-     LPG`, mismo motor `G4LA`; el `Hyundai Elantra 2020 · 1.6 LPI · G4FG` ya está en el catálogo). Si
-     es una **adaptación de taller** (aquí o allá sobre una versión de gasolina), **no se da el número
-     de gasolina como si fuera el suyo**: se dice que las piezas de motor las confirme el taller.
+**Por qué importa (dicho por el usuario):** en RD entran muchos carros de **Corea** y de **Japón**. Los
+japoneses de mercado interno traen la **guía a la derecha** y aquí se les hace el **cambio a la
+izquierda**. vPIC (NHTSA) **no decodifica** chasis japoneses/coreanos.
 
-**Coste:** el Worker **ya acepta `?pais=`** y cachea por `cat:{pais}:{vin|marca:modelo:año}`, así que el
-primer visitante de un mercado nuevo paga y los demás no. Tope del Worker: 2.000/mes. Antes de
-prometerlo, comprobar con `?pais=127` (Japón) y `?pais=261` (EE.UU.) que el mismo modelo da **variantes
-distintas**; si dan lo mismo, el filtro no está haciendo nada y hay que investigar antes de venderlo.
+**Qué sabemos y qué NO sabemos (no mezclar):**
+| Dato | De dónde sale | Qué dice |
+|---|---|---|
+| País de **fabricación** | 2 primeros caracteres del VIN (`site/js/vinOrigen.js`, sin red) | Dónde se hizo. **No** el mercado de venta: un `JT…` puede ser guía izquierda |
+| **Guía a la derecha** | **Solo** un chasis japonés de mercado interno (`NZE141-1234567`, `chasisJapones()`) | Es JDM: dirección a revisar con el taller. El VIN `J…` de 17 caracteres **no** lo dice |
+| **Motor** | La pregunta "¿Cuál es tu carro exactamente?" (variante `vehicleId`) | Es lo que decide el número de parte |
+| **Gas adaptado** | No hay dato en ningún lado | Ver abajo |
 
-**Criterio de aceptación:** elegir Japón resuelve un modelo que solo existe allí (un kei, por ejemplo) y
-su rótulo dice Japón; en un coche japonés, la categoría de dirección avisa de la guía invertida; un
-coreano a gas cuyo modelo tenga versión LPG ofrece **esa** variante. Todo con pruebas que no necesiten
-red (`_setFetchForTests` en `site/tests/`) y **una verificación en navegador** (sección 5).
+**Gas (regla del usuario, 07/10/2026):** un carro que sale de fábrica a gasolina y se le **adapta** gas
+conserva su motor y **todo su sistema de gasolina**; el kit **agrega** inyección de gas, tanque,
+medidores y una computadora. Por tanto **los números de la versión a gasolina siguen siendo los suyos y
+NO se avisa nada en ninguna categoría** (la regla anterior, "el taller confirma las piezas de motor", era
+excesiva y se retira). Si el modelo tiene **versión de gas de fábrica** en el catálogo (Kia Rio IV 1.25
+LPG, Hyundai Elantra 1.6 LPI) y el visitante la elige, se da **esa** variante con su número. Los
+repuestos del kit en sí no están en el catálogo y no se prometen.
+
+**Hecho:** `site/js/vinOrigen.js` + `site/tests/vinOrigen.test.js` (9 pruebas), "Fabricado en" en la ficha
+por VIN, mensaje para VIN que vPIC no decodifica y aviso de dirección para chasis japonés (en `app.js`).
+
+**Worker, HECHO el 07/10/2026 (15 pruebas en verde; AÚN SIN DESPLEGAR: falta `npx wrangler deploy`, que
+lo hace Omar con su login de Cloudflare):** ya no elige la primera variante (devuelve `variantes` y
+`requiereMotor`; sin motor conocido no pide ni da piezas), acepta `&vehicleId=` para la variante que
+elige el visitante, arregló el `paisAlterno` y dice en `filtroPais` con qué filtro se resolvió. El sitio
+todavía no lo llama (T-B21), así que nada de esto cambia producción hasta entonces.
+
+**Falta:**
+1. ~~Arreglar el Worker~~ (hecho, ver arriba). Lo que se corrigió:
+   - `construir()` usa `paisAlterno` sin recibirlo: si el modelo no existe en el mercado pedido lanza un
+     error de variable no definida en vez de probar el otro mercado.
+   - Devuelve **una sola** variante (`elegirVariante`) y, sin motor, elige la primera (el 1.3 del
+     Corolla, no el 1.8 que se ve en RD): debe devolver **la lista** y dejar que el sitio pregunte.
+   - Quitar `?pais=` como si filtrara, o decir en la respuesta qué mercado se usó realmente.
+2. Que el sitio llame al Worker para los VIN/modelos que no están en el catálogo (T-B21), usando la lista
+   de variantes para preguntar el motor.
+3. Verificar en navegador con un VIN japonés, uno coreano y un chasis `NZE141-…` (sección 5).
+
+**Aceptación:** un VIN `KMH…` muestra "Fabricado en Corea del Sur" y pregunta el motor; un chasis
+`NZE141-…` explica que es JDM y avisa solo de la dirección; ningún carro "con gas" cambia números.
 
 ### 4.2 · Pintar los NÚMEROS ORIGINALES del vehículo (es el número que el cliente pide en la tienda)
 
@@ -207,7 +221,7 @@ Para ver el aspecto real, `--screenshot=/tmp/x.png --window-size=1100,860` y mir
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas: las tres suites. Hoy 212 + 118 + 10 en verde.
+# pruebas: las tres suites. Hoy 212 + 127 + 15 en verde.
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -321,7 +335,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 1. `cat AGENTS.md docs/TRASPASO.md` y `TASKS.md` (T-B22 → T-B27). *(Lo que estás leyendo.)*
 2. `git log --oneline -8` y `git status` para ver dónde quedó el árbol.
-3. Las tres suites de pruebas (sección 6): 212 + 118 + 10 en verde antes de tocar nada.
+3. Las tres suites de pruebas (sección 6): 212 + 127 + 15 en verde antes de tocar nada.
 4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 288" y
    "0 con combustible contradictorio".
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor

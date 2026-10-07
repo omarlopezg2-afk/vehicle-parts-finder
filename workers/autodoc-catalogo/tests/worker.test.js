@@ -83,7 +83,7 @@ test("MITSUBISHI le gana a MITSUBISHI (BJC): la marca, no la empresa conjunta", 
   const env = envFalso();
   globalThis.fetch = doble([]);
   const cuerpo = await (await llamar("make=Mitsubishi&model=Outlander Sport&year=2020", env)).json();
-  assert.equal(cuerpo.vehiculo.make, "MITSUBISHI");
+  assert.equal(cuerpo.make, "MITSUBISHI");
 });
 
 test("un modelo con generaciones elige la de su época, no la primera", async () => {
@@ -91,7 +91,59 @@ test("un modelo con generaciones elige la de su época, no la primera", async ()
   globalThis.fetch = doble([]);
   // 2020: "OUTLANDER III" (2012-) y no "OUTLANDER" (2003-2006), que es la que empataba antes.
   const cuerpo = await (await llamar("make=Mitsubishi&model=Outlander&year=2020", env)).json();
-  assert.equal(cuerpo.vehiculo.variante, "2.0");
+  assert.equal(cuerpo.model, "OUTLANDER III");
+});
+
+test("sin saber el motor NO se elige: se devuelve la lista y se pide que el visitante elija", async () => {
+  const registro = [];
+  globalThis.fetch = doble(registro);
+  const cuerpo = await (await llamar("make=Mitsubishi&model=Outlander&year=2020&categorias=100027", envFalso())).json();
+  assert.equal(cuerpo.vehiculo, null, "dos motores y ningún dato: no se elige la primera");
+  assert.equal(cuerpo.requiereMotor, true);
+  assert.deepEqual(cuerpo.variantes.map((v) => v.vehicleId), [126680, 126681]);
+  assert.deepEqual(cuerpo.piezas, [], "sin motor no se pide ni se da ninguna pieza");
+  assert.ok(!registro.some((u) => u.includes("/api/articles/")), "ni una consulta de piezas");
+});
+
+test("con el vehicleId que el visitante eligió se resuelve esa variante y sus piezas", async () => {
+  globalThis.fetch = doble([]);
+  const cuerpo = await (await llamar(
+    "make=Mitsubishi&model=Outlander&year=2020&vehicleId=126681&categorias=100027", envFalso())).json();
+  assert.equal(cuerpo.vehiculo.vehicleId, 126681);
+  assert.equal(cuerpo.vehiculo.motor, "4B12");
+  assert.equal(cuerpo.requiereMotor, false);
+  assert.equal(cuerpo.piezas[0].articulos[0].numero, "D2N097");
+});
+
+test("un vehicleId que no es de ese modelo se rechaza, no se usa", async () => {
+  globalThis.fetch = doble([]);
+  const res = await llamar("make=Mitsubishi&model=Outlander&year=2020&vehicleId=999999", envFalso());
+  assert.equal(res.status, 404);
+  assert.match((await res.json()).error, /no es de/);
+});
+
+test("si el modelo no existe en el filtro pedido se prueba el otro y se dice cuál se usó", async () => {
+  // Antes esto lanzaba ReferenceError (paisAlterno sin definir) y respondía 429.
+  const registro = [];
+  const base = doble(registro);
+  globalThis.fetch = async (url, init) => {
+    const u = String(url);
+    if (u.includes("/api/models/list/") && u.includes("country-filter-id/127")) {
+      return { ok: true, status: 200, json: async () => ({ models: [] }) };
+    }
+    return base(url, init);
+  };
+  const res = await llamar("make=Mitsubishi&model=Outlander&year=2020&pais=127", envFalso());
+  const cuerpo = await res.json();
+  assert.equal(res.status, 200);
+  assert.equal(cuerpo.filtroPais, 261);
+});
+
+test("un VIN que da cilindrada y potencia elige su motor sin preguntar", async () => {
+  globalThis.fetch = doble([]);
+  const cuerpo = await (await llamar("vin=JA4AP4AU3LU023739", envFalso())).json();
+  assert.equal(cuerpo.requiereMotor, false);
+  assert.equal(cuerpo.vehiculo.vehicleId, 126680);
 });
 
 test("con la cuota agotada NO se consulta nada y se dice claro", async () => {
@@ -132,8 +184,11 @@ test("el mercado por defecto es el del catálogo: República Dominicana (67)", a
   await llamar("make=Toyota&model=Corolla&year=2019", envFalso());
   assert.ok(registro.some((u) => u.includes("country-filter-id/67")),
     `el defecto tiene que ser 67; se pidió: ${registro.join(" | ")}`);
-  assert.ok(!registro.some((u) => u.includes("country-filter-id/261")),
-    "no debe pedir EE.UU. por defecto");
+  // Si el modelo no está en el 67 se prueba el otro filtro (la salida de emergencia de construir()),
+  // pero lo PRIMERO que se pide es siempre el 67.
+  const primera = registro.find((u) => u.includes("/api/models/list/"));
+  assert.ok(primera && primera.includes("country-filter-id/67"),
+    `el primer filtro pedido debe ser 67; fue: ${primera}`);
 });
 
 test("si el sitio dice el mercado (?pais=), se respeta", async () => {

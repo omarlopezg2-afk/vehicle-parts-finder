@@ -40,6 +40,7 @@ import {
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
 import { decodeVIN } from "./vpicClient.js";
+import { origenDeVin, chasisJapones } from "./vinOrigen.js";
 import { getNumerosDeCategoria, getSlugsConNumeros, getVariantesDeVehiculo } from "./dataClient.js";
 import { renderVehicleTree, renderCategoryGrid } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
@@ -668,7 +669,7 @@ function renderVehiculoDecodificado(d) {
     ["Tracción", d.driveType],
     ["Transmisión", d.transmission],
     ["Combustible", d.fuelType],
-    ["Fabricado en", d.plantCountry],
+    ["Fabricado en", d.plantCountry || (origenDeVin(d.vin) || {}).pais],
   ].filter(([, valor]) => valor);
 
   const dl = document.createElement("dl");
@@ -701,9 +702,16 @@ async function runVinSearch(vin) {
     return;
   }
   if (!decodificado) {
+    // El país de fabricación sale del propio VIN (sin red). Lo decimos, pero sin dar ningún número:
+    // saber dónde se fabricó no dice qué motor lleva.
+    const origen = origenDeVin(vin);
+    const pista = origen
+      ? ` Por su inicio (${origen.codigo}) fue fabricado en ${origen.pais}, pero la base oficial ` +
+        "que usamos no detalla su motor: elige tu vehículo en el selector y confirma el motor."
+      : "";
     renderEmptyState(
       `No pudimos identificar el VIN "${vin}". Comprueba que sean 17 caracteres ` +
-        "(un VIN no usa las letras I, O ni Q) o busca por número de parte."
+        "(un VIN no usa las letras I, O ni Q) o busca por número de parte." + pista
     );
     return;
   }
@@ -718,6 +726,20 @@ async function runSearch(rawQuery) {
   }
 
   await showFixtureBannerIfNeeded();
+
+  const jdm = chasisJapones(query);
+  if (jdm) {
+    // Chasis de mercado interno japonés (código-serie): no es un VIN ni un número de parte.
+    // No damos ningún número desde aquí; avisamos de lo que SÍ sabemos de estos carros.
+    clearResults();
+    renderEmptyState(
+      `"${query.trim().toUpperCase()}" es un chasis japonés de mercado interno (código de modelo ` +
+        `${jdm.codigoModelo}). Todavía no resolvemos piezas por chasis japonés: elige tu vehículo en ` +
+        "el selector y confirma el motor. Ojo: estos carros nacen con la guía a la derecha; las piezas " +
+        "de dirección (cremallera, columna, volante, mangueras) confírmalas con tu taller."
+    );
+    return;
+  }
 
   if (isLikelyVIN(query)) {
     const vin = cleanVIN(query);
