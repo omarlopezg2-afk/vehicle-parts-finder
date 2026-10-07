@@ -218,3 +218,79 @@ test("/salud responde sin tocar nada", async () => {
   const res = await worker.fetch(new Request("https://w.dev/salud"), envFalso());
   assert.equal((await res.json()).ok, true);
 });
+
+// --- T-B21: la lista de motores se paga UNA vez por modelo-año (o VIN) ---
+
+test("la lista de motores se cachea: el segundo visitante del mismo modelo-año no gasta nada", async () => {
+  const registro = [];
+  globalThis.fetch = doble(registro);
+  const env = envFalso();
+  const primera = await (await llamar("make=Mitsubishi&model=Outlander&year=2020", env)).json();
+  assert.equal(primera.fuente, "autodoc");
+  assert.ok(primera.consultas >= 3);
+  const gastadasAntes = registro.length;
+
+  const segunda = await (await llamar("make=Mitsubishi&model=Outlander&year=2020", env)).json();
+  assert.equal(segunda.fuente, "cache");
+  assert.equal(segunda.consultas, 0);
+  assert.equal(registro.length, gastadasAntes, "ni una consulta más a AUTODOC");
+  assert.deepEqual(segunda.variantes.map((v) => v.vehicleId), [126680, 126681]);
+  assert.equal(segunda.requiereMotor, true);
+});
+
+test("con los motores en caché, elegir uno (vehicleId) tampoco gasta nada", async () => {
+  const registro = [];
+  globalThis.fetch = doble(registro);
+  const env = envFalso();
+  await llamar("make=Mitsubishi&model=Outlander&year=2020", env);
+  const antes = registro.length;
+  const cuerpo = await (await llamar("make=Mitsubishi&model=Outlander&year=2020&vehicleId=126681", env)).json();
+  assert.equal(cuerpo.vehiculo.vehicleId, 126681);
+  assert.equal(cuerpo.vehiculo.motor, "4B12");
+  assert.equal(cuerpo.consultas, 0);
+  assert.equal(registro.length, antes);
+});
+
+test("con los motores en caché se responde aunque la cuota del mes esté agotada", async () => {
+  globalThis.fetch = doble([]);
+  const envConCache = envFalso();
+  await llamar("make=Mitsubishi&model=Outlander&year=2020", envConCache);
+  // Mismo KV, pero ahora la cuota está agotada.
+  const agotada = { ...envConCache, CUOTA: { get: async () => "18000", put: async () => {} } };
+  const res = await llamar("make=Mitsubishi&model=Outlander&year=2020", agotada);
+  assert.equal(res.status, 200);
+  assert.equal((await res.json()).variantes.length, 2);
+});
+
+test("un VIN cacheado recuerda su cilindrada: elige el motor sin volver a decodificar", async () => {
+  const registro = [];
+  globalThis.fetch = doble(registro);
+  const env = envFalso();
+  await llamar("vin=JA4AP4AU3LU023739", env);
+  const antes = registro.length;
+  const cuerpo = await (await llamar("vin=JA4AP4AU3LU023739", env)).json();
+  assert.equal(cuerpo.vehiculo.vehicleId, 126680);
+  assert.equal(cuerpo.requiereMotor, false);
+  assert.equal(registro.length, antes, "el VIN ya estaba decodificado");
+});
+
+test("con los motores en caché y un vehicleId, pedir piezas solo gasta las piezas", async () => {
+  const registro = [];
+  globalThis.fetch = doble(registro);
+  const env = envFalso();
+  await llamar("make=Mitsubishi&model=Outlander&year=2020", env);
+  registro.length = 0;
+  const cuerpo = await (await llamar(
+    "make=Mitsubishi&model=Outlander&year=2020&vehicleId=126681&categorias=100027", env)).json();
+  assert.equal(cuerpo.piezas[0].articulos[0].numero, "D2N097");
+  assert.ok(!registro.some((u) => u.includes("/api/manufacturers/") || u.includes("/list-vehicles-types/")),
+    "no repite fabricante/modelo/variantes");
+});
+
+test("un error (modelo que no existe) NO se cachea", async () => {
+  globalThis.fetch = doble([]);
+  const env = envFalso();
+  const res = await llamar("make=Mitsubishi&model=Zzzz&year=2020", env);
+  assert.equal(res.status, 404);
+  assert.ok(![...env._kv.keys()].some((k) => k.startsWith("var:")));
+});

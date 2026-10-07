@@ -239,15 +239,29 @@ async function decodificarVin(c, vin) {
   };
 }
 
+// Los campos de una variante que hacen falta para elegir y para describirla. Se guardan SOLO estos en
+// la caché de KV (una lista de modelo-año pesa unos pocos KB).
+const CAMPOS_VARIANTE = [
+  "vehicleId", "engId", "typeEngineName", "engineCodes", "capacityLt", "powerPs", "fuelType",
+  "constructionIntervalStart", "constructionIntervalEnd",
+];
+function recortar(v) {
+  const o = {};
+  for (const k of CAMPOS_VARIANTE) o[k] = v[k] == null ? null : v[k];
+  return o;
+}
+
 /**
- * La cadena de un vehículo a sus variantes: fabricante -> modelo -> variantes (3 consultas).
+ * PASO CON RED: de un vehículo a sus variantes (fabricante -> modelo -> variantes = 3 consultas).
+ * El resultado NO depende del motor que elija el visitante, así que se cachea y se paga UNA vez por
+ * modelo-año (o por VIN).
  *
  * OJO con `pais`: es el filtro `country-filter-id` de TecDoc y MEDIDO el 07/10/2026 no separa
  * mercados (el Corolla 2016 y el N-BOX 2016 devuelven la misma variante con 67, 127 y 261). Se
  * respeta porque cambia los `vehicleId`/nombres de algunos modelos (el Outlander aquí es ASX), pero
  * NO sirve para decir "este carro es del mercado X". El país del carro se lee del VIN en el sitio.
  */
-async function construir(c, { make, model, year, pais, cilindrada, potencia, vehicleId }) {
+async function resolver(c, { make, model, year, pais }) {
   const f = await resolverFabricante(c, make);
   if (!f) return { error: `no encontramos la marca "${make}"` };
   let m = await resolverModelo(c, f.manufacturerId, model, year, pais);
@@ -261,12 +275,27 @@ async function construir(c, { make, model, year, pais, cilindrada, potencia, veh
   }
   if (!m) return { error: `no encontramos el modelo "${model}" de ${year}` };
   const variantes = await variantesDelModelo(c, m.modelId, pais);
-  const { elegida, candidatos } = elegirVariante(variantes, {
-    anio: year, cilindrada, potencia, vehicleId,
+  return {
+    make: f.manufacturerName,
+    model: m.modelName,
+    year: String(year || ""),
+    filtroPais: pais,
+    variantes: variantes.map(recortar),
+  };
+}
+
+/**
+ * PASO SIN RED: de la resolución cacheada y lo que se sepa del motor, a la respuesta. Nunca elige
+ * "la primera": con varios motores y ningún dato, `vehiculo` es null y el sitio PREGUNTA.
+ */
+function presentar(res, { cilindrada, potencia, vehicleId }) {
+  const { elegida, candidatos } = elegirVariante(res.variantes, {
+    anio: res.year, cilindrada, potencia, vehicleId,
   });
-  if (!candidatos.length) return { error: `no hay variante que encaje con ${make} ${model} ${year}` };
+  const nombre = `${res.make} ${res.model} ${res.year}`;
+  if (!candidatos.length) return { error: `no hay variante que encaje con ${nombre}` };
   if (vehicleId != null && !elegida) {
-    return { error: `la variante ${vehicleId} no es de ${make} ${model} ${year}` };
+    return { error: `la variante ${vehicleId} no es de ${nombre}` };
   }
 
   // La lista sin repetir `vehicleId` (la API repite una variante por cada `engId`).
@@ -279,13 +308,13 @@ async function construir(c, { make, model, year, pais, cilindrada, potencia, veh
   }
 
   return {
-    make: f.manufacturerName,
-    model: m.modelName,
-    year: String(year || ""),
-    filtroPais: pais,
+    make: res.make,
+    model: res.model,
+    year: res.year,
+    filtroPais: res.filtroPais,
     // `vehiculo` solo si se sabe cuál es. Si no, el sitio pregunta con `variantes`.
     vehiculo: elegida
-      ? { make: f.manufacturerName, model: m.modelName, year: String(year || ""), ...describirVariante(elegida) }
+      ? { make: res.make, model: res.model, year: res.year, ...describirVariante(elegida) }
       : null,
     variantes: lista,
     requiereMotor: !elegida,
@@ -339,6 +368,14 @@ function topeDe(env) {
   return Number.isFinite(n) && n > 0 ? n : TOPE_MES_POR_DEFECTO;
 }
 
+async function leerCache(env, clave) {
+  try {
+    return await env.CATALOGO.get(clave, "json");
+  } catch (_e) {
+    return null; // sin caché se sigue: mejor pagar consultas que no dar servicio
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -351,16 +388,8 @@ export default {
     let make = (q.get("make") || "").trim();
     let model = (q.get("model") || "").trim();
     let year = (q.get("year") || "").trim();
-    // OJO: el defecto tiene que ser el MISMO país con el que se armó el catálogo, porque los
-    // vehículo-tipos (y hasta los nombres comerciales: el Outlander aquí es ASX) cambian de un filtro
-    // a otro, y mezclarlos parte el catálogo en dos.
-    //
-    // CORREGIDO el 07/10/2026 (T-B25), con la medida delante: el catálogo se armó con el filtro 67 =
-    // REPÚBLICA DOMINICANA (data/seed/catalogo/vehiculos.json dice "pais": 67 y el monolito dice
-    // "pais_filtro": 67). Este archivo decía 261 (EE.UU.) por un error de los documentos, y el
-    // defecto estaba puesto a 261 por esa creencia equivocada. Ahora el defecto es 67, que es el
-    // mercado del producto y el del catálogo precalculado; el otro mercado se sigue probando abajo
-    // antes de decir que un modelo no existe, y el sitio puede pasar ?pais= cuando lo sepa.
+    // El defecto es el MISMO filtro con el que se armó el catálogo (67 = República Dominicana;
+    // T-B25). Ver `resolver()`: el filtro NO separa mercados.
     const pais = parseInt(q.get("pais") || "67", 10) || 67;
     // El visitante, al elegir su motor de la lista, manda el `vehicleId` de esa variante.
     const vehicleIdPedido = parseInt(q.get("vehicleId") || "", 10) || null;
@@ -370,14 +399,22 @@ export default {
       return json({ error: "hace falta el VIN o marca+modelo+año" }, 400);
     }
 
-    const claveCache =
-      `cat:${pais}:${vin || `${normalizar(make)}:${normalizar(model)}:${year}`}` +
-      (vehicleIdPedido ? `:v${vehicleIdPedido}` : "");
-    try {
-      const guardado = await env.CATALOGO.get(claveCache, "json");
-      if (guardado) return json({ fuente: "cache", ...guardado });
-    } catch (_e) {
-      // Sin caché disponible se sigue: mejor pagar consultas que no dar servicio.
+    const quien = vin || `${normalizar(make)}:${normalizar(model)}:${year}`;
+    // Caché de PIEZAS (por variante elegida) y caché de MOTORES (por modelo-año o VIN).
+    const claveCache = `cat:${pais}:${quien}` + (vehicleIdPedido ? `:v${vehicleIdPedido}` : "");
+    const claveMotores = `var:${pais}:${quien}`;
+
+    const guardado = await leerCache(env, claveCache);
+    if (guardado) return json({ fuente: "cache", ...guardado });
+
+    let resolucion = await leerCache(env, claveMotores);
+    const cacheMotores = !!resolucion;
+
+    // Si todo sale de la caché y no se piden piezas, no se gasta NADA: ni siquiera se mira la cuota.
+    if (resolucion && !categorias.length) {
+      const base = presentar(resolucion, { ...(resolucion.decodificado || {}), vehicleId: vehicleIdPedido });
+      if (base.error) return json({ error: base.error, consultas: 0 }, 404);
+      return json({ fuente: "cache", ...base, consultas: 0 });
     }
 
     const mes = new Date().toISOString().slice(0, 7);
@@ -396,20 +433,43 @@ export default {
     }
 
     const c = cliente(env, TOPE_MES - usadas);
-    let decodificado = null;
     try {
-      if (vin) {
-        decodificado = await decodificarVin(c, vin);
-        if (!decodificado) return json({ error: `no pudimos identificar el VIN ${vin}` }, 404);
-        make = decodificado.make;
-        model = decodificado.model;
-        year = decodificado.year;
+      if (!resolucion) {
+        let decodificado = null;
+        if (vin) {
+          decodificado = await decodificarVin(c, vin);
+          if (!decodificado) {
+            await registrarGasto(env, mes, usadas, c.estado.consultas);
+            return json({ error: `no pudimos identificar el VIN ${vin}`, consultas: c.estado.consultas }, 404);
+          }
+          make = decodificado.make;
+          model = decodificado.model;
+          year = decodificado.year;
+        }
+        resolucion = await resolver(c, { make, model, year, pais });
+        if (resolucion.error) {
+          await registrarGasto(env, mes, usadas, c.estado.consultas);
+          return json({ error: resolucion.error, consultas: c.estado.consultas }, 404);
+        }
+        if (decodificado) {
+          resolucion.decodificado = {
+            cilindrada: decodificado.cilindrada,
+            potencia: decodificado.potencia,
+          };
+        }
+        // Lo que costó 3-4 consultas se guarda: el siguiente visitante del mismo modelo-año no paga.
+        try {
+          await env.CATALOGO.put(claveMotores, JSON.stringify(resolucion), {
+            expirationTtl: DIAS_CACHE * 24 * 60 * 60,
+          });
+        } catch (_e) {
+          // si la caché falla, la respuesta se sirve igual
+        }
       }
-      const base = await construir(c, {
-        make, model, year, pais, vehicleId: vehicleIdPedido,
-        cilindrada: decodificado && decodificado.cilindrada,
-        potencia: decodificado && decodificado.potencia,
-        combustible: decodificado && decodificado.combustible,
+
+      const base = presentar(resolucion, {
+        ...(resolucion.decodificado || {}),
+        vehicleId: vehicleIdPedido,
       });
       if (base.error) {
         await registrarGasto(env, mes, usadas, c.estado.consultas);
@@ -430,7 +490,7 @@ export default {
           // si la caché falla, la respuesta se sirve igual
         }
       }
-      return json({ fuente: "autodoc", ...respuesta });
+      return json({ fuente: cacheMotores ? "cache-motores" : "autodoc", ...respuesta });
     } catch (e) {
       await registrarGasto(env, mes, usadas, c.estado.consultas);
       return json({ error: String(e.message || e), consultas: c.estado.consultas }, 429);

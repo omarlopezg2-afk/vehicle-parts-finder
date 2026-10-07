@@ -131,8 +131,22 @@ todavía no lo llama (T-B21), así que nada de esto cambia producción hasta ent
    - Devuelve **una sola** variante (`elegirVariante`) y, sin motor, elige la primera (el 1.3 del
      Corolla, no el 1.8 que se ve en RD): debe devolver **la lista** y dejar que el sitio pregunte.
    - Quitar `?pais=` como si filtrara, o decir en la respuesta qué mercado se usó realmente.
-2. Que el sitio llame al Worker para los VIN/modelos que no están en el catálogo (T-B21), usando la lista
-   de variantes para preguntar el motor.
+2. **T-B21 — el sitio llama al Worker: HECHO el 07/10/2026 pero APAGADO** (`WORKER.activo = false` en
+   `site/js/dataClient.js`). Qué hay: el Worker cachea la lista de motores en KV (clave `var:`), así
+   que un modelo-año o VIN se paga **una vez** (~3-4 consultas) y elegir motor cuesta 0;
+   `consultarWorker()` es el único cliente; `app.js` (`intentarConWorker`) lo usa **solo** cuando el carro
+   no está en el catálogo, pregunta "¿Cuál es tu carro exactamente?" y, elegido el motor, muestra el
+   carro con motor y combustible. **Por qué apagado:** todavía NO hay piezas por demanda. Encenderlo hoy
+   gastaría cupo en identificar carros sin dar ningún número (regla 5: prometer solo lo que se cumple).
+   **Lo que falta para encenderlo (siguiente trabajo):**
+   - Piezas por demanda en el Worker: el árbol de categorías por vehículo
+     (`/api/category/type-id/1/products-groups-variant-1/{vehicleId}/lang-id/4`, 1 consulta) para sacar
+     el `categoryId` del término buscado (`FRAGMENTOS_POR_SLUG`), luego artículos + detalle (hasta ~4).
+     Orden de magnitud: **~6-10 consultas por (carro, categoría)**; con el tope de 2.000/mes son
+     ~200-300 búsquedas nuevas al mes. Eso es una decisión de cupo del usuario.
+   - La variante elegida en el Worker aún no vive en la URL (`router.js`): recargar pierde el motor.
+   - La UI de `intentarConWorker` no tiene prueba automática (los tests del sitio son de funciones
+     puras): verificar en navegador con `_setWorkerParaTests` o poniendo `activo: true` en local.
 3. Verificar en navegador con un VIN japonés, uno coreano y un chasis `NZE141-…` (sección 5).
 
 **Aceptación:** un VIN `KMH…` muestra "Fabricado en Corea del Sur" y pregunta el motor; un chasis
@@ -221,7 +235,7 @@ Para ver el aspecto real, `--screenshot=/tmp/x.png --window-size=1100,860` y mir
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas: las tres suites. Hoy 212 + 127 + 15 en verde.
+# pruebas: las tres suites. Hoy 212 + 138 + 21 en verde.
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -335,7 +349,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 1. `cat AGENTS.md docs/TRASPASO.md` y `TASKS.md` (T-B22 → T-B27). *(Lo que estás leyendo.)*
 2. `git log --oneline -8` y `git status` para ver dónde quedó el árbol.
-3. Las tres suites de pruebas (sección 6): 212 + 127 + 15 en verde antes de tocar nada.
+3. Las tres suites de pruebas (sección 6): 212 + 138 + 21 en verde antes de tocar nada.
 4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 288" y
    "0 con combustible contradictorio".
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor

@@ -578,3 +578,10 @@ descargado y pagado** (y con 113 números originales de Toyota en el bloque del 
   números del fabricante por coche) viaja al sitio pero **ninguna pantalla lo pinta todavía**. Para el
   motor equivocado no: para el mismo motor, ese es el número que el cliente pide en la tienda. Siguiente
   paso natural de esta misma capa.
+
+## T-B21 · El sitio llama al Worker (hecho el 07/10/2026, APAGADO)
+
+El Worker cachea la lista de motores (`var:{pais}:{vin|marca:modelo:año}`), el sitio la pide con
+`consultarWorker()` solo para carros fuera del catálogo y pregunta el motor antes de dar nada. Está
+apagado (`WORKER.activo`) hasta que existan las piezas por demanda; ver `docs/TRASPASO.md` §4.1.
+Pruebas: Worker 21, sitio 138.
