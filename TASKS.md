@@ -475,6 +475,10 @@ existen, o existen con piezas que ya no son las suyas.
    Además: **vPIC es la base de la NHTSA (EE.UU.) y no decodifica un chasis japonés/coreano** — por eso
    para estos carros el camino no es el VIN, es mercado + motor. Eso hace del selector de mercado algo
    imprescindible, no un adorno.
+> **CORRECCIÓN 07/10/2026 (ver `docs/TRASPASO.md` §4.1):** el filtro `?pais=` del Worker NO separa
+> mercados (medido), y el gas **adaptado** no cambia motor ni sistema de gasolina: los números de
+> gasolina siguen valiendo y no se avisa nada. Lo que sigue en este apartado queda como historia.
+
 2. **Corea → gas adaptado allá.** Aquí hay dos casos y no se pueden mezclar:
    - **Versión de gas del mercado coreano (de fábrica):** EXISTE en el catálogo y hay que ofrecerla.
      Ya medido: `Kia RIO IV` trae `1.25 LPG` (mismo motor `G4LA`, 82 PS) y el índice armado con RD ya

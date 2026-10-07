@@ -159,7 +159,16 @@ async function variantesDelModelo(c, modelId, pais) {
   return (datos && datos.modelTypes) || [];
 }
 
-function elegirVariante(variantes, { anio, cilindrada, potencia }) {
+/**
+ * Las variantes que encajan con el año (y con la cilindrada, si el VIN la dio) y, SOLO si se puede
+ * decir con seguridad, la elegida. Nunca se elige "la primera": un número exacto para el motor
+ * equivocado es peor que no dar número (AGENTS.md, regla 1). Si no hay forma de saber el motor,
+ * `elegida` es null y el sitio tiene que PREGUNTAR con la lista.
+ *
+ * Se elige cuando: (a) el visitante dijo `vehicleId` y está en la lista; (b) solo hay una que encaja;
+ * (c) el VIN dio cilindrada/potencia y una puntúa claramente más que las demás.
+ */
+function elegirVariante(variantes, { anio, cilindrada, potencia, vehicleId }) {
   const a = String(anio || "").slice(0, 4);
   const vistas = new Set();
   const candidatos = [];
@@ -184,9 +193,30 @@ function elegirVariante(variantes, { anio, cilindrada, potencia }) {
     }
     candidatos.push({ puntaje, v });
   }
-  if (!candidatos.length) return null;
   candidatos.sort((x, y) => y.puntaje - x.puntaje);
-  return candidatos[0].v;
+  let elegida = null;
+  if (vehicleId != null) {
+    const pedida = candidatos.find((c) => Number(c.v.vehicleId) === Number(vehicleId));
+    elegida = pedida ? pedida.v : null;
+  } else if (candidatos.length === 1) {
+    elegida = candidatos[0].v;
+  } else if (candidatos.length > 1 && candidatos[0].puntaje > 0 &&
+             candidatos[0].puntaje > candidatos[1].puntaje) {
+    elegida = candidatos[0].v;
+  }
+  return { elegida, candidatos: candidatos.map((c) => c.v) };
+}
+
+/** La forma en que una variante viaja al sitio (la misma para la elegida y para la lista). */
+function describirVariante(v) {
+  return {
+    vehicleId: v.vehicleId,
+    variante: v.typeEngineName || null,
+    motor: v.engineCodes || null,
+    cilindradaLt: v.capacityLt || null,
+    potenciaPs: v.powerPs || null,
+    combustible: v.fuelType || null,
+  };
 }
 
 async function decodificarVin(c, vin) {
@@ -209,36 +239,56 @@ async function decodificarVin(c, vin) {
   };
 }
 
-/** La cadena completa: de un vehículo a sus categorías con piezas y números originales. */
-async function construir(c, { make, model, year, pais, cilindrada, potencia, combustible }) {
+/**
+ * La cadena de un vehículo a sus variantes: fabricante -> modelo -> variantes (3 consultas).
+ *
+ * OJO con `pais`: es el filtro `country-filter-id` de TecDoc y MEDIDO el 07/10/2026 no separa
+ * mercados (el Corolla 2016 y el N-BOX 2016 devuelven la misma variante con 67, 127 y 261). Se
+ * respeta porque cambia los `vehicleId`/nombres de algunos modelos (el Outlander aquí es ASX), pero
+ * NO sirve para decir "este carro es del mercado X". El país del carro se lee del VIN en el sitio.
+ */
+async function construir(c, { make, model, year, pais, cilindrada, potencia, vehicleId }) {
   const f = await resolverFabricante(c, make);
   if (!f) return { error: `no encontramos la marca "${make}"` };
   let m = await resolverModelo(c, f.manufacturerId, model, year, pais);
-  if (!m && !paisAlterno) {
-    // El mismo coche cambia de nombre y de catálogo según el mercado (aquí el Outlander es ASX).
-    // Antes de decir que no existe, se prueba el otro mercado: cuesta una llamada y evita perder
-    // un cliente cuyo coche sí está.
+  if (!m) {
+    // El mismo coche cambia de nombre y de catálogo según el filtro (aquí el Outlander es ASX).
+    // Antes de decir que no existe, se prueba el otro filtro: cuesta una llamada y evita perder
+    // un cliente cuyo coche sí está. La respuesta dice con cuál se resolvió (`filtroPais`).
     const otro = pais === 261 ? 67 : 261;
     m = await resolverModelo(c, f.manufacturerId, model, year, otro);
     if (m) pais = otro;
   }
   if (!m) return { error: `no encontramos el modelo "${model}" de ${year}` };
   const variantes = await variantesDelModelo(c, m.modelId, pais);
-  const v = elegirVariante(variantes, { anio: year, cilindrada, potencia });
-  if (!v) return { error: `no hay variante que encaje con ${make} ${model} ${year}` };
+  const { elegida, candidatos } = elegirVariante(variantes, {
+    anio: year, cilindrada, potencia, vehicleId,
+  });
+  if (!candidatos.length) return { error: `no hay variante que encaje con ${make} ${model} ${year}` };
+  if (vehicleId != null && !elegida) {
+    return { error: `la variante ${vehicleId} no es de ${make} ${model} ${year}` };
+  }
+
+  // La lista sin repetir `vehicleId` (la API repite una variante por cada `engId`).
+  const lista = [];
+  const vistos = new Set();
+  for (const v of candidatos) {
+    if (vistos.has(v.vehicleId)) continue;
+    vistos.add(v.vehicleId);
+    lista.push(describirVariante(v));
+  }
 
   return {
-    vehiculo: {
-      make: f.manufacturerName,
-      model: m.modelName,
-      year: String(year || ""),
-      variante: v.typeEngineName || null,
-      vehicleId: v.vehicleId,
-      motor: v.engineCodes || null,
-      cilindradaLt: v.capacityLt || null,
-      potenciaPs: v.powerPs || null,
-      combustible: v.fuelType || null,
-    },
+    make: f.manufacturerName,
+    model: m.modelName,
+    year: String(year || ""),
+    filtroPais: pais,
+    // `vehiculo` solo si se sabe cuál es. Si no, el sitio pregunta con `variantes`.
+    vehiculo: elegida
+      ? { make: f.manufacturerName, model: m.modelName, year: String(year || ""), ...describirVariante(elegida) }
+      : null,
+    variantes: lista,
+    requiereMotor: !elegida,
     piezas: [], // se rellena por el llamador si quiere el detalle (cuesta 1 consulta por categoría)
   };
 }
@@ -312,13 +362,17 @@ export default {
     // mercado del producto y el del catálogo precalculado; el otro mercado se sigue probando abajo
     // antes de decir que un modelo no existe, y el sitio puede pasar ?pais= cuando lo sepa.
     const pais = parseInt(q.get("pais") || "67", 10) || 67;
+    // El visitante, al elegir su motor de la lista, manda el `vehicleId` de esa variante.
+    const vehicleIdPedido = parseInt(q.get("vehicleId") || "", 10) || null;
     const categorias = (q.get("categorias") || "").split(",").map((x) => x.trim()).filter(Boolean);
 
     if (!vin && !(make && model && year)) {
       return json({ error: "hace falta el VIN o marca+modelo+año" }, 400);
     }
 
-    const claveCache = `cat:${pais}:${vin || `${normalizar(make)}:${normalizar(model)}:${year}`}`;
+    const claveCache =
+      `cat:${pais}:${vin || `${normalizar(make)}:${normalizar(model)}:${year}`}` +
+      (vehicleIdPedido ? `:v${vehicleIdPedido}` : "");
     try {
       const guardado = await env.CATALOGO.get(claveCache, "json");
       if (guardado) return json({ fuente: "cache", ...guardado });
@@ -352,7 +406,7 @@ export default {
         year = decodificado.year;
       }
       const base = await construir(c, {
-        make, model, year, pais, paisAlterno: false,
+        make, model, year, pais, vehicleId: vehicleIdPedido,
         cilindrada: decodificado && decodificado.cilindrada,
         potencia: decodificado && decodificado.potencia,
         combustible: decodificado && decodificado.combustible,
@@ -361,7 +415,8 @@ export default {
         await registrarGasto(env, mes, usadas, c.estado.consultas);
         return json({ error: base.error, consultas: c.estado.consultas }, 404);
       }
-      const piezas = categorias.length
+      // Sin motor conocido NO se piden piezas: el número de un motor al azar es el fallo que se evita.
+      const piezas = categorias.length && base.vehiculo
         ? await piezasDeCategorias(c, base.vehiculo.vehicleId, categorias)
         : [];
       const respuesta = { ...base, piezas, consultas: c.estado.consultas };
