@@ -440,6 +440,40 @@ def equivalentes_de_oem(cliente: ClienteAutodoc, oem_numero: str) -> list[dict]:
     return salida
 
 
+def detalles_de_articulo(cliente: ClienteAutodoc, article_id) -> dict:
+    """Las especificaciones de UNA pieza: posición, medidas, material... y sus números originales.
+
+    Es la capa que convierte una lista de marcas en *"esta es la de delante, 16 disc"*. La respuesta
+    trae `articleAllSpecifications` (nombre + valor de cada criterio) y `articleOemNo` (los números
+    originales que le corresponden) en la MISMA consulta.
+
+    Como los `articleId` de TecDoc son globales, el resultado se puede cachear y reutilizar entre
+    vehículos: el coste no crece con la flota.
+    """
+    datos = cliente.pedir(f"/api/articles/details/article-id/{article_id}/lang-id/{LANG}")
+    if not isinstance(datos, dict) or not datos.get("article"):
+        return {}
+    art = datos["article"]
+    especificaciones = {}
+    for c in datos.get("articleAllSpecifications") or []:
+        nombre, valor = c.get("criteriaName"), c.get("criteriaValue")
+        if nombre and valor:
+            especificaciones[str(nombre)] = str(valor)
+    oem = []
+    for o in (datos.get("articleOemNo") or []):
+        numero, marca = o.get("oemDisplayNo"), o.get("oemBrand")
+        if numero:
+            oem.append({"numero": numero, "marca": marca})
+    return {
+        "articleId": art.get("articleId"),
+        "numero": art.get("articleNo"),
+        "marca": art.get("supplierName"),
+        "pieza": art.get("articleProductName"),
+        "especificaciones": especificaciones,
+        "oem": oem,
+    }
+
+
 def articulos_de_categoria(cliente: ClienteAutodoc, vehicle_id: int, category_id) -> list[dict]:
     """Las piezas de esa categoría para ese vehículo, con su número de parte."""
     datos = cliente.pedir(
@@ -472,7 +506,7 @@ def articulos_de_categoria(cliente: ClienteAutodoc, vehicle_id: int, category_id
 # --------------------------------------------------------------------------------------
 
 def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None,
-              solo_oem: bool = False) -> dict:
+              solo_oem: bool = False, cache_detalles: dict | None = None) -> dict:
     """Recorre los vehículos de la semilla. Nunca levanta por un vehículo que falle: lo anota.
 
     `solo_oem` salta el volcado de categorías y pide únicamente los números ORIGINALES: sirve para
@@ -567,9 +601,35 @@ def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None
                 arbol = categorias_del_vehiculo(cliente, var_id)
                 elegidas = elegir_categorias(arbol, buscadas, tope=int(semilla.get("max_categorias", 10)))
                 print(f"  categorías: {len(arbol)} en el árbol, {len(elegidas)} elegidas")
+                cuantos_det = int(semilla.get("detalles_por_categoria") or 0)
                 for cat in elegidas:
                     arts = articulos_de_categoria(cliente, var_id, cat["categoryId"])
-                    print(f"    - {cat['nombre']:<28} {len(arts):>3} piezas con número")
+                    # T-B16: las especificaciones (posición, medida, tipo) y los números originales
+                    # de cada pieza. Es lo que convierte "75 marcas" en "esta es la de delante,
+                    # 302 mm". Se piden SOLO las primeras (`detalles_por_categoria`) porque cada una
+                    # es una consulta, y NUNCA se vuelven a pedir: `cache_detalles` viene del
+                    # catálogo anterior (los articleId de TecDoc son globales y no cambian).
+                    if cuantos_det:
+                        cache_detalles = cache_detalles if cache_detalles is not None else {}
+                        hechos = 0
+                        for art in arts:
+                            if hechos >= cuantos_det:
+                                break
+                            aid = art.get("articleId")
+                            if not aid:
+                                continue
+                            guardado = cache_detalles.get(str(aid))
+                            if guardado:
+                                art["especificaciones"] = guardado.get("especificaciones") or {}
+                                art["oem"] = guardado.get("oem") or []
+                                continue
+                            det = detalles_de_articulo(cliente, aid)
+                            if det:
+                                art["especificaciones"] = det.get("especificaciones") or {}
+                                art["oem"] = det.get("oem") or []
+                                hechos += 1
+                    print(f"    - {cat['nombre']:<28} {len(arts):>3} piezas con número"
+                          + (f" ({sum(1 for a in arts if a.get('especificaciones'))} con especificaciones)" if cuantos_det else ""))
                     registro["categorias"].append({
                         "nombre": cat["nombre"], "ruta": cat["ruta"],
                         "buscado": cat.get("buscado"), "categoryId": cat["categoryId"],
@@ -667,12 +727,32 @@ def main(argv: list[str] | None = None) -> int:
     semilla = json.loads(SEMILLA.read_text(encoding="utf-8"))
     tope = tope_cli or int(semilla.get("max_consultas") or 30)
     cliente = ClienteAutodoc(clave, max_consultas=tope)
-    resultado = construir(semilla, cliente, solo=solo, solo_oem=solo_oem)
-
-    # Un recorrido parcial no puede borrar lo que ya estaba: se fusiona.
+    # El catálogo anterior también es el CACHÉ de especificaciones: los articleId de TecDoc son
+    # globales, así que lo que ya se pidió una vez no se vuelve a pedir nunca. El coste por vehículo
+    # baja solo con el tiempo en vez de crecer con la flota.
+    cache_detalles = {}
+    previo = None
     if SALIDA.exists():
         try:
             previo = json.loads(SALIDA.read_text(encoding="utf-8"))
+            for v in previo.get("vehiculos", []):
+                for cat in v.get("categorias", []):
+                    for art in cat.get("articulos", []):
+                        if art.get("articleId") and art.get("especificaciones"):
+                            cache_detalles[str(art["articleId"])] = {
+                                "especificaciones": art["especificaciones"], "oem": art.get("oem") or [],
+                            }
+            if cache_detalles:
+                print(f"[autodoc] caché de especificaciones: {len(cache_detalles)} artículos ya conocidos (0 consultas)")
+        except (OSError, json.JSONDecodeError):
+            previo = None
+
+    resultado = construir(semilla, cliente, solo=solo, solo_oem=solo_oem,
+                          cache_detalles=cache_detalles)
+
+    # Un recorrido parcial no puede borrar lo que ya estaba: se fusiona.
+    if previo:
+        try:
             resultado = fusionar(previo, resultado)
         except (OSError, json.JSONDecodeError) as exc:
             print(f"[autodoc] aviso: no se pudo leer el catálogo previo para fusionar ({exc})")
