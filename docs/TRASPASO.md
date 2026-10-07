@@ -152,6 +152,19 @@ todavía no lo llama (T-B21), así que nada de esto cambia producción hasta ent
 **Aceptación:** un VIN `KMH…` muestra "Fabricado en Corea del Sur" y pregunta el motor; un chasis
 `NZE141-…` explica que es JDM y avisa solo de la dirección; ningún carro "con gas" cambia números.
 
+**Verificado en partexact.com el 07/10/2026 (con el Worker APAGADO — para esto no hace falta encenderlo):**
+- Chasis `NZE141-1234567`: explica que es un chasis japonés de mercado interno y avisa de la dirección. ✔
+- VIN `KMHD35LH0GU123456` → Hyundai Elantra 2016 con sus categorías. ✔ `JA4AP4AU3LU023739` → Outlander
+  Sport 2020. ✔ VIN inválido → mensaje de dígito de control. ✔
+- **Hueco encontrado y corregido** (`site/js/vinFicha.js`): con el carro EN el catálogo no se decía dónde se
+  fabricó, y la ficha de un VIN fuera del catálogo enseñaba `Motor: 2.998832712 L`, `Combustible: Gasoline`
+  y `Fabricado en: UNITED STATES (USA)` (la NHTSA contesta en inglés y sin redondear). Ahora: `3.0 L`,
+  `Gasolina` y país en español por el inicio del VIN, y la línea de origen también sale para los VIN del
+  catálogo ("dice dónde se hizo, no a qué mercado se vendió").
+- Lo que NO está: la prueba en vivo de `intentarConWorker` (Worker apagado a propósito, ver T-B21).
+  Encenderlo hoy solo identificaría carros sin dar ningún número (regla 5); se enciende cuando existan las
+  piezas por demanda.
+
 ### 4.2 · Números ORIGINALES en pantalla (HECHO el 07/10/2026 — versión por pieza, no por vehículo)
 
 **Regla de Omar:** se enseñan **primero los números originales** del fabricante del carro siempre que
@@ -267,7 +280,7 @@ Para ver el aspecto real, `--screenshot=/tmp/x.png --window-size=1100,860` y mir
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas: las tres suites. Hoy 223 + 153 + 21 en verde.
+# pruebas: las tres suites. Hoy 223 + 161 + 21 en verde.
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -381,7 +394,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 1. `cat AGENTS.md docs/TRASPASO.md` y `TASKS.md` (T-B22 → T-B27). *(Lo que estás leyendo.)*
 2. `git log --oneline -8` y `git status` para ver dónde quedó el árbol.
-3. Las tres suites de pruebas (sección 6): 223 + 153 + 21 en verde antes de tocar nada.
+3. Las tres suites de pruebas (sección 6): 223 + 161 + 21 en verde antes de tocar nada.
 4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 290" y
    "0 con combustible contradictorio".
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor

@@ -43,6 +43,7 @@ import {
 import { isLikelyVIN, cleanVIN } from "./vin.js";
 import { decodeVIN } from "./vpicClient.js";
 import { origenDeVin, chasisJapones } from "./vinOrigen.js";
+import { filasDeVin, lineaDeOrigen } from "./vinFicha.js";
 import { getNumerosDeCategoria, getSlugsConNumeros, getVariantesDeVehiculo } from "./dataClient.js";
 import { renderVehicleTree, renderCategoryGrid } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
@@ -658,27 +659,7 @@ function renderVehiculoDecodificado(d) {
     : "El VIN no pasó la verificación oficial (dígito de control). Revísalo: un VIN tiene 17 caracteres y no usa las letras I, O ni Q.";
   card.appendChild(aviso);
 
-  const filas = [
-    ["Marca", d.make],
-    ["Modelo", d.model],
-    ["Año", d.year],
-    ["Versión", d.trim || d.series],
-    ["Carrocería", d.bodyClass],
-    [
-      "Motor",
-      [
-        d.displacementL ? `${d.displacementL} L` : "",
-        d.engineCylinders ? `${d.engineCylinders} cil.` : "",
-        d.engineHP ? `${d.engineHP} HP` : "",
-      ]
-        .filter(Boolean)
-        .join(" · "),
-    ],
-    ["Tracción", d.driveType],
-    ["Transmisión", d.transmission],
-    ["Combustible", d.fuelType],
-    ["Fabricado en", d.plantCountry || (origenDeVin(d.vin) || {}).pais],
-  ].filter(([, valor]) => valor);
+  const filas = filasDeVin(d);
 
   const dl = document.createElement("dl");
   dl.className = "vehiculo-datos";
@@ -816,6 +797,14 @@ async function runVinSearch(vin) {
 
   if (vehicle) {
     await resolveVehicleAndShowTree(vehicle);
+    // El país de fabricación sale del propio VIN y se dice también cuando el carro SÍ está en el catálogo.
+    const origen = lineaDeOrigen(vin);
+    if (origen) {
+      const p = document.createElement("p");
+      p.className = "search-hint vin-origen";
+      p.textContent = origen;
+      resultsEl.insertBefore(p, resultsEl.firstChild);
+    }
     return;
   }
   if (await intentarConWorker({ vin }, { vin })) return;
