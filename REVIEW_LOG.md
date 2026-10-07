@@ -924,6 +924,41 @@ hacen en dos minutos y evitan buscar un problema donde no está.
 
 ---
 
+## 07/10/2026 (noche) — **T-B14: el número de parte ya se ve en el sitio** (y un hallazgo grande al probarlo)
+
+El usuario entró a probar y reportó: *"Dice que todavía no tiene esa pieza para mi vehículo"* en
+**Filtro de aceite**. La investigación dio dos cosas, una buena y una incómoda.
+
+**La buena**: el sitio decía la verdad *sobre lo que mostraba*, pero le faltaba la mitad del dato.
+AUTODOC **sí tiene 9 filtros de aceite para su motor** (AMC Filter, BLUE PRINT, tres BOSCH, FEBI
+BILSTEIN, KAVO PARTS y dos MANN-FILTER), con número, marca y foto. Estaban guardados en
+`catalogo.json` desde la mañana, sin mostrarse. Se construyó **T-B14**: `site/js/catalogoMap.js`
+traduce las categorías de AUTODOC a las del sitio **por el nombre de la pieza** (las categorías de
+AUTODOC son grupos ambiguos: "Lubrication" trae juntas del tapón y del cárter además de filtros) y
+empareja el vehículo por VIN con caída a marca+modelo+año. `dataClient.js` carga el catálogo y
+**no tiene fixture a propósito**: un catálogo de mentira mostraría números de parte inventados a un
+cliente real, y eso es peor que no mostrar nada (hay una prueba que lo verifica). El bloque se pinta
+**arriba de las ofertas**, porque quien llega con una avería quiere saber cuál es la pieza antes de
+dónde comprarla.
+
+**Verificado en navegador real** (captura incluida en el chat): la vista de filtro de aceite muestra
+las 9 piezas con su foto, y en pastillas de freno 75. El mensaje de vacío ahora distingue los dos
+casos: si hay número pero no ofertas, lo dice; si no hay nada, lo dice. 90 pruebas del frontend en
+verde (13 nuevas).
+
+**La incómoda, y es un hallazgo grande**: al verificar se descubrió que **las ofertas de eBay nunca
+se conectaron a la interfaz**. `parts.json` tiene **cero `fitment_ids`** (la semilla nunca los llenó),
+así que `getPartsByFitment` siempre devolvía vacío y la vista de categoría por vehículo decía "no
+tenemos piezas" **siempre, en todas las categorías**. Mientras tanto `fitment.json` —el de T-B8— tiene
+**93 ofertas reales con precio** para ese mismo vehículo (25 pastillas, 25 amortiguadores, 15
+limpiaparabrisas, 12 filtro de aire, 8 radiador, 8 bujías) y el sitio no lo lee. Queda como **T-B15**:
+es la mitad "dónde comprarlo y a qué precio" del producto, y ya está pagada y medida.
+
+**Lección de método**: la vista decía "no tenemos piezas" y las dos fuentes decían cosas distintas.
+Probar la interfaz como un visitante —y no solo el pipeline— fue lo que sacó esto a la luz.
+
+---
+
 ## 07/10/2026 (tarde) — **El pipeline del número de parte, construido y probado con las consultas gratis**
 
 Con las consultas que quedaban del plan gratis (unas 54 de las 100) se construyó **T-B13** y se probó

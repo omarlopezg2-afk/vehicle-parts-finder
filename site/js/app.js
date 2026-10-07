@@ -40,6 +40,7 @@ import {
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
 import { decodeVIN } from "./vpicClient.js";
+import { getNumerosDeCategoria } from "./dataClient.js";
 import { renderVehicleTree, renderCategoryGrid } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
@@ -180,12 +181,23 @@ async function runCategorySelection(vehicle, categorySlug, categories) {
     ])
   );
 
-  const parts = await getPartsByFitment(vehicle.id, categorySlug);
+  const [parts, numeros] = await Promise.all([
+    getPartsByFitment(vehicle.id, categorySlug),
+    getNumerosDeCategoria(vehicle, categorySlug),
+  ]);
+
+  if (numeros.length) {
+    resultsEl.appendChild(renderNumerosDeParte(numeros));
+  }
 
   if (parts.length === 0) {
     const p = document.createElement("p");
     p.className = "empty-state";
-    p.textContent = "Todavía no tenemos piezas registradas en esta categoría para tu vehículo.";
+    // El mensaje depende de lo que SÍ haya: decir "no tenemos piezas" cuando arriba está el
+    // número de la pieza sería confundir al visitante (y fue justo lo que pasó al probarlo).
+    p.textContent = numeros.length
+      ? "Arriba tienes el número de la pieza. De esta categoría todavía no tenemos ofertas de compra para tu vehículo."
+      : "Todavía no tenemos piezas registradas en esta categoría para tu vehículo.";
     resultsEl.appendChild(p);
   } else {
     for (const part of parts) {
@@ -236,6 +248,65 @@ async function runCategoryBrowse(categorySlug, categories) {
       resultsEl.appendChild(card);
     }
   }
+}
+
+// T-B14: el número de parte. Va ARRIBA de las ofertas a propósito: el visitante que llega con una
+// avería quiere saber CUÁL es la pieza; las ofertas (precio y dónde comprarla) vienen después.
+// Las dos fuentes son distintas y se complementan: AUTODOC/TecDoc da el número y la marca; eBay
+// da la oferta. Cuando eBay no tiene nada en esa categoría (le pasa al filtro de aceite y a la
+// batería), solo se ve esta parte — y antes el sitio decía "no tenemos piezas" aunque el número
+// estuviera guardado. Eso lo reportó el usuario probando el 07/10/2026.
+function renderNumerosDeParte(numeros) {
+  const seccion = document.createElement("section");
+  seccion.className = "numeros-parte";
+
+  const h = document.createElement("h2");
+  h.textContent = numeros.length === 1 ? "Número de la pieza" : `Números de la pieza (${numeros.length})`;
+  seccion.appendChild(h);
+
+  const nota = document.createElement("p");
+  nota.className = "search-hint";
+  nota.textContent =
+    "Confirmado por catálogo técnico (TecDoc) para tu vehículo exacto. Con este número cualquier " +
+    "tienda te da la pieza correcta.";
+  seccion.appendChild(nota);
+
+  const grid = document.createElement("div");
+  grid.className = "numeros-grid";
+  for (const pieza of numeros) {
+    const ficha = document.createElement("div");
+    ficha.className = "numero-ficha";
+
+    if (pieza.foto) {
+      const img = document.createElement("img");
+      img.src = pieza.foto;
+      img.alt = pieza.pieza || "Foto de la pieza";
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+      // Si la imagen no carga, se quita sin romper la ficha: el número es el dato, la foto ayuda.
+      img.addEventListener("error", () => img.remove());
+      ficha.appendChild(img);
+    }
+
+    const numero = document.createElement("div");
+    numero.className = "numero";
+    numero.textContent = pieza.numero;
+    ficha.appendChild(numero);
+
+    const marca = document.createElement("div");
+    marca.className = "numero-marca";
+    marca.textContent = pieza.marca;
+    ficha.appendChild(marca);
+
+    const nombre = document.createElement("div");
+    nombre.className = "numero-nombre";
+    nombre.textContent = pieza.pieza;
+    ficha.appendChild(nombre);
+
+    grid.appendChild(ficha);
+  }
+  seccion.appendChild(grid);
+  return seccion;
 }
 
 async function runVinFlow(vehicle) {

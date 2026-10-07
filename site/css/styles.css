@@ -201,6 +201,59 @@ main {
   max-width: 62ch;
 }
 
+/* --- T-B14: el número de parte, arriba de las ofertas --- */
+.numeros-parte {
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-text);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.numeros-parte h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.numeros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 0.65rem;
+  margin-top: 0.5rem;
+}
+
+.numero-ficha {
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  padding: 0.55rem 0.6rem;
+}
+
+.numero-ficha img {
+  width: 100%;
+  height: 78px;
+  object-fit: contain;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.numero-ficha .numero {
+  font-weight: 700;
+  font-size: 0.92rem;
+  word-break: break-word;
+}
+
+.numero-ficha .numero-marca {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.numero-ficha .numero-nombre {
+  font-size: 0.76rem;
+  color: var(--color-text-dim);
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
 .vehiculo-card {
   border: 1px solid var(--color-border);
   border-radius: 8px;
