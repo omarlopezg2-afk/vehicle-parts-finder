@@ -924,6 +924,43 @@ hacen en dos minutos y evitan buscar un problema donde no está.
 
 ---
 
+## 07/10/2026 (tarde) — **El pipeline del número de parte, construido y probado con las consultas gratis**
+
+Con las consultas que quedaban del plan gratis (unas 54 de las 100) se construyó **T-B13** y se probó
+con datos reales: **2 vehículos catalogueados** (el Outlander Sport del usuario y un **Toyota Corolla
+2019 que el pipeline resolvió solo desde su VIN**), **19 categorías con piezas** y **630 piezas con
+número de parte, marca y foto**. 153 pruebas del pipeline en verde (14 nuevas) y el build validado.
+
+**Lo que hace el módulo**: `pipeline/fetch_autodoc.py` recorre VIN -> fabricante -> modelo -> variante
+-> categorías -> artículos. Tres decisiones que valen más que el código:
+
+1. **Tope de consultas obligatorio** (`PresupuestoAgotado`). Cada llamada cuesta cuota, así que el
+   cliente se detiene solo y marca el resultado como incompleto en vez de gastar a ciegas. Una prueba
+   nunca debe poder vaciar el mes.
+2. **Cuando la duda es real, se devuelve `None`**, no se arriesga. Las pruebas cazaron dos errores de
+   este tipo, y los dos habrían producido catálogo incorrecto: `MITSUBISHI (BJC)` ganándole a
+   `MITSUBISHI` (porque el normalizador borra los paréntesis y las tres empresas quedaban iguales) y
+   **`Outlander I` devolviendo `Outlander III`** (porque "outlander i" es prefijo de texto de
+   "outlander iii"). Ahora la comparación de modelos es **por palabras**, no por trozos.
+3. **Entre categorías que coinciden gana la más específica.** Con datos reales, "control arm" enganchó
+   la rama "Body Parts/Wing/Bumper" y trajo **sensores de aparcamiento**: piezas del vehículo correcto,
+   pero no lo que el visitante pidió. Mejor no mostrar nada que mostrar otra cosa.
+
+**Un fallo que solo apareció al ejecutar el build** (no en las pruebas): la semilla nueva puesta en
+`data/seed/` hacía que el cargador de partes la leyera como lista de piezas y **rompía el build
+entero**. Se movió a `data/seed/catalogo/`. Lección para la skill: **correr el build, no solo las
+pruebas**.
+
+**La clave**: se puso en `.env` (el asistente abrió el archivo en el editor para que el valor no pasara
+por el chat) y se subió como secreto de GitHub **desde el archivo** (`gh secret set` con el valor por
+tubería), nunca por pantalla. El plan programado **no** corre el catálogo solo: cada corrida gasta
+decenas de consultas, así que el flujo se conectará con disparo mensual cuando se decida pagar.
+
+**Lo que falta**: mostrar los números en el sitio (T-B14), y la decisión de negocio de pasar al plan de
+29 USD/mes para catalogar la flota real (~300 vehículos ≈ 8.000 consultas al mes).
+
+---
+
 ## 07/10/2026 — **La prueba de AUTODOC dice que sí: el número de parte es alcanzable por 29 USD/mes**
 
 El usuario creó la cuenta de RapidAPI y puso su clave en `.env` (el asistente le abrió el archivo en el
