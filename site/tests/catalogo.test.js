@@ -11,7 +11,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
-  normalizar, vehiculoEnCatalogo, piezasDeCategoria, slugsConNumeros, FRAGMENTOS_POR_SLUG,
+  normalizar, vehiculoEnCatalogo, vehiculosEnCatalogo, etiquetaDeVariante,
+  piezasDeCategoria, slugsConNumeros, FRAGMENTOS_POR_SLUG,
 } from "../js/catalogoMap.js";
 import { getNumerosDeCategoria, getSlugsConNumeros, _setFetchForTests } from "../js/dataClient.js";
 
@@ -247,4 +248,38 @@ test("un trozo que no baja no tumba la página", async () => {
     throw new Error("sin red");
   });
   assert.deepEqual(await getNumerosDeCategoria(VEHICULO, "filtro-aceite"), []);
+});
+
+
+// --------------------------------------------------------------------------------------
+// T-B22: la variante. Un modelo-año puede tener dos, y el sitio tiene que saberlo.
+// --------------------------------------------------------------------------------------
+
+const INDICE_DOS_VARIANTES = {
+  vehiculos: [
+    { clave: "v1", etiqueta: "Toyota Corolla 2020 (1.8 gasolina)", vin: null,
+      vehiculo: { make: "Toyota", model: "Corolla", year: "2020", variante: "1.8 (ZRE172)" }, categorias: [] },
+    { clave: "v2", etiqueta: "Toyota Corolla 2020 (2.0 gasolina)", vin: null,
+      vehiculo: { make: "Toyota", model: "Corolla", year: "2020", variante: "2.0 (MZEA12)" }, categorias: [] },
+  ],
+};
+
+test("un modelo-año con dos variantes devuelve LAS DOS (no la primera)", () => {
+  const vs = vehiculosEnCatalogo(INDICE_DOS_VARIANTES, { make: "Toyota", model: "Corolla", year: 2020 });
+  assert.equal(vs.length, 2, "quedarse con la primera es mostrar piezas del motor equivocado");
+  assert.deepEqual(vs.map((v) => v.clave), ["v1", "v2"]);
+});
+
+test("la etiqueta de variante sirve para que la persona se reconozca", () => {
+  assert.equal(etiquetaDeVariante(INDICE_DOS_VARIANTES.vehiculos[0]), "1.8 (ZRE172)");
+});
+
+test("la etiqueta no queda vacía nunca: si no hay dato, lo dice", () => {
+  assert.equal(etiquetaDeVariante({ vehiculo: {} }), "variante única");
+  assert.equal(etiquetaDeVariante(null), "");
+});
+
+test("un vehículo que no está devuelve lista vacía, no una variante inventada", () => {
+  assert.deepEqual(vehiculosEnCatalogo(INDICE_DOS_VARIANTES, { make: "Honda", model: "Civic", year: 2020 }), []);
+  assert.deepEqual(vehiculosEnCatalogo(null, { make: "Toyota", model: "Corolla", year: 2020 }), []);
 });

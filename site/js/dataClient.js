@@ -42,7 +42,8 @@
 // problemas_conocidos del PR de T-E1 para más detalle de este supuesto.
 
 import {
-  categoriasParaSlug, filtrarArticulos, FRAGMENTOS_POR_SLUG, vehiculoEnCatalogo,
+  categoriasParaSlug, etiquetaDeVariante, filtrarArticulos, FRAGMENTOS_POR_SLUG,
+  vehiculoEnCatalogo, vehiculosEnCatalogo,
 } from "./catalogoMap.js";
 
 const REAL_PATHS = {
@@ -207,6 +208,21 @@ export async function getSlugsConNumeros(vehiculo) {
   return Object.keys(FRAGMENTOS_POR_SLUG).filter(
     (slug) => categoriasParaSlug(entrada, slug).length > 0
   );
+}
+
+/**
+ * Las variantes del catálogo que corresponden a ese vehículo (T-B22).
+ * Con una sola no hay nada que preguntar; con varias, el sitio tiene que decir cuál está mostrando
+ * y dejar elegir. Devuelve [] si no hay ninguna.
+ * @returns {Promise<Array<{clave:string, etiqueta:string}>>}
+ */
+export async function getVariantesDeVehiculo(vehiculo) {
+  const { catalogo } = await getCatalogo();
+  if (!catalogo) return [];
+  return vehiculosEnCatalogo(catalogo, vehiculo).map((e) => ({
+    clave: e.clave,
+    etiqueta: etiquetaDeVariante(e),
+  }));
 }
 
 /** Los números originales del fabricante para ese vehículo (se descarga solo si se pide). */

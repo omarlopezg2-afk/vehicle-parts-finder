@@ -100,6 +100,60 @@ export function vehiculoEnCatalogo(catalogo, vehiculo) {
 }
 
 /**
+ * TODAS las entradas del catálogo que corresponden a ese vehículo (T-B22).
+ *
+ * POR QUÉ: el catálogo se arma POR VARIANTE (motor) y la mayoría de los modelos-año tienen dos
+ * (medido en el catálogo del 07/10/2026: 123 de 127). `vehiculoEnCatalogo` devolvía la primera, así
+ * que el sitio podía mostrar las pastillas del 1.8 a quien tiene el 2.0 sin decirlo. Un número
+ * exacto para el motor equivocado es peor que no dar número: hay que saber que hay varias.
+ *
+ * @returns {Array<object>} entradas del índice; vacío si no hay ninguna (nunca inventa).
+ */
+export function vehiculosEnCatalogo(catalogo, vehiculo) {
+  const vehiculos = (catalogo && catalogo.vehiculos) || [];
+  if (!vehiculo) return [];
+
+  const vin = String(vehiculo.vin || "").trim().toUpperCase();
+  if (vin) {
+    const porVin = vehiculos.filter((v) => String(v.vin || "").trim().toUpperCase() === vin);
+    if (porVin.length) return porVin;
+  }
+
+  const marca = normalizar(vehiculo.make || vehiculo.marca);
+  const modelo = normalizar(vehiculo.model || vehiculo.modelo);
+  const anio = String(vehiculo.year || vehiculo.anio || "").trim();
+  if (!marca || !modelo || !anio) return [];
+
+  return vehiculos.filter((v) => {
+    const d = v.vehiculo || {};
+    const mismaMarca = normalizar(d.make) === marca;
+    const mismoAnio = String(d.year || "").trim() === anio;
+    const suyo = normalizar(d.model);
+    const mismoModelo = suyo === modelo || suyo.includes(modelo) || modelo.includes(suyo);
+    return mismaMarca && mismoAnio && mismoModelo;
+  });
+}
+
+/**
+ * Cómo se llama esta variante para que la persona la reconozca (T-B22).
+ * Se arma con lo que trae el catálogo: cilindrada y potencia si están, y si no el nombre del motor
+ * tal como lo da TecDoc ("1.3 Dual-VVTi (NRE180_)"). Nunca queda vacío: si no hay dato se dice que
+ * es la única conocida, que es la verdad.
+ */
+export function etiquetaDeVariante(entrada) {
+  if (!entrada) return "";
+  const v = entrada.vehiculo || {};
+  const partes = [];
+  if (v.cilindrada_l != null && v.cilindrada_l !== "") partes.push(`${v.cilindrada_l} L`);
+  if (v.potencia_hp != null && v.potencia_hp !== "") partes.push(`${v.potencia_hp} HP`);
+  if (v.combustible) partes.push(String(v.combustible));
+  if (v.motor) partes.push(String(v.motor));
+  if (!partes.length && v.variante) partes.push(String(v.variante));
+  if (!partes.length && entrada.nombres && entrada.nombres.variante) partes.push(String(entrada.nombres.variante));
+  return partes.join(" · ") || "variante única";
+}
+
+/**
  * T-B19: qué categorías del catálogo (archivos ya partidos) corresponden a una categoría del
  * sitio. El catálogo guarda las categorías con el nombre técnico de AUTODOC ("Disc Brake",
  * "Lubrication"); el sitio usa sus propios slugs ("pastillas-freno"). Se emparejan con los mismos
