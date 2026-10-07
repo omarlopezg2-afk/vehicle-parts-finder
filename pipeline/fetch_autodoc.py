@@ -374,6 +374,72 @@ def elegir_categorias(arbol: list[dict], buscadas: list[str], tope: int = 12) ->
     return elegidas
 
 
+def oem_del_vehiculo(cliente: ClienteAutodoc, vehicle_id: int, producto: str) -> list[dict]:
+    """Los números ORIGINALES del fabricante para ese vehículo y ese grupo de producto.
+
+    Esto es el equivalente al catálogo oficial del concesionario (el EPC): *"para TU coche, la
+    pastilla de freno original es MN102628"*. Es la capa que faltaba: la lista de piezas por
+    categoría traía 75 marcas distintas (un volcado de marcas, como señaló el usuario el
+    07/10/2026), mientras que aquí salen unos pocos números **del fabricante** para ese vehículo
+    exacto.
+
+    Verificado el 07/10/2026 con su Outlander Sport: una sola consulta devuelve los "Brake Pad Set,
+    disc brake" y los "Accessory Kit, disc brake pad" originales de Mitsubishi. Una consulta por
+    producto y vehículo: mucho más barato que pedir el detalle de 75 artículos.
+
+    OJO: la respuesta NO trae `articleId`, así que los equivalentes aftermarket se piden aparte,
+    por número original (ver `equivalentes_de_oem`).
+    """
+    datos = cliente.pedir(
+        f"/api/articles-oem/selecting-oem-parts-vehicle-modification-description-product-group"
+        f"/type-id/{TIPO_TURISMO}/vehicle-id/{vehicle_id}/lang-id/{LANG}"
+        f"/search-param/{urllib.parse.quote(producto)}"
+    )
+    lista = datos if isinstance(datos, list) else ((datos or {}).get("articles") if isinstance(datos, dict) else None)
+    if not isinstance(lista, list):
+        return []
+    salida, vistos = [], set()
+    for item in lista:
+        numero = str(item.get("articleOemNo") or "").strip()
+        nombre = str(item.get("articleProductName") or "").strip()
+        if not numero:
+            continue
+        clave = f"{numero}|{nombre}".upper()
+        if clave in vistos:
+            continue
+        vistos.add(clave)
+        salida.append({"numero": numero, "pieza": nombre})
+    return salida
+
+
+def equivalentes_de_oem(cliente: ClienteAutodoc, oem_numero: str) -> list[dict]:
+    """Las piezas de otras marcas que equivalen a ese número original (y los demás OEM que sirven).
+
+    Verificado con el filtro de aceite del Corolla (04152YZZA1 -> 20-50517-SX de STELLOX, más los
+    otros OEM de Toyota y Daihatsu). Esto es lo que el concesionario no te da: la alternativa de
+    otra marca para el MISMO número original, a otro precio.
+    """
+    datos = cliente.pedir(
+        f"/api/articles-oem/search-all-equal-oem-no/lang-id/{LANG}"
+        f"/article-oem-no/{urllib.parse.quote(oem_numero)}"
+    )
+    lista = datos if isinstance(datos, list) else None
+    if not isinstance(lista, list):
+        return []
+    salida = []
+    for item in lista:
+        numero = str(item.get("articleNo") or "").strip()
+        if not numero:
+            continue
+        salida.append({
+            "numero": numero,
+            "articleId": item.get("articleId"),
+            "articleSearchNo": item.get("articleSearchNo") or None,
+            "oemEquivalentes": [o.get("oemDisplayNo") for o in (item.get("oemNo") or []) if o.get("oemDisplayNo")],
+        })
+    return salida
+
+
 def articulos_de_categoria(cliente: ClienteAutodoc, vehicle_id: int, category_id) -> list[dict]:
     """Las piezas de esa categoría para ese vehículo, con su número de parte."""
     datos = cliente.pedir(
@@ -405,8 +471,14 @@ def articulos_de_categoria(cliente: ClienteAutodoc, vehicle_id: int, category_id
 # orquestador
 # --------------------------------------------------------------------------------------
 
-def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None) -> dict:
-    """Recorre los vehículos de la semilla. Nunca levanta por un vehículo que falle: lo anota."""
+def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None,
+              solo_oem: bool = False) -> dict:
+    """Recorre los vehículos de la semilla. Nunca levanta por un vehículo que falle: lo anota.
+
+    `solo_oem` salta el volcado de categorías y pide únicamente los números ORIGINALES: sirve para
+    completar el catálogo de un vehículo que ya tiene sus categorías, gastando solo 1 consulta por
+    producto en vez de una por categoría.
+    """
     pais = int(semilla.get("pais") or 261)
     buscadas = semilla.get("categorias_buscadas") or []
     cache: dict = {}
@@ -474,18 +546,36 @@ def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None
                 salida["vehiculos"].append(registro)
                 continue
 
-            arbol = categorias_del_vehiculo(cliente, var_id)
-            elegidas = elegir_categorias(arbol, buscadas, tope=int(semilla.get("max_categorias", 10)))
-            print(f"  categorías: {len(arbol)} en el árbol, {len(elegidas)} elegidas")
-            for cat in elegidas:
-                arts = articulos_de_categoria(cliente, var_id, cat["categoryId"])
-                print(f"    - {cat['nombre']:<28} {len(arts):>3} piezas con número")
-                registro["categorias"].append({
-                    "nombre": cat["nombre"], "ruta": cat["ruta"],
-                    "buscado": cat.get("buscado"), "categoryId": cat["categoryId"],
-                    "articulos": arts,
-                })
-            registro["categorias"] = [c for c in registro["categorias"] if c["articulos"]]
+            # ORDEN A PROPÓSITO: primero los números ORIGINALES (T-B16) y después el volcado de
+            # categorías. Si el presupuesto se agota a mitad, lo que se pierde es la lista larga de
+            # marcas, no el número del fabricante, que es el dato que el visitante necesita.
+            productos_oem = semilla.get("productos_oem") or []
+            cuantos_eq = int(semilla.get("equivalentes_por_producto") or 0)
+            if productos_oem:
+                registro["oem"] = []
+                for producto in productos_oem:
+                    oems = oem_del_vehiculo(cliente, var_id, producto)
+                    if not oems:
+                        continue
+                    for o in oems[:cuantos_eq]:
+                        o["equivalentes"] = equivalentes_de_oem(cliente, o["numero"])
+                    registro["oem"].append({"buscado": producto, "numeros": oems})
+                    print(f"    ORIGINALES {producto:<14} {len(oems):>3} números del fabricante"
+                          + (f" (+ equivalentes de {min(cuantos_eq, len(oems))})" if cuantos_eq else ""))
+
+            if not solo_oem:
+                arbol = categorias_del_vehiculo(cliente, var_id)
+                elegidas = elegir_categorias(arbol, buscadas, tope=int(semilla.get("max_categorias", 10)))
+                print(f"  categorías: {len(arbol)} en el árbol, {len(elegidas)} elegidas")
+                for cat in elegidas:
+                    arts = articulos_de_categoria(cliente, var_id, cat["categoryId"])
+                    print(f"    - {cat['nombre']:<28} {len(arts):>3} piezas con número")
+                    registro["categorias"].append({
+                        "nombre": cat["nombre"], "ruta": cat["ruta"],
+                        "buscado": cat.get("buscado"), "categoryId": cat["categoryId"],
+                        "articulos": arts,
+                    })
+                registro["categorias"] = [c for c in registro["categorias"] if c["articulos"]]
         except PresupuestoAgotado as e:
             print(f"  [!] {e}: se detiene aquí y se marca el resultado como incompleto")
             registro["avisos"].append(str(e))
@@ -501,6 +591,52 @@ def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None
     return salida
 
 
+def fusionar(previo: dict, nuevo: dict) -> dict:
+    """Une un recorrido parcial sobre el catálogo que ya existe, vehículo por vehículo.
+
+    Existe por un motivo concreto: `--solo-oem` NO vuelve a pedir las categorías (que son la parte
+    cara), así que su resultado viene sin ellas. Si se escribiera tal cual, se perderían las piezas
+    ya guardadas. El 07/10/2026 un build parcial sobreescribió `parts.json` y se perdió el build
+    real (lo cazó el CI); esto es para que no vuelva a pasar con el catálogo.
+
+    Regla: lo que trae el recorrido nuevo manda; lo que no trae, se conserva del anterior.
+    """
+    if not previo or not previo.get("vehiculos"):
+        return nuevo
+
+    por_clave = {}
+    for v in previo["vehiculos"]:
+        for clave in (v.get("vin"), v.get("etiqueta")):
+            if clave:
+                por_clave[clave] = v
+
+    for v in nuevo.get("vehiculos", []):
+        anterior = None
+        for clave in (v.get("vin"), v.get("etiqueta")):
+            if clave and clave in por_clave:
+                anterior = por_clave[clave]
+                break
+        if not anterior:
+            continue
+        # lo nuevo manda; lo que no vino esta vez, se conserva
+        for campo in ("vehiculo", "autodoc", "nombres"):
+            if not v.get(campo) and anterior.get(campo):
+                v[campo] = anterior[campo]
+        if not v.get("categorias") and anterior.get("categorias"):
+            v["categorias"] = anterior["categorias"]
+            v["avisos"] = list(dict.fromkeys((v.get("avisos") or []) + (anterior.get("avisos") or [])))
+
+    # los vehículos que no se recorrieron esta vez se quedan como estaban
+    claves_nuevas = {v.get("vin") or v.get("etiqueta") for v in nuevo["vehiculos"]}
+    for v in previo["vehiculos"]:
+        if (v.get("vin") or v.get("etiqueta")) not in claves_nuevas:
+            nuevo["vehiculos"].append(v)
+
+    nuevo["consultas"] = int(nuevo.get("consultas") or 0) + int(previo.get("consultas") or 0)
+    nuevo["fusionado_con"] = previo.get("generado_en")
+    return nuevo
+
+
 def guardar(resultado: dict, ruta: Path | None = None) -> Path:
     """Escribe el catálogo. Va aparte del CLI para poder reusarlo desde build_index.py."""
     destino = ruta or SALIDA
@@ -513,6 +649,7 @@ def main(argv: list[str] | None = None) -> int:
     argv = list(argv if argv is not None else sys.argv[1:])
     solo = None
     tope_cli = None
+    solo_oem = "--solo-oem" in argv
     for i, a in enumerate(argv):
         if a == "--solo" and i + 1 < len(argv):
             solo = argv[i + 1]
@@ -530,7 +667,15 @@ def main(argv: list[str] | None = None) -> int:
     semilla = json.loads(SEMILLA.read_text(encoding="utf-8"))
     tope = tope_cli or int(semilla.get("max_consultas") or 30)
     cliente = ClienteAutodoc(clave, max_consultas=tope)
-    resultado = construir(semilla, cliente, solo=solo)
+    resultado = construir(semilla, cliente, solo=solo, solo_oem=solo_oem)
+
+    # Un recorrido parcial no puede borrar lo que ya estaba: se fusiona.
+    if SALIDA.exists():
+        try:
+            previo = json.loads(SALIDA.read_text(encoding="utf-8"))
+            resultado = fusionar(previo, resultado)
+        except (OSError, json.JSONDecodeError) as exc:
+            print(f"[autodoc] aviso: no se pudo leer el catálogo previo para fusionar ({exc})")
 
     guardar(resultado)
     con_piezas = sum(1 for v in resultado["vehiculos"] for c in v["categorias"] if c["articulos"])

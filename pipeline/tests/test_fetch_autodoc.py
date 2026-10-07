@@ -12,8 +12,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fetch_autodoc import (  # noqa: E402
     ClienteAutodoc, PresupuestoAgotado, articulos_de_categoria, categorias_del_vehiculo,
-    construir, decodificar_vin, elegir_categorias, normalizar, resolver_fabricante,
-    resolver_modelo, resolver_variante,
+    construir, decodificar_vin, elegir_categorias, equivalentes_de_oem, fusionar, normalizar,
+    oem_del_vehiculo, resolver_fabricante, resolver_modelo, resolver_variante,
 )
 
 CLAVE_FALSA = "clave-de-prueba-que-no-sirve"      # nunca sale de aquí
@@ -90,6 +90,23 @@ ARTICULOS = {"vehicleId": 126680, "categoryId": 100027, "countArticles": 3, "art
 ]}
 
 
+# Respuestas reales de T-B16 (07/10/2026, Outlander Sport del usuario)
+OEM_DEL_VEHICULO = [
+    {"articleOemNo": "MN102628", "articleProductName": "Brake Pad Set, disc brake"},
+    {"articleOemNo": "MR527674", "articleProductName": "Brake Pad Set, disc brake"},
+    {"articleOemNo": "MR527674", "articleProductName": "Brake Pad Set, disc brake"},   # repetido a propósito
+    {"articleOemNo": "", "articleProductName": "sin número: no debe entrar"},
+    {"articleOemNo": "MR527673", "articleProductName": "Accessory Kit, disc brake pad"},
+]
+
+EQUIVALENTES = [
+    {"articleId": 1811887, "articleSearchNo": "04152-YZZA1", "articleNo": "20-50517-SX",
+     "oemNo": [{"oemBrand": "TOYOTA", "oemDisplayNo": "04152-0V010"},
+               {"oemBrand": "DAIHATSU", "oemDisplayNo": "04152-31090"}]},
+    {"articleId": 1811888, "articleNo": "", "oemNo": []},          # sin número: no debe entrar
+]
+
+
 def fetch_falso(mapa, *_, **__):
     def _f(url, cabeceras, timeout=45):
         for patron, respuesta in mapa:
@@ -100,6 +117,8 @@ def fetch_falso(mapa, *_, **__):
 
 
 MAPA_COMPLETO = [
+    ("/api/articles-oem/search-all-equal-oem-no", EQUIVALENTES),
+    ("/api/articles-oem/", OEM_DEL_VEHICULO),
     ("/api/vin/decoder-v5/", {"vin-data-1": {}, "vin-data-2": {"content": json.dumps(VIN_INFO)},
                               "vin-data-3": {}}),
     ("/api/manufacturers/list/", FABRICANTES),
@@ -117,6 +136,8 @@ SEMILLA = {
                    "vin": "JA4AP4AU3LU023739",
                    "autodoc": {"manufacturerId": None, "modelId": None, "vehicleId": None}}],
     "categorias_buscadas": ["brake pad", "oil filter", "air filter", "wiper blade", "spark plug"],
+    "productos_oem": ["brake pad", "oil filter"],
+    "equivalentes_por_producto": 1,
 }
 
 
@@ -231,6 +252,75 @@ class PruebasPresupuesto(unittest.TestCase):
         self.assertTrue(r["vehiculos"][0]["avisos"])
 
 
+class PruebasNumeroOriginal(unittest.TestCase):
+    """T-B16: el número original del fabricante (el equivalente al EPC del concesionario)."""
+
+    def setUp(self):
+        self.c = ClienteAutodoc(CLAVE_FALSA, fetch=fetch_falso(MAPA_COMPLETO), pausa=0)
+
+    def test_oem_del_vehiculo_quita_repetidos_y_los_que_no_tienen_numero(self):
+        oems = oem_del_vehiculo(self.c, 126680, "brake pad")
+        assert isinstance(oems, list)
+        numeros = [o["numero"] for o in oems]
+        assert numeros == ["MN102628", "MR527674", "MR527673"], numeros
+        assert all(o["pieza"] for o in oems)
+
+    def test_equivalentes_de_oem_trae_las_otras_marcas(self):
+        eq = equivalentes_de_oem(self.c, "04152YZZA1")
+        assert len(eq) == 1, "el artículo sin número no debe entrar"
+        assert eq[0]["numero"] == "20-50517-SX"
+        assert "04152-0V010" in eq[0]["oemEquivalentes"]
+
+    def test_solo_oem_no_pide_categorias(self):
+        pedidas = []
+        base = fetch_falso(MAPA_COMPLETO)
+
+        def espia(url, cabeceras, timeout=45):
+            pedidas.append(url)
+            return base(url, cabeceras, timeout)
+
+        c = ClienteAutodoc(CLAVE_FALSA, fetch=espia, pausa=0)
+        r = construir(json.loads(json.dumps(SEMILLA)), c, solo_oem=True)
+
+        assert not any("/api/categories" in u or "/api/category/" in u for u in pedidas), pedidas
+        assert not any("/api/articles/list/" in u for u in pedidas), pedidas
+        assert any("/api/articles-oem/selecting-oem-parts" in u for u in pedidas)
+        assert r["vehiculos"][0]["oem"], "el bloque de originales debe venir"
+
+
+class PruebasFusion(unittest.TestCase):
+    """Un recorrido parcial (--solo-oem) no puede borrar las categorías ya guardadas.
+
+    Es la lección del 07/10/2026 aplicada al catálogo: aquel día un build parcial sobreescribió
+    parts.json y se perdió el build real.
+    """
+
+    def test_lo_nuevo_manda_y_lo_que_no_vino_se_conserva(self):
+        previo = {"generado_en": "2026-10-07T01:00:00Z", "consultas": 27, "vehiculos": [
+            {"etiqueta": "Mitsubishi Outlander Sport 2020 (2.0 gasolina)", "vin": "JA4AP4AU3LU023739",
+             "vehiculo": {"make": "MITSUBISHI", "model": "Outlander Sport", "year": "2020"},
+             "autodoc": {"vehicleId": 126680}, "avisos": [],
+             "categorias": [{"nombre": "Disc Brake", "articulos": [{"numero": "D2N097"}]}]},
+            {"etiqueta": "Toyota Corolla 2019", "vin": "2T1BURHE6KC123456", "categorias": [{"nombre": "X"}]},
+        ]}
+        nuevo = {"generado_en": "2026-10-07T02:00:00Z", "consultas": 7, "vehiculos": [
+            {"etiqueta": "Mitsubishi Outlander Sport 2020 (2.0 gasolina)", "vin": "JA4AP4AU3LU023739",
+             "vehiculo": {}, "autodoc": {}, "avisos": [],
+             "oem": [{"buscado": "brake pad", "numeros": [{"numero": "MN102628"}]}],
+             "categorias": []},
+        ]}
+
+        r = fusionar(previo, nuevo)
+        v = r["vehiculos"][0]
+        assert v["categorias"], "las categorías del recorrido anterior NO se pueden perder"
+        assert v["categorias"][0]["articulos"][0]["numero"] == "D2N097"
+        assert v["oem"][0]["numeros"][0]["numero"] == "MN102628", "lo nuevo manda"
+        assert v["vehiculo"]["make"] == "MITSUBISHI", "los datos del vehículo se conservan"
+        assert any("Toyota Corolla" in (x.get("etiqueta") or "") for x in r["vehiculos"]), \
+            "un vehículo que no se recorrió esta vez se queda como estaba"
+        assert r["consultas"] == 34, "las consultas se acumulan, no se reinician"
+
+
 class PruebasExtremoAExtremo(unittest.TestCase):
     def test_recorrido_completo_produce_piezas_con_numero(self):
         c = ClienteAutodoc(CLAVE_FALSA, fetch=fetch_falso(MAPA_COMPLETO), pausa=0)
@@ -249,6 +339,24 @@ class PruebasExtremoAExtremo(unittest.TestCase):
         numeros = [a["numero"] for cat in v["categorias"] for a in cat["articulos"]]
         self.assertIn("ADBP450211", numeros)
         self.assertTrue(r["consultas"] > 0)
+
+        # T-B16: si el presupuesto se agota, lo que debe estar a salvo es el número ORIGINAL.
+        self.assertTrue(v["oem"], "el bloque de números originales tiene que venir")
+        self.assertEqual(v["oem"][0]["numeros"][0]["numero"], "MN102628")
+
+    def test_los_originales_se_piden_antes_que_las_categorias(self):
+        pedidas = []
+        base = fetch_falso(MAPA_COMPLETO)
+
+        def espia(url, cabeceras, timeout=45):
+            pedidas.append(url)
+            return base(url, cabeceras, timeout)
+
+        c = ClienteAutodoc(CLAVE_FALSA, fetch=espia, pausa=0)
+        construir(json.loads(json.dumps(SEMILLA)), c)
+        i_oem = next(i for i, u in enumerate(pedidas) if "/api/articles-oem/" in u)
+        i_cat = next(i for i, u in enumerate(pedidas) if "/api/category/" in u)
+        self.assertLess(i_oem, i_cat, "los originales van primero: es lo que no se puede perder")
 
     def test_la_clave_nunca_aparece_en_el_resultado(self):
         c = ClienteAutodoc(CLAVE_FALSA, fetch=fetch_falso(MAPA_COMPLETO), pausa=0)

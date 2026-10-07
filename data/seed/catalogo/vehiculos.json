@@ -15,6 +15,10 @@
       "autodoc": { "manufacturerId": null, "modelId": null, "vehicleId": null }
     }
   ],
+  "_productos_oem": "T-B16: grupos de producto (en el idioma de TecDoc) de los que se piden los números ORIGINALES. Cada uno cuesta UNA consulta por vehículo, no una por artículo.",
+  "productos_oem": ["brake pad", "oil filter", "spark plug"],
+  "_equivalentes_comentario": "Cuántos números originales de cada producto se desarrollan en equivalentes de otras marcas (cada uno cuesta una consulta más).",
+  "equivalentes_por_producto": 1,
   "categorias_buscadas": [
     "brake pad", "brake disc", "oil filter", "air filter", "fuel filter", "cabin filter",
     "wiper blade", "spark plug", "shock absorber", "radiator", "timing belt", "water pump",
