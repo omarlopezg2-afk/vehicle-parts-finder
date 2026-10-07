@@ -43,7 +43,7 @@ entorno de staging: `main` **es** producción.
 | Identidad de cada variante | **290/290 con combustible, cilindrada, potencia (PS) y código de motor** | `python3 pipeline/completar_variantes.py` (dice "ya estaban: 290", 0 consultas) |
 | Duplicados peligrosos | 0 combustibles contradictorios por `vehicleId` (918 revisados) | el mismo script, línea "cache: … 0 con combustible contradictorio" |
 | Pruebas | **212 pipeline + 118 sitio + 10 Worker, en verde** | los tres comandos de la sección 6 |
-| Cuota RapidAPI | **~6.100 de 20.000** este mes | panel de RapidAPI (el campo `consultas` del monolito es el **acumulado del catálogo**, no el del mes: 13.693) |
+| Cuota RapidAPI | **~6.000 de 20.000** este mes | panel de RapidAPI (el campo `consultas` del monolito es el **acumulado del catálogo**, no el del mes: 13.693) |
 | Tope del Worker | 2.000 consultas/mes propias (`TOPE_MES` en `wrangler.toml`) | `/salud` del Worker |
 | Verificado en navegador | local (8765) **y** partexact.com | la tabla de la sección 5 |
 | Pendiente de producto | el sitio **no está para un cliente**: falta elegir mercado, avisos legales y los números originales en pantalla | sección 4 |
@@ -178,12 +178,21 @@ propósito.
   del carro porque le montan, pero no son la pieza original; salen con su número y "Equivale al original …".
 
 **Cobertura real (verificada en navegador):** Corolla 1.3 (`v52438`): las pastillas salen con original
-Toyota, delantera y trasera por separado. Corolla 1.8 (`v109621`): las **pastillas no traen original en el
-catálogo** (ATE y BENDIX sin cruce) → salen los de reemplazo; los **discos** sí traen original Toyota.
+Toyota, delantera y trasera por separado. Corolla 1.8 (`v109621`): tras detallar las pastillas (abajo) las 3
+que se publican ya traen original Toyota; solo una dice su posición (Trasera).
 
-**Pendiente (si Omar lo quiere):** para dar original en las pastillas del 1.8 haría falta consultar el
-cruce por número de reemplazo (`articles-oem/...` ≈ 1 consulta por artículo; **dry-run y coste antes**,
-regla 4) o el original por posición del vehículo. No se ha gastado ninguna consulta.
+**Detallar lo que ya se publica (HECHO el 07/10/2026, 112 consultas):** `pipeline/enriquecer_detalles.py
+--producto "brake pad"` pide el detalle (posición + originales) de las pastillas que el sitio ya enseña y no
+lo tenían, porque `construir` solo detalla los 3 primeros artículos de cada categoría y en la de pastillas a
+veces son discos (13.787 → 13.899 consultas acumuladas; 133 artículos completados, 65 con posición). No cambia
+qué piezas se publican. Se usa igual para otro producto (`--producto "oil filter"`: 82 pendientes, `brake disc`:
+84…); primero en seco (plan = nº de articleId), luego el OK.
+
+**LÍMITE CONOCIDO (importante):** el sitio publica como máximo **3 pastillas por vehículo** (`tope_del_producto`
+en `partir_catalogo.py`), elegidas por el orden de la lista de TecDoc, no por posición. El Corolla 1.8 tiene
+**61 pastillas** en la lista y se enseñan 3; puede que no salga la delantera. Para enseñar "un juego delantero
+y uno trasero con original" hay que detallar más pastillas por vehículo (≈ 60 consultas por vehículo) o elegir
+con otra señal. No se ha hecho; decidirlo con Omar.
 
 ### 4.3 · Ronda 2 de motores (HECHA el 07/10/2026 — solo lo seguro; el resto, por demanda)
 
@@ -258,7 +267,7 @@ Para ver el aspecto real, `--screenshot=/tmp/x.png --window-size=1100,860` y mir
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas: las tres suites. Hoy 216 + 153 + 21 en verde.
+# pruebas: las tres suites. Hoy 223 + 153 + 21 en verde.
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -355,7 +364,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 ## 9. Presupuesto: cómo no gastar de más
 
-- **RapidAPI: 20.000 consultas/mes.** Van ~13.790 → quedan **~6.100**. El número exacto, en el panel.
+- **RapidAPI: 20.000 consultas/mes.** Van ~13.900 → quedan **~6.000**. El número exacto, en el panel.
 - El catálogo acumula `consultas` en el monolito (13.693) — **es el total histórico, no el del mes**.
 - **Caché que baja el coste a 0**: `data/raw/autodoc_variantes/` (listas de variantes por modelo),
   `data/raw/vpic_cache/` (VIN de NHTSA) y el propio monolito (caché de especificaciones por `articleId`).
@@ -372,7 +381,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 1. `cat AGENTS.md docs/TRASPASO.md` y `TASKS.md` (T-B22 → T-B27). *(Lo que estás leyendo.)*
 2. `git log --oneline -8` y `git status` para ver dónde quedó el árbol.
-3. Las tres suites de pruebas (sección 6): 216 + 153 + 21 en verde antes de tocar nada.
+3. Las tres suites de pruebas (sección 6): 223 + 153 + 21 en verde antes de tocar nada.
 4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 290" y
    "0 con combustible contradictorio".
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor
