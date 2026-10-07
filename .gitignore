@@ -22,3 +22,7 @@ site/data/build/catalogo
 # T-B19: el archivo ÚNICO del catálogo es un producto intermedio del pipeline (decenas de MB con
 # la flota del país). A git y al sitio va la versión PARTIDA: data/build/catalogo/ (índice + trozos).
 data/build/catalogo.json
+
+# El respaldo que deja un script del pipeline antes de reescribir el archivo único (T-B25). Son
+# cientos de MB de un producto intermedio que ya está ignorado arriba.
+data/build/*.respaldo

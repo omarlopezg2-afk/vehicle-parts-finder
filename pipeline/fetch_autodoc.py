@@ -296,6 +296,29 @@ def resolver_modelo(cliente: ClienteAutodoc, manufacturer_id: int, nombre: str, 
     return candidatos[0][1]
 
 
+def identidad_de_variante(v: dict | None) -> dict:
+    """La identidad técnica de una variante tal como la da TecDoc (`list-vehicles-types`).
+
+    POR QUÉ (T-B25): esta respuesta se paga UNA vez por modelo y trae el combustible (`fuelType`),
+    la cilindrada (`capacityLt`), la potencia (`powerPs`) y el código de motor (`engineCodes`). Hasta
+    el 07/10/2026 el pipeline la usaba solo para filtrar por año y tiraba el resto: la cuarta capa
+    del sitio no podía decir de qué combustible era cada número en 248 de las 250 variantes.
+
+    `capacityLt` viene en litros y `powerPs` en PS (caballos métricos), NO en HP: se guarda como
+    `potencia_ps` para no rotular con la unidad equivocada. Los campos vacíos no se escriben.
+    """
+    if not isinstance(v, dict):
+        return {}
+    datos = {
+        "cilindrada_l": _a_numero(v.get("capacityLt")),
+        "potencia_ps": _a_numero(v.get("powerPs")),
+        "combustible": str(v.get("fuelType") or "").strip(),
+        "motor": str(v.get("engineCodes") or "").strip(),
+        "variante": str(v.get("typeEngineName") or "").strip(),
+    }
+    return {k: val for k, val in datos.items() if val not in ("", None)}
+
+
 def resolver_variante(cliente: ClienteAutodoc, model_id: int, pais: int, *,
                       cilindrada_l=None, potencia_hp=None, anio=None, combustible=None):
     """La variante concreta (vehicleId) que corresponde al motor que dice el VIN.
@@ -605,8 +628,30 @@ def expandir_flota(semilla: dict, cliente: ClienteAutodoc, cache: dict | None = 
                         "_variante": v.get("typeEngineName"),
                     },
                     "_anio": anio,
+                    # T-B25: la identidad de la variante (combustible, cilindrada, potencia, código de
+                    # motor) viene en ESTA misma respuesta, que ya se pagó para poder filtrar por año.
+                    # Antes se tiraba, y por eso el sitio no podía decir de qué combustible era cada
+                    # número: lo que ya está pagado se guarda, no se vuelve a pedir.
+                    "_make": make,
+                    "_model": model,
+                    "_variante_datos": identidad_de_variante(v),
                 })
     return salida
+
+
+def _bloque_de_flota(v: dict) -> dict:
+    """El bloque `vehiculo` de una entrada que vino de la flota (sin VIN): marca, modelo, año y la
+    identidad de la variante que ya se descargó al expandir el modelo."""
+    bloque = {
+        "make": v.get("_make"),
+        "model": v.get("_model"),
+        "year": str(v.get("_anio") or ""),
+    }
+    for clave, valor in (v.get("_variante_datos") or {}).items():
+        if valor not in ("", None):
+            bloque[clave] = valor
+    bloque["origen"] = "flota"
+    return bloque
 
 
 def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None,
@@ -656,6 +701,11 @@ def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None
             if ids.get("_variante") and not dec:
                 # viene de la flota: los nombres ya se conocieron al expandir
                 ids["_modelo"] = ids.get("_modelo") or None
+            if not dec and v.get("_make"):
+                # T-B25: la entrada de flota también escribe su bloque `vehiculo` en el primer
+                # recorrido (marca, modelo, año y la identidad de la variante ya descargada), en vez
+                # de que haya que derivarlo después leyendo la etiqueta a mano.
+                registro["vehiculo"] = _bloque_de_flota(v)
             fab_id = int(ids["manufacturerId"]) if ids.get("manufacturerId") else None
             if fab_id is None and dec:
                 f = resolver_fabricante(cliente, dec["make"], cache=cache)

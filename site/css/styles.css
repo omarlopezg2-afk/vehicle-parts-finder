@@ -236,6 +236,76 @@ main {
   border-color: var(--color-text);
 }
 
+/* --- T-B25: de qué mercado, de qué motor y de qué combustible es el número --- */
+
+.pregunta-variante {
+  border: 1px solid var(--color-border);
+  border-left: 3px solid var(--color-accent);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin: 0.75rem 0;
+}
+
+.pregunta-variante h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.1rem;
+}
+
+.variante-opciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+}
+
+.variante-opciones button {
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 7px;
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.variante-opciones button:hover,
+.variante-opciones button:focus-visible {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+/* La línea que dice de qué mercado/motor/combustible son los números que vienen debajo. */
+.variante-etiqueta {
+  margin: 0.6rem 0 0.1rem;
+}
+
+.variante-etiqueta .variante-datos {
+  margin: 0;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.variante-etiqueta .variante-cambiar {
+  font: inherit;
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text-dim);
+}
+
+.variante-etiqueta .variante-cambiar:hover {
+  border-color: var(--color-text);
+  color: var(--color-text);
+}
+
 /* --- T-B14: el número de parte, arriba de las ofertas --- */
 .numeros-parte {
   border: 1px solid var(--color-border);

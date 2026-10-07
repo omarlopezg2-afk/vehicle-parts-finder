@@ -110,7 +110,7 @@ test("lo ya catalogado se sirve de caché, con cero consultas", async () => {
   const registro = [];
   globalThis.fetch = doble(registro);
   const env = envFalso({
-    "cat:261:JA4AP4AU3LU023739": JSON.stringify({
+    "cat:67:JA4AP4AU3LU023739": JSON.stringify({
       vehiculo: { make: "MITSUBISHI", variante: "2.0" },
       piezas: [{ categoryId: 100027, articulos: [{ numero: "D2N097" }] }],
     }),
@@ -121,6 +121,26 @@ test("lo ya catalogado se sirve de caché, con cero consultas", async () => {
   assert.equal(cuerpo.fuente, "cache");
   assert.equal(cuerpo.piezas[0].articulos[0].numero, "D2N097");
   assert.equal(registro.length, 0, "la caché es gratis: cero consultas");
+});
+
+test("el mercado por defecto es el del catálogo: República Dominicana (67)", async () => {
+  // T-B25: el catálogo se armó con el filtro 67 (semilla "pais": 67, monolito "pais_filtro": 67).
+  // Con el defecto en EE.UU. (261), el Worker buscaba en un mercado donde los vehículo-tipos y hasta
+  // los nombres comerciales son otros: decía "no encontramos el modelo" de coches que sí tenemos.
+  const registro = [];
+  globalThis.fetch = doble(registro);
+  await llamar("make=Toyota&model=Corolla&year=2019", envFalso());
+  assert.ok(registro.some((u) => u.includes("country-filter-id/67")),
+    `el defecto tiene que ser 67; se pidió: ${registro.join(" | ")}`);
+  assert.ok(!registro.some((u) => u.includes("country-filter-id/261")),
+    "no debe pedir EE.UU. por defecto");
+});
+
+test("si el sitio dice el mercado (?pais=), se respeta", async () => {
+  const registro = [];
+  globalThis.fetch = doble(registro);
+  await llamar("make=Toyota&model=Corolla&year=2019&pais=261", envFalso());
+  assert.ok(registro.some((u) => u.includes("country-filter-id/261")));
 });
 
 test("la clave de AUTODOC no aparece nunca en la respuesta", async () => {

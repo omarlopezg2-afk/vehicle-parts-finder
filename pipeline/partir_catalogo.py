@@ -99,6 +99,10 @@ def partir() -> dict:
         "fuente": datos.get("fuente"),
         "generado_en": datos.get("generado_en"),
         "consultas": datos.get("consultas"),
+        # T-B25: el mercado con el que se resolvió cada vehicleId. Un número sin decir de qué
+        # mercado es no se puede enseñar (regla del proyecto), así que el mercado viaja con el
+        # catálogo hasta el sitio: 67 = República Dominicana (el de la semilla), 261 = EE.UU.
+        "pais_filtro": datos.get("pais_filtro"),
         "vehiculos": [],
     }
     resumen = []

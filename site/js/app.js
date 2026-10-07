@@ -40,7 +40,7 @@ import {
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
 import { decodeVIN } from "./vpicClient.js";
-import { getNumerosDeCategoria, getSlugsConNumeros } from "./dataClient.js";
+import { getNumerosDeCategoria, getSlugsConNumeros, getVariantesDeVehiculo } from "./dataClient.js";
 import { renderVehicleTree, renderCategoryGrid } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
@@ -159,7 +159,7 @@ async function runPartNumberSearch(query) {
   }
 }
 
-async function runCategorySelection(vehicle, categorySlug, categories) {
+async function runCategorySelection(vehicle, categorySlug, categories, claveVariante) {
   clearResults();
   resultsEl.appendChild(
     renderBreadcrumb([
@@ -181,11 +181,48 @@ async function runCategorySelection(vehicle, categorySlug, categories) {
     ])
   );
 
+  // --- T-B25: la cuarta capa. "¿Cuál es tu carro exactamente?" ---
+  //
+  // El catálogo va POR VARIANTE (motor) y 123 de los 127 modelo-año tienen más de una: las pastillas
+  // del 1.8 no son las del 2.0. Antes el sitio pintaba una de las dos sin decir cuál (vehiculoEnCatalogo
+  // devolvía la primera) — o sea, podía dar el número de un motor equivocado. Ahora, con varias
+  // variantes, el sitio PREGUNTA y no enseña ningún número hasta que el visitante elige la suya.
+  const variantes = await getVariantesDeVehiculo(vehicle);
+  const elegida = claveVariante ? variantes.find((v) => v.clave === claveVariante) || null : null;
+
+  if (variantes.length > 1 && !elegida) {
+    resultsEl.appendChild(renderPreguntaDeVariante(vehicle, categorySlug, categories, variantes));
+    return;
+  }
+
+  const variante = elegida || (variantes.length === 1 ? variantes[0] : null);
+  // Un dato obligatorio que falte no se tapa: si el catálogo no dice el combustible de esta versión
+  // y hay más de un motor para el modelo, no se enseña el número (regla del proyecto).
+  const faltaCombustible = Boolean(variante) && !variante.combustible && variantes.length > 1;
+
   const [parts, numeros] = await Promise.all([
     getPartsByFitment(vehicle.id, categorySlug),
-    getNumerosDeCategoria(vehicle, categorySlug),
+    faltaCombustible ? Promise.resolve([]) : getNumerosDeCategoria(vehicle, categorySlug, variante && variante.clave),
   ]);
 
+  if (variante && !faltaCombustible) {
+    resultsEl.appendChild(
+      renderEtiquetaDeVariante(variante, variantes.length, () => {
+        // "No es mi motor": se vuelve a la pregunta y se quita la variante de la URL.
+        navegar({
+          vista: "vehiculo",
+          make: vehicle.make,
+          model: vehicle.model,
+          year: String(vehicle.year),
+          categoria: categorySlug,
+        });
+        runCategorySelection(vehicle, categorySlug, categories);
+      })
+    );
+  }
+  if (faltaCombustible) {
+    resultsEl.appendChild(renderAvisoDeDatoQueFalta(variante, variantes));
+  }
   if (numeros.length) {
     resultsEl.appendChild(renderNumerosDeParte(numeros, vehicle));
   }
@@ -311,6 +348,107 @@ function detallesDeLaPieza(pieza, vehiculo) {
   return lineas;
 }
 
+// --- T-B25: de qué MERCADO, de qué MOTOR y de qué COMBUSTIBLE es el número ---
+//
+// Los tres datos van juntos ENCIMA del bloque de piezas porque son la respuesta a una sola pregunta:
+// "¿cuál es tu carro exactamente?". El mercado sale del catálogo (`pais_filtro`), el motor de la
+// variante elegida y el combustible del propio catálogo. Sin esta línea, el visitante no sabe si el
+// número que le damos es el de su carro — y con la flota dominicana, un Corolla 2020 tiene un 1.8
+// híbrido y un 1.8 de gasolina cuyas pastillas NO son las mismas.
+function renderEtiquetaDeVariante(variante, cuantas, onCambiar) {
+  const seccion = document.createElement("section");
+  seccion.className = "variante-etiqueta";
+
+  const p = document.createElement("p");
+  p.className = "variante-datos";
+  p.textContent = variante.detalle;
+  seccion.appendChild(p);
+
+  if (cuantas > 1 && typeof onCambiar === "function") {
+    // Con varias variantes, el visitante tiene que poder corregir la suya sin volver atrás.
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "variante-cambiar";
+    boton.textContent = "No es mi motor";
+    boton.addEventListener("click", onCambiar);
+    seccion.appendChild(boton);
+  }
+  return seccion;
+}
+
+// La pregunta, cuando el modelo-año tiene más de un motor. Es UNA sola pregunta: mercado, motor y
+// combustible son el mismo dato para el visitante ("¿cuál es tu carro exactamente?"). Se pregunta
+// ANTES de enseñar nada: sin saber el motor no hay número que dar (T-B22).
+function renderPreguntaDeVariante(vehicle, categorySlug, categories, variantes) {
+  const seccion = document.createElement("section");
+  seccion.className = "pregunta-variante";
+
+  const h = document.createElement("h2");
+  h.textContent = "¿Cuál es tu carro exactamente?";
+  seccion.appendChild(h);
+
+  const mercado = (variantes[0] && variantes[0].mercado) || "";
+  const nota = document.createElement("p");
+  nota.className = "search-hint";
+  nota.textContent =
+    `Tu ${vehicle.make} ${vehicle.model} ${vehicle.year} salió con más de un motor y el número de la ` +
+    "pieza cambia de uno a otro. Elige el tuyo y te damos el número que le queda" +
+    (mercado ? ` (mercado del catálogo: ${mercado})` : "") +
+    ". Mientras no lo elijas no enseñamos ningún número: uno para el motor equivocado no le sirve a nadie.";
+  seccion.appendChild(nota);
+
+  const lista = document.createElement("div");
+  lista.className = "variante-opciones";
+  for (const variante of variantes) {
+    const boton = document.createElement("button");
+    boton.type = "button";
+    boton.className = "variante-opcion";
+    boton.dataset.clave = variante.clave;
+    boton.textContent = variante.etiqueta;
+    boton.addEventListener("click", () => {
+      navegar({
+        vista: "vehiculo",
+        make: vehicle.make,
+        model: vehicle.model,
+        year: String(vehicle.year),
+        categoria: categorySlug,
+        variante: variante.clave,
+      });
+      runCategorySelection(vehicle, categorySlug, categories, variante.clave);
+    });
+    lista.appendChild(boton);
+  }
+  seccion.appendChild(lista);
+
+  if (variantes.some((v) => !v.combustible)) {
+    const aviso = document.createElement("p");
+    aviso.className = "search-hint";
+    aviso.textContent =
+      "En las versiones que no dicen combustible, el catálogo no lo tiene confirmado.";
+    seccion.appendChild(aviso);
+  }
+  return seccion;
+}
+
+// El caso que la regla prohíbe: un número cuyo combustible no sabemos y con más de un motor posible.
+// No se enseña el número; se dice por qué (y con qué datos, que el taller sí puede confirmar).
+function renderAvisoDeDatoQueFalta(variante, variantes) {
+  const seccion = document.createElement("section");
+  seccion.className = "variante-etiqueta";
+  const p = document.createElement("p");
+  p.className = "variante-datos";
+  p.textContent = `Motor: ${variante.etiqueta} · Combustible: sin confirmar en el catálogo`;
+  const aviso = document.createElement("p");
+  aviso.className = "search-hint";
+  aviso.textContent =
+    `No te damos el número todavía: tu ${variante.etiqueta} tiene más de una versión y el catálogo no ` +
+    "trae el combustible de esta, así que no podemos asegurar que el número sea el de tu motor. " +
+    "Con el dato del motor, cualquier tienda te lo confirma.";
+  seccion.appendChild(p);
+  seccion.appendChild(aviso);
+  return seccion;
+}
+
 function renderNumerosDeParte(numeros, vehiculo) {
   const seccion = document.createElement("section");
   seccion.className = "numeros-parte";
@@ -391,14 +529,17 @@ async function runVinFlow(vehicle) {
     seccion.className = "categorias-con-datos";
 
     const h = document.createElement("h2");
-    h.textContent = `Con pieza confirmada para tu vehículo (${conDatos.length})`;
+    // T-B25: dice "para este modelo" y no "para tu vehículo" porque el catálogo va por variante: en
+    // cuanto el modelo-año tiene dos motores, el número concreto depende de cuál sea el tuyo.
+    h.textContent = `Con pieza confirmada para este modelo (${conDatos.length})`;
     seccion.appendChild(h);
 
     const nota = document.createElement("p");
     nota.className = "search-hint";
     nota.textContent =
-      "Estas categorías ya tienen el número de la pieza para tu vehículo. Debajo puedes explorar el " +
-      "catálogo completo.";
+      "Estas categorías ya tienen el número de la pieza. Al abrir una, el sitio te pregunta el motor " +
+      "y te dice de qué mercado y de qué combustible es el número. Debajo puedes explorar el catálogo " +
+      "completo.";
     seccion.appendChild(nota);
 
     const lista = document.createElement("div");
@@ -703,7 +844,7 @@ async function restaurarVista(estado) {
         saveVehicle(vehicle);
         showVehicleBar(vehicle);
         const categories = await getCategories();
-        await runCategorySelection(vehicle, estado.categoria, categories);
+        await runCategorySelection(vehicle, estado.categoria, categories, estado.variante);
       } else {
         await resolveVehicleAndShowTree(vehicle);
       }

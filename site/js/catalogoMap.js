@@ -148,13 +148,20 @@ export function vehiculosEnCatalogo(catalogo, vehiculo) {
  *   Diesel                             -> Diésel
  *   Petrol/Ethanol                     -> Gasolina / Etanol
  *   Petrol/Electric                    -> Híbrido
+ *   Gasoline                           -> Gasolina
  * Un valor nuevo se muestra tal cual (mejor raro que mentir), pero esta lista es la buena.
+ *
+ * "Gasoline" se añadió el 07/10/2026 al rellenar el combustible del catálogo (T-B25): es la
+ * palabra que usa la ficha del VIN (NHTSA/vPIC) para lo mismo que TecDoc llama "Petrol". Sin
+ * esta línea el visitante vería "Gasoline" en inglés — y el combustible es justo uno de los
+ * tres datos que no se pueden callar.
  */
 export function traducirCombustible(valor) {
   const v = String(valor || "").trim();
   if (!v) return "";
   const tabla = {
     Petrol: "Gasolina",
+    Gasoline: "Gasolina",
     "Petrol/Liquified Petroleum Gas (LPG)": "Gasolina / Gas (GLP)",
     Diesel: "Diésel",
     "Petrol/Ethanol": "Gasolina / Etanol",
@@ -163,6 +170,12 @@ export function traducirCombustible(valor) {
   // Comparación sin distinguir mayúsculas: la API no siempre respeta el formato.
   const clave = Object.keys(tabla).find((k) => k.toLowerCase() === v.toLowerCase());
   return clave ? tabla[clave] : v;
+}
+
+/** La cilindrada con un decimal: "2.0 L", no "2 L" (es como la escribe el mercado). */
+function litros(valor) {
+  const n = Number(valor);
+  return Number.isFinite(n) ? n.toFixed(1) : String(valor);
 }
 
 /**
@@ -175,13 +188,78 @@ export function etiquetaDeVariante(entrada) {
   if (!entrada) return "";
   const v = entrada.vehiculo || {};
   const partes = [];
-  if (v.cilindrada_l != null && v.cilindrada_l !== "") partes.push(`${v.cilindrada_l} L`);
+  if (v.cilindrada_l != null && v.cilindrada_l !== "") partes.push(`${litros(v.cilindrada_l)} L`);
+  // PS y HP NO son lo mismo (un PS es ~0,986 HP): cada uno se dice con su unidad. El catálogo
+  // guarda lo que da TecDoc (PS) y la ficha del VIN lo que da la NHTSA (HP).
+  if (v.potencia_ps != null && v.potencia_ps !== "") partes.push(`${v.potencia_ps} PS`);
   if (v.potencia_hp != null && v.potencia_hp !== "") partes.push(`${v.potencia_hp} HP`);
   if (v.combustible) partes.push(traducirCombustible(v.combustible));
   if (v.motor) partes.push(String(v.motor));
   if (!partes.length && v.variante) partes.push(String(v.variante));
   if (!partes.length && entrada.nombres && entrada.nombres.variante) partes.push(String(entrada.nombres.variante));
   return partes.join(" · ") || "variante única";
+}
+
+/**
+ * Cómo se llama el mercado del catálogo (T-B25).
+ *
+ * POR QUÉ: la regla del proyecto es que ningún número se enseña sin decir de qué mercado es. El
+ * catálogo se resolvió con un filtro de país y ese filtro viaja en el índice (`pais_filtro`); aquí
+ * se traduce a una palabra. Un país que no esté en la tabla se muestra por su número ("Mercado 214")
+ * — nunca con un nombre inventado.
+ */
+const MERCADOS = {
+  67: "República Dominicana",
+  261: "Estados Unidos",
+};
+
+export function nombreDeMercado(pais) {
+  if (pais === null || pais === undefined || pais === "") return "";
+  const n = Number(pais);
+  if (Number.isFinite(n) && MERCADOS[n]) return MERCADOS[n];
+  return `Mercado ${pais}`;
+}
+
+/**
+ * Las variantes de un vehículo, listas para el selector (T-B22/T-B25).
+ *
+ * Recibe las entradas del índice (`vehiculosEnCatalogo`) y devuelve `{clave, etiqueta}`. Y resuelve
+ * un caso que se ve al hacerlo: dos variantes pueden quedar con la MISMA etiqueta (mismo motor y
+ * mismo combustible en dos generaciones). Si el visitante ve dos botones iguales no puede elegir,
+ * así que a las repetidas se les añade el nombre con el que las llama el catálogo.
+ */
+export function etiquetasDeVariantes(entradas) {
+  const lista = (entradas || []).map((e) => ({ clave: e.clave, etiqueta: etiquetaDeVariante(e) }));
+  const veces = new Map();
+  for (const item of lista) veces.set(item.etiqueta, (veces.get(item.etiqueta) || 0) + 1);
+  return lista.map((item, i) => {
+    if (veces.get(item.etiqueta) < 2) return item;
+    const crudo = (entradas[i].vehiculo || {}).variante || (entradas[i].nombres || {}).variante || "";
+    return crudo && !item.etiqueta.includes(crudo)
+      ? { ...item, etiqueta: `${item.etiqueta} · ${crudo}` }
+      : item;
+  });
+}
+
+/**
+ * De qué mercado y de qué motor es un número de parte, en una línea (T-B25).
+ *
+ * Es la etiqueta que va ENCIMA del bloque de piezas. Los tres datos son obligatorios: mercado,
+ * motor y combustible. Si al catálogo le falta uno, se dice que falta — nunca se calla ni se
+ * supone ("si es un Corolla será gasolina" es exactamente lo que no se puede hacer).
+ */
+export function etiquetaDeVarianteCompleta(entrada, pais, etiquetaMotor) {
+  const v = (entrada && entrada.vehiculo) || {};
+  const partes = [];
+  const mercado = nombreDeMercado(pais);
+  if (mercado) partes.push(`Mercado: ${mercado}`);
+  partes.push(`Motor: ${etiquetaMotor || etiquetaDeVariante(entrada)}`);
+  partes.push(
+    v.combustible
+      ? `Combustible: ${traducirCombustible(v.combustible)}`
+      : "Combustible: sin confirmar en el catálogo"
+  );
+  return partes.join(" · ");
 }
 
 /**

@@ -19,7 +19,12 @@
 //   #/categoria/<slug>                   categoría (todo el catálogo)
 //   #/vehiculo/<marca>/<modelo>/<año>    árbol de categorías del vehículo
 //   #/vehiculo/<marca>/<modelo>/<año>/<slug>   categoría dentro del vehículo
+//   #/vehiculo/<marca>/<modelo>/<año>/<slug>/<variante>   categoría con el motor ya elegido
 //   #/vin/<vin>                          vehículo resuelto por VIN
+//
+// El último tramo (T-B25) es la VARIANTE elegida: sin él, recargar la página volvería a preguntar el
+// motor (o, peor, a elegir uno por su cuenta) y el enlace que alguien comparte no diría de qué motor
+// es el número. El estado del sitio vive en la URL, también esta parte.
 
 const INICIO = "#/";
 
@@ -46,9 +51,10 @@ export function estadoDesdeHash(hash) {
   if (tipo === "categoria" && resto[0]) return { vista: "categoria", categoria: resto[0] };
   if (tipo === "vin" && resto[0]) return { vista: "vin", vin: resto[0] };
   if (tipo === "vehiculo" && resto.length >= 3) {
-    const [make, model, year, categoria] = resto;
+    const [make, model, year, categoria, variante] = resto;
     const estado = { vista: "vehiculo", make, model, year };
     if (categoria) estado.categoria = categoria;
+    if (categoria && variante) estado.variante = variante;
     return estado;
   }
   return { vista: "inicio" };
@@ -66,7 +72,11 @@ export function hashDesdeEstado(estado) {
     case "vehiculo": {
       if (!estado.make || !estado.model || !estado.year) return INICIO;
       const base = `#/vehiculo/${codificar(estado.make)}/${codificar(estado.model)}/${codificar(estado.year)}`;
-      return estado.categoria ? `${base}/${codificar(estado.categoria)}` : base;
+      if (!estado.categoria) return base;
+      const conCategoria = `${base}/${codificar(estado.categoria)}`;
+      // La variante solo tiene sentido detrás de una categoría (es dentro de la categoría donde se
+      // pregunta el motor); sin categoría no se escribe, para no inventar un tramo vacío.
+      return estado.variante ? `${conCategoria}/${codificar(estado.variante)}` : conCategoria;
     }
     default:
       return INICIO;

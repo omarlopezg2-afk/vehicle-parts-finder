@@ -393,31 +393,58 @@ y el Picanto no). Por eso la cuarta capa son **tres datos: mercado + motor + com
 
 ---
 
-## T-B25 · Dónde exactamente se retoma la cuarta capa en el sitio (punto de partida anotado el 07/10)
+## T-B25 · La cuarta capa en el sitio: mercado + motor + combustible (HECHA el 07/10/2026)
 
-**Estado: la capa de datos está LISTA y probada; falta pintarla.** Lo que ya existe y está en verde:
+**Estado: hecha y verificada en navegador** (local, puerto 8765). Lo que se hizo, por orden de T-B25:
 
-| Pieza | Dónde | Probado |
+| Paso | Qué se hizo | Dónde |
 |---|---|---|
-| `vehiculosEnCatalogo()` y `etiquetaDeVariante()` | `site/js/catalogoMap.js` | sí (4 pruebas) |
-| `traducirCombustible()` con la tabla acordada | `site/js/catalogoMap.js` | sí (4 pruebas) |
-| `getVariantesDeVehiculo()` | `site/js/dataClient.js` | imports listos |
-| `categoriasParaSlug()`, `filtrarArticulos()` | `site/js/catalogoMap.js` | sí |
-| 101 pruebas del sitio | `site/tests/catalogo.test.js` | **101 en verde** |
+| 1 | Localizar el pintado del bloque (no adivinar): `renderNumerosDeParte()` (clases `numero`, `numero-marca`, `numero-detalle`, `numero-original`) y su único llamador, `runCategorySelection()` | `site/js/app.js` |
+| 2 | Etiqueta encima del bloque con **mercado + motor + combustible** (`etiquetaDeVarianteCompleta()`) | `site/js/catalogoMap.js` |
+| 3 | Selector cuando hay varias variantes, **sin pintar ningún número hasta que elija** (`getVariantesDeVehiculo()`, botones `variante-opcion`) | `site/js/app.js`, `site/js/dataClient.js` |
+| 4 | Mercado y combustible en la misma pantalla que el motor: **UNA pregunta**, "¿Cuál es tu carro exactamente?" | `site/js/app.js` |
+| 5 | Verificado con Chrome headless contra el servidor local (abajo) | — |
 
-**Lo que falta (por orden):**
-1. **Localizar el punto de pintado del bloque de números.** Se sabe que las piezas se pintan con las
-   clases `numero`, `numero-marca`, `numero-detalle`, `numero-original` y que el sitio llama a
-   `getNumerosDeCategoria()` / `getSlugsConNumeros()` — pero **no se ha localizado el archivo ni la
-   función exacta que construye ese HTML** (una búsqueda en `app.js` no lo encontró: hay que buscarlo
-   bien, no adivinarlo). **Primer paso real: encontrarlo.**
-2. Añadir **la etiqueta de variante** encima del bloque ("Piezas para: 1.6 L · 130 HP · Gasolina"),
-   usando `etiquetaDeVariante()`.
-3. Añadir **el selector** cuando haya más de una variante (`getVariantesDeVehiculo()`): botones por
-   variante y **sin pintar números hasta que elija**.
-4. Añadir **mercado** (T-B23: `?pais=` del Worker ya lo soporta) y **combustible** (T-B24, ya
-   traducido) al mismo bloque: es **una sola pregunta**, "¿cuál es tu carro exactamente?".
-5. Verificar en Chrome headless contra el servidor local (8765) y contra `partexact.com`.
+**Lo que hubo que arreglar ANTES de poder pintar la capa** (medido, no supuesto):
 
-**Regla que no se rompe en ninguno de los pasos:** ningún número sin decir de qué mercado, de qué
-motor y de qué combustible es. Antes no dar nada que dar algo que no le queda.
+1. **El combustible no estaba guardado.** Solo 2 de las 250 entradas del índice lo traían. La causa:
+   `expandir_flota` recibía `fuelType` en la respuesta que YA pagaba (para filtrar por año) y no la
+   guardaba. Arreglado en el pipeline + `pipeline/completar_variantes.py` recupera lo perdido con
+   **49 consultas** (una por pareja fabricante+modelo, con caché en `data/raw/autodoc_variantes/`).
+   Resultado: 250/250 con combustible (Gasolina 190, Diésel 49, Híbrido 5, Etanol 2, Gasolina/GLP 1,
+   Diésel/Eléctrico 1). Comprobado que ningún `vehicleId` tiene dos combustibles distintos (918
+   vehículo-tipos revisados, 0 contradicciones): el dato no se eligió a dedo.
+2. **El mercado del catálogo NO es EE.UU.** La semilla y el monolito dicen `pais: 67` =
+   **República Dominicana**; ARRANQUE.md y el comentario del Worker decían 261 (EE.UU.) y eso estaba
+   mal. El índice ahora lleva `pais_filtro` y el sitio lo dice con su nombre (tabla en
+   `nombreDeMercado()`). Etiquetar EE.UU. habría sido mentir en cada número.
+3. **El catálogo era inalcanzable desde la página.** El vehículo del visitante se resolvía solo
+   contra `data/build/vehicles.json` (1 vehículo): de los 250 con número, **249** recibían "todavía no
+   tenemos piezas registradas". Ahora `matchVehicleByMakeModelYear()` y `matchVehicleByVIN()` también
+   buscan en el índice del catálogo (`id: null`, sin ofertas de eBay, pero con el número).
+4. **`traducirCombustible()` no conocía "Gasoline"** (la palabra del VIN/NHTSA): se mostraba en
+   inglés. Añadida a la tabla (es el mismo dato que TecDoc llama "Petrol").
+5. **La potencia no es lo mismo en PS que en HP.** El catálogo guarda `potencia_ps` (TecDoc) y la
+   ficha del VIN `potencia_hp` (NHTSA); cada una se dice con su unidad.
+
+**Verificación en navegador (Chrome headless, 07/10/2026), con el Corolla 2020 real:**
+
+- `#/vehiculo/Toyota/Corolla/2020/pastillas-freno` → sale **"¿Cuál es tu carro exactamente?"** con
+  los dos motores del catálogo ("1.8 L · 98 PS · Híbrido · 2ZR-FXE" y "1.8 L · 140 PS · Gasolina ·
+  2ZR-FE") y **cero números pintados** (0 fichas): no se enseña nada hasta saber el motor.
+- `#/…/pastillas-freno/v141203` → etiqueta "Mercado: República Dominicana · Motor: 1.8 L · 140 PS ·
+  Gasolina · 2ZR-FE · Combustible: Gasolina" y las 3 pastillas con sus originales.
+- Mismo modelo-año, otro motor (`Corolla 2016`: v52438 gasolina 1.3 vs v52439 diésel 1.4) → **listas
+  de números distintas** (`P 83 150` vs `37580`). Es la prueba de que el número es el del motor.
+- El motor elegido vive en la URL (`#/vehiculo/<marca>/<modelo>/<año>/<slug>/<variante>`), así que
+  recargar o compartir el enlace no pierde de qué motor es el número.
+
+**Regla que se cumple ahora:** ningún número sin decir de qué mercado, de qué motor y de qué
+combustible es — y con más de un motor, el sitio pregunta **antes** de enseñar nada. Si al catálogo
+le faltara el combustible de una versión y hubiera más de una, no se enseña el número y se dice por qué.
+
+**Lo que queda para la cuarta capa COMPLETA (siguiente bloque):** que el visitante pueda elegir el
+mercado. Hoy el sitio **dice** el mercado (República Dominicana, el único con el que se armó el
+catálogo) pero no deja cambiarlo: elegir otro mercado significa preguntarle a la API por demanda, y
+eso es el Worker con `?pais=` (T-B21 + T-B23), que todavía no llama el sitio. Tampoco hay que
+prometerlo: mientras no exista, la línea dice el mercado que sí es.

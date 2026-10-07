@@ -12,8 +12,9 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from fetch_autodoc import (  # noqa: E402
     ClienteAutodoc, PresupuestoAgotado, articulos_de_categoria, categorias_del_vehiculo,
-    construir, decodificar_vin, elegir_categorias, equivalentes_de_oem, fusionar, normalizar,
-    oem_del_vehiculo, resolver_fabricante, resolver_modelo, resolver_variante,
+    construir, decodificar_vin, elegir_categorias, equivalentes_de_oem, expandir_flota, fusionar,
+    identidad_de_variante, normalizar, oem_del_vehiculo, resolver_fabricante, resolver_modelo,
+    resolver_variante,
 )
 
 CLAVE_FALSA = "clave-de-prueba-que-no-sirve"      # nunca sale de aquí
@@ -375,6 +376,74 @@ class PruebasExtremoAExtremo(unittest.TestCase):
         c = ClienteAutodoc(CLAVE_FALSA, fetch=fetch_falso(MAPA_COMPLETO), pausa=0)
         r = construir(json.loads(json.dumps(SEMILLA)), c)
         self.assertNotIn(CLAVE_FALSA, json.dumps(r))
+
+
+class PruebasIdentidadDeVariante(unittest.TestCase):
+    """T-B25: lo que la API ya trajo en la respuesta que se pagó, guardado (antes se tiraba)."""
+
+    def test_toma_combustible_cilindrada_potencia_y_codigo_de_motor(self):
+        v = {"vehicleId": 1, "typeEngineName": "1.8 (ZRE172_)", "capacityLt": "1.8000",
+             "powerPs": "140.0000", "fuelType": "Petrol", "engineCodes": "2ZR-FE"}
+        self.assertEqual(identidad_de_variante(v), {
+            "cilindrada_l": 1.8, "potencia_ps": 140.0, "combustible": "Petrol",
+            "motor": "2ZR-FE", "variante": "1.8 (ZRE172_)",
+        })
+
+    def test_la_potencia_se_guarda_en_PS_no_en_HP(self):
+        # powerPs es caballo métrico: llamarlo "HP" sería un número mal dicho.
+        identidad = identidad_de_variante({"vehicleId": 1, "powerPs": "148.0000"})
+        self.assertEqual(identidad, {"potencia_ps": 148.0})
+
+    def test_sin_datos_no_inventa_campos(self):
+        self.assertEqual(identidad_de_variante(None), {})
+        self.assertEqual(identidad_de_variante({"vehicleId": 1, "fuelType": ""}), {})
+
+
+class PruebasFlota(unittest.TestCase):
+    """La flota (sin VIN) escribe su bloque `vehiculo` desde el primer recorrido (T-B25)."""
+
+    SEMILLA_FLOTA = {
+        "pais": 67,
+        "max_consultas": 30,
+        "max_categorias": 1,
+        "vehiculos": [],
+        "flota": [{"make": "Mitsubishi", "model": "Outlander Sport", "years": [2020]}],
+        "variantes_por_modelo_anio": 2,
+        "categorias_buscadas": ["brake pad"],
+        "productos_oem": [],
+    }
+
+    def _cliente(self):
+        return ClienteAutodoc(CLAVE_FALSA, fetch=fetch_falso(MAPA_COMPLETO), pausa=0)
+
+    def test_expandir_flota_guarda_la_identidad_de_cada_variante(self):
+        c = self._cliente()
+        vehiculos = expandir_flota(json.loads(json.dumps(self.SEMILLA_FLOTA)), c)
+        self.assertEqual(len(vehiculos), 2)                       # tope de 2 variantes por modelo-año
+        primera = vehiculos[0]
+        self.assertEqual(primera["_make"], "Mitsubishi")
+        self.assertEqual(primera["_model"], "Outlander Sport")
+        self.assertEqual(primera["_anio"], 2020)
+        self.assertEqual(primera["_variante_datos"]["combustible"], "Diesel")
+        self.assertEqual(primera["_variante_datos"]["potencia_ps"], 116.0)   # el diésel va primero
+        self.assertEqual(primera["_variante_datos"]["cilindrada_l"], 1.8)
+        # La flota cataloga las variantes tal como las lista la API (sin preferir combustible: eso
+        # solo lo hace el camino del VIN, que sí sabe qué motor trae el coche).
+        self.assertEqual(vehiculos[1]["_variante_datos"]["combustible"], "Petrol")
+
+    def test_el_recorrido_de_flota_escribe_vehiculo_con_combustible(self):
+        c = self._cliente()
+        r = construir(json.loads(json.dumps(self.SEMILLA_FLOTA)), c)
+        self.assertTrue(r["vehiculos"], "la flota debe producir vehículos")
+        v = r["vehiculos"][0]
+        self.assertEqual(v["etiqueta"][:26], "Mitsubishi Outlander Sport")
+        self.assertEqual(v["vehiculo"]["make"], "Mitsubishi")
+        self.assertEqual(v["vehiculo"]["model"], "Outlander Sport")
+        self.assertEqual(v["vehiculo"]["year"], "2020")
+        self.assertEqual(v["vehiculo"]["origen"], "flota")
+        # Sin esto la cuarta capa no puede cumplir la regla: el combustible es obligatorio.
+        self.assertEqual(v["vehiculo"]["combustible"], "Diesel")
+        self.assertIn("potencia_ps", v["vehiculo"])
 
 
 if __name__ == "__main__":

@@ -102,6 +102,29 @@ describe("router.js — escritura del hash", () => {
     assert.equal(hashDesdeEstado({ vista: "vehiculo", make: "Toyota" }), "#/");
     assert.equal(hashDesdeEstado({ vista: "numero" }), "#/");
   });
+
+  test("T-B25: el motor elegido vive en la URL (si se comparte, no se pierde)", () => {
+    const conMotor = {
+      vista: "vehiculo", make: "Toyota", model: "Corolla", year: "2020",
+      categoria: "pastillas-freno", variante: "v141203",
+    };
+    assert.equal(
+      hashDesdeEstado(conMotor),
+      "#/vehiculo/Toyota/Corolla/2020/pastillas-freno/v141203"
+    );
+    assert.deepEqual(estadoDesdeHash(hashDesdeEstado(conMotor)), conMotor);
+  });
+
+  test("T-B25: una variante sin categoría no se escribe (sería un tramo vacío)", () => {
+    const suelto = {
+      vista: "vehiculo", make: "Toyota", model: "Corolla", year: "2020", variante: "v141203",
+    };
+    assert.equal(hashDesdeEstado(suelto), "#/vehiculo/Toyota/Corolla/2020");
+    assert.deepEqual(estadoDesdeHash("#/vehiculo/Toyota/Corolla/2020/pastillas-freno/v141203"), {
+      vista: "vehiculo", make: "Toyota", model: "Corolla", year: "2020",
+      categoria: "pastillas-freno", variante: "v141203",
+    });
+  });
 });
 
 describe("router.js — ida y vuelta (lo que garantiza que atrás funcione)", () => {
@@ -117,6 +140,14 @@ describe("router.js — ida y vuelta (lo que garantiza que atrás funcione)", ()
       model: "Outlander Sport",
       year: "2020",
       categoria: "pastillas-freno",
+    },
+    {
+      vista: "vehiculo",
+      make: "Toyota",
+      model: "Corolla",
+      year: "2020",
+      categoria: "pastillas-freno",
+      variante: "v141203",
     },
     { vista: "vin", vin: "JA4AP3AW9LZ012345" },
     { vista: "vehiculo", make: "Sprinter (Dodge Or Freightliner)", model: "3500", year: "2005" },

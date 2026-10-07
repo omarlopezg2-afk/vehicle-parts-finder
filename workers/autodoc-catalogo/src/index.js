@@ -301,11 +301,17 @@ export default {
     let make = (q.get("make") || "").trim();
     let model = (q.get("model") || "").trim();
     let year = (q.get("year") || "").trim();
-    // OJO: el defecto tiene que ser el MISMO país con el que se armó el catálogo. Estaba en RD (67)
-    // y el catálogo se armó con EE.UU. (261): pedir una Ford Escape 2013 fallaba con "no encontramos
-    // el modelo" aunque el catálogo sí la tiene. Con RD, además, los modelos se llaman distinto (el
-    // Outlander aquí es ASX), así que mezclar filtros parte el catálogo en dos.
-    const pais = parseInt(q.get("pais") || "261", 10) || 261;
+    // OJO: el defecto tiene que ser el MISMO país con el que se armó el catálogo, porque los
+    // vehículo-tipos (y hasta los nombres comerciales: el Outlander aquí es ASX) cambian de un filtro
+    // a otro, y mezclarlos parte el catálogo en dos.
+    //
+    // CORREGIDO el 07/10/2026 (T-B25), con la medida delante: el catálogo se armó con el filtro 67 =
+    // REPÚBLICA DOMINICANA (data/seed/catalogo/vehiculos.json dice "pais": 67 y el monolito dice
+    // "pais_filtro": 67). Este archivo decía 261 (EE.UU.) por un error de los documentos, y el
+    // defecto estaba puesto a 261 por esa creencia equivocada. Ahora el defecto es 67, que es el
+    // mercado del producto y el del catálogo precalculado; el otro mercado se sigue probando abajo
+    // antes de decir que un modelo no existe, y el sitio puede pasar ?pais= cuando lo sepa.
+    const pais = parseInt(q.get("pais") || "67", 10) || 67;
     const categorias = (q.get("categorias") || "").split(",").map((x) => x.trim()).filter(Boolean);
 
     if (!vin && !(make && model && year)) {

@@ -42,8 +42,8 @@
 // problemas_conocidos del PR de T-E1 para más detalle de este supuesto.
 
 import {
-  categoriasParaSlug, etiquetaDeVariante, filtrarArticulos, FRAGMENTOS_POR_SLUG,
-  vehiculoEnCatalogo, vehiculosEnCatalogo,
+  categoriasParaSlug, etiquetaDeVariante, etiquetaDeVarianteCompleta, etiquetasDeVariantes,
+  filtrarArticulos, FRAGMENTOS_POR_SLUG, nombreDeMercado, vehiculoEnCatalogo, vehiculosEnCatalogo,
 } from "./catalogoMap.js";
 
 const REAL_PATHS = {
@@ -171,14 +171,34 @@ async function _cargarTrozo(rutaRelativa) {
 }
 
 /**
+ * La entrada del índice que corresponde a ese vehículo Y a esa variante (T-B22/T-B25).
+ *
+ * POR QUÉ EXISTE (medido el 07/10/2026): 123 de los 127 modelo-año del catálogo tienen DOS o más
+ * variantes, y `vehiculoEnCatalogo` devuelve la primera. Con varias variantes y sin saber cuál es
+ * la del visitante, devolver una cualquiera es dar el número de un motor que puede no ser el suyo
+ * (un número exacto para el motor equivocado es peor que no dar número). Regla de esta función:
+ *   - con clave -> esa variante, o null si la clave no existe;
+ *   - sin clave y UNA sola variante -> esa (no hay nada que preguntar);
+ *   - sin clave y VARIAS -> null: el sitio tiene que preguntar antes (nunca adivinar).
+ */
+export function entradaDeVariante(catalogo, vehiculo, claveVariante) {
+  const candidatas = vehiculosEnCatalogo(catalogo, vehiculo);
+  if (!candidatas.length) return null;
+  if (claveVariante) return candidatas.find((e) => e.clave === claveVariante) || null;
+  return candidatas.length === 1 ? candidatas[0] : null;
+}
+
+/**
  * Las piezas con número de parte para una categoría del sitio y un vehículo.
  * Descarga SOLO los trozos que corresponden a esa categoría (normalmente uno, ~6 KB).
+ * @param {string} [claveVariante] la variante elegida (`clave` del índice). Si el vehículo tiene
+ *   varias y no se pasa ninguna, devuelve [] a propósito: sin saber el motor no se enseña número.
  * @returns {Promise<Array<{numero,marca,pieza,foto,especificaciones,originales}>>}
  */
-export async function getNumerosDeCategoria(vehiculo, slug) {
+export async function getNumerosDeCategoria(vehiculo, slug, claveVariante) {
   const { catalogo } = await getCatalogo();
   if (!catalogo) return [];
-  const entrada = vehiculoEnCatalogo(catalogo, vehiculo);
+  const entrada = entradaDeVariante(catalogo, vehiculo, claveVariante);
   if (!entrada) return [];
 
   const categorias = categoriasParaSlug(entrada, slug);
@@ -199,29 +219,46 @@ export async function getNumerosDeCategoria(vehiculo, slug) {
 /**
  * Qué categorías del sitio tienen número de parte para ese vehículo.
  * Se resuelve con el ÍNDICE, sin descargar ningún trozo.
+ *
+ * Dos usos distintos, a propósito:
+ *   - con `claveVariante`: las categorías de ESA variante (es lo que se enseña al elegir el motor);
+ *   - sin clave: la UNIÓN de sus variantes. Es un aviso de "aquí tenemos datos", no un número: sirve
+ *     para no esconder el bloque de categorías con piezas (T-B17) solo porque el modelo-año tenga dos
+ *     motores. El número en sí nunca sale de aquí, así que no se rompe la regla al no saber el motor.
  */
-export async function getSlugsConNumeros(vehiculo) {
+export async function getSlugsConNumeros(vehiculo, claveVariante) {
   const { catalogo } = await getCatalogo();
   if (!catalogo) return [];
-  const entrada = vehiculoEnCatalogo(catalogo, vehiculo);
-  if (!entrada) return [];
-  return Object.keys(FRAGMENTOS_POR_SLUG).filter(
-    (slug) => categoriasParaSlug(entrada, slug).length > 0
+  const candidatas = vehiculosEnCatalogo(catalogo, vehiculo);
+  const entradas = claveVariante
+    ? candidatas.filter((e) => e.clave === claveVariante)
+    : candidatas;
+  if (!entradas.length) return [];
+  return Object.keys(FRAGMENTOS_POR_SLUG).filter((slug) =>
+    entradas.some((entrada) => categoriasParaSlug(entrada, slug).length > 0)
   );
 }
 
 /**
- * Las variantes del catálogo que corresponden a ese vehículo (T-B22).
- * Con una sola no hay nada que preguntar; con varias, el sitio tiene que decir cuál está mostrando
- * y dejar elegir. Devuelve [] si no hay ninguna.
- * @returns {Promise<Array<{clave:string, etiqueta:string}>>}
+ * Las variantes del catálogo que corresponden a ese vehículo (T-B22), listas para el selector y para
+ * la etiqueta que va encima del bloque de piezas (T-B25).
+ *
+ * `etiqueta` es lo que se ve en el botón (motor y combustible); `detalle` es la línea completa
+ * —mercado, motor y combustible— que se enseña sobre los números. Con una sola variante no hay nada
+ * que preguntar; con varias, el visitante elige y solo entonces se enseña el número.
+ * @returns {Promise<Array<{clave:string, etiqueta:string, detalle:string, combustible:string|null}>>}
  */
 export async function getVariantesDeVehiculo(vehiculo) {
   const { catalogo } = await getCatalogo();
   if (!catalogo) return [];
-  return vehiculosEnCatalogo(catalogo, vehiculo).map((e) => ({
-    clave: e.clave,
-    etiqueta: etiquetaDeVariante(e),
+  const entradas = vehiculosEnCatalogo(catalogo, vehiculo);
+  const etiquetas = etiquetasDeVariantes(entradas);
+  return entradas.map((entrada, i) => ({
+    clave: entrada.clave,
+    etiqueta: etiquetas[i].etiqueta,
+    detalle: etiquetaDeVarianteCompleta(entrada, catalogo.pais_filtro, etiquetas[i].etiqueta),
+    mercado: nombreDeMercado(catalogo.pais_filtro),
+    combustible: (entrada.vehiculo || {}).combustible || null,
   }));
 }
 
@@ -359,13 +396,59 @@ export async function matchVehicleByVIN(vin) {
   const needle = String(vin || "").trim().toUpperCase();
   if (!needle) return null;
 
-  return (
+  const enOfertas =
     vehicles.find((v) => {
       const idMatch = /^vin-(.+)$/i.exec(String(v.id || ""));
       if (idMatch && idMatch[1].toUpperCase() === needle) return true;
       return (v.vin || "").toUpperCase() === needle;
-    }) || null
-  );
+    }) || null;
+  if (enOfertas) return enOfertas;
+
+  // T-B25: el índice del catálogo guarda el VIN con el que se resolvió cada vehículo, así que un VIN
+  // que esté ahí entra directo al catálogo de números. Antes, ese VIN acababa en "sabemos qué carro
+  // es pero no tenemos piezas" aunque tuviéramos sus números.
+  const { catalogo } = await getCatalogo();
+  const candidatas = vehiculosEnCatalogo(catalogo, { vin: needle });
+  if (!candidatas.length) return null;
+  const v = candidatas[0].vehiculo || {};
+  return {
+    id: null,
+    make: v.make || null,
+    model: v.model || null,
+    year: Number(v.year) || null,
+    vin: needle,
+    variantes: candidatas.length,
+    origen: "catalogo",
+  };
+}
+
+/**
+ * El vehículo del catálogo de NÚMEROS (T-B25) por marca/modelo/año.
+ *
+ * POR QUÉ EXISTE (medido el 07/10/2026, antes de publicar la cuarta capa): el sitio resolvía el
+ * vehículo del visitante SOLO contra `data/build/vehicles.json`, que tiene un vehículo. Resultado: de
+ * los 250 vehículos con número de parte en el catálogo, **249** recibían "todavía no tenemos piezas
+ * registradas" — el catálogo estaba publicado y era inalcanzable. Esta función abre esa puerta.
+ *
+ * El `id` va a null A PROPÓSITO: no es un vehículo de `parts.json`, así que no tiene ofertas de eBay.
+ * Buscar ofertas con un id nulo devuelve vacío (correcto: no las tenemos) y lo que sí se enseña es el
+ * número, que es lo que este catálogo aporta. `variantes` dice cuántos motores tiene ese modelo-año.
+ *
+ * @returns {Promise<object|null>} `{id:null, make, model, year, variantes}` o null si no está.
+ */
+export async function matchVehiculoEnCatalogo(make, model, year) {
+  const { catalogo } = await getCatalogo();
+  const candidatas = vehiculosEnCatalogo(catalogo, { make, model, year });
+  if (!candidatas.length) return null;
+  const v = candidatas[0].vehiculo || {};
+  return {
+    id: null,
+    make: v.make || make,
+    model: v.model || model,
+    year: Number(v.year) || year,
+    variantes: candidatas.length,
+    origen: "catalogo",
+  };
 }
 
 /**
@@ -384,6 +467,10 @@ export async function matchVehicleByVIN(vin) {
  * Sport"/"OUTLANDER SPORT" coincidan igual con lo que haya en
  * vehicles.json.
  *
+ * T-B25: si no está en `vehicles.json` (que trae las ofertas), se busca en el catálogo de NÚMEROS,
+ * que es el que tiene los 250 vehículos. Sin ese segundo paso, 249 de los 250 vehículos con número
+ * decían "no tenemos piezas".
+ *
  * @param {string} make
  * @param {string} model
  * @param {number|string} year
@@ -399,14 +486,16 @@ export async function matchVehicleByMakeModelYear(make, model, year) {
   const needleYear = Number(year);
   if (!needleMake || !needleModel || !Number.isInteger(needleYear)) return null;
 
-  return (
+  const enOfertas =
     vehicles.find((v) => {
       const vMake = String(v.make || "").trim().toUpperCase();
       const vModel = String(v.model || "").trim().toUpperCase();
       const vYear = Number(v.year);
       return vMake === needleMake && vModel === needleModel && vYear === needleYear;
-    }) || null
-  );
+    }) || null;
+  if (enOfertas) return enOfertas;
+
+  return matchVehiculoEnCatalogo(make, model, needleYear);
 }
 
 /**
