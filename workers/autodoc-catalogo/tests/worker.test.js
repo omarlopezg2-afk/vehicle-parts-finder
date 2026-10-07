@@ -110,7 +110,7 @@ test("lo ya catalogado se sirve de caché, con cero consultas", async () => {
   const registro = [];
   globalThis.fetch = doble(registro);
   const env = envFalso({
-    "cat:67:JA4AP4AU3LU023739": JSON.stringify({
+    "cat:261:JA4AP4AU3LU023739": JSON.stringify({
       vehiculo: { make: "MITSUBISHI", variante: "2.0" },
       piezas: [{ categoryId: 100027, articulos: [{ numero: "D2N097" }] }],
     }),

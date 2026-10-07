@@ -213,7 +213,15 @@ async function decodificarVin(c, vin) {
 async function construir(c, { make, model, year, pais, cilindrada, potencia, combustible }) {
   const f = await resolverFabricante(c, make);
   if (!f) return { error: `no encontramos la marca "${make}"` };
-  const m = await resolverModelo(c, f.manufacturerId, model, year, pais);
+  let m = await resolverModelo(c, f.manufacturerId, model, year, pais);
+  if (!m && !paisAlterno) {
+    // El mismo coche cambia de nombre y de catálogo según el mercado (aquí el Outlander es ASX).
+    // Antes de decir que no existe, se prueba el otro mercado: cuesta una llamada y evita perder
+    // un cliente cuyo coche sí está.
+    const otro = pais === 261 ? 67 : 261;
+    m = await resolverModelo(c, f.manufacturerId, model, year, otro);
+    if (m) pais = otro;
+  }
   if (!m) return { error: `no encontramos el modelo "${model}" de ${year}` };
   const variantes = await variantesDelModelo(c, m.modelId, pais);
   const v = elegirVariante(variantes, { anio: year, cilindrada, potencia });
@@ -293,7 +301,11 @@ export default {
     let make = (q.get("make") || "").trim();
     let model = (q.get("model") || "").trim();
     let year = (q.get("year") || "").trim();
-    const pais = parseInt(q.get("pais") || "67", 10) || 67;
+    // OJO: el defecto tiene que ser el MISMO país con el que se armó el catálogo. Estaba en RD (67)
+    // y el catálogo se armó con EE.UU. (261): pedir una Ford Escape 2013 fallaba con "no encontramos
+    // el modelo" aunque el catálogo sí la tiene. Con RD, además, los modelos se llaman distinto (el
+    // Outlander aquí es ASX), así que mezclar filtros parte el catálogo en dos.
+    const pais = parseInt(q.get("pais") || "261", 10) || 261;
     const categorias = (q.get("categorias") || "").split(",").map((x) => x.trim()).filter(Boolean);
 
     if (!vin && !(make && model && year)) {
@@ -334,7 +346,7 @@ export default {
         year = decodificado.year;
       }
       const base = await construir(c, {
-        make, model, year, pais,
+        make, model, year, pais, paisAlterno: false,
         cilindrada: decodificado && decodificado.cilindrada,
         potencia: decodificado && decodificado.potencia,
         combustible: decodificado && decodificado.combustible,
