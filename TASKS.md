@@ -365,3 +365,27 @@ Elegir mal el mercado = piezas que no le quedan. Por eso:
 - Con `?pais=127` (Japón) y `?pais=261` (EE.UU.) el mismo modelo debe dar **variantes distintas**; si
   dan lo mismo, el filtro no está haciendo nada y hay que investigar antes de prometerlo.
 - Un Toyota importado de Japón conocido (pedirle al usuario uno real) debe resolver con su mercado.
+
+
+### T-B24 §2 (cierre) · Coreanos a gas GLP — MEDIDO el 07/10/2026
+
+Mercado de Corea (id 213), ids de fabricante sacados del propio catálogo (Hyundai 183, Kia 184):
+
+| Modelo | Variantes | Combustibles |
+|---|---|---|
+| **Kia RIO IV (YB, SC, FB)** | 20 | Petrol 11 · Diesel 2 · Petrol/Ethanol 2 · **Petrol/LPG 2** · Petrol/Electric 3 |
+| Hyundai ACCENT V Saloon (HC) | 4 | Petrol 2 · Diesel 2 |
+| Hyundai ACCENT V Hatchback (HC) | 1 | Petrol 1 |
+| Kia PICANTO Runner (JA) | 1 | Petrol 1 |
+
+Las dos de gas: **"1.25 LPG"** y **"LPG"**, 82 PS cada una.
+Vocabulario de combustible de la API: `Petrol` · `Diesel` · `Petrol/Ethanol` ·
+`Petrol/Liquified Petroleum Gas (LPG)` · `Petrol/Electric`.
+
+**Conclusión:** la API **sí trae** las versiones de gas, pero **por modelo** (el Rio IV sí; el Accent V
+y el Picanto no). Por eso la cuarta capa son **tres datos: mercado + motor + combustible**:
+1. Si el modelo trae versión de gas, **se ofrece** y se da el número de esa variante.
+2. Si no la trae y el cliente dice que su carro es a gas (adaptación local, igual que las guías
+   invertidas), el sitio **lo dice claro**: las piezas de motor hay que confirmarlas con el taller.
+3. **Nunca** el número de gasolina para un carro a gas. Misma regla que con el motor equivocado:
+   antes no dar nada, que dar algo que no le queda.
