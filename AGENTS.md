@@ -41,7 +41,7 @@ dispara CI + deploy (el deploy copia `data/build/` a `site/data/build/` y public
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas (las tres suites; hoy: 212 + 118 + 10 en verde)
+# pruebas (las tres suites; hoy: 212 + 127 + 15 en verde)
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -82,5 +82,22 @@ ver T-B22 en `TASKS.md`.
 
 288 vehículos · 2.813 categorías con piezas · índice partido de ~840 KB · 250/250→288/288 variantes con
 combustible, cilindrada, potencia y código de motor · cuarta capa del sitio (mercado+motor+combustible)
-hecha y verificada en local y en partexact.com · 212 + 118 + 10 pruebas en verde · quedan ~6.200
+hecha y verificada en local y en partexact.com · 212 + 127 + 15 pruebas en verde · quedan ~6.200
 consultas RapidAPI este mes (el número exacto, en el panel de RapidAPI).
+
+
+---
+
+> ⚠️ **CAMBIO IMPORTANTE — 07/10/2026: LA CUENTA DE RAPIDAPI ESTÁ CANCELADA.**
+> Omar canceló la cuenta: **no hay consultas disponibles** (ni plan gratuito ni de pago).
+>
+> - **El Worker `api.partexact.com` queda APAGADO**: no se despliega, no se usa y **T-B21 (que el sitio
+>   lo llame) queda CANCELADA**. El sitio nunca llegó a llamarlo, así que no hay nada que deshacer.
+> - **El catálogo está CONGELADO en 290 vehículos / 2.833 categorías.** No se puede añadir ni corregir
+>   nada que exija consultas nuevas. Todo el trabajo de aquí en adelante usa **lo ya descargado**
+>   (el monolito `data/build/catalogo.json` sigue en disco: es el caché de trabajo).
+> - **No volver a ejecutar `fetch_autodoc.py`** ni nada que pida cuota: fallaría y solo confundiría.
+> - **Sí se puede trabajar sin cuota**: partir el catálogo, completar identidades con la caché, validar,
+>   y todo el sitio (pintar los números originales, textos, verificación en navegador).
+> - **La promesa se ajusta a lo que hay**: 290 vehículos (las marcas y años del bloque de flota). Un
+>   coche fuera de esa lista **no tiene respuesta**: se dice claro, no se inventa nada.

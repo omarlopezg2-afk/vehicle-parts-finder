@@ -475,6 +475,10 @@ existen, o existen con piezas que ya no son las suyas.
    Además: **vPIC es la base de la NHTSA (EE.UU.) y no decodifica un chasis japonés/coreano** — por eso
    para estos carros el camino no es el VIN, es mercado + motor. Eso hace del selector de mercado algo
    imprescindible, no un adorno.
+> **CORRECCIÓN 07/10/2026 (ver `docs/TRASPASO.md` §4.1):** el filtro `?pais=` del Worker NO separa
+> mercados (medido), y el gas **adaptado** no cambia motor ni sistema de gasolina: los números de
+> gasolina siguen valiendo y no se avisa nada. Lo que sigue en este apartado queda como historia.
+
 2. **Corea → gas adaptado allá.** Aquí hay dos casos y no se pueden mezclar:
    - **Versión de gas del mercado coreano (de fábrica):** EXISTE en el catálogo y hay que ofrecerla.
      Ya medido: `Kia RIO IV` trae `1.25 LPG` (mismo motor `G4LA`, 82 PS) y el índice armado con RD ya
@@ -574,3 +578,20 @@ descargado y pagado** (y con 113 números originales de Toyota en el bloque del 
   números del fabricante por coche) viaja al sitio pero **ninguna pantalla lo pinta todavía**. Para el
   motor equivocado no: para el mismo motor, ese es el número que el cliente pide en la tienda. Siguiente
   paso natural de esta misma capa.
+
+
+---
+
+> ⚠️ **CAMBIO IMPORTANTE — 07/10/2026: LA CUENTA DE RAPIDAPI ESTÁ CANCELADA.**
+> Omar canceló la cuenta: **no hay consultas disponibles** (ni plan gratuito ni de pago).
+>
+> - **El Worker `api.partexact.com` queda APAGADO**: no se despliega, no se usa y **T-B21 (que el sitio
+>   lo llame) queda CANCELADA**. El sitio nunca llegó a llamarlo, así que no hay nada que deshacer.
+> - **El catálogo está CONGELADO en 290 vehículos / 2.833 categorías.** No se puede añadir ni corregir
+>   nada que exija consultas nuevas. Todo el trabajo de aquí en adelante usa **lo ya descargado**
+>   (el monolito `data/build/catalogo.json` sigue en disco: es el caché de trabajo).
+> - **No volver a ejecutar `fetch_autodoc.py`** ni nada que pida cuota: fallaría y solo confundiría.
+> - **Sí se puede trabajar sin cuota**: partir el catálogo, completar identidades con la caché, validar,
+>   y todo el sitio (pintar los números originales, textos, verificación en navegador).
+> - **La promesa se ajusta a lo que hay**: 290 vehículos (las marcas y años del bloque de flota). Un
+>   coche fuera de esa lista **no tiene respuesta**: se dice claro, no se inventa nada.
