@@ -21,6 +21,13 @@
   "equivalentes_por_producto": 1,
   "_detalles_comentario": "Cuántas piezas por categoría se piden con TODAS sus especificaciones (posición, medida, tipo) y sus números originales. Cada una es una consulta, y quedan cacheadas por artículo para siempre.",
   "detalles_por_categoria": 6,
+  "_flota_comentario": "T-B18: vehículos a catalogar sin VIN, elegidos con el registro oficial de la DGII (ver docs/criterio-de-flota.md). El pipeline resuelve los identificadores de AUTODOC una vez por modelo y abre una entrada POR VARIANTE: un Corolla 2016 tiene varios motores y las pastillas no son las mismas, así que el catálogo tiene que ir por variante para no mentir.",
+  "variantes_por_modelo_anio": 2,
+  "_variantes_comentario": "Cuántas variantes (motores) por modelo-año se catalogan. Cada una es un vehículo completo, con su coste.",
+  "flota": [
+    { "make": "Toyota", "model": "Corolla", "years": [2016, 2018] },
+    { "make": "Honda", "model": "CR-V", "years": [2015] }
+  ],
   "categorias_buscadas": [
     "brake pad", "brake disc", "oil filter", "air filter", "fuel filter", "cabin filter",
     "wiper blade", "spark plug", "shock absorber", "radiator", "timing belt", "water pump",

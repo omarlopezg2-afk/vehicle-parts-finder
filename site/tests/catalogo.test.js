@@ -44,7 +44,9 @@ const CATALOGO = {
         {
           nombre: "Disc Brake", ruta: "Braking System / Disc Brake", buscado: "brake pad", categoryId: 100027,
           articulos: [
-            { numero: "D2N097", marca: "ADVICS", pieza: "Brake Pad Set, disc brake", foto: "https://x/5.webp" },
+            { numero: "D2N097", marca: "ADVICS", pieza: "Brake Pad Set, disc brake", foto: "https://x/5.webp",
+              especificaciones: { "Fitting Position": "Rear Axle", "Thickness [mm]": "15,3" },
+              oem: [{ numero: "MN102628", marca: "MITSUBISHI" }, { numero: "4253.90", marca: null }] },
             { numero: "SN678", marca: "ADVICS", pieza: "Brake Pad Set, disc brake", foto: null },
             { numero: "X1", marca: "OTRA", pieza: "Brake Caliper", foto: null },
           ],
@@ -98,6 +100,31 @@ test("no duplica la misma pieza repetida con la misma marca", () => {
   const piezas = piezasDeCategoria(CATALOGO, VEHICULO, "filtro-aceite");
   const amc = piezas.filter((p) => p.numero === "MO-511" && p.marca === "AMC Filter");
   assert.equal(amc.length, 1, "la misma pieza dos veces en el origen no debe salir dos veces");
+});
+
+test("las especificaciones y los números originales llegan al sitio", () => {
+  // T-B16: sin esto, la ficha enseña una marca y un número; con esto, enseña "Trasera · 15,3 mm"
+  // y el número original del fabricante, que es lo que distingue una pieza de otra.
+  const pastillas = piezasDeCategoria(CATALOGO, VEHICULO, "pastillas-freno");
+  const d2 = pastillas.find((p) => p.numero === "D2N097");
+  assert.equal(d2.especificaciones["Fitting Position"], "Rear Axle");
+  assert.equal(d2.originales[0].numero, "MN102628");
+
+  // y una pieza sin detalle no inventa nada: van vacíos, no undefined
+  const sn = pastillas.find((p) => p.numero === "SN678");
+  assert.equal(sn.especificaciones, null);
+  assert.deepEqual(sn.originales, []);
+});
+
+test("los discos no se llevan las pastillas (regresión del 07/10/2026)", () => {
+  // "disc brake" aparece dentro de "Brake Pad Set, disc brake", así que con ese fragmento la
+  // página de discos mostraba pastillas. Se cazó verificando en el navegador, no en las pruebas.
+  const discos = piezasDeCategoria(CATALOGO, VEHICULO, "discos-freno");
+  assert.ok(
+    !discos.some((p) => /brake pad/i.test(p.pieza)),
+    "una pastilla de freno no puede salir en la categoría de discos"
+  );
+  assert.ok(discos.every((p) => /brake disc/i.test(p.pieza)));
 });
 
 test("cada categoría del sitio sólo trae lo suyo", () => {

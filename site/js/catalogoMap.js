@@ -29,7 +29,10 @@
  */
 export const FRAGMENTOS_POR_SLUG = {
   "pastillas-freno": ["brake pad"],
-  "discos-freno": ["brake disc", "disc brake"],
+  // OJO: aquí NO va "disc brake". Ese texto aparece dentro del nombre de las pastillas
+  // ("Brake Pad Set, disc brake"), así que la página de discos mostraba pastillas — lo cazó la
+  // verificación en navegador del 07/10/2026. "brake disc" sí es inequívoco.
+  "discos-freno": ["brake disc"],
   caliper: ["brake caliper"],
   "manguera-freno": ["brake hose", "brake line"],
   "filtro-aceite": ["oil filter"],
@@ -127,6 +130,10 @@ export function piezasDeCategoria(catalogo, vehiculo, slug) {
         marca: art.marca,
         pieza: art.pieza,
         foto: art.foto || null,
+        // T-B16: lo que convierte el número en "la pieza exacta". Van tal cual desde el catálogo
+        // (pueden venir vacíos: solo las piezas detalladas los tienen).
+        especificaciones: art.especificaciones || null,
+        originales: Array.isArray(art.oem) ? art.oem : [],
       });
     }
   }

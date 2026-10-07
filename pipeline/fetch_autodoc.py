@@ -505,6 +505,75 @@ def articulos_de_categoria(cliente: ClienteAutodoc, vehicle_id: int, category_id
 # orquestador
 # --------------------------------------------------------------------------------------
 
+def expandir_flota(semilla: dict, cliente: ClienteAutodoc, cache: dict | None = None) -> list[dict]:
+    """Convierte una FLOTA (marca + modelo + años) en vehículos concretos, uno por variante.
+
+    POR QUÉ POR VARIANTE: un "Corolla 2016" tiene varios motores y **las pastillas no son las
+    mismas** para cada uno. Si el catálogo se guardara por modelo-año, el sitio volvería a mostrar
+    una mezcla — justo lo que el usuario rechazó con razón el 07/10/2026 ("eso no es exactitud").
+    La variante es la unidad mínima que garantiza que la pieza le queda.
+
+    Resuelve los identificadores de AUTODOC una vez por modelo (fabricante, modelo y sus variantes)
+    y no necesita VIN: por eso sirve para catalogar la flota de un país, donde no tenemos el VIN de
+    cada coche. Los identificadores quedan escritos en la entrada, así que el resto del recorrido
+    no gasta ni una consulta más en resolverlos.
+    """
+    cache = cache if cache is not None else {}
+    pais = int(semilla.get("pais") or 261)
+    tope = int(semilla.get("variantes_por_modelo_anio") or 2)
+    salida = []
+
+    for bloque in semilla.get("flota", []):
+        make, model = (bloque.get("make") or "").strip(), (bloque.get("model") or "").strip()
+        if not make or not model:
+            continue
+        print(f"\n[flota] {make} {model}: {bloque.get('years')}")
+        f = resolver_fabricante(cliente, make, cache=cache)
+        if not f or not f.get("manufacturerId"):
+            print(f"  [!] fabricante no encontrado: {make}")
+            continue
+        for anio in bloque.get("years", []):
+            m = resolver_modelo(cliente, int(f["manufacturerId"]), model, str(anio), pais)
+            if not m or not m.get("modelId"):
+                print(f"  [!] {anio}: modelo no encontrado")
+                continue
+            datos = cliente.pedir(
+                f"/api/types/type-id/{TIPO_TURISMO}/list-vehicles-types/{int(m['modelId'])}"
+                f"/lang-id/{LANG}/country-filter-id/{pais}"
+            )
+            variantes = (datos or {}).get("modelTypes") if isinstance(datos, dict) else None
+            if not isinstance(variantes, list):
+                print(f"  [!] {anio}: sin variantes")
+                continue
+            vistas, elegidas = set(), []
+            for v in variantes:
+                anio_v, desde = str(anio), str(v.get("constructionIntervalStart") or "")[:4]
+                hasta = str(v.get("constructionIntervalEnd") or "")[:4]
+                if desde and anio_v < desde:
+                    continue
+                if hasta and anio_v > hasta:
+                    continue
+                if v.get("vehicleId") in vistas:
+                    continue
+                vistas.add(v.get("vehicleId"))
+                elegidas.append(v)
+            elegidas = elegidas[:tope]
+            print(f"  {anio}: {len(variantes)} variantes en el catálogo, {len(elegidas)} elegidas"
+                  f" -> {[v.get('typeEngineName') for v in elegidas]}")
+            for v in elegidas:
+                salida.append({
+                    "etiqueta": f"{make} {model} {anio} {v.get('typeEngineName') or ''}".strip(),
+                    "autodoc": {
+                        "manufacturerId": int(f["manufacturerId"]),
+                        "modelId": int(m["modelId"]),
+                        "vehicleId": int(v["vehicleId"]),
+                        "_variante": v.get("typeEngineName"),
+                    },
+                    "_anio": anio,
+                })
+    return salida
+
+
 def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None,
               solo_oem: bool = False, cache_detalles: dict | None = None) -> dict:
     """Recorre los vehículos de la semilla. Nunca levanta por un vehículo que falle: lo anota.
@@ -525,7 +594,16 @@ def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None
         "vehiculos": [],
     }
 
-    for v in semilla.get("vehiculos", []):
+    # La flota se expande ANTES de recorrer: cada variante es un vehículo con sus identificadores
+    # ya resueltos, así que el recorrido de abajo no necesita VIN ni gasta consultas resolviendo.
+    vehiculos = list(semilla.get("vehiculos", []))
+    if semilla.get("flota"):
+        try:
+            vehiculos += expandir_flota(semilla, cliente, cache)
+        except PresupuestoAgotado as e:
+            print(f"  [!] {e}: la flota quedó a medias")
+
+    for v in vehiculos:
         etiqueta = v.get("etiqueta") or v.get("vin") or "?"
         if solo and normalizar(solo) not in normalizar(etiqueta):
             continue
@@ -540,6 +618,9 @@ def construir(semilla: dict, cliente: ClienteAutodoc, *, solo: str | None = None
                 print(f"  VIN -> {dec['make']} {dec['model']} {dec['year']} "
                       f"({dec['cilindrada_l']} L, {dec['potencia_hp']} HP)")
             ids = dict(v.get("autodoc") or {})
+            if ids.get("_variante") and not dec:
+                # viene de la flota: los nombres ya se conocieron al expandir
+                ids["_modelo"] = ids.get("_modelo") or None
             fab_id = int(ids["manufacturerId"]) if ids.get("manufacturerId") else None
             if fab_id is None and dec:
                 f = resolver_fabricante(cliente, dec["make"], cache=cache)

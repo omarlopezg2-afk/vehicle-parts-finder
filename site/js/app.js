@@ -187,7 +187,7 @@ async function runCategorySelection(vehicle, categorySlug, categories) {
   ]);
 
   if (numeros.length) {
-    resultsEl.appendChild(renderNumerosDeParte(numeros));
+    resultsEl.appendChild(renderNumerosDeParte(numeros, vehicle));
   }
 
   if (parts.length === 0) {
@@ -256,7 +256,62 @@ async function runCategoryBrowse(categorySlug, categories) {
 // da la oferta. Cuando eBay no tiene nada en esa categoría (le pasa al filtro de aceite y a la
 // batería), solo se ve esta parte — y antes el sitio decía "no tenemos piezas" aunque el número
 // estuviera guardado. Eso lo reportó el usuario probando el 07/10/2026.
-function renderNumerosDeParte(numeros) {
+// Traduce a español las especificaciones que da TecDoc y elige las que de verdad discriminan
+// (posición, medidas, tipo de disco, sistema de freno). Se muestran pocas a propósito: el resto
+// solo añade ruido en una ficha pequeña.
+const ESPECIFICACIONES_UTILES = [
+  [/fitting position/i, "Posición", { "front axle": "Delantera", "rear axle": "Trasera" }],
+  [/brake disc type/i, "Disco", null],
+  [/outer diameter/i, "Diámetro exterior", null],
+  [/^thickness/i, "Espesor", null],
+  [/brake system/i, "Sistema de freno", null],
+  [/wear warning/i, "Aviso de desgaste", null],
+];
+
+function detallesDeLaPieza(pieza, vehiculo) {
+  const lineas = [];
+  const esp = pieza.especificaciones || {};
+
+  for (const [patron, etiqueta, traducciones] of ESPECIFICACIONES_UTILES) {
+    const clave = Object.keys(esp).find((k) => patron.test(k));
+    if (!clave) continue;
+    let valor = String(esp[clave]).trim();
+    if (!valor) continue;
+    if (traducciones) valor = traducciones[valor.toLowerCase()] || valor;
+    lineas.push({ clase: "numero-detalle", texto: `${etiqueta}: ${valor}` });
+    if (lineas.length >= 3) break;
+  }
+
+  // El número original del fabricante: lo que la gente reconoce y lo que pide en la tienda.
+  // Cuidado con la etiqueta: TecDoc cruza los números de OTRAS marcas que usaron la misma pieza
+  // (una pastilla de este Mitsubishi también es "original" de un Chrysler). Llamar "Original" a
+  // un número de Chrysler bajo un Mitsubishi confunde, así que se prefiere el de la marca del
+  // vehículo y, si no lo hay, se dice claramente de quién es.
+  const originales = Array.isArray(pieza.originales) ? pieza.originales.slice() : [];
+  if (originales.length) {
+    const marcaVehiculo = String((vehiculo && vehiculo.make) || "").toUpperCase();
+    originales.sort((a, b) => {
+      const sa = String(a.marca || "").toUpperCase() === marcaVehiculo ? 0 : 1;
+      const sb = String(b.marca || "").toUpperCase() === marcaVehiculo ? 0 : 1;
+      return sa - sb;
+    });
+    const primero = originales[0];
+    const numeros = originales.slice(0, 2).map((o) => o.numero).filter(Boolean);
+    if (numeros.length) {
+      const suya = String(primero.marca || "").toUpperCase() === marcaVehiculo;
+      const marca = primero.marca ? `${primero.marca} ` : "";
+      lineas.push({
+        clase: "numero-original",
+        texto: suya
+          ? `Original ${marca}${numeros.join(" · ")}`.trim()
+          : `También original de ${marca}${numeros.join(" · ")}`.trim(),
+      });
+    }
+  }
+  return lineas;
+}
+
+function renderNumerosDeParte(numeros, vehiculo) {
   const seccion = document.createElement("section");
   seccion.className = "numeros-parte";
 
@@ -302,6 +357,15 @@ function renderNumerosDeParte(numeros) {
     nombre.className = "numero-nombre";
     nombre.textContent = pieza.pieza;
     ficha.appendChild(nombre);
+
+    // T-B16: lo que distingue una pieza de otra del mismo tipo. "Delantera · 302 mm" es lo que
+    // convierte una lista de marcas en la pieza exacta del coche.
+    for (const linea of detallesDeLaPieza(pieza, vehiculo)) {
+      const d = document.createElement("div");
+      d.className = linea.clase;
+      d.textContent = linea.texto;
+      ficha.appendChild(d);
+    }
 
     grid.appendChild(ficha);
   }

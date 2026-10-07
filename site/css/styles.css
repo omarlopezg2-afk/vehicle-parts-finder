@@ -282,6 +282,19 @@ main {
   font-weight: 600;
 }
 
+.numero-ficha .numero-detalle {
+  font-size: 0.74rem;
+  margin-top: 2px;
+}
+
+.numero-ficha .numero-original {
+  font-size: 0.74rem;
+  font-weight: 600;
+  margin-top: 4px;
+  padding-top: 4px;
+  border-top: 1px dashed var(--color-border);
+}
+
 .numero-ficha .numero-nombre {
   font-size: 0.76rem;
   color: var(--color-text-dim);
