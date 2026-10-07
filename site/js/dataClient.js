@@ -41,12 +41,20 @@
 // aquí porque T-F1/categorías ya está aprobado en main; ver
 // problemas_conocidos del PR de T-E1 para más detalle de este supuesto.
 
+import { piezasDeCategoria, slugsConNumeros, vehiculoEnCatalogo } from "./catalogoMap.js";
+
 const REAL_PATHS = {
   parts: "./data/build/parts.json",
   vehicles: "./data/build/vehicles.json",
   categories: "./data/build/categories.json",
+  catalogo: "./data/build/catalogo.json",
 };
 
+// catalogo A PROPÓSITO no está aquí: si el archivo real no existe, esta función devuelve lista
+// vacía en vez de tirar de una fixture. Un catálogo de mentira mostraría NÚMEROS DE PARTE
+// INVENTADOS a un cliente real, y eso es peor que no mostrar nada: rompe la única promesa del
+// producto. Las demás claves sí tienen fixture porque son datos de desarrollo (y el sitio avisa
+// con un banner cuando se usan).
 const FIXTURE_PATHS = {
   parts: "./js/fixtures/parts.fixture.json",
   vehicles: "./js/fixtures/vehicles.fixture.json",
@@ -84,6 +92,11 @@ async function _loadJSON(key) {
   } catch (_realErr) {
     // Archivo real no disponible todavía (T-D1 pendiente) o bloqueado por
     // file://. Caemos a la fixture de desarrollo documentada arriba.
+    if (!fixtureUrl) {
+      throw new Error(
+        `dataClient: "${key}" no tiene fixture a propósito (ver REAL_PATHS): si el archivo real no está, no se inventa nada.`
+      );
+    }
     try {
       const res2 = await _fetchImpl(fixtureUrl);
       data = await res2.json();
@@ -106,6 +119,52 @@ function _normalizePartNumber(raw) {
   return String(raw || "")
     .toUpperCase()
     .replace(/[\s\-.\/]/g, "");
+}
+
+// ---------------------------------------------------------------------------
+// T-B14: el catálogo con número de parte (AUTODOC/TecDoc vía RapidAPI)
+// ---------------------------------------------------------------------------
+// Vive aquí y no en otro archivo porque este módulo es el ÚNICO que lee
+// data/build/*.json (regla de escalado). La traducción de categorías y el
+// emparejamiento de vehículos están en catalogoMap.js, que es lógica pura y se
+// prueba sola.
+
+/**
+ * El vehículo del sitio, tal como lo entiende el catálogo (o null).
+ */
+export async function getVehiculoEnCatalogo(vehiculo) {
+  const { catalogo } = await getCatalogo();
+  return vehiculoEnCatalogo(catalogo, vehiculo);
+}
+
+/**
+ * Carga el catálogo. Devuelve `{ catalogo: null }` si el archivo no está o falla: nunca lanza,
+ * porque no tener catálogo es un estado válido (el sitio simplemente no muestra números).
+ */
+export async function getCatalogo() {
+  try {
+    const { data } = await _loadJSON("catalogo");
+    return { catalogo: data || null };
+  } catch (_err) {
+    return { catalogo: null };
+  }
+}
+
+/**
+ * Las piezas con número de parte para una categoría del sitio y un vehículo.
+ * @returns {Promise<Array<{numero:string, marca:string, pieza:string, foto:string|null}>>}
+ */
+export async function getNumerosDeCategoria(vehiculo, slug) {
+  const { catalogo } = await getCatalogo();
+  if (!catalogo) return [];
+  return piezasDeCategoria(catalogo, vehiculo, slug);
+}
+
+/** Qué categorías del sitio tienen número de parte para ese vehículo. */
+export async function getSlugsConNumeros(vehiculo) {
+  const { catalogo } = await getCatalogo();
+  if (!catalogo) return [];
+  return slugsConNumeros(catalogo, vehiculo);
 }
 
 /**
