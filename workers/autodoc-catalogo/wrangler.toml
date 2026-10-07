@@ -1,0 +1,21 @@
+name = "autodoc-catalogo"
+main = "src/index.js"
+compatibility_date = "2026-10-01"
+
+# La clave de AUTODOC vive como SECRETO del Worker (`wrangler secret put RAPIDAPI_KEY`), nunca en
+# este archivo ni en el repositorio. Es el motivo de que exista el Worker: el sitio es estático y
+# no puede llevar la clave sin que cualquiera la lea y consuma la cuota.
+[vars]
+# Solo el tope, para poder cambiarlo sin desplegar: `wrangler secret put` es para lo secreto.
+TOPE_MES = "18000"
+
+# Caché del catálogo por demanda (lo que ya se pidió, no se vuelve a pagar) y contador del mes.
+[[kv_namespaces]]
+binding = "CATALOGO"
+id = "PENDIENTE_DE_CREAR"
+preview_id = "PENDIENTE_DE_CREAR"
+
+[[kv_namespaces]]
+binding = "CUOTA"
+id = "PENDIENTE_DE_CREAR"
+preview_id = "PENDIENTE_DE_CREAR"
