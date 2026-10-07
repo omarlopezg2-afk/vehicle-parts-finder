@@ -225,3 +225,43 @@ congelada, así que van en paralelo **contra el documento**, y el líder los int
 corre el build completo antes de cerrar (productor de datos + catálogo de categorías: si se
 fusionan por separado y sin probarlos juntos, una parte puede quedar apuntando a una categoría
 que existe en un PR y no en el otro).
+
+
+---
+
+## T-B21 · El sitio consulta al Worker cuando no tiene el vehículo (pendiente, diseño cerrado)
+
+El Worker ya está en producción (`api.partexact.com`) y resuelve en 3 consultas un coche que no
+tenemos catalogado (probado en vivo: Corolla 1992 → `TOYOTA COROLLA (_E10_) · 1.3 XLI 16V (EE101) ·
+4E-FE · 88 HP`). Lo que falta es que **la página le pregunte**: hoy, si el vehículo no está en
+`data/build/catalogo/index.json`, el visitante se va sin respuesta — el Worker está encendido pero
+nadie lo llama.
+
+### 1. Worker (`workers/autodoc-catalogo/src/index.js`)
+- Nuevo parámetro `pieza=<fragmento>` (ej. `pieza=brake%20pad`, tal cual sale de
+  `FRAGMENTOS_POR_SLUG` en `site/js/catalogoMap.js`; pueden venir varios separados por comas).
+- Tras resolver el vehículo: pedir el árbol de categorías
+  (`/api/category/type-id/1/products-groups-variant-1/{vehicleId}/lang-id/4`) y quedarse con las
+  categorías cuyo nombre comparta palabra con el fragmento (`Disc Brake` ← `brake pad`). Tope: 2.
+- Devolver las piezas de esas categorías (3 por categoría, con especificaciones y originales).
+- La caché ya guarda la respuesta completa por vehículo; el filtro por pieza se aplica al servir.
+- Pruebas: el fragmento encuentra `Disc Brake`; un fragmento sin categoría devuelve vacío sin gastar
+  de más; sigue sin poder pasarse del tope del mes.
+
+### 2. Sitio (`site/js/dataClient.js`)
+- En `getNumerosDeCategoria`: si el catálogo partido no da nada y el vehículo trae VIN (o
+  marca+modelo+año), llamar al Worker con `pieza` = los fragmentos de ese slug.
+- Pasar la respuesta por `filtrarArticulos` (la regla de nombre de pieza que ya existe): el Worker
+  devuelve la categoría, el sitio se queda con las piezas que le tocan.
+- Marcar el origen (`origen: "worker"`) para decir en la ficha de dónde viene el dato y que **no** se
+  confunda con el catálogo precalculado.
+- Si el Worker no responde o da 503 (cuota del mes agotada): seguir como hoy, sin números. **Nunca
+  una pieza inventada.**
+- Pruebas: con el Worker caído la página no se rompe; con respuesta, filtra y ordena igual que el
+  catálogo estático; **no** se llama al Worker si el catálogo ya tenía piezas (no gastar cuota de más).
+
+### 3. Antes de darlo por hecho
+- Chrome headless contra local: un coche que no está en el catálogo debe acabar mostrando sus números
+  y diciendo de dónde vienen.
+- Comprobar en KV que el contador del mes subió exactamente lo esperado.
+- Medir cuántas consultas cuesta la primera visita y cuántas la segunda (la segunda debe ser **0**).
