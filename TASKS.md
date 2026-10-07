@@ -389,3 +389,35 @@ y el Picanto no). Por eso la cuarta capa son **tres datos: mercado + motor + com
    invertidas), el sitio **lo dice claro**: las piezas de motor hay que confirmarlas con el taller.
 3. **Nunca** el número de gasolina para un carro a gas. Misma regla que con el motor equivocado:
    antes no dar nada, que dar algo que no le queda.
+
+
+---
+
+## T-B25 · Dónde exactamente se retoma la cuarta capa en el sitio (punto de partida anotado el 07/10)
+
+**Estado: la capa de datos está LISTA y probada; falta pintarla.** Lo que ya existe y está en verde:
+
+| Pieza | Dónde | Probado |
+|---|---|---|
+| `vehiculosEnCatalogo()` y `etiquetaDeVariante()` | `site/js/catalogoMap.js` | sí (4 pruebas) |
+| `traducirCombustible()` con la tabla acordada | `site/js/catalogoMap.js` | sí (4 pruebas) |
+| `getVariantesDeVehiculo()` | `site/js/dataClient.js` | imports listos |
+| `categoriasParaSlug()`, `filtrarArticulos()` | `site/js/catalogoMap.js` | sí |
+| 101 pruebas del sitio | `site/tests/catalogo.test.js` | **101 en verde** |
+
+**Lo que falta (por orden):**
+1. **Localizar el punto de pintado del bloque de números.** Se sabe que las piezas se pintan con las
+   clases `numero`, `numero-marca`, `numero-detalle`, `numero-original` y que el sitio llama a
+   `getNumerosDeCategoria()` / `getSlugsConNumeros()` — pero **no se ha localizado el archivo ni la
+   función exacta que construye ese HTML** (una búsqueda en `app.js` no lo encontró: hay que buscarlo
+   bien, no adivinarlo). **Primer paso real: encontrarlo.**
+2. Añadir **la etiqueta de variante** encima del bloque ("Piezas para: 1.6 L · 130 HP · Gasolina"),
+   usando `etiquetaDeVariante()`.
+3. Añadir **el selector** cuando haya más de una variante (`getVariantesDeVehiculo()`): botones por
+   variante y **sin pintar números hasta que elija**.
+4. Añadir **mercado** (T-B23: `?pais=` del Worker ya lo soporta) y **combustible** (T-B24, ya
+   traducido) al mismo bloque: es **una sola pregunta**, "¿cuál es tu carro exactamente?".
+5. Verificar en Chrome headless contra el servidor local (8765) y contra `partexact.com`.
+
+**Regla que no se rompe en ninguno de los pasos:** ningún número sin decir de qué mercado, de qué
+motor y de qué combustible es. Antes no dar nada que dar algo que no le queda.
