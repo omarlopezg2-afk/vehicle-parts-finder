@@ -72,6 +72,63 @@ aunque el nombre canónico sea otro.
 
 ---
 
+## `data/build/catalogo.json` (agregado 07/10/2026, T-B13)
+
+**Opcional**: lo genera `pipeline/fetch_autodoc.py` con la API de AUTODOC (TecDoc) vía RapidAPI,
+y es **el archivo que sí da el número de parte**. Si no existe (o no hay `RAPIDAPI_KEY`), la
+validación no falla y el sitio simplemente no muestra números.
+
+```json
+{
+  "generado_en": "ISO-8601",
+  "fuente": "AUTODOC Parts Catalog (TecDoc) vía RapidAPI",
+  "pais_filtro": 67,
+  "incompleto": false,
+  "consultas": 27,
+  "vehiculos": [
+    {
+      "etiqueta": "Mitsubishi Outlander Sport 2020 (2.0 gasolina)",
+      "vin": "JA4AP4AU3LU023739",
+      "vehiculo": { "make": "MITSUBISHI", "model": "Outlander Sport", "year": "2020",
+                    "cilindrada_l": 2.0, "potencia_hp": 148.0, "motor": "MIVEC", "valido": true },
+      "autodoc": { "manufacturerId": 77, "modelId": 8631, "vehicleId": 126680 },
+      "avisos": [],
+      "categorias": [
+        {
+          "nombre": "Disc Brake", "ruta": "Braking System / Disc Brake",
+          "buscado": "brake pad", "categoryId": 100027,
+          "articulos": [
+            { "numero": "D2N097", "marca": "ADVICS", "pieza": "Brake Pad Set, disc brake",
+              "articleId": 123456, "foto": "https://...", "tipoFoto": "image/webp" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Reglas que el validador hace cumplir** (y por qué):
+
+1. **Todo artículo con `numero` y `marca` no vacíos.** Un número sin marca no se le puede ofrecer
+   a nadie. Mismo espíritu que el `EXACT` de `fitment.json`: mejor no mostrar nada que mostrar
+   algo que no se sostiene.
+2. **`foto` es `https` o `null`** (nunca una ruta local de una prueba).
+3. **Ninguna categoría vacía**: el módulo las descarta; si aparece una, es un fallo del build y
+   hay que enterarse ahí, no en el sitio.
+4. **`fuente`, `incompleto` y `consultas` presentes**: queda escrito de dónde salió el dato y si
+   el presupuesto de consultas se agotó a mitad, para no confundir "no hay piezas" con "no se
+   llegó a preguntar".
+
+**La clave NUNCA viaja al frontend.** El sitio es estático: estas llamadas se hacen en el build
+(secreto de GitHub Actions) y el navegador solo lee este archivo.
+
+**Coste medido (07/10/2026)**: ~26 consultas por vehículo catalogado (1 del VIN, ~3 de jerarquía,
+1 de categorías y ~20 de artículos). El plan gratis son 100 al mes; el de 29 USD, 20.000. Detalle
+completo en `docs/piloto-tb10-autodoc.md`.
+
+---
+
 ## `data/build/fitment.json` (agregado 05/10/2026, T-B8)
 
 **Opcional**: lo genera `pipeline/fetch_fitment.py` cuando hay credenciales de eBay, y lo

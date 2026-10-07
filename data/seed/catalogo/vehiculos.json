@@ -1,0 +1,23 @@
+{
+  "_comentario": "T-B13: vehículos que se catalogan contra la API de AUTODOC. Vive en su propia carpeta porque build_index.py lee data/seed/*.json esperando listas de PIEZAS; una semilla que es un objeto rompe el build. NO mover a la carpeta padre. Los ids de AUTODOC se pueden dejar como 'null' para que el pipeline los resuelva por nombre (marca/modelo/año del VIN); ponerlos a mano cuando la resolución sea ambigua. Ver docs/piloto-tb10-autodoc.md.",
+  "pais": 67,
+  "_pais_comentario": "67 = República Dominicana (cambia los nombres comerciales: ASX en vez de Outlander Sport). 261 = Estados Unidos.",
+  "max_consultas": 30,
+  "vehiculos": [
+    {
+      "etiqueta": "Mitsubishi Outlander Sport 2020 (2.0 gasolina)",
+      "vin": "JA4AP4AU3LU023739",
+      "autodoc": { "manufacturerId": 77, "modelId": 8631, "vehicleId": 126680 }
+    },
+    {
+      "etiqueta": "Toyota Corolla 2019",
+      "vin": "2T1BURHE6KC123456",
+      "autodoc": { "manufacturerId": null, "modelId": null, "vehicleId": null }
+    }
+  ],
+  "categorias_buscadas": [
+    "brake pad", "brake disc", "oil filter", "air filter", "fuel filter", "cabin filter",
+    "wiper blade", "spark plug", "shock absorber", "radiator", "timing belt", "water pump",
+    "control arm", "ball joint", "clutch kit", "alternator", "starter", "drive shaft"
+  ]
+}

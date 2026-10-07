@@ -341,6 +341,37 @@ def main() -> int:
     else:
         print("[build_index] sin credenciales de eBay: se omite fitment.json")
 
+    # Catálogo con número de parte (T-B13): la API de AUTODOC da el número, la marca y la foto.
+    # Igual que el fitment, nunca es fatal y solo corre con credenciales. OJO CON LA CUOTA: cada
+    # vehículo gasta decenas de consultas, así que el plan programado NO lo corre solo (ver el
+    # flujo de trabajo); aquí solo se aprovecha si RAPIDAPI_KEY está en el entorno, y con el tope
+    # que fija data/seed/catalogo.vehiculos.json. Ver docs/piloto-tb10-autodoc.md.
+    catalogo = None
+    if os.environ.get("RAPIDAPI_KEY"):
+        try:
+            import fetch_autodoc
+
+            semilla = json.loads(
+                (Path(BUILD_DIR).parent / "seed" / "catalogo" / "vehiculos.json").read_text(encoding="utf-8")
+            )
+            cliente = fetch_autodoc.ClienteAutodoc(
+                os.environ["RAPIDAPI_KEY"],
+                max_consultas=int(semilla.get("max_consultas") or 30),
+            )
+            catalogo = fetch_autodoc.construir(semilla, cliente)
+            fetch_autodoc.guardar(catalogo)
+        except Exception as exc:  # red, cuota, forma inesperada: no tumba el build
+            print(f"[build_index] aviso: no se construyó catalogo.json ({type(exc).__name__}: {exc})")
+            catalogo = None
+    else:
+        print("[build_index] sin RAPIDAPI_KEY: se omite catalogo.json")
+
+    resumen_catalogo = ""
+    if catalogo:
+        piezas = sum(len(c["articulos"]) for v in catalogo["vehiculos"] for c in v["categorias"])
+        resumen_catalogo = (f" catalogo={len(catalogo['vehiculos'])} vehículo(s) "
+                            f"[{piezas} piezas con número, {catalogo['consultas']} consultas]")
+
     resumen_fitment = ""
     if fitment and fitment.get("vehiculos"):
         v0 = fitment["vehiculos"][0]
@@ -351,7 +382,7 @@ def main() -> int:
     print(
         f"[build_index] OK: vehicles={len(vehicles)} parts={len(parts)} "
         f"search_index={len(search_index)} categories={len(categories)} (sin reescribir, "
-        f"ya existe y es válido){resumen_fitment} -> {BUILD_DIR}"
+        f"ya existe y es válido){resumen_fitment}{resumen_catalogo} -> {BUILD_DIR}"
     )
     return 0
 

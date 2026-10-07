@@ -488,6 +488,82 @@ def validate_fitment(errores: ValidationErrors) -> None:
                     errores.add(octx, "precio debería ser número o null")
 
 
+def validate_catalogo(errores: ValidationErrors) -> None:
+    """Valida `catalogo.json` (T-B13) **si existe**. Opcional a propósito: sin RAPIDAPI_KEY el
+    build no lo genera y eso no debe romper la validación.
+
+    Las reglas que importan, y por qué:
+
+    1. **Todo artículo tiene `numero` y `marca` no vacíos.** Un número sin marca no se le puede
+       ofrecer a nadie (¿de quién es?), y una marca sin número no sirve para nada. Es la misma
+       clase de guardián que el `EXACT` de fitment.json.
+    2. **La foto es `https` o null**: evita que se cuele una ruta local de una prueba.
+    3. **Ninguna categoría va vacía.** El módulo ya descarta las que no traen piezas; si aparece
+       una, es que algo se rompió y conviene enterarse en el build, no en el sitio.
+    4. **`fuente` e `incompleto` presentes**: la constancia de dónde salió el dato y de si el
+       presupuesto de consultas se agotó a mitad (para no confundir "no hay piezas" con "no se
+       llegó a preguntar").
+    """
+    ruta = os.path.join(BUILD_DIR, "catalogo.json")
+    if not os.path.exists(ruta):
+        return
+
+    try:
+        with open(ruta, "r", encoding="utf-8") as f:
+            datos = json.load(f)
+    except (OSError, json.JSONDecodeError) as exc:
+        errores.add("catalogo.json", f"no se pudo leer o parsear: {exc}")
+        return
+
+    if not isinstance(datos, dict):
+        errores.add("catalogo.json", "debería ser un objeto")
+        return
+
+    for clave in ("generado_en", "fuente", "incompleto", "consultas", "vehiculos"):
+        if clave not in datos:
+            errores.add("catalogo.json", f"falta la clave '{clave}'")
+    if isinstance(datos.get("incompleto"), bool) is False and "incompleto" in datos:
+        errores.add("catalogo.json", "'incompleto' debería ser booleano")
+    if "consultas" in datos and not isinstance(datos["consultas"], int):
+        errores.add("catalogo.json", "'consultas' debería ser entero")
+
+    vehiculos = datos.get("vehiculos")
+    if not isinstance(vehiculos, list):
+        errores.add("catalogo.json", "'vehiculos' debería ser una lista")
+        return
+
+    for i, v in enumerate(vehiculos):
+        ctx = f"catalogo.json[{i}]"
+        if not isinstance(v, dict):
+            errores.add(ctx, "cada vehículo debería ser un objeto")
+            continue
+        for clave in ("etiqueta", "autodoc", "categorias"):
+            if clave not in v:
+                errores.add(ctx, f"falta la clave '{clave}'")
+        for cat in (v.get("categorias") or []):
+            cctx = f"{ctx}.categorias[{cat.get('nombre') if isinstance(cat, dict) else '?'}]"
+            if not isinstance(cat, dict):
+                errores.add(cctx, "cada categoría debería ser un objeto")
+                continue
+            for clave in ("nombre", "categoryId", "articulos"):
+                if clave not in cat:
+                    errores.add(cctx, f"falta la clave '{clave}'")
+            articulos = cat.get("articulos")
+            if isinstance(articulos, list) and not articulos:
+                errores.add(cctx, "categoría sin artículos: no debería publicarse vacía")
+            for j, art in enumerate(articulos or []):
+                actx = f"{cctx}.articulos[{j}]"
+                if not isinstance(art, dict):
+                    errores.add(actx, "cada artículo debería ser un objeto")
+                    continue
+                for clave in ("numero", "marca", "pieza"):
+                    if not isinstance(art.get(clave), str) or not art.get(clave, "").strip():
+                        errores.add(actx, f"'{clave}' debería ser texto no vacío")
+                foto = art.get("foto")
+                if foto is not None and (not isinstance(foto, str) or not foto.startswith("https://")):
+                    errores.add(actx, f"'foto' debería ser https o null, es {str(foto)[:40]!r}")
+
+
 def run_validation() -> ValidationErrors:
     errores = ValidationErrors()
 
@@ -509,6 +585,7 @@ def run_validation() -> ValidationErrors:
         validate_referential_integrity(parts, vehicles, categories, errores)
 
     validate_fitment(errores)
+    validate_catalogo(errores)
 
     return errores
 
@@ -521,7 +598,12 @@ def main() -> int:
             print(f"  - {e}", file=sys.stderr)
         return 1
 
-    extra = " + fitment.json (T-B8)" if os.path.exists(os.path.join(BUILD_DIR, "fitment.json")) else ""
+    extras = []
+    if os.path.exists(os.path.join(BUILD_DIR, "fitment.json")):
+        extras.append("fitment.json (T-B8)")
+    if os.path.exists(os.path.join(BUILD_DIR, "catalogo.json")):
+        extras.append("catalogo.json (T-B13)")
+    extra = (" + " + " + ".join(extras)) if extras else ""
     print(f"[validate] OK: los 4 archivos de {BUILD_DIR} cumplen CONTRACTS.md{extra}.")
     return 0
 

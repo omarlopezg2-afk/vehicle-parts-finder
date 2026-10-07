@@ -1,0 +1,5251 @@
+{
+ "generado_en": "2026-10-07T01:54:32Z",
+ "fuente": "AUTODOC Parts Catalog (TecDoc) vía RapidAPI",
+ "pais_filtro": 67,
+ "incompleto": false,
+ "consultas": 27,
+ "vehiculos": [
+  {
+   "etiqueta": "Mitsubishi Outlander Sport 2020 (2.0 gasolina)",
+   "vin": "JA4AP4AU3LU023739",
+   "avisos": [],
+   "categorias": [
+    {
+     "nombre": "Disc Brake",
+     "ruta": "Braking System / Disc Brake / Brake Pad",
+     "buscado": "brake pad",
+     "categoryId": 100626,
+     "articulos": [
+      {
+       "numero": "D2N097",
+       "marca": "ADVICS",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 6491847,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6104/120859ae5ec84df0543d037d685cf7eaa4d381c1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SN678",
+       "marca": "ADVICS",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 9143663,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6104/a716ec6c69561acfc71fe90d6354db2d37e5161d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "C012-09",
+       "marca": "ASHUKI by Palidium",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 6166461,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/442/8934fe6e0cafa9f2763555bfb08fc568c38abb60.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BDS1486",
+       "marca": "BENDIX Braking",
+       "pieza": "Brake Disc",
+       "articleId": 5988423,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4373/6225a876b017db69eca2466fb59db953675bcb18.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BDS1156",
+       "marca": "BENDIX Braking",
+       "pieza": "Brake Disc",
+       "articleId": 5988094,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4373/f36c86d01103a7a0727b4db5f4a636eb2c1b4a0e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BDS1471",
+       "marca": "BENDIX Braking",
+       "pieza": "Brake Disc",
+       "articleId": 5988408,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4373/d189d2c1ac0a120578ed6c48df9a01d25526a4d6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BPD1199",
+       "marca": "BENDIX Braking",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 6065662,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4373/3169891fe7b770b964aeff209693e0a5693b255a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BPD1221",
+       "marca": "BENDIX Braking",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 6065684,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4373/7f8e5c079cb322afafd27d3e45cdd0b0bde4705a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BPD2259",
+       "marca": "BENDIX Braking",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 6066669,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4373/c5bb27986d299bac346e16c44cecdb593bc9920e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3755870",
+       "marca": "BINDER",
+       "pieza": "Splash Guard, brake disc",
+       "articleId": 18607203,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4202/22d1fea7d780ebbb28759e649e823413730eb379.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP710042",
+       "marca": "BLUE PRINT",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 5608130,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/c47f558a13b8191fcd850e50acfcbc9a3b011978.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADC47129",
+       "marca": "BLUE PRINT",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 5612606,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/c55c6882beb939702de81adc00799106d15a01e1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP710161",
+       "marca": "BLUE PRINT",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 82989806,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/b86be0abf9f00d06d7cdce54b36de4b001ce5a98.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP710162",
+       "marca": "BLUE PRINT",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 78261055,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/b5edd30f6699e4fd5b0f344d11f2e6a7e5be01d8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0 986 479 R07",
+       "marca": "BOSCH",
+       "pieza": "Brake Disc",
+       "articleId": 68248,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/a0553d9f55b4b64fa77f378505f3a3bd52046ff4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0 986 479 B04",
+       "marca": "BOSCH",
+       "pieza": "Brake Disc",
+       "articleId": 67742,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/5ed20260d271e48101cc052b3179e3666bfe8f03.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "0 986 424 717",
+       "marca": "BOSCH",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 61825,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/c0eac05053a3ab155e1fe49a3b54e596da57ef24.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "0 986 424 716",
+       "marca": "BOSCH",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 61824,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/f953749a853a8d8315dd6b314251b1ed695016b3.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "0 986 495 358",
+       "marca": "BOSCH",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 71855,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/5b4beeded4a77796ed382af84343a1c40dec84fa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0 986 495 253",
+       "marca": "BOSCH",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 71777,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/2019f30bb945bbe68650d1af1064caca25e9314f.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "0 986 BB0 723",
+       "marca": "BOSCH",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 81974,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/2aa216a390ca65ae9eaa7ecaec584d13d8762bd0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "F 03B 050 059",
+       "marca": "BOSCH",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 6930443,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/6e3c7817d65331c72b4f1b97846ef2f261323a44.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "1 987 474 428",
+       "marca": "BOSCH",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 739215,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/219ad626581182dc70157bde96180db73be05975.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "1 987 474 377",
+       "marca": "BOSCH",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 739169,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/59a78ffb5c99fc9992fd6882cb3c0072d92f49e1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "1 987 474 766",
+       "marca": "BOSCH",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 739471,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/9c72329b2910f9566d2bff10fbefa20fcbc89f61.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P 54 030",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8360184,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/c9a277a67bad435d4042ad0e9e68349f348c9ebb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P 61 111",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8360510,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/48110e2f82ddd16632f7282ec9c9867ea7490574.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P 54 031X",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8360187,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/1995c04f00b1131426b068835b5af8052310b102.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P 54 030X",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8360185,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/c9a277a67bad435d4042ad0e9e68349f348c9ebb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P 54 031",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8360186,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/1995c04f00b1131426b068835b5af8052310b102.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P54031N",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8404978,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/c13e45607478b5fc7bb4af502283591e61abd84c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P54030N",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8404976,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/dc685bff6cc1a89d388a5a4c0e262d4d5bbbcf4a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P61111N",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8409317,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/aeb9a3ea9ae293ef6a58700f152f78aaaa1a1393.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "N-2017",
+       "marca": "COBREQ",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8239767,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4678/ea9c618ca6931308f973d7015e2119d596d02205.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "N-1470",
+       "marca": "COBREQ",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8239653,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4678/991d3d363c51e5f5ce8974eca15ff8c086667202.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "N-1446",
+       "marca": "COBREQ",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8239635,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4678/64562f2ead9e1f9f67cdd691b61942a17d5d6418.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DR10662",
+       "marca": "DANAHER",
+       "pieza": "Brake Disc",
+       "articleId": 50630475,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4587/df2876f56b4307f57924f0004768137732a8bd13.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DR10444",
+       "marca": "DANAHER",
+       "pieza": "Brake Disc",
+       "articleId": 56627148,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4587/b6a97d0943cafc50ea86d45cd355303b9af5d6d6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DR10671",
+       "marca": "DANAHER",
+       "pieza": "Brake Disc",
+       "articleId": 56691842,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4587/d6cb4251c23c2bbe72640b009c950111f91524f4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DR11787",
+       "marca": "DANAHER",
+       "pieza": "Brake Disc",
+       "articleId": 47977237,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4587/d3844d40719668736f1c98768ab646b537192548.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCD11502",
+       "marca": "DON",
+       "pieza": "Brake Disc",
+       "articleId": 8484619,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/cf5737051f52d2f48e0566758adaa9ccdfc6a2fa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCD14312",
+       "marca": "DON",
+       "pieza": "Brake Disc",
+       "articleId": 8484894,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/3b08ca0de07a0d7f044c7ad6e192ac4a7d3faeed.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCD12742",
+       "marca": "DON",
+       "pieza": "Brake Disc",
+       "articleId": 8484741,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/39f83a1e6495b289599f8762d7bf22efeeed2623.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCD13922",
+       "marca": "DON",
+       "pieza": "Brake Disc",
+       "articleId": 8484856,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/e29c6c4b2c162bf4c4f87fe7b8121676d223d1e6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCP1069",
+       "marca": "DON",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8486799,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/64562f2ead9e1f9f67cdd691b61942a17d5d6418.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCP1094",
+       "marca": "DON",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8486824,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/991d3d363c51e5f5ce8974eca15ff8c086667202.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCP1135",
+       "marca": "DON",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8486864,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/ea9c618ca6931308f973d7015e2119d596d02205.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "172428",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 1585667,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/3756775581381db7cdfa340bd7fc42edeb67ce65.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "109544",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 966067,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/1e905aae25fe3041017509fd19e6b344481d0b52.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "198391",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 84203283,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/e8cb6de8c8eea4b44db07e142aaa5d7f4ca604ae.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "198390",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 79739716,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/10aa01793246e39c913b3f68661e0e7ed02a26c1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 115-911",
+       "marca": "HELLA",
+       "pieza": "Brake Disc",
+       "articleId": 5086031,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/cf5737051f52d2f48e0566758adaa9ccdfc6a2fa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 115-492",
+       "marca": "HELLA",
+       "pieza": "Brake Disc",
+       "articleId": 5085963,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/39f83a1e6495b289599f8762d7bf22efeeed2623.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 120-431",
+       "marca": "HELLA",
+       "pieza": "Brake Disc",
+       "articleId": 5086707,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/3b08ca0de07a0d7f044c7ad6e192ac4a7d3faeed.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 129-041",
+       "marca": "HELLA",
+       "pieza": "Brake Disc",
+       "articleId": 5088291,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/cf5737051f52d2f48e0566758adaa9ccdfc6a2fa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 115-491",
+       "marca": "HELLA",
+       "pieza": "Brake Disc",
+       "articleId": 5085961,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/39f83a1e6495b289599f8762d7bf22efeeed2623.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 009-691",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5079276,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/991d3d363c51e5f5ce8974eca15ff8c086667202.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 009-671",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5079272,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/64562f2ead9e1f9f67cdd691b61942a17d5d6418.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 020-291",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5080948,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/ea9c618ca6931308f973d7015e2119d596d02205.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 027-711",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082228,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/64562f2ead9e1f9f67cdd691b61942a17d5d6418.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 029-331",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082552,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/ea9c618ca6931308f973d7015e2119d596d02205.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 027-701",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082226,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/991d3d363c51e5f5ce8974eca15ff8c086667202.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 045-471",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 18474343,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/64562f2ead9e1f9f67cdd691b61942a17d5d6418.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 045-481",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 17546453,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/991d3d363c51e5f5ce8974eca15ff8c086667202.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 203-721",
+       "marca": "HELLA",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5090837,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/51a44ae46a9ed9277bd367aa639da5b221edf29b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 204-091",
+       "marca": "HELLA",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5090903,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/46a60b84a5c5e1d150f738e2077b8ee32d7880ef.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 206-021",
+       "marca": "HELLA",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5091221,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/3e1ffd688149c7b4af3d5d09b3b41c3469d257ca.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 115-492",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 5085964,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/39f83a1e6495b289599f8762d7bf22efeeed2623.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 115-911",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 5086032,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/cf5737051f52d2f48e0566758adaa9ccdfc6a2fa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 115-491",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 5085962,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/8d83deb4a981e2626c86c9fb497e2abd29751b12.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 120-431",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 5086708,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/b4603638bf0d81a3bb30210ddcc7bf19ee36c1fd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 009-691",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5079277,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/d89900ea1c9fafbbcf09859b5e30e0b352efb996.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 009-671",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5079273,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/5cc534be0a243dccaa192fe85dddc1bdc1487f33.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 020-291",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5080949,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/6899756493b1db0dbffad2825c4b745f815f22ff.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 027-701",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082227,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/991d3d363c51e5f5ce8974eca15ff8c086667202.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 027-711",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082229,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/64562f2ead9e1f9f67cdd691b61942a17d5d6418.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 029-331",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082553,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/ea9c618ca6931308f973d7015e2119d596d02205.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 206-021",
+       "marca": "HELLA PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5091222,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/3e1ffd688149c7b4af3d5d09b3b41c3469d257ca.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 204-091",
+       "marca": "HELLA PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5090904,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/46a60b84a5c5e1d150f738e2077b8ee32d7880ef.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 203-721",
+       "marca": "HELLA PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5090838,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/51a44ae46a9ed9277bd367aa639da5b221edf29b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "78BD4644-2",
+       "marca": "ICER",
+       "pieza": "Brake Disc",
+       "articleId": 4607970,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/158/51413f8ac3813a76b3307121ac21c7057d03e4aa.webp",
+       "tipoFoto": "PNG"
+      },
+      {
+       "numero": "182118",
+       "marca": "ICER",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 1653931,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/158/ab979d95885c6af03b63e22c69d2eed2e1b5b992.webp",
+       "tipoFoto": "PNG"
+      },
+      {
+       "numero": "3963101900",
+       "marca": "JP GROUP",
+       "pieza": "Brake Disc",
+       "articleId": 16616028,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/268/cc320761bc51564cffd78ca2aa91a43d9644c72a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3963102000",
+       "marca": "JP GROUP",
+       "pieza": "Brake Disc",
+       "articleId": 18081551,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/268/0b1c8c844f88812eb98476ef1010a8cdb9b5529f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "4163202400",
+       "marca": "JP GROUP",
+       "pieza": "Brake Disc",
+       "articleId": 3234720,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/268/905f8a94c3184e9669eab125e7be88f052b911b6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3963201300",
+       "marca": "JP GROUP",
+       "pieza": "Brake Disc",
+       "articleId": 12849275,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/268/8f8e2e3d72dfbde056a5de6401d096f909f3c00f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "19-2273",
+       "marca": "MAXGEAR",
+       "pieza": "Brake Disc",
+       "articleId": 1706695,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/403/9552b26239038cfa41f24a37a0ae0716bb0f662e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "19-2273MAX",
+       "marca": "MAXGEAR",
+       "pieza": "Brake Disc",
+       "articleId": 1706696,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/403/b3baa4e3befae2c004d83dde64066fb82172ad95.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "19-1144",
+       "marca": "MAXGEAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 1704609,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/403/1fd3022a20f3ca047c83648e9e1d0a23b6fd35be.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "19-1990",
+       "marca": "MAXGEAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 1706115,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/403/2bec3a65ef1a1b2dfd161e9a5edbca6ffc2d19ae.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "19-3043",
+       "marca": "MAXGEAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 1708887,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/403/8f40c2afc1e17aad5a8cfb26ff43e468339fcfbc.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "20-0453",
+       "marca": "MAXGEAR",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 17814722,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/403/cb3fbddc3a41561c9e424dd6049aab5a069b364b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "20-0452",
+       "marca": "MAXGEAR",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 18346747,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/403/0cf08dcf4db2c817efc35575ea3210199a5b40c0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDC2101",
+       "marca": "MINTEX",
+       "pieza": "Brake Disc",
+       "articleId": 8094885,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/cf5737051f52d2f48e0566758adaa9ccdfc6a2fa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDC1930",
+       "marca": "MINTEX",
+       "pieza": "Brake Disc",
+       "articleId": 8094735,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/39f83a1e6495b289599f8762d7bf22efeeed2623.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDC2602",
+       "marca": "MINTEX",
+       "pieza": "Brake Disc",
+       "articleId": 8095284,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/3b08ca0de07a0d7f044c7ad6e192ac4a7d3faeed.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDB2080",
+       "marca": "MINTEX",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8091913,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/991d3d363c51e5f5ce8974eca15ff8c086667202.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDB2134",
+       "marca": "MINTEX",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8091956,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/64562f2ead9e1f9f67cdd691b61942a17d5d6418.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDB3336",
+       "marca": "MINTEX",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8092912,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/ea9c618ca6931308f973d7015e2119d596d02205.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MBA1236",
+       "marca": "MINTEX",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 8048051,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/51a44ae46a9ed9277bd367aa639da5b221edf29b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MBA1673",
+       "marca": "MINTEX",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 8048195,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/46a60b84a5c5e1d150f738e2077b8ee32d7880ef.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MBA1896",
+       "marca": "MINTEX",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 8048392,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/3e1ffd688149c7b4af3d5d09b3b41c3469d257ca.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "M568I37",
+       "marca": "NPS",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 8010167,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/440/a898ddc27f25bd165621ae07be9e1c03c8e0bd15.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HTO-MS-004",
+       "marca": "NTY",
+       "pieza": "Splash Guard, brake disc",
+       "articleId": 17955562,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6355/91500610d685c8d020eca4e1859732d40913eecc.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "HTO-MS-003",
+       "marca": "NTY",
+       "pieza": "Splash Guard, brake disc",
+       "articleId": 18413258,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6355/afee9ad6c5c3fd092c6dec541517b591c5dd0478.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "HTO-MS-002",
+       "marca": "NTY",
+       "pieza": "Splash Guard, brake disc",
+       "articleId": 15358967,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6355/1b5a1599adb1ec19e97f9b3d8e89e22be55e3f6d.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "54773NC",
+       "marca": "PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 74715318,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/b82f81666378958e1259ccb5fd0a91cd36730661.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "54844NC",
+       "marca": "PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 79478261,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/6ef9a124b9b49b669c43cd58793b24853bbc9634.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "55674NC",
+       "marca": "PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 77179428,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/3c824203392ef9c036eb547fcd7018681b50061b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "T1276N",
+       "marca": "PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 81644573,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/799df9abf741405c003f372911ef2ae15bdf5872.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "T1274N",
+       "marca": "PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 81447023,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/d41efbb34093aef34e8075e65e35a018049b5154.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "T2237N",
+       "marca": "PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 80430278,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/348f91b659f0bfbdbbebd9f6270f1629e6af8335.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "K0298N",
+       "marca": "PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 80430832,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/46a60b84a5c5e1d150f738e2077b8ee32d7880ef.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "K0250N",
+       "marca": "PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 81579498,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/51a44ae46a9ed9277bd367aa639da5b221edf29b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "K0691N",
+       "marca": "PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 74321770,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/3e1ffd688149c7b4af3d5d09b3b41c3469d257ca.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "T1276N-54773N-00",
+       "marca": "PAGID",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 97079849,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/799df9abf741405c003f372911ef2ae15bdf5872.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "T1274N-54844N-00",
+       "marca": "PAGID",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 87585992,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/d41efbb34093aef34e8075e65e35a018049b5154.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "T2237N-55674N-00",
+       "marca": "PAGID",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 91724100,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/12/348f91b659f0bfbdbbebd9f6270f1629e6af8335.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "78RBD24644",
+       "marca": "R BRAKE",
+       "pieza": "Brake Disc",
+       "articleId": 4609317,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4955/e430ac35113102ca0e50389e511e10cf88ddd717.webp",
+       "tipoFoto": "PNG"
+      },
+      {
+       "numero": "RB2118",
+       "marca": "R BRAKE",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8748643,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4955/ad546c5e7a0cf9fd42654fc19e603c3462c9935b.webp",
+       "tipoFoto": "PNG"
+      },
+      {
+       "numero": "33 10 5927",
+       "marca": "SWAG",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 2766757,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/b30dd54fe877b6db0feea34584882c147ac053c6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5899",
+       "marca": "SWAG",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 2766729,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/e5215167252a1203115a1e3764092413ca058285.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 11 2990",
+       "marca": "SWAG",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 84829544,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/5d874b747176a4bf3bad5105709bb58f19ac296a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 11 2989",
+       "marca": "SWAG",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 85847723,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/dd17c0c7044d1690abebf662e91122a18c56232f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "92177303",
+       "marca": "TEXTAR",
+       "pieza": "Brake Disc",
+       "articleId": 5247377,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/75dba1b37bac6e13b5d5db4a6aa2a6b37b3e1366.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "92184405",
+       "marca": "TEXTAR",
+       "pieza": "Brake Disc",
+       "articleId": 5247575,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/70741c708aac0c6c2b3a1ec088677a730525f187.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "92267403",
+       "marca": "TEXTAR",
+       "pieza": "Brake Disc",
+       "articleId": 5251543,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/5daaec8eb5d7508da9adf3f4cdbedfae099c7103.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2358401",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2174182,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/44d1533ef78c6b0adedebfbc14fa854745f83aa1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2358202",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2174147,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/53239e6d3c69604a66aaa247d3e78fcebac55288.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2568801",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2295918,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/408ef0c60091930153a9dbb20dab1b6e7df2175d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2358202SC",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 52103345,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/37e0794dcd62b0d49ac0f0438ddb938f5c3f581d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2358401SC",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 46518450,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/4f7d894dedb5fb824e390565797c2ba9732019be.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2568801SC",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 54039162,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/951b17171e88e1c26e491ac2c75f556632b47969.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "82501800",
+       "marca": "TEXTAR",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 4792370,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/46a60b84a5c5e1d150f738e2077b8ee32d7880ef.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "82541000",
+       "marca": "TEXTAR",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 4793587,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/3e1ffd688149c7b4af3d5d09b3b41c3469d257ca.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "82507300",
+       "marca": "TEXTAR",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 4792747,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/51a44ae46a9ed9277bd367aa639da5b221edf29b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2358202-1773-00",
+       "marca": "TEXTAR",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 90640960,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/53239e6d3c69604a66aaa247d3e78fcebac55288.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2358401-1844-00",
+       "marca": "TEXTAR",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 89948565,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/44d1533ef78c6b0adedebfbc14fa854745f83aa1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2568801-2674-00",
+       "marca": "TEXTAR",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 91920799,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/5daaec8eb5d7508da9adf3f4cdbedfae099c7103.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Lubrication",
+     "ruta": "Engine / Lubrication / Oil Filter",
+     "buscado": "oil filter",
+     "categoryId": 100245,
+     "articulos": [
+      {
+       "numero": "18001100",
+       "marca": "AJUSA",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 1629718,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/139/d9999a24f26b001d06c5d60ef8da501417f7756c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "75000100",
+       "marca": "AJUSA",
+       "pieza": "Gasket, oil sump",
+       "articleId": 4513963,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/139/3d14db676020522f97163816e4d0016eae53129d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "75000200",
+       "marca": "AJUSA",
+       "pieza": "Gasket, oil sump",
+       "articleId": 4513993,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/139/1dbf62b04ee80c10b3e9df3324ee90d80ea3b898.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MO-511",
+       "marca": "AMC Filter",
+       "pieza": "Oil Filter",
+       "articleId": 8177074,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/146/6546c628fbe91f8f0fc81466050aa955f94dc068.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADM52107",
+       "marca": "BLUE PRINT",
+       "pieza": "Oil Filter",
+       "articleId": 5626441,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/a099d63f57562ac6817a5a0841d8fca107d87a2c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP010006",
+       "marca": "BLUE PRINT",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 5606408,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/78d439739272346882610ed4101d4c586a14c268.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADA100104",
+       "marca": "BLUE PRINT",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 5603188,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/16da4182d0c277945dc5ec8e5f3928a2ebd6e23a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP610072",
+       "marca": "BLUE PRINT",
+       "pieza": "Chain, oil pump drive",
+       "articleId": 5607937,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/1468a7636e4f8e4a430b52c26876b53b5db4656e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP760139",
+       "marca": "BLUE PRINT",
+       "pieza": "Chain Tensioner, oil pump drive",
+       "articleId": 5608541,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/75326d0f54828eaa4b9ba99c6ac28d04aec22c82.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP760152",
+       "marca": "BLUE PRINT",
+       "pieza": "Rail, oil pump drive chain",
+       "articleId": 5608550,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/324c49a7a98e144e55aaa7c1a67d423f01d21881.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0 986 452 041",
+       "marca": "BOSCH",
+       "pieza": "Oil Filter",
+       "articleId": 64050,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/d9ef7036bc5df814eeea0a119e61f0b7d865b61a.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "0 986 4B7 063",
+       "marca": "BOSCH",
+       "pieza": "Oil Filter",
+       "articleId": 72211,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/371a50e90d1495beb286b0f5c0f794e84e46d465.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0 986 B00 015",
+       "marca": "BOSCH",
+       "pieza": "Oil Filter",
+       "articleId": 80999,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/7c858fb74029758a571997b1fe7066fe6d2c8293.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "FMI",
+       "marca": "ELF",
+       "pieza": "Engine Oil",
+       "articleId": 47911345,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7718/7fb182569dfdd7f8d93f30e8b4660869ec210472.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "FS6",
+       "marca": "ELF",
+       "pieza": "Engine Oil",
+       "articleId": 55561648,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7718/7fb182569dfdd7f8d93f30e8b4660869ec210472.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WOZ",
+       "marca": "ELF",
+       "pieza": "Engine Oil",
+       "articleId": 56365735,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7718/7fb182569dfdd7f8d93f30e8b4660869ec210472.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "XLF",
+       "marca": "ELF",
+       "pieza": "Engine Oil",
+       "articleId": 47041656,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7718/7fb182569dfdd7f8d93f30e8b4660869ec210472.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "YT6",
+       "marca": "ELF",
+       "pieza": "Engine Oil",
+       "articleId": 48976221,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7718/7fb182569dfdd7f8d93f30e8b4660869ec210472.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "394.030",
+       "marca": "ELRING",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 3049587,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/c1218ccff4b3c215702f297be02af056d063bf80.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "036.164",
+       "marca": "ELRING",
+       "pieza": "Gasket, oil sump",
+       "articleId": 391411,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/3bcb5a9d7602d725de1a992bc5c78ea05a911bb9.gif",
+       "tipoFoto": "GIF"
+      },
+      {
+       "numero": "510.031",
+       "marca": "ELRING",
+       "pieza": "Gasket, oil sump",
+       "articleId": 3612544,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/19196a8c0c34e8794af28d22d83f7ad0819fb5e3.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "523.480",
+       "marca": "ELRING",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 3694815,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/c799005c0c640683bfbe46e6bf0f648cbb821e50.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "523.500",
+       "marca": "ELRING",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 3694817,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/0a292bb0235199d8f8297e62d9b84085fa137b5c.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "EU0039",
+       "marca": "ENEOS",
+       "pieza": "Engine Oil",
+       "articleId": 6865515,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6949/6c68facb5a8faa323eb32da15db3af0454800228.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SIL-2",
+       "marca": "FAI AutoParts",
+       "pieza": "Gasket, oil sump",
+       "articleId": 9047313,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/267/9359ad3e94eb59e185bb54091a1c320c2ebe5a70.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SIL-2DB",
+       "marca": "FAI AutoParts",
+       "pieza": "Gasket, oil sump",
+       "articleId": 9047314,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/267/adce1dd3f650a1cad8b4051e5d111627d5ef9a6b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "32100",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Oil Filter",
+       "articleId": 2722221,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/21e8e361b86d47614301f331f1d3fa8446c778f6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "30181",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 2570142,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/a8d88fdd489d124e719b409fe3eb648f0ba83f70.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "30180",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 2570086,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/894f6917b06b7536ff4c29ed1e9df0d6e30335d0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "30269",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 2577834,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/f47a493410f2e651a92a3e3fca4b92ddd7079f36.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "48885",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 3479169,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/e6ba6178bc9142e5288fc671bf40cb5c0ec0f93d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "178846",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Chain, oil pump drive",
+       "articleId": 1615930,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/482c373a4b558d33f411ea53db05acbfb94ec33e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "180144",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Chain Tensioner, oil pump drive",
+       "articleId": 1632203,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/f0cccf936998c06ab54e31732650d665908eac62.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "180869",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Rail, oil pump drive chain",
+       "articleId": 1638269,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/29a1e082f85671cb3a6b259a2fc6cd7e962ba719.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MO-511",
+       "marca": "KAVO PARTS",
+       "pieza": "Oil Filter",
+       "articleId": 8177075,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/6546c628fbe91f8f0fc81466050aa955f94dc068.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "W 6 MULTI 20",
+       "marca": "MANN-FILTER",
+       "pieza": "Oil Filter",
+       "articleId": 9674254,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4/2238f16b397edc3561550bdfd43634ff68f37a45.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "W 6100",
+       "marca": "MANN-FILTER",
+       "pieza": "Oil Filter",
+       "articleId": 9674277,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4/63b123b855e4daa153fd05199dd2590773b4d0c9.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "BMO-MS-006",
+       "marca": "NTY",
+       "pieza": "Oil Sump",
+       "articleId": 6045216,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6355/389055d5b6453ec45b8df7254dcebd8a947d495b.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "OEX1040.01",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316778,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/e78210820cdcaab65cc3386ba3b4b3bd8cfa9b14.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX1040.05",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316779,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/a17d6ab37dac6343f4bfa418223cc40a27fd804d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX1040.20",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316780,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/f70b1ed32c0953b164aba127bab17f8145ebadaf.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX1040.99",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316781,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/f5f0b9a99ead731c2405b7ca4607dc9a08cfc29b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX1540.01",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316782,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/43f59a4afc8c24e57570cf8565e8c57b80d9ef30.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX1540.05",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316783,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/7493e066a12fe587adca772e06cff1d71fcd21f5.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX1540.99",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316785,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/6b132c5c4ba4d4d07ceefceeb0261f10d215c02a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX1540.20",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316784,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/d88d80839338603f6bb92ee4b969457f2bae1ab4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5301.01",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316787,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/96bf4d1d31f1024c2964bfe360fe25961c1690a1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5301.20",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316789,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/80dfc013265ad452d94c8fa4bee538289c1014a4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5301.05",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316788,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/8c5fa18e65c2170fc514623df0d9dafdc03058ef.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5302.01",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316791,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/05e4c14cb201211325489c4e120ff8210cd46d5d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5302.05",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316792,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/989bd7fcef2912b9024b5ba16d039eb2d622c3e3.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5401.01",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316807,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/7612ab13ee45810d179e645747c18b9598a42124.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5401.20",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316809,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/ee134c1f441fc95bf9cc0a51ad1d24ef8803d2d1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5401.05",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316808,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/dd3b1e0481444fcdb6502fdb9ee24e3f7925a11c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OEX5401.99",
+       "marca": "OPEN PARTS",
+       "pieza": "Engine Oil",
+       "articleId": 8316810,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/378/1d5312972b4656e4a9f1072c2d71208a99f03585.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HR397",
+       "marca": "PAYEN",
+       "pieza": "Gasket, oil sump",
+       "articleId": 15031557,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/113/8a2c10d80b008c03be97b0829fa0fb9aacb8ef50.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HR397T",
+       "marca": "PAYEN",
+       "pieza": "Gasket, oil sump",
+       "articleId": 10985214,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/113/43596ead82ec71088921f9711a6e47a829ca17cb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "97680",
+       "marca": "PETEC",
+       "pieza": "Gasket, oil sump",
+       "articleId": 5371411,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4372/a5b1db1bf237da78a5a7ef4450e54cc0bdfc3f3b.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "97720",
+       "marca": "PETEC",
+       "pieza": "Gasket, oil sump",
+       "articleId": 5371568,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4372/6bfcd9b36cd17bae2171793309e22874f680933d.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "97780",
+       "marca": "PETEC",
+       "pieza": "Gasket, oil sump",
+       "articleId": 5371780,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4372/aa1912c3e5653b35e676cac2a5bde75b43afb193.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "70179",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 10664865,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70260",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 12443975,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70662",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 11981279,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70719",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 21199332,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70721",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 14037169,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70731",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 15561193,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70830",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 13909319,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "71712",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 11255135,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70983",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 63559020,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70982",
+       "marca": "PETRONAS",
+       "pieza": "Engine Oil",
+       "articleId": 66855108,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4729/51423c53cd45780930831acf800eb89b52a93608.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "227454",
+       "marca": "RESTAGRAF",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 2099200,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6225/1819173cd6bb04c897da4a1245728509c0fc79d0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "40874",
+       "marca": "RESTAGRAF",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 3173944,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6225/681b344587fbe69792a2ed9582eaaa118abc203d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "7454",
+       "marca": "RESTAGRAF",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 4505210,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6225/6c9d3eb9e266782d5527c1d6c5906f542d584cde.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "221513",
+       "marca": "RESTAGRAF",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 2054564,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6225/7131a825670f5164b1e2c0f23c56748913014729.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70551",
+       "marca": "Selenia",
+       "pieza": "Engine Oil",
+       "articleId": 19141759,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/5621/a2e577d141825428b051cc87fe07368885b02fd8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70793",
+       "marca": "Selenia",
+       "pieza": "Engine Oil",
+       "articleId": 16352076,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/5621/a2e577d141825428b051cc87fe07368885b02fd8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70552",
+       "marca": "Selenia",
+       "pieza": "Engine Oil",
+       "articleId": 17614798,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/5621/a2e577d141825428b051cc87fe07368885b02fd8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70548",
+       "marca": "Selenia",
+       "pieza": "Engine Oil",
+       "articleId": 19734562,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/5621/a2e577d141825428b051cc87fe07368885b02fd8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "80 93 0181",
+       "marca": "SWAG",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 4630930,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/7008f4a3cbeefe3a3fc77716d3097691edf9e580.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "80 93 0180",
+       "marca": "SWAG",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 4630929,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/4742f96aec7ff6bb4bc4d87e1764ce0accb12ffd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "80 93 0269",
+       "marca": "SWAG",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 4630931,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/6778b086f176ba4d8ac146ff89b2d9e803b5f1bf.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5668",
+       "marca": "SWAG",
+       "pieza": "Chain, oil pump drive",
+       "articleId": 2766611,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/0235021162fe3c26e4539b07e22b4210718c891e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "W4V",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 51367965,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/a97d1e5a68127c5a6960de7c34ad0a7102f54a73.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TRS",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 52627686,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/a97d1e5a68127c5a6960de7c34ad0a7102f54a73.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TRR",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 55167137,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/a97d1e5a68127c5a6960de7c34ad0a7102f54a73.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TRQ",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 57101690,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/a97d1e5a68127c5a6960de7c34ad0a7102f54a73.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "Y11",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 57363158,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/a97d1e5a68127c5a6960de7c34ad0a7102f54a73.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "225987",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 54103546,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/398cb6222afe699fda81a78e237d43efacf69e21.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "225797",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 56232612,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/1fb09a5e3494bac4037fdc6365d80e80f1a27e0e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "226008",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 47173159,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/d6e51a51d2cdcb5a78724f8b86d1d4f6920797f9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "226007",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 54629576,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/d00b1941b7efb86ac2a21d0a2616f98ed762d50e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "225796",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 59232931,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/254b0601a2a1b78fd929eaaf86028e10fa996316.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "225362",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 57297499,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/bf8cbca88f03cc4a8eabc7db58fb7218590ebbb9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "225986",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 57756340,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/5831e24d4780c2d1ab40b5b305f26f40eed55909.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "226005",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 48910305,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/a53f138c09e7e5b1b476b363c7a6ce2be52177f8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "226006",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 59297979,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/b626cc91b750c350afb0d7b561edeeac98eea563.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "229480",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 49435410,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/2b0d460ade95a2358ac62bed357ce7a8e1e220f0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "229196",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 90968466,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/003900c6fc3fa6afa23c8e0bd851d634d0b7abfc.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "229197",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 93334565,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/003900c6fc3fa6afa23c8e0bd851d634d0b7abfc.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "229419",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 52039483,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/7e8c9048d602fb9e4143be39d7df648a73dfcc2a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "214312",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 54629528,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/bf8cbca88f03cc4a8eabc7db58fb7218590ebbb9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "214228",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 56169215,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/bf8cbca88f03cc4a8eabc7db58fb7218590ebbb9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "214336",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 54236256,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/bf8cbca88f03cc4a8eabc7db58fb7218590ebbb9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "217884",
+       "marca": "TotalEnergies",
+       "pieza": "Engine Oil",
+       "articleId": 54367147,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/7717/bf8cbca88f03cc4a8eabc7db58fb7218590ebbb9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "71523",
+       "marca": "Urania",
+       "pieza": "Engine Oil",
+       "articleId": 17413867,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/5623/16f0e017858aa2a216ea224a8b67d42568189d5e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70-31414-10",
+       "marca": "VICTOR REINZ",
+       "pieza": "Gasket, oil sump",
+       "articleId": 4336615,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/9/2616e3221a25dd89d7ef359b434e4aa670ad04f8.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Air Supply",
+     "ruta": "Engine / Air Supply / Air Filter/ Housing",
+     "buscado": "air filter",
+     "categoryId": 100383,
+     "articulos": [
+      {
+       "numero": "01406700",
+       "marca": "AJUSA",
+       "pieza": "Gasket, intake manifold housing",
+       "articleId": 55691624,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/139/9896355307671f72eebaee11db22b9753d613d47.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MA-4613",
+       "marca": "AMC Filter",
+       "pieza": "Air Filter",
+       "articleId": 8019121,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/146/589fdef85b3603fed335624619f37b100c751915.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MA-498",
+       "marca": "AMC Filter",
+       "pieza": "Air Filter",
+       "articleId": 8019216,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/146/206db7edc7eb6d63d9c1bf308d88eef38329164f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADC42250",
+       "marca": "BLUE PRINT",
+       "pieza": "Air Filter",
+       "articleId": 5611468,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/05c6e3d81143322a8ffcaad91541b99335ed9d0a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADC42246",
+       "marca": "BLUE PRINT",
+       "pieza": "Air Filter",
+       "articleId": 5611464,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/b062c3fd5544f888479a91125bef3acd333b8696.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "F 026 400 200",
+       "marca": "BOSCH",
+       "pieza": "Air Filter",
+       "articleId": 6926051,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/9c2c7b253da953e0679a7e4315965255a7be99ab.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "F 026 400 353",
+       "marca": "BOSCH",
+       "pieza": "Air Filter",
+       "articleId": 6926192,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/9fdec773adf9d9bbef29e9f948cbe1e56d79a3a2.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "CMB12405",
+       "marca": "COMLINE",
+       "pieza": "Air Filter",
+       "articleId": 6351698,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/421/38831cf6347bd50b89c158367d196a9d8ffaed6d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "EAF730",
+       "marca": "COMLINE",
+       "pieza": "Air Filter",
+       "articleId": 6729262,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/421/564c214bc3058bcb9bf876205530675844abd9d3.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "459.480",
+       "marca": "ELRING",
+       "pieza": "Gasket, intake manifold housing",
+       "articleId": 67183523,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/72a31a71dfb13375f3e4e2a6144828c23cc2ae56.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "170203",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Air Filter",
+       "articleId": 1567722,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/41d9407cc5bced9f3f0cfaeb34158cdf54092e55.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "109112",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Air Filter",
+       "articleId": 961242,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/908ffa5ce530fa06a7490d0e0fd1257b47e2aeba.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "18375",
+       "marca": "HOFFER",
+       "pieza": "Air Filter",
+       "articleId": 1666636,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/341/81bfb181764d74f7c5926ff88aa83cd02cfcd2c2.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "18399",
+       "marca": "HOFFER",
+       "pieza": "Air Filter",
+       "articleId": 1667332,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/341/11cf47108fc6395b55a5070431025f3a434e2f99.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MA-4613",
+       "marca": "KAVO PARTS",
+       "pieza": "Air Filter",
+       "articleId": 8019122,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/589fdef85b3603fed335624619f37b100c751915.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MA-498",
+       "marca": "KAVO PARTS",
+       "pieza": "Air Filter",
+       "articleId": 8019217,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/206db7edc7eb6d63d9c1bf308d88eef38329164f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "C 27 003/1",
+       "marca": "MANN-FILTER",
+       "pieza": "Air Filter",
+       "articleId": 6160185,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4/7ac19e5e73611ad295d2a2f5e6db6b7754269695.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "18375",
+       "marca": "MEAT & DORIA",
+       "pieza": "Air Filter",
+       "articleId": 1666635,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/244/a0d2936530bd6b5476d1837c8cf25cb9857f2922.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "18399",
+       "marca": "MEAT & DORIA",
+       "pieza": "Air Filter",
+       "articleId": 1667330,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/244/fd8ae05f4f27c7d8d337447f356af55d02fc5f06.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "LVFA1452",
+       "marca": "MOTAQUIP",
+       "pieza": "Air Filter",
+       "articleId": 7950974,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4564/46edb32459025e70af9d26b0947ec77cad8609e3.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "M132I40",
+       "marca": "NPS",
+       "pieza": "Air Filter",
+       "articleId": 7987039,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/440/66e32c0f159ee07bfc71c09f8c2c20dceb510612.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "M132I26",
+       "marca": "NPS",
+       "pieza": "Air Filter",
+       "articleId": 7987027,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/440/0a5fca8fa4823f87a8d900fa6ae16e1abe4a9156.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Fuel Filter/Housing",
+     "ruta": "Fuel Supply System / Fuel Filter/Housing",
+     "buscado": "fuel filter",
+     "categoryId": 100253,
+     "articulos": [
+      {
+       "numero": "MF-4682",
+       "marca": "AMC Filter",
+       "pieza": "Fuel Filter",
+       "articleId": 8117816,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/146/677dfb65ac76f4e795916ce86b84f9d040cfc3e6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MF-4682",
+       "marca": "KAVO PARTS",
+       "pieza": "Fuel Filter",
+       "articleId": 8117817,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/677dfb65ac76f4e795916ce86b84f9d040cfc3e6.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Wiper Blade/-Rubber",
+     "ruta": "Window Cleaning / Wiper Blade/-Rubber",
+     "buscado": "wiper blade",
+     "categoryId": 100133,
+     "articulos": [
+      {
+       "numero": "AD21HY530",
+       "marca": "BLUE PRINT",
+       "pieza": "Wiper Blade",
+       "articleId": 5596882,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/8c8bd5dd22d679a6e09798e81ebb522a15e6847e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "AD21FL530",
+       "marca": "BLUE PRINT",
+       "pieza": "Wiper Blade",
+       "articleId": 5596880,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/1f3fe9b38a3f08c624c0a8138876a48f292b33b8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "AD21CH530",
+       "marca": "BLUE PRINT",
+       "pieza": "Wiper Blade",
+       "articleId": 5596879,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/09ba33414ceabd5496a4731ba9132be21bb70a0c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "AD24CH600",
+       "marca": "BLUE PRINT",
+       "pieza": "Wiper Blade",
+       "articleId": 5596894,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/09ba33414ceabd5496a4731ba9132be21bb70a0c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "AD24HY600",
+       "marca": "BLUE PRINT",
+       "pieza": "Wiper Blade",
+       "articleId": 5596896,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/8c8bd5dd22d679a6e09798e81ebb522a15e6847e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "AD24FL600",
+       "marca": "BLUE PRINT",
+       "pieza": "Wiper Blade",
+       "articleId": 5596895,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/1f3fe9b38a3f08c624c0a8138876a48f292b33b8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BW10R",
+       "marca": "BORG & BECK",
+       "pieza": "Wiper Blade",
+       "articleId": 6141519,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/475/6d8971b2e703ee7bf465328d8ae8bfea553fb84f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BW10R.10",
+       "marca": "BORG & BECK",
+       "pieza": "Wiper Blade",
+       "articleId": 6141520,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/475/6d8971b2e703ee7bf465328d8ae8bfea553fb84f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BW24F",
+       "marca": "BORG & BECK",
+       "pieza": "Wiper Blade",
+       "articleId": 6142399,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/475/67fe2804b35d053d5b5afec7a72705250d52bae7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BW24F.10",
+       "marca": "BORG & BECK",
+       "pieza": "Wiper Blade",
+       "articleId": 6142400,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/475/67fe2804b35d053d5b5afec7a72705250d52bae7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BW21F.10",
+       "marca": "BORG & BECK",
+       "pieza": "Wiper Blade",
+       "articleId": 6142306,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/475/85b135efec13ebbf4a07947f23e81c0032e2cf5d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BW21F",
+       "marca": "BORG & BECK",
+       "pieza": "Wiper Blade",
+       "articleId": 6142305,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/475/85b135efec13ebbf4a07947f23e81c0032e2cf5d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3 397 004 910",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2512615,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/95b18271b0916c5e73f0ac1eeeaa9ddd603141a7.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "3 397 001 543",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2512208,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/38459502ee9c7db4e6b9f242c34fb7f8c6826a1e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3 397 004 917",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2512622,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/8fcacd891e1656142ba691f94b8f98137b60d5c9.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "3 397 118 996",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2514911,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/8df7d0391c21b9858899f584a8a7f7f8377c12f9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3 397 006 895",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2512850,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/293e8371ce980a010c51c6b006c0a931593f7be7.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "3 397 006 898",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2512853,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/b413f98de5b52d3799b25c7c4fdfe4f17d5e008d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3 397 008 536",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2513127,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/d697fc0056621bbed92b89c61ffacb0205de867d.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "3 397 008 938",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2513195,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/bf09d72cfa3eb822c98dd47cdd36a06c91eed39d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3 397 008 936",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2513193,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/59648884ccf52179b930701364716985ee4cde34.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "3 397 011 629",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2513571,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/a507cd950e0d590f9acb029cdedd044b20b70b76.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "3 397 010 300",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2513329,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/14309dcca422da2d58014d5edcc761e7d09a88f8.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "3 397 008 538",
+       "marca": "BOSCH",
+       "pieza": "Wiper Blade",
+       "articleId": 2513129,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/911235f8157020736f43e45916aca2dbed15c3bd.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "DRA-025",
+       "marca": "DENSO",
+       "pieza": "Wiper Blade",
+       "articleId": 6648861,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/66/1cfbdd129bd85bcf8e7f75c119e5845c3326d786.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DFR-009",
+       "marca": "DENSO",
+       "pieza": "Wiper Blade",
+       "articleId": 6604016,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/66/35c9a893a2baad33050329d85e855ee95f0eb035.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DFR-005",
+       "marca": "DENSO",
+       "pieza": "Wiper Blade",
+       "articleId": 6604012,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/66/f8c8012b5e42b4db1410f0c8b2cfa440bae91d62.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DUR-060L",
+       "marca": "DENSO",
+       "pieza": "Wiper Blade",
+       "articleId": 6677585,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/66/a86d1f67c7ada243ace2f0a49ff5aa4cc265e322.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DUR-053L",
+       "marca": "DENSO",
+       "pieza": "Wiper Blade",
+       "articleId": 6677582,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/66/6edd95dfd9c5d2a386a00bc6c7fd91899e854bcd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DUR-050R",
+       "marca": "DENSO",
+       "pieza": "Wiper Blade",
+       "articleId": 6677581,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/66/62753dfdfd85d1bde9f60b563796d537e09350d2.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DUR-060R",
+       "marca": "DENSO",
+       "pieza": "Wiper Blade",
+       "articleId": 6677586,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/66/f7fe82fb260f37cc0610b2dced2a1c6d46f5bb85.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 178 878-241",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414376,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9353e3cb572047005be14009e54c833f8ebd8594.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 004-241",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 12976123,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/c479d03c2fc0b8efe93b2442c6ee4cc8d93bdd2d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 190 253-241",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414414,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/2550521ff0a01e60d69c5e3184e2a11db5fa0eb5.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 197 765-241",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414445,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/37760fb57efd465343590fae1f76839ee60f3a7f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 204 584-211",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414475,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/f57679b61e2222b4c6639628f1846e82a9baddf4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 204 584-241",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414477,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/03fbc01343018212324e951c241a49678f7754eb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 197 765-211",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414442,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/37760fb57efd465343590fae1f76839ee60f3a7f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 232-281",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 32607459,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9465c255ca7a446e070e06aae09d3aa8469b248f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 232-291",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 24685577,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9465c255ca7a446e070e06aae09d3aa8469b248f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 232-301",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 25705792,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9465c255ca7a446e070e06aae09d3aa8469b248f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 178 878-211",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414373,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9353e3cb572047005be14009e54c833f8ebd8594.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 232-271",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 30669349,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9465c255ca7a446e070e06aae09d3aa8469b248f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 232-221",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 31757157,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9465c255ca7a446e070e06aae09d3aa8469b248f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 053-241",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414494,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/8511d1c35668fd83c87819ffd0e8ec8389670a65.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 004-211",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 12571775,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/2e927f99086930859554a2f01ab51df5002a5bc9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 164-301",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414606,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/4661439f0dd0a861019794d3104ccd0ec8e356c8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 232-231",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 26787438,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9465c255ca7a446e070e06aae09d3aa8469b248f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 232-211",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 23601143,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/9465c255ca7a446e070e06aae09d3aa8469b248f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "9XW 358 053-211",
+       "marca": "HELLA",
+       "pieza": "Wiper Blade",
+       "articleId": 5414491,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/8511d1c35668fd83c87819ffd0e8ec8389670a65.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WFB-21530R",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9693161,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/52a3807379ddc72973472b968a21675745d2248a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WFB-21530",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9693160,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/b6bfe506c516f622d981929ced8bfd7db4f46f95.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WFB-24600",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9693164,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/b6bfe506c516f622d981929ced8bfd7db4f46f95.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WFB-24600R",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9693165,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/6ff4f3497102f5d4b2cda48e46e6628d3b0d609a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-21530SR",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 16896468,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/c4d85a982d5c5f04d959994721f784b499fdc8b4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-24600R",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 20136008,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/10223bc3b33b285694be2007c4f8b71e5b889d94.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-24600S",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9690880,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/fd6e4b647a6a040ab3cdadd9fb2b6ea9a06fe859.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-24600SR",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 15493914,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/0e1e590c95f7ff39952509a2f8816f2b5b4be7db.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-24600",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9690879,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/f3e098628091b31c646a48f22ec164b01b63cdbe.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-21530S",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9690876,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/1dd3c7982eea21a194371f0cda8f948a0d1c6d75.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-21530R",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 18742080,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/f3acb4657206cf59bf69d176d64d1415490362b7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WCB-21530",
+       "marca": "KAVO PARTS",
+       "pieza": "Wiper Blade",
+       "articleId": 9690875,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/201/1f28b3353b13863ae4353dd020921eef17797d20.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "RB600",
+       "marca": "MICHELIN Wipers",
+       "pieza": "Wiper Blade",
+       "articleId": 21264331,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6925/0ca7f0f5ff466ccb6e607e4ac3c1b1984ef3997d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ML22224",
+       "marca": "MICHELIN Wipers",
+       "pieza": "Wiper Blade",
+       "articleId": 8159126,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6925/1d847c91822d9909dfb083c5c754b9f6efea783a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "RB530",
+       "marca": "MICHELIN Wipers",
+       "pieza": "Wiper Blade",
+       "articleId": 16752839,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6925/bf89596a4540255ac11d35013e3b806d01ee5ee9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ST60",
+       "marca": "MICHELIN Wipers",
+       "pieza": "Wiper Blade",
+       "articleId": 9217452,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6925/0c9d59f62bfafb0b3647caa44badc1f1fbc83cea.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ST55",
+       "marca": "MICHELIN Wipers",
+       "pieza": "Wiper Blade",
+       "articleId": 9217440,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6925/0c9d59f62bfafb0b3647caa44badc1f1fbc83cea.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ST53",
+       "marca": "MICHELIN Wipers",
+       "pieza": "Wiper Blade",
+       "articleId": 9217428,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6925/0c9d59f62bfafb0b3647caa44badc1f1fbc83cea.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ML22221",
+       "marca": "MICHELIN Wipers",
+       "pieza": "Wiper Blade",
+       "articleId": 8159120,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6925/1d847c91822d9909dfb083c5c754b9f6efea783a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "U656L530A",
+       "marca": "NPS",
+       "pieza": "Wiper Blade",
+       "articleId": 9495952,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/440/5bb1f517ee488f8546a35b76a4b8a8c03dba76fe.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "U656L600A",
+       "marca": "NPS",
+       "pieza": "Wiper Blade",
+       "articleId": 9495957,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/440/da983fdb2d8cda13792a36c4d83ff48e9a6692bf.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PEM-530",
+       "marca": "PowerEdge",
+       "pieza": "Wiper Blade",
+       "articleId": 8526925,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6990/5021945352d15a83b98d68d6540ca343f83667b1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PEM-600",
+       "marca": "PowerEdge",
+       "pieza": "Wiper Blade",
+       "articleId": 8526927,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6990/9b8328cea9aa444f0c05856cfb8f0d88bff44ed7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PEF-600",
+       "marca": "PowerEdge",
+       "pieza": "Wiper Blade",
+       "articleId": 8524534,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6990/2bccbe2794bd2ff81b9086b3f33333f0c1c14fc0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PEF-530",
+       "marca": "PowerEdge",
+       "pieza": "Wiper Blade",
+       "articleId": 8524532,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6990/83edd881c75ef4d2c59888ae20deb140682148a0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "262259",
+       "marca": "SWF",
+       "pieza": "Wiper Blade",
+       "articleId": 2324783,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/19/60b94b2e82d36759c6a21e91351dfeac9508a6d7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "507821",
+       "marca": "SWF",
+       "pieza": "Wiper Blade",
+       "articleId": 26133039,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/19/1a6fd3fdda3c9c56b70906eb958d6ccbfa73b4ae.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TP530L",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 44176293,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/eb1d7c4752cd059249cb33a083da3cb0346cf7bd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TP600L",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 45837337,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/eb1d7c4752cd059249cb33a083da3cb0346cf7bd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "FL600",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 15231209,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/b7af440110e413f66c12ac4b2672703f6e4caaf4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "FL530",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 10531987,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/b7af440110e413f66c12ac4b2672703f6e4caaf4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HF530L",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 7461231,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/68c20041dc5ab712360b244f5bfdc839f90ecb60.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HF530R",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 7461232,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/68c20041dc5ab712360b244f5bfdc839f90ecb60.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "EF530",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 6757000,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/24b7e5fcbb83a71bd9160e8f2372174e751b7396.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "EF550",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 6757005,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/c06e6492e146b45834e625f20fe7d48eeaeeb47c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "EF600",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 6757015,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/c06e6492e146b45834e625f20fe7d48eeaeeb47c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "RD60",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 8769354,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/b3166705db72bacaf48466f87410850dcfe5db20.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "RD53",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 8769291,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/b3166705db72bacaf48466f87410850dcfe5db20.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "RM250C",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 8850872,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/ebd9c93f238c9596f5816ee936ae0b69f6890e25.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "EX252",
+       "marca": "TRICO",
+       "pieza": "Wiper Blade",
+       "articleId": 6873217,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/227/b803fd13345eb7fd2a70498ef335c2f6bc6f4ac4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "578575",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 3912578,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/9ac6dfd71a800e9e2de99252d49499968738fcf6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "575006",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 3907167,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/4a4d0b47ad4afbb3fd0f4b6bb06b358ddd5770e2.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "575008",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 3907174,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/e8f963c0f7081585e0768c9e7346bf54f263dad5.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "574086",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 3904407,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/85edb48996bc4cab15a345c5c40ba76c86afe146.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "578579",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 3912582,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/81cf9ed314cc844873350fc352420446528f7c68.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "583908",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 15030719,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/f935c6297e65afda1b48d4901b6c540bf75350d5.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "583911",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 16091329,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/f935c6297e65afda1b48d4901b6c540bf75350d5.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "583909",
+       "marca": "VALEO",
+       "pieza": "Wiper Blade",
+       "articleId": 12506495,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/21/f935c6297e65afda1b48d4901b6c540bf75350d5.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Spark Plug",
+     "ruta": "Spark/Glow Ignition / Spark Plug",
+     "buscado": "spark plug",
+     "categoryId": 100151,
+     "articulos": [
+      {
+       "numero": "0 242 236 618",
+       "marca": "BOSCH",
+       "pieza": "Spark Plug",
+       "articleId": 18095,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/30/5a3c2f64ca542c51697df1749eea8e751ffcc2b3.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "90586",
+       "marca": "OSSCA",
+       "pieza": "Spark Plug",
+       "articleId": 68107206,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/b7cb0295a2919634fcd0fbb0f19267983d7447e1.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Suspension Strut/Shock Absorber/Parts",
+     "ruta": "Suspension/Damping / Suspension Strut/Shock Absorber/Parts / Assembly Parts",
+     "buscado": "shock absorber",
+     "categoryId": 100381,
+     "articulos": [
+      {
+       "numero": "ADBP800022",
+       "marca": "BLUE PRINT",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 5608627,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/510f2e9f68864e5154b969fac59f1054079ec8d4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "89-214-0",
+       "marca": "BOGE",
+       "pieza": "Dust Cover Kit, shock absorber",
+       "articleId": 5047832,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/14/c313b585aebab7772df9f72c12798ee5f0d7fa19.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "170452",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 1569410,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/b2d6eed9c4d74ba6e85427e3de9f13ddcf3969f6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "900 214",
+       "marca": "SACHS",
+       "pieza": "Dust Cover Kit, shock absorber",
+       "articleId": 5146195,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/32/8ca6fd75975199df91529d14793ed0187e103c8b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 6098",
+       "marca": "SWAG",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 2766923,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/09fd90d2f9f828ecd8f73668561e09ba4e0056c1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TED16697",
+       "marca": "TEDGUM",
+       "pieza": "Camber Correction Screw",
+       "articleId": 51302803,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4593/45ad36e66ba3f91de407359a09b46964094ba174.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TED53819",
+       "marca": "TEDGUM",
+       "pieza": "Camber Correction Screw",
+       "articleId": 51841314,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4593/fb947bc64f6181b7721259c18cbd1b1b4ab413e4.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Cooling System",
+     "ruta": "Hybrid/Electric Drive / Cooling System / Radiator for electric motor",
+     "buscado": "radiator",
+     "categoryId": 706210,
+     "articulos": [
+      {
+       "numero": "ADC49902",
+       "marca": "BLUE PRINT",
+       "pieza": "Cap, radiator",
+       "articleId": 5613521,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/33aabcda656ca5664fe1aadd9a81e98dfe5d8c2a.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Water Pump/Gasket",
+     "ruta": "Cooling System / Water Pump/Gasket / Thermal Management Module",
+     "buscado": "water pump",
+     "categoryId": 100088,
+     "articulos": [
+      {
+       "numero": "01113600",
+       "marca": "AJUSA",
+       "pieza": "Gasket, water pump",
+       "articleId": 232028,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/139/a28001c425fbc8824f1e525cf9e6b0d974a6b722.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "01276100",
+       "marca": "AJUSA",
+       "pieza": "Gasket, water pump",
+       "articleId": 49433607,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/139/c84d6bbc6c46da9f623c46054e57af85c566eb31.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADG09191",
+       "marca": "BLUE PRINT",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 5619630,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/1ff639cba424db0a8422a2a564b143dfdf75d9d0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "459.510",
+       "marca": "ELRING",
+       "pieza": "Gasket, water pump",
+       "articleId": 3396249,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/33136fa8a1f3a8f3ef7f1078715dbee69231c7d1.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "WP6629",
+       "marca": "FAI AutoParts",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 10359038,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/267/5b78ee6bf7bafd668cb93345adf7de9bd165ec87.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "107806",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 944142,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/10a4f35ce062a3fe00a9401754b0811606e05bbc.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "97680",
+       "marca": "PETEC",
+       "pieza": "Gasket, water pump",
+       "articleId": 5371411,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4372/a5b1db1bf237da78a5a7ef4450e54cc0bdfc3f3b.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "97720",
+       "marca": "PETEC",
+       "pieza": "Gasket, water pump",
+       "articleId": 5371568,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4372/6bfcd9b36cd17bae2171793309e22874f680933d.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "97780",
+       "marca": "PETEC",
+       "pieza": "Gasket, water pump",
+       "articleId": 5371780,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4372/aa1912c3e5653b35e676cac2a5bde75b43afb193.webp",
+       "tipoFoto": "JPG"
+      }
+     ]
+    },
+    {
+     "nombre": "Joints",
+     "ruta": "Axle Mounting/ Steering/ Wheels / Joints / Ball Joint",
+     "buscado": "ball joint",
+     "categoryId": 100211,
+     "articulos": [
+      {
+       "numero": "SB-7872",
+       "marca": "555",
+       "pieza": "Ball Joint",
+       "articleId": 8976074,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4010/c09d95d83dff93a624af5de3c31fb6e3167082ff.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SB-7232",
+       "marca": "555",
+       "pieza": "Ball Joint",
+       "articleId": 8976053,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4010/e7d46f0ac47b58d8aa06d67ed7261b4a46ddb553.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP860001",
+       "marca": "BLUE PRINT",
+       "pieza": "Ball Joint",
+       "articleId": 14834973,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/5ae0e46d00756be3e5c6b772eeec37f3b867df92.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SUG1065",
+       "marca": "CONTINENTAL CTAM",
+       "pieza": "Ball Joint",
+       "articleId": 83512884,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/31/ce399022630ca605d731ef7b2606478649f9ed41.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "27-26098",
+       "marca": "DYS",
+       "pieza": "Ball Joint",
+       "articleId": 2343086,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4135/196a65385136229e90de7c940fcbd049e4ff7d82.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "27-20896",
+       "marca": "DYS",
+       "pieza": "Ball Joint",
+       "articleId": 2342720,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4135/78e0b86b6a9ed74b3fb0974387a85b0828afb1c7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "171568",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Ball Joint",
+       "articleId": 1577138,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/c8cab60be4f9a94e6926794d6cf720d5976ee785.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "L10582",
+       "marca": "MONROE",
+       "pieza": "Ball Joint",
+       "articleId": 7847264,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/37/976da26fbd7363d1b19a68b79e1c217c870e58f9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "CI-BJ-10658",
+       "marca": "MOOG",
+       "pieza": "Ball Joint",
+       "articleId": 6315511,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/134/0003bb9d74f71445fadc70867f97d1b94d519c9b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "QSJ3549S",
+       "marca": "QUINTON HAZELL",
+       "pieza": "Ball Joint",
+       "articleId": 8688340,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/57/af49887a31364e4749d20514bbea69e46777d28a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BJ-MI-474",
+       "marca": "RODRUNNER",
+       "pieza": "Ball Joint",
+       "articleId": 6016885,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6698/53af326b01b9580d6cce5cda4b9fe5864b636cf9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "BJ-MI-734",
+       "marca": "RODRUNNER",
+       "pieza": "Ball Joint",
+       "articleId": 6016896,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6698/ca1a50baf885d3781dfbaa5eeba68ac6178aa5d0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "825 0370 10",
+       "marca": "Schaeffler FAG",
+       "pieza": "Ball Joint",
+       "articleId": 4791918,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/192/70056fd36f1adaa4e5e39d5ca12be4bb12442f7a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "71084",
+       "marca": "SIDEM",
+       "pieza": "Ball Joint",
+       "articleId": 4395405,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/135/8b8832bedd15ad4dbd81564a0bc75041c7e673d9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "50872",
+       "marca": "SPIDAN CHASSIS PARTS",
+       "pieza": "Ball Joint",
+       "articleId": 3597500,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6363/6c762b96ee90e594136c4a46faf331676b703379.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 0944",
+       "marca": "SWAG",
+       "pieza": "Ball Joint",
+       "articleId": 2762494,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/56271c30b44dcd933ab5edee892a833931eb5150.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "47-07130",
+       "marca": "TALOSA",
+       "pieza": "Ball Joint",
+       "articleId": 3437830,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4758/4caef9dea9adbf805e9adabc24b1ca0b42387f4f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "47-11454",
+       "marca": "TALOSA",
+       "pieza": "Ball Joint",
+       "articleId": 3438157,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4758/defe76682a87b3b5f2f727fa5d8cafedc65303a2.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MI-734",
+       "marca": "TEKNOROT",
+       "pieza": "Ball Joint",
+       "articleId": 8145653,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4414/8599f25f9204fbcc315d87ec0596a21b9ec2a053.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MI-474",
+       "marca": "TEKNOROT",
+       "pieza": "Ball Joint",
+       "articleId": 8145540,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4414/e98971194c3203c82b5b22776dfc70820bd66fc7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "52649",
+       "marca": "WXQP",
+       "pieza": "Ball Joint",
+       "articleId": 3707737,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6347/e92c4fb99bc9c978a9d69401adb70fad81828432.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    }
+   ],
+   "vehiculo": {
+    "make": "MITSUBISHI",
+    "model": "Outlander Sport",
+    "year": "2020",
+    "cilindrada_l": 2.0,
+    "potencia_hp": 148.0,
+    "combustible": "Gasoline",
+    "motor": "MIVEC",
+    "valido": true
+   },
+   "autodoc": {
+    "manufacturerId": 77,
+    "modelId": 8631,
+    "vehicleId": 126680
+   },
+   "nombres": {}
+  },
+  {
+   "etiqueta": "Toyota Corolla 2019",
+   "vin": "2T1BURHE6KC123456",
+   "avisos": [],
+   "categorias": [
+    {
+     "nombre": "Disc Brake",
+     "ruta": "Braking System / Disc Brake / Brake Pad",
+     "buscado": "brake pad",
+     "categoryId": 100626,
+     "articulos": [
+      {
+       "numero": "SN138",
+       "marca": "ADVICS",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 9143074,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6104/9358c3bbd13409a7071b7da916fd5ad077ef6322.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "13.0465-5690.2",
+       "marca": "ATE-APAC",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 12654155,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6510/204cb608bbc4af2f1005ab982296d7a7a930229b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADT342167",
+       "marca": "BLUE PRINT",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5635531,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/20429195c372dc29e2c84e8e102d52c5693f1df0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP710067",
+       "marca": "BLUE PRINT",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 5608154,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/90cbabbe26dd1da938bd6f8974aebbf8b32bfb76.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADT37162",
+       "marca": "BLUE PRINT",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 5637062,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/7e415324b5940bcab104838deb4d273f556a054b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P 83 133",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8360911,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/08a203c7f32027b2a8417be5d502f5d27b4c4826.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P83133N",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8440118,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/60f819e8b6df52af3b3b5f2c09686fb34838ad32.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P83082N",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8440032,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/e871ef8f76a3e6f108cb003559e0e723b43fda72.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "P 83 082",
+       "marca": "BREMBO",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8360868,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/65/84ea46fa3a08d9b8a0285b665cb7b06d538bb889.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "822-795-0",
+       "marca": "CIFAM",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 4783047,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/311/39f132810686107b0a03930c61123fb7f42d72f1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "822-796-0",
+       "marca": "CIFAM",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 4783048,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/311/8b14221c9bd9a1b0be46d803ff21335cb93c2648.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCD12012",
+       "marca": "DON",
+       "pieza": "Brake Disc",
+       "articleId": 8484670,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/272d197295db69ea3ca909c17b96a5b82014aae4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCD11562",
+       "marca": "DON",
+       "pieza": "Brake Disc",
+       "articleId": 8484625,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/2103c14650dbd5f067a6271068c660de145ee02b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCP1430",
+       "marca": "DON",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8487155,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/0a93c7b813fe81e00baff007d051968ec9f4c87c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PCP1112",
+       "marca": "DON",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8486841,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/278/64dbc253cbed64591438c3309a352337ecb9bddb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0101-ZZE150R",
+       "marca": "FEBEST",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 214638,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/a6c52d82445e3ee1367f30c1648814a6885753ad.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0101-ZZE150F",
+       "marca": "FEBEST",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 214637,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/a0d20d50a7106230558febd3bff6aa6c5c1d802b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0103-NDE180F",
+       "marca": "FEBEST",
+       "pieza": "Anti-Squeal Foil, brake pad (back plate)",
+       "articleId": 58560575,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/0c735d60fbbefcbb62f62a33b6351ae5d5e5cbfa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0103-NRE180F",
+       "marca": "FEBEST",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 218050,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/34f2bb01cbf7a563f210b5b5105b523967ab430a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0101-ZZE130F",
+       "marca": "FEBEST",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 214636,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/5afa6cdaccb30968a8099685d9e89fdd4454f485.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "01606-007",
+       "marca": "FEBEST",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 36301957,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/ede4ba2523fd56fe4113cc14a947d1ee7d1a54fd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "01606-008",
+       "marca": "FEBEST",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 44307189,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/b61563bd6d1b06188e02eb3d810fdf83fa079496.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "173849",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 1593500,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/f4bf5d21ba1f944b4d417dd2f95aad16a220fae8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "116288",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 1078084,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/64f905f4c51387485a8c0f945b0b9a2335430c7b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "106715",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 931149,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/6163e38a3f32ade103b4bc066c73912d860f0516.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "811.0",
+       "marca": "fri.tech.",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 4703886,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/295/f380071d5e5d905f239a558554b06da2fb1ef6aa.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "812.0",
+       "marca": "fri.tech.",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 4710534,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/295/5f638853e5c0d9bd8e241251caa183f717d2d0ac.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "6048101",
+       "marca": "GIRLING",
+       "pieza": "Brake Disc",
+       "articleId": 4036208,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/279/dcb01fd793927b2f3e10ef605985a2ec85662069.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "6134549",
+       "marca": "GIRLING",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 4096571,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/279/38e000497b4d02ca7780268fbb5015801098d2d7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "6134259-1",
+       "marca": "GIRLING",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 12910491,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/279/9b46a93800eb458df14bb972f70393b286fb3e96.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 028-661",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082418,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/d65a99169d1019507367da4b4f5e2b44026f730a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 028-421",
+       "marca": "HELLA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5082370,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/64dbc253cbed64591438c3309a352337ecb9bddb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 203-381",
+       "marca": "HELLA PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5090780,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/bc63f4e80479b79523edfa42ad053c1b431221be.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DZ 355 203-881",
+       "marca": "HELLA PAGID",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 5090866,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/df685666f2bce4374bd39eb515388c623fe42936.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 118-981",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 5086524,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/766f6cae8373318c03e9eca9bbdc0e53eead7846.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DD 355 118-961",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Disc",
+       "articleId": 5086520,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/68332710b86bbbabe863ae693db6e8983d0c8e1d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "8DB 355 006-861",
+       "marca": "HELLA PAGID",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 5078883,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4625/64dbc253cbed64591438c3309a352337ecb9bddb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SD4604",
+       "marca": "Hi-Q",
+       "pieza": "Brake Disc",
+       "articleId": 9008575,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6265/2a1093ab28a0f9829f4ce6e224858b0f7a1cd3ce.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "22-0796-0",
+       "marca": "METELLI",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2026540,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/121/4282c12faf348302ddf962b9d8375a00d7528b06.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "22-0795-0",
+       "marca": "METELLI",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2026539,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/121/b76ac5f4aba6daed9f550404d2d79ab14fa8164e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MBA1808",
+       "marca": "MINTEX",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 8048326,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/df685666f2bce4374bd39eb515388c623fe42936.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MBA1748",
+       "marca": "MINTEX",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 8048268,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/bc63f4e80479b79523edfa42ad053c1b431221be.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDC2050",
+       "marca": "MINTEX",
+       "pieza": "Brake Disc",
+       "articleId": 8094839,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/272d197295db69ea3ca909c17b96a5b82014aae4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDC2048",
+       "marca": "MINTEX",
+       "pieza": "Brake Disc",
+       "articleId": 8094836,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/2103c14650dbd5f067a6271068c660de145ee02b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDB3062",
+       "marca": "MINTEX",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8092689,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/0a93c7b813fe81e00baff007d051968ec9f4c87c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "MDB2785",
+       "marca": "MINTEX",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 8092461,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/73/64dbc253cbed64591438c3309a352337ecb9bddb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "J3302161",
+       "marca": "NIPPARTS",
+       "pieza": "Brake Disc",
+       "articleId": 7595659,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/248/194b30084cb6eba1e1afe06e7677b97864ac0d3c.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "BSP-9003L",
+       "marca": "OPTIMAL",
+       "pieza": "Splash Guard, brake disc",
+       "articleId": 6127089,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/129/4faa354eefebb7b86a1502e22a468a89738741f6.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "BSP-9003R",
+       "marca": "OPTIMAL",
+       "pieza": "Splash Guard, brake disc",
+       "articleId": 6127090,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/129/7df48b1b09576afe8979ac897786b93e71c52af2.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "18733",
+       "marca": "OSSCA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 1689220,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/bcbbd1e607780c5103b2f31cd716abd06942db0c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "18747",
+       "marca": "OSSCA",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 1689668,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/24f7267650bbbb53a2a8a4b1f9aab52ded5e45e1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5867",
+       "marca": "SWAG",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 2766697,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/f2a53c62fcd5938faba5330c15633ade9097ec4a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "81 10 6715",
+       "marca": "SWAG",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 4682894,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/04f1f61132e06934f6ac168cd8d749104112a9a8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 7323",
+       "marca": "SWAG",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2767960,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/07569797264b01061f226b35ea8a8d19f85c1406.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2501601",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2260985,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/086918e075a5c65d7779d6131eb6cb05b0cfd69b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2433601SC",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 59018318,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/2dac972c6b0a9197abb094ac77cec4606eaead59.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2501601-1641-00",
+       "marca": "TEXTAR",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 88211000,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/7d52131243550f1d069e41e79c8c7e95960d69af.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2433601-1638-00",
+       "marca": "TEXTAR",
+       "pieza": "Brake Kit, disc brake",
+       "articleId": 90145088,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/71717200f88d1857e0949caff1e0dc96de665b5c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "92164103",
+       "marca": "TEXTAR",
+       "pieza": "Brake Disc",
+       "articleId": 5246933,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/7d52131243550f1d069e41e79c8c7e95960d69af.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "92163803",
+       "marca": "TEXTAR",
+       "pieza": "Brake Disc",
+       "articleId": 5246919,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/6a89e0c397b65b81997827af90c02672611424c5.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2433601",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 2224483,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/71717200f88d1857e0949caff1e0dc96de665b5c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "82509700",
+       "marca": "TEXTAR",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 4792873,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/df685666f2bce4374bd39eb515388c623fe42936.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "45050400",
+       "marca": "TEXTAR",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 12054620,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/94c6a1fee1daf17cab51fcae510bef8aa6013040.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "45050500",
+       "marca": "TEXTAR",
+       "pieza": "Sensor, wheel speed",
+       "articleId": 3379374,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/08c46c922c248ab9b0ddd33f885c834f2e725553.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "82074400",
+       "marca": "TEXTAR",
+       "pieza": "Accessory Kit, disc brake pad",
+       "articleId": 4774311,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/bc63f4e80479b79523edfa42ad053c1b431221be.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "2501601SC",
+       "marca": "TEXTAR",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 47304545,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/39/6ab65fa6d169fa849ce39abee4a56689e6ed5268.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "811.0",
+       "marca": "TRUSTING",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 4703885,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/199/ebd68b9db000e6e031ce026c9af9d960bd399b86.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "812.0",
+       "marca": "TRUSTING",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 4710533,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/199/b0b588b3eefb45e499c60bfc3ce686426dc3283f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "GDB3425DT",
+       "marca": "TRW",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 7239528,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/6d6222b6c96a5249e9be51f82e757cd57feef9e1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DF8031",
+       "marca": "TRW",
+       "pieza": "Brake Disc",
+       "articleId": 6601288,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/119bf5576bf7978c05cf99fcfef83123cc60323a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "GDB3425",
+       "marca": "TRW",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 7239524,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/6aaa63b9a569b1cfb354e8a746527444bb027f53.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "GDB3425AT",
+       "marca": "TRW",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 7239526,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/6d6222b6c96a5249e9be51f82e757cd57feef9e1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DF4810",
+       "marca": "TRW",
+       "pieza": "Brake Disc",
+       "articleId": 6598573,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/dcca45bef4eba9087e5c0a0a55c46dfa7a1e855f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DF4811",
+       "marca": "TRW",
+       "pieza": "Brake Disc",
+       "articleId": 6598577,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/cde3e4311d1c8c9ab9a5a0570e1881106865fdd3.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DF8031S",
+       "marca": "TRW",
+       "pieza": "Brake Disc",
+       "articleId": 6601289,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/2f84498fe16c4c6abe4f59305ba8ce46520f7647.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "GDB3454DT",
+       "marca": "TRW",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 7239616,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/2ec0f5371b1a3d4f725c872f96257fa8676f787f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "GDB3454",
+       "marca": "TRW",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 7239613,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/0da6a96b163ecc21b9b3a9910901bdcb633287be.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "GDB3454AT",
+       "marca": "TRW",
+       "pieza": "Brake Pad Set, disc brake",
+       "articleId": 7239615,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/161/2ec0f5371b1a3d4f725c872f96257fa8676f787f.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Lubrication",
+     "ruta": "Engine / Lubrication / Oil Filter",
+     "buscado": "oil filter",
+     "categoryId": 100245,
+     "articulos": [
+      {
+       "numero": "ADBP760206",
+       "marca": "BLUE PRINT",
+       "pieza": "Chain Tensioner, oil pump drive",
+       "articleId": 14238920,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/d3502884c2194df25003d131ccd7f3bdeaf8d5ae.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADD62109",
+       "marca": "BLUE PRINT",
+       "pieza": "Oil Filter",
+       "articleId": 5613889,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/8094273167f9aab8162debd8de41842bf005da7d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADT37342",
+       "marca": "BLUE PRINT",
+       "pieza": "Chain, oil pump drive",
+       "articleId": 5637163,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/d6d76a73966b4fb426c798dc6e4cd112502b4c23.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "952.850",
+       "marca": "ELRING",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 5325478,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/e8825653e2e557966efa670a7e036d938033c77a.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "473.500",
+       "marca": "ELRING",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 3452132,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/da18a2504284ef684eb0f87a33248ead275994f6.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "587.290",
+       "marca": "ELRING",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 3937568,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/e476665b93fc4451dc7f867fbf7e8fb59ec3d887.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "036.164",
+       "marca": "ELRING",
+       "pieza": "Gasket, oil sump",
+       "articleId": 391411,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/3bcb5a9d7602d725de1a992bc5c78ea05a911bb9.gif",
+       "tipoFoto": "GIF"
+      },
+      {
+       "numero": "88430-122117X",
+       "marca": "FEBEST",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 21722068,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/0d42c7977593f63243bc74d5b354b6813ce5ca06.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "RINGOL-017-PCS10",
+       "marca": "FEBEST",
+       "pieza": "Seal, oil strainer",
+       "articleId": 8833530,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/ee95b3bddd36de347cc30a86f63176c63958ed5f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "0199-001",
+       "marca": "FEBEST",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 13241621,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/2f67f6b9150cdd035f092c1e8666def8009b7428.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "100069",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Chain, oil pump drive",
+       "articleId": 819606,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/944b14acc4c1db77d04516ac52a433f9e02f9b71.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "183387",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Chain Tensioner, oil pump drive",
+       "articleId": 20859154,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/01c80ebaa5a9ee6c7ba7e3b7d86f9f9421447d31.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "184419",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Oil Filter",
+       "articleId": 20732142,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/46c5fb6689d41f12c3ed4b765c2826234ad16026.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "48878",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 3479116,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/420202a79a00ff761e1e13ac53129e99d4d83c6f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "30262",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 2577644,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/420202a79a00ff761e1e13ac53129e99d4d83c6f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "OP 572",
+       "marca": "FILTRON",
+       "pieza": "Oil Filter",
+       "articleId": 8330815,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/256/5856cd2603956499b6efdbd614ca85c936c648c6.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "HP-1003",
+       "marca": "K&N Filters",
+       "pieza": "Oil Filter",
+       "articleId": 15228400,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/26a3c5f360707b92ac9bcf495035c1fe489f0095.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HP-7021",
+       "marca": "K&N Filters",
+       "pieza": "Oil Filter",
+       "articleId": 19274883,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/a20afae4b623e037ec740ae62e9fd922faefc71f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SO-1003",
+       "marca": "K&N Filters",
+       "pieza": "Oil Filter",
+       "articleId": 16813991,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/7cca47a76387b134f6047e7b14d4dc96575d0117.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "SO-7021",
+       "marca": "K&N Filters",
+       "pieza": "Oil Filter",
+       "articleId": 12578314,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/898b1389020de7bed8a1310e47f2a6550cd1e5ca.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "W 68/3",
+       "marca": "MANN-FILTER",
+       "pieza": "Oil Filter",
+       "articleId": 9674295,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4/b90d8a898e59faf1f2f5885f86c45c934d5d974b.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "400390",
+       "marca": "MEC-DIESEL",
+       "pieza": "Oil Filter",
+       "articleId": 63297297,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/603/e36bca6dea7acf9eb51197254a8c90b7986a1002.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "32173",
+       "marca": "OSSCA",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 2728577,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/ffecc207b826a4458cd35701c3e978bfc0bf00f0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "55171",
+       "marca": "OSSCA",
+       "pieza": "Oil Filter",
+       "articleId": 3825601,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/c51e7d9670865450428a47713952f3ea00cf846e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HR397T",
+       "marca": "PAYEN",
+       "pieza": "Gasket, oil sump",
+       "articleId": 10985214,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/113/43596ead82ec71088921f9711a6e47a829ca17cb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HR397",
+       "marca": "PAYEN",
+       "pieza": "Gasket, oil sump",
+       "articleId": 15031557,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/113/8a2c10d80b008c03be97b0829fa0fb9aacb8ef50.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "KG5348",
+       "marca": "PAYEN",
+       "pieza": "Seal Ring, oil drain plug",
+       "articleId": 7779775,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/113/e14923610a8df8fffbe10c1457f5c2a6e4a770a3.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "7.06595.11.0",
+       "marca": "PIERBURG",
+       "pieza": "Oil Pump",
+       "articleId": 4321706,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/5/badde38e3e798ca27ddf34d1bc901f089de41dcd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "QFL0087",
+       "marca": "QUINTON HAZELL",
+       "pieza": "Oil Filter",
+       "articleId": 8673807,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/57/12203c4c2b81ea5899172107faff1c8d9f8b2036.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "81 93 0262",
+       "marca": "SWAG",
+       "pieza": "Screw Plug, oil sump",
+       "articleId": 4683607,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/5c67949f052e13585f11562bfca46577ed764393.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "81 10 0069",
+       "marca": "SWAG",
+       "pieza": "Chain, oil pump drive",
+       "articleId": 4682757,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/59650567d927ed6569135f08f43e265b1ca63081.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 11 0059",
+       "marca": "SWAG",
+       "pieza": "Chain Tensioner, oil pump drive",
+       "articleId": 15687649,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/985037464d7ec9b338304b77618d9df86d179737.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "70-31414-10",
+       "marca": "VICTOR REINZ",
+       "pieza": "Gasket, oil sump",
+       "articleId": 4336615,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/9/2616e3221a25dd89d7ef359b434e4aa670ad04f8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WL7131",
+       "marca": "WIX FILTERS",
+       "pieza": "Oil Filter",
+       "articleId": 10349736,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/324/0e266eec798a0a33044c383864954b884e258767.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "51394",
+       "marca": "WIX FILTERS",
+       "pieza": "Oil Filter",
+       "articleId": 18149785,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/324/733e7745b9b099a03ef8a247631328bf469e54a1.webp",
+       "tipoFoto": "JPG"
+      }
+     ]
+    },
+    {
+     "nombre": "Air Supply",
+     "ruta": "Engine / Air Supply / Air Filter/ Housing",
+     "buscado": "air filter",
+     "categoryId": 100383,
+     "articulos": [
+      {
+       "numero": "A70-1029",
+       "marca": "ACKOJA",
+       "pieza": "Intake Manifold Module",
+       "articleId": 32710094,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4364/9bd389c06bc5d1fc2469c657b507ba85581bb40e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADT322100",
+       "marca": "BLUE PRINT",
+       "pieza": "Air Filter",
+       "articleId": 5634588,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/a90393226165d9e92b6c7c2da7028c2b35a48462.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "CAF100940P",
+       "marca": "CHAMPION",
+       "pieza": "Air Filter",
+       "articleId": 6225714,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/43/7b5ae7a64ba401ae6d372af1eb66174725caafd2.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "299.150",
+       "marca": "ELRING",
+       "pieza": "Gasket, intake manifold housing",
+       "articleId": 72255760,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/d02815d68cae001cc3a4dd79c734c7c476b6d898.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "184179",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Air Filter",
+       "articleId": 15555047,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/e9e8ae6655f9e173d0492b0f96623a9a60a58312.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "AP 160/1",
+       "marca": "FILTRON",
+       "pieza": "Air Filter",
+       "articleId": 5726290,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/256/ba5567134bc8400850fd55c3eb7ab96c22fcd3a1.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "33-2360",
+       "marca": "K&N Filters",
+       "pieza": "Air Filter",
+       "articleId": 12713989,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/f4da7779222a049faa8769a7a0f8e4a02eb76b8c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33-3080",
+       "marca": "K&N Filters",
+       "pieza": "Air Filter",
+       "articleId": 16490244,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/1cd4c6cd9455dd9d3ee84d665b31e56a400105d2.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33-2252",
+       "marca": "K&N Filters",
+       "pieza": "Air Filter",
+       "articleId": 12975753,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/bc343cdabcc0b7fe1f9b84228ad6b0fe1d52f904.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "69-8751TR",
+       "marca": "K&N Filters",
+       "pieza": "Sports Air Filter System",
+       "articleId": 18215431,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/e9eb0c02effd65c7705080aeaab714df3f7f6fc3.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "LX 2157",
+       "marca": "MAHLE",
+       "pieza": "Air Filter",
+       "articleId": 7964082,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/287/2502ab03f1e9e808044ec330a61274918d3f3566.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "C 24 005",
+       "marca": "MANN-FILTER",
+       "pieza": "Air Filter",
+       "articleId": 6159754,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4/d3b81870b56b7469ba54c79c5eb0ba27eea4e392.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "87929",
+       "marca": "OSSCA",
+       "pieza": "Intake Manifold Module",
+       "articleId": 66061270,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/851a80678fe1921cba68031fd8bd3cbe96950864.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "QFA0525",
+       "marca": "QUINTON HAZELL",
+       "pieza": "Air Filter",
+       "articleId": 8671959,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/57/7be35ca3dc3f54486203458dcd485d12c1745e2f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "WA9627",
+       "marca": "WIX FILTERS",
+       "pieza": "Air Filter",
+       "articleId": 9682177,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/324/ad58ed9ea65ad12244a7bfdef9714b462f2df3ee.webp",
+       "tipoFoto": "JPG"
+      }
+     ]
+    },
+    {
+     "nombre": "Wiper Blade/-Rubber",
+     "ruta": "Window Cleaning / Wiper Blade/-Rubber",
+     "buscado": "wiper blade",
+     "categoryId": 100133,
+     "articulos": [
+      {
+       "numero": "92-2814",
+       "marca": "K&N Filters",
+       "pieza": "Wiper Arm Set, window cleaning",
+       "articleId": 18088193,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/5602ef490202fea40a9b22b09a31b068e5f5999b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "92-2616",
+       "marca": "K&N Filters",
+       "pieza": "Wiper Arm Set, window cleaning",
+       "articleId": 17616713,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/56dd6b0a56d7272972c57c9ddf749da1effbb98c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "92-2418",
+       "marca": "K&N Filters",
+       "pieza": "Wiper Arm Set, window cleaning",
+       "articleId": 20267459,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/305/d1b3096b43519a99d15ca1f8c8b928ae6b0f49f6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "QAW1026",
+       "marca": "QUINTON HAZELL",
+       "pieza": "Wiper Blade",
+       "articleId": 8657513,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/57/ecf278486a5c244e8dd3c5d8e54adeed83871a6d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "QAW1013",
+       "marca": "QUINTON HAZELL",
+       "pieza": "Wiper Blade",
+       "articleId": 8657500,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/57/c9f5e4eed257440241d955ad7a6489ce39da9903.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "QTW013",
+       "marca": "QUINTON HAZELL",
+       "pieza": "Wiper Blade",
+       "articleId": 8694113,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/57/1828011e12e5e47f568d1c2f208eab14107f0554.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "QTW026",
+       "marca": "QUINTON HAZELL",
+       "pieza": "Wiper Blade",
+       "articleId": 8694123,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/57/797a5899903af37fe112df6e012bf35a074b44ca.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Spark Plug",
+     "ruta": "Spark/Glow Ignition / Spark Plug",
+     "buscado": "spark plug",
+     "categoryId": 100151,
+     "articulos": [
+      {
+       "numero": "CCH9412",
+       "marca": "CHAMPION",
+       "pieza": "Spark Plug",
+       "articleId": 6272741,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/43/a5f3324ea2f5564b5e1f91cbfe18b2a69bcb416a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "CCH9412",
+       "marca": "CHAMPION-AU",
+       "pieza": "Spark Plug",
+       "articleId": 92811020,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/6760/a5f3324ea2f5564b5e1f91cbfe18b2a69bcb416a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ILKAR7B11",
+       "marca": "NGK-AU",
+       "pieza": "Spark Plug",
+       "articleId": 7524702,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4956/e44c92f8bdd4591fa19d6a91dd7fa44514c50df6.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Suspension Strut/Shock Absorber/Parts",
+     "ruta": "Suspension/Damping / Suspension Strut/Shock Absorber/Parts / Suspension Strut",
+     "buscado": "shock absorber",
+     "categoryId": 100381,
+     "articulos": [
+      {
+       "numero": "ADBP800145",
+       "marca": "BLUE PRINT",
+       "pieza": "Dust Cover Kit, shock absorber",
+       "articleId": 5608747,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/8c7845bf01587a7cbee62b3d8516533031e1080d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP840003",
+       "marca": "BLUE PRINT",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 5609187,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/bef069721f714bd425bfde7a196660a0a26a5f5c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADT38459",
+       "marca": "BLUE PRINT",
+       "pieza": "Rubber Buffer, suspension",
+       "articleId": 5637764,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/488e4683213ad68667ab659caa3dfae0bafc1fb6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TSHB-NRE185F",
+       "marca": "FEBEST",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 9471617,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/21e3679b7b4fb037c37bf71cbe867c3f939a38ab.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TSHB-ACA30F",
+       "marca": "FEBEST",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 9471582,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/e188d177604404fa88d88008d692c04241d8bedd.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TSHB-AURR",
+       "marca": "FEBEST",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 9471599,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/00e7a94d28efa22dd566ab1efafddd0d7c77adae.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TD-ZZE150F",
+       "marca": "FEBEST",
+       "pieza": "Rubber Buffer, suspension",
+       "articleId": 9393148,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/9db080d735ffe2d899ecb73214328b41a38c61f0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TSHB-ADE150F-KIT",
+       "marca": "FEBEST",
+       "pieza": "Dust Cover Kit, shock absorber",
+       "articleId": 9471588,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/ef00861f873cff6a9485a0eacd8d25e70faa6982.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "103822",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Rubber Buffer, suspension",
+       "articleId": 880980,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/21c1cb38f2713c2a1a3cc5b4c5b1c481a7e8e8bf.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "173594",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Dust Cover Kit, shock absorber",
+       "articleId": 1592386,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/f737c641f4eee4ab6fe73e57fd65c885c27c3f19.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "173593",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 1592383,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/0ae2b19cf5d6b85576967b192ac8a73a0afb9fbf.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "744314SP",
+       "marca": "MONROE-AU",
+       "pieza": "Suspension Strut",
+       "articleId": 4503085,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4752/15f4f642c1ce7df599a59f02002e16eb87831f74.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "744315SP",
+       "marca": "MONROE-AU",
+       "pieza": "Suspension Strut",
+       "articleId": 4503086,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4752/15f4f642c1ce7df599a59f02002e16eb87831f74.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "16508",
+       "marca": "OSSCA",
+       "pieza": "Dust Cover Kit, shock absorber",
+       "articleId": 1527951,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/afbd67de74def5d7785582a74d67b403716d1637.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 6200",
+       "marca": "SWAG",
+       "pieza": "Dust Cover Kit, shock absorber",
+       "articleId": 2767018,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/06719de513bba0931cddd966816f17830ba1a2e7.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "81 10 3822",
+       "marca": "SWAG",
+       "pieza": "Rubber Buffer, suspension",
+       "articleId": 4682859,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/d2bfa6c57db425cd1ae5336e76f626cfd0db203c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 7591",
+       "marca": "SWAG",
+       "pieza": "Protective Cap/Bellow, shock absorber",
+       "articleId": 2768188,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/34340b0e509664c8b00b69b87da7a25060b1825f.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Radiator/Oil Cooler",
+     "ruta": "Cooling System / Radiator/Oil Cooler / Radiator Mounting Parts",
+     "buscado": "radiator",
+     "categoryId": 100102,
+     "articulos": [
+      {
+       "numero": "ADT39901",
+       "marca": "BLUE PRINT",
+       "pieza": "Cap, coolant tank",
+       "articleId": 5638635,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/d88d611fde64d5ca7b6d8fcce14d5a76dee5d95b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DRC038",
+       "marca": "DAYCO-AU",
+       "pieza": "Cap, coolant tank",
+       "articleId": 14835916,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4889/d53ab7aa5f6e52c61b6b8b93c81650cfa170dbeb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DET0071",
+       "marca": "DAYCO-AU",
+       "pieza": "Expansion Tank, coolant",
+       "articleId": 14040925,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4889/0189d24eafa1b3ae6e7e93dd1b7a56a3326abe2e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TSB-130",
+       "marca": "FEBEST",
+       "pieza": "Mounting, radiator",
+       "articleId": 9471082,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/1ac044b96e668ff84f3352e3231c8bd22eb87da4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "192690",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Cap, coolant tank",
+       "articleId": 18088244,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/c0c0bf290a498f7ece9c9e03a6227af46edb0734.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "05918",
+       "marca": "OSSCA",
+       "pieza": "Cap, coolant tank",
+       "articleId": 515703,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/94599c7989f400ba0f7795697b88f6215c8f3c14.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "21988",
+       "marca": "OSSCA",
+       "pieza": "Cap, coolant tank",
+       "articleId": 2022296,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/dd3e602e9611604999f7b69f8ad1e6a4f6a1129c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 11 0927",
+       "marca": "SWAG",
+       "pieza": "Cap, coolant tank",
+       "articleId": 12917865,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/2ea99da48cc7a616615e0d523955d9d6c0057adf.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Engine Timing",
+     "ruta": "Engine / Engine Timing / Belt Pulley",
+     "buscado": "timing belt",
+     "categoryId": 100003,
+     "articulos": [
+      {
+       "numero": "A70-0938",
+       "marca": "ACKOJA",
+       "pieza": "Belt Pulley, crankshaft",
+       "articleId": 30736068,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4364/9bd389c06bc5d1fc2469c657b507ba85581bb40e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "FOL198",
+       "marca": "AE",
+       "pieza": "Tappet",
+       "articleId": 7095778,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/141/e2c21fb5bf4b7274ac432704b558b3fa853b0acf.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "V95051",
+       "marca": "AE",
+       "pieza": "Intake Valve",
+       "articleId": 9563633,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/141/038fe2e810b20adc5e8c426dcacad60b076f89e0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "V95052",
+       "marca": "AE",
+       "pieza": "Exhaust Valve",
+       "articleId": 9563634,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/141/038fe2e810b20adc5e8c426dcacad60b076f89e0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP610074",
+       "marca": "BLUE PRINT",
+       "pieza": "Sprocket, crankshaft",
+       "articleId": 14233813,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/de723726778e5e95128c1b0486d7a4d2035e84c0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP740025",
+       "marca": "BLUE PRINT",
+       "pieza": "Control Valve, camshaft adjustment",
+       "articleId": 5608351,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/c2235b07232225e0dd67f6e2c995e8fb1179bf42.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADT37261",
+       "marca": "BLUE PRINT",
+       "pieza": "Control Valve, camshaft adjustment",
+       "articleId": 5637126,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/5ff48cac5120ee7144fe7ad5b240441ee6f97cf0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP760044",
+       "marca": "BLUE PRINT",
+       "pieza": "Tensioner, timing chain",
+       "articleId": 5608468,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/dd5a09c9804e738a5ac1e049b16b5be0dea06175.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADT37344",
+       "marca": "BLUE PRINT",
+       "pieza": "Timing Chain",
+       "articleId": 5637165,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/df884409ec3131e02a826a0b9a4385b7786ec429.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP750027",
+       "marca": "BLUE PRINT",
+       "pieza": "Timing Chain",
+       "articleId": 29452991,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/eafa41ce1bb1816916705465a18b5cd856f11826.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP740056",
+       "marca": "BLUE PRINT",
+       "pieza": "Camshaft Adjuster",
+       "articleId": 5608381,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/63ba3bb85b47e95424b853147427e4755d8fcd2b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP730115",
+       "marca": "BLUE PRINT",
+       "pieza": "Timing Chain Kit",
+       "articleId": 16617709,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/27eabb4f1bf3332b9bd149bb150723bc1d3d327a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP730081",
+       "marca": "BLUE PRINT",
+       "pieza": "Timing Chain Kit",
+       "articleId": 5608299,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/7d827b25506b3fd020d6387390870930cb6d795f.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP760043",
+       "marca": "BLUE PRINT",
+       "pieza": "Guide, timing chain",
+       "articleId": 5608467,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/06f658d19827ba4d3ad299b92d92b94977a3f792.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "ADBP760018",
+       "marca": "BLUE PRINT",
+       "pieza": "Guide, timing chain",
+       "articleId": 5608442,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/e0d6a3f8db4d55a2657e77542299fb7d9d6d73eb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "HB1653N",
+       "marca": "DAYCO-AU",
+       "pieza": "Belt Pulley, crankshaft",
+       "articleId": 16290974,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4889/ae7df02d1078ac94c71e6a52f6707d828096e60d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TDS-1ZRFE",
+       "marca": "FEBEST",
+       "pieza": "Belt Pulley, crankshaft",
+       "articleId": 9399412,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/21a244c0cb7e055bfbee6b9ef33a4c8f4d799741.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "TDS-1ZRFAE",
+       "marca": "FEBEST",
+       "pieza": "Belt Pulley, crankshaft",
+       "articleId": 9399411,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4674/96b52f70bef2d058d1293a428ed1b6d15934778d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "176812",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Timing Chain Kit",
+       "articleId": 1607572,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/41c214c7367b2147a0fd9a1f3edcd2c11e74a781.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "179995",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Timing Chain Kit",
+       "articleId": 1620255,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/83ad486e53deb0b4ebeabed9218f865cf4662eb9.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "179670",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Timing Chain",
+       "articleId": 1619166,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/7bc148f3ae9c8cfb5498716223844e15fcf6ec92.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "48924",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Tappet",
+       "articleId": 3479670,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/c28f04230486440202a12eb3d2303885c1e331bc.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "175102",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Control Valve, camshaft adjustment",
+       "articleId": 1600205,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/c13360ae0076f267869952a955f94a357b7f65da.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "49728",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Timing Chain",
+       "articleId": 3505185,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/9823d8b659a8219a791b50ce90df23cc970eb04d.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "107436",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Control Valve, camshaft adjustment",
+       "articleId": 940987,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/99319908e008d9a4e3b1bf5a43fdee9e8401fa89.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "109450",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Guide, timing chain",
+       "articleId": 965453,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/3b024e2a082e5fc58e9d29228fab6bad3c284e73.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "174609",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Guide, timing chain",
+       "articleId": 1597351,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/6db005b233c1af8b7ec67b0015ad9885ecaefb11.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "178849",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Sprocket, crankshaft",
+       "articleId": 21459362,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/b4106b0d0b5736f6620a5b2bbcfaace456ca73eb.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "109308",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Tensioner, timing chain",
+       "articleId": 964688,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/fe2710540e30c690a2bdc3092160eb5e7da47810.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "177747",
+       "marca": "FEBI BILSTEIN",
+       "pieza": "Camshaft Adjuster",
+       "articleId": 1611544,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/101/fd75dccd10c4d3f160817c6ff7aef5a22a19244e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "6NW 358 188-001",
+       "marca": "HELLA",
+       "pieza": "Control Valve, camshaft adjustment",
+       "articleId": 4297972,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/2/09124a8bfd827186c3e7fcd52304bdf5c3b523f4.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "56920",
+       "marca": "OSSCA",
+       "pieza": "Tensioner, timing chain",
+       "articleId": 3881379,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/e8e0f09e87cc2a7c92c1c004506945c2012bed68.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "40931",
+       "marca": "OSSCA",
+       "pieza": "Tappet",
+       "articleId": 19014631,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/6246585c304825ff4357a3b3273f4e3c79211fd0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "420 0237 10",
+       "marca": "Schaeffler INA",
+       "pieza": "Tappet",
+       "articleId": 3244350,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/204/1331e509ce8c33506610d7f119b062d924ebd29c.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "423 0100 10",
+       "marca": "Schaeffler INA",
+       "pieza": "Accessory Kit, finger follower",
+       "articleId": 3266776,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/204/37b025f17c384b35ee0c5a9bf2c26faded8c07c8.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "422 0131 10",
+       "marca": "Schaeffler INA",
+       "pieza": "Finger Follower, engine timing",
+       "articleId": 3262096,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/204/fc66d1273a861cf1bdef8ae1924ccc4176a99aba.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "VKM 983045",
+       "marca": "SKF",
+       "pieza": "Camshaft Adjuster",
+       "articleId": 14902378,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/50/f6d906599b1e6c5b42ed14d209e7cc7df11f0e74.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 7663",
+       "marca": "SWAG",
+       "pieza": "Timing Chain Kit",
+       "articleId": 14836191,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/e94a1421d205879cc2d3e9bd97c668c8fd5046d0.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5711",
+       "marca": "SWAG",
+       "pieza": "Timing Chain Kit",
+       "articleId": 2766654,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/ee61d1044b5651e646148bc9f9328f8f355684c6.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "81 94 9728",
+       "marca": "SWAG",
+       "pieza": "Timing Chain",
+       "articleId": 4684131,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/b51dae2df8fe9d40901f692c2e0bfb8914e90a2b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5715",
+       "marca": "SWAG",
+       "pieza": "Timing Chain",
+       "articleId": 2766658,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/9378f7703fb2b83b5a806c951fd6bb9da3b26675.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "81 10 9450",
+       "marca": "SWAG",
+       "pieza": "Guide, timing chain",
+       "articleId": 4682927,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/8dfea44f98a8e0013b0a6b9fdba1051e129be2ec.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5459",
+       "marca": "SWAG",
+       "pieza": "Control Valve, camshaft adjustment",
+       "articleId": 2766425,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/bcccf39069730be34f7ffffa3eb6339143d9c8f2.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5457",
+       "marca": "SWAG",
+       "pieza": "Control Valve, camshaft adjustment",
+       "articleId": 2766424,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/e79bad466e7a68f8166c76f0d949fb2a8b9edb44.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5400",
+       "marca": "SWAG",
+       "pieza": "Guide, timing chain",
+       "articleId": 2766368,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/0ad1c488c2aa51dc71fc6ed244aa770dd92e434e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5516",
+       "marca": "SWAG",
+       "pieza": "Tensioner, timing chain",
+       "articleId": 2766481,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/79da49252c30fb87ba964107f420db28d88a7c6b.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "33 10 5577",
+       "marca": "SWAG",
+       "pieza": "Camshaft Adjuster",
+       "articleId": 2766526,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/151/61fcd422857576750590cbe1bd841a0bdea61b1c.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    },
+    {
+     "nombre": "Water Pump/Gasket",
+     "ruta": "Cooling System / Water Pump/Gasket / Thermal Management Module",
+     "buscado": "water pump",
+     "categoryId": 100088,
+     "articulos": [
+      {
+       "numero": "ADT391106",
+       "marca": "BLUE PRINT",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 5638488,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/350/af3134dba0e7c2ebec39e3781ad3fa42206db11a.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PA10196",
+       "marca": "BUGATTI",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 8448619,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/109/074fb7eea8f38f2b5e34e1d6b9486f7be3a2af33.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DP401",
+       "marca": "DAYCO-AU",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 15623872,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4889/59e51a227f1223ed5e4f2fb5007016a8db4900bf.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "DP2184",
+       "marca": "DAYCO-AU",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 17413965,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4889/931bdccc3db788f34fc68724789860005e0b7bb1.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "306.140",
+       "marca": "ELRING",
+       "pieza": "Gasket, water pump",
+       "articleId": 63100250,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/10/f366ca0b80d8813e01c296278a3db906bd7a05be.webp",
+       "tipoFoto": "JPG"
+      },
+      {
+       "numero": "GWP41201",
+       "marca": "GATES-AU",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 7403130,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4812/d8141e57470b432a034db7e493d53145863bf965.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "PA1134",
+       "marca": "GRAF",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 8449721,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/310/098a3c4d2dea546c6fb60ce2b97409b08c4e0846.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "101134",
+       "marca": "KWP",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 842233,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/312/a0e27701ac8144871ed78310d362aaec5b6b80fc.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "24-1134",
+       "marca": "METELLI",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 2190932,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/121/914ccd949ef14f8db95f78efbba51f4b14a3ec75.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "29096",
+       "marca": "OSSCA",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 2432488,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/4683/d626911651897e344ddc722f7f14f5d54c667f7e.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "538 0549 10",
+       "marca": "Schaeffler INA",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 3751623,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/204/b8b357f1df4273885a45e9fcafdb5fb7a303ce12.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "VKPC 91866",
+       "marca": "SKF",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 9620266,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/50/fd45aaa78ddad7a719d43eff2d3d529b2a1bf0ed.webp",
+       "tipoFoto": "JPEG"
+      },
+      {
+       "numero": "VKPC 91825",
+       "marca": "SKF",
+       "pieza": "Water Pump, engine cooling",
+       "articleId": 9620248,
+       "foto": "https://fsn1.your-objectstorage.com/tecdoc2025/media_files/images/50/98b3e1be6eb5130e5e980e12f186ade3881ada75.webp",
+       "tipoFoto": "JPEG"
+      }
+     ]
+    }
+   ],
+   "vehiculo": {
+    "make": "TOYOTA",
+    "model": "Corolla",
+    "year": "2019",
+    "cilindrada_l": 1.8,
+    "potencia_hp": 132.0,
+    "combustible": "Gasoline",
+    "motor": "2ZR-FE",
+    "valido": true
+   },
+   "autodoc": {
+    "manufacturerId": 111,
+    "modelId": 9108,
+    "vehicleId": 5874
+   },
+   "nombres": {
+    "fabricante": "TOYOTA",
+    "modelo": "COROLLA RUMION (_E15_)",
+    "variante": "1.8 (ZRE152)"
+   }
+  }
+ ]
+}
