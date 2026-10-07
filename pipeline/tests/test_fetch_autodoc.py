@@ -189,6 +189,19 @@ class PruebasResolucion(unittest.TestCase):
         # con gasolina no puede devolver el diesel
         self.assertNotIn("DI-D", v["typeEngineName"])
 
+    def test_entre_generaciones_gana_la_que_existia_ese_anio(self):
+        # Tres generaciones que se llaman "COROLLA". La vieja tiene modelYearTo vacío en TecDoc,
+        # así que el filtro por año no la descarta; el desempate tiene que quedarse con la nueva.
+        c = ClienteAutodoc(CLAVE_FALSA, fetch=lambda url, cab, timeout=45: (200, json.dumps({
+            "countModels": 3, "models": [
+                {"modelId": 1, "modelName": "COROLLA I", "modelYearFrom": "1966-01-01", "modelYearTo": None},
+                {"modelId": 2, "modelName": "COROLLA (E170)", "modelYearFrom": "2013-06-01", "modelYearTo": "2019-12-01"},
+                {"modelId": 3, "modelName": "COROLLA (E210)", "modelYearFrom": "2019-01-01", "modelYearTo": None},
+            ]})), pausa=0)
+        m = resolver_modelo(c, 111, "Corolla", "2016", 67)
+        assert m is not None
+        assert m["modelId"] == 2, f"debía elegir la generación de 2013-2019, eligió {m['modelName']}"
+
     def test_no_confunde_generaciones_por_texto(self):
         # "OUTLANDER I" (2001-2008) no debe ganarle a nada en 2020: sin coincidencia segura,
         # se devuelve None y quien llama decide (mejor nada que una pieza de otra generación).

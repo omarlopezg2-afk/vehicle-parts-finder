@@ -257,7 +257,17 @@ def resolver_modelo(cliente: ClienteAutodoc, manufacturer_id: int, nombre: str, 
         candidatos.append((puntaje, m))
     if not candidatos:
         return None
-    candidatos.sort(key=lambda x: -x[0])
+    # DESEMPATE por generación. Varias generaciones se llaman igual ("COROLLA") y TecDoc suele
+    # dejar `modelYearTo` VACÍO en las viejas, así que el filtro por año no las descarta: todas
+    # empatan y ganaba la primera de la lista — la de 1970. Con eso, "Corolla 2016" devolvía 42
+    # variantes de las cuales NINGUNA era de 2016 (lo cazó el piloto de flota del 07/10/2026).
+    # Se prefiere la que EMPIEZA más tarde sin pasarse del año pedido: la generación que existía.
+    def clave(item):
+        m = item[1]
+        desde = str(m.get("modelYearFrom") or "")[:4]
+        return (-item[0], -(int(desde) if desde.isdigit() else 0))
+
+    candidatos.sort(key=clave)
     return candidatos[0][1]
 
 
