@@ -152,22 +152,36 @@ todavía no lo llama (T-B21), así que nada de esto cambia producción hasta ent
 **Aceptación:** un VIN `KMH…` muestra "Fabricado en Corea del Sur" y pregunta el motor; un chasis
 `NZE141-…` explica que es JDM y avisa solo de la dirección; ningún carro "con gas" cambia números.
 
-### 4.2 · Pintar los NÚMEROS ORIGINALES del vehículo (es el número que el cliente pide en la tienda)
+### 4.2 · Números ORIGINALES en pantalla (HECHO el 07/10/2026 — versión por pieza, no por vehículo)
 
-Hoy `originales.json` (100-190 números del fabricante **por coche**) viaja al sitio y **ninguna pantalla
-lo lee**: `getOriginalesDelVehiculo()` existe en `site/js/dataClient.js:266` y **nadie lo llama**.
+**Regla de Omar:** se enseñan **primero los números originales** del fabricante del carro siempre que
+los tengamos; si no, vale el de reemplazo (aftermarket) mientras sea la pieza correcta. Las pastillas
+siempre se venden en juego por eje (delantero **o** trasero), nunca por lado.
 
-- Forma del archivo: `{originales: [{buscado: "brake pad", numeros: [{numero, pieza, equivalentes: []}]}, …]}`.
-- El `buscado` de cada bloque usa los **mismos términos** que el sitio ya usa para emparejar categorías
-  (`FRAGMENTOS_POR_SLUG` en `catalogoMap.js`: "brake pad", "oil filter", "spark plug").
-- Dónde pintarlos: en el bloque de la categoría, ya con el motor elegido, como "Números originales de
-  TOYOTA para este motor". Es pesado (hasta ~1,9 MB por coche): **se baja solo al abrir esa categoría**,
-  nunca en la portada.
-- **Por qué el motor importa aquí:** un número original del motor equivocado es exactamente el fallo que
-  se quiere evitar; por eso este bloque va **después** de elegir variante, nunca antes.
+**Lo que se descubrió al medir (y por qué NO se pintó `originales.json`):** la versión que pedía este
+apartado ("los originales del motor correcto", `04465-02570`…) **no se puede dar con los datos actuales**.
+`data/build/catalogo/v<id>/originales.json` es la lista del *vehículo* (`articles-oem/selecting-oem-
+parts-vehicle-modification-description-product-group`): 113 números de pastilla para el Corolla 1.8, **sin
+posición ni marca de pieza**, mezclados con kits y juntas (en "spark plug" hay anillos de sellado), y solo
+cubre 3 productos (pastilla, filtro de aceite, bujía). Volcarla en pantalla sería enseñar 111 números
+"probablemente de tu carro", que rompe la regla 2. `getOriginalesDelVehiculo()` sigue sin llamarse a
+propósito.
 
-**Aceptación:** en `…/2016/pastillas-freno/v109621` (Corolla 1.8) se ven los originales de Toyota de
-ese motor (`04465-02570`, `04465-06150`…) y no los del 1.3 ni los del diésel.
+**Lo que sí se hizo:** cada artículo del catálogo trae su propio cruce `oem` (TecDoc), atado a ESA pieza
+(~74 % de los 6.662 artículos; hasta 584 números en algunos). `site/js/numerosOriginales.js`:
+- `separarOriginales`: deja solo los de la **marca del vehículo** (sin duplicados, `04466-02170` =
+  `0446602170`); los de otras marcas (Subaru, Pontiac…) **no** se llaman "original" del carro.
+- `numerosDeLaFicha`: con original → arriba "ORIGINAL TOYOTA n1 · n2 · n3 · n4" (tope 4, el resto se
+  cuenta "+ N originales más") y debajo "Reemplazo MARCA número"; sin original → sube el de reemplazo.
+- `ordenarPiezasConOriginalPrimero`: las piezas con original de la marca van antes.
+
+**Cobertura real (verificada en navegador):** Corolla 1.3 (`v52438`): las pastillas salen con original
+Toyota, delantera y trasera por separado. Corolla 1.8 (`v109621`): las **pastillas no traen original en el
+catálogo** (ATE y BENDIX sin cruce) → salen los de reemplazo; los **discos** sí traen original Toyota.
+
+**Pendiente (si Omar lo quiere):** para dar original en las pastillas del 1.8 haría falta consultar el
+cruce por número de reemplazo (`articles-oem/...` ≈ 1 consulta por artículo; **dry-run y coste antes**,
+regla 4) o el original por posición del vehículo. No se ha gastado ninguna consulta.
 
 ### 4.3 · Ronda 2 de motores (el criterio actual es bueno pero no perfecto)
 
@@ -235,7 +249,7 @@ Para ver el aspecto real, `--screenshot=/tmp/x.png --window-size=1100,860` y mir
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas: las tres suites. Hoy 212 + 138 + 21 en verde.
+# pruebas: las tres suites. Hoy 212 + 149 + 21 en verde.
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -349,7 +363,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 1. `cat AGENTS.md docs/TRASPASO.md` y `TASKS.md` (T-B22 → T-B27). *(Lo que estás leyendo.)*
 2. `git log --oneline -8` y `git status` para ver dónde quedó el árbol.
-3. Las tres suites de pruebas (sección 6): 212 + 138 + 21 en verde antes de tocar nada.
+3. Las tres suites de pruebas (sección 6): 212 + 149 + 21 en verde antes de tocar nada.
 4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 288" y
    "0 con combustible contradictorio".
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor

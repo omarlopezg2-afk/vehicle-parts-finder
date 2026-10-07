@@ -51,6 +51,7 @@ import { renderVehiclePicker } from "./vehiclePicker.js";
 import { saveVehicle, loadVehicle, clearVehicle, formatVehicleLabel } from "./vehicleSession.js";
 import { navegar, alCambiarRuta, alNavegar, estadoDesdeHash } from "./router.js";
 import { renderBandaDeConfianza } from "./confianza.js";
+import { numerosDeLaFicha, ordenarPiezasConOriginalPrimero } from "./numerosOriginales.js";
 
 const resultsEl = document.getElementById("results");
 const form = document.getElementById("search-form");
@@ -322,32 +323,6 @@ function detallesDeLaPieza(pieza, vehiculo) {
     if (lineas.length >= 3) break;
   }
 
-  // El número original del fabricante: lo que la gente reconoce y lo que pide en la tienda.
-  // Cuidado con la etiqueta: TecDoc cruza los números de OTRAS marcas que usaron la misma pieza
-  // (una pastilla de este Mitsubishi también es "original" de un Chrysler). Llamar "Original" a
-  // un número de Chrysler bajo un Mitsubishi confunde, así que se prefiere el de la marca del
-  // vehículo y, si no lo hay, se dice claramente de quién es.
-  const originales = Array.isArray(pieza.originales) ? pieza.originales.slice() : [];
-  if (originales.length) {
-    const marcaVehiculo = String((vehiculo && vehiculo.make) || "").toUpperCase();
-    originales.sort((a, b) => {
-      const sa = String(a.marca || "").toUpperCase() === marcaVehiculo ? 0 : 1;
-      const sb = String(b.marca || "").toUpperCase() === marcaVehiculo ? 0 : 1;
-      return sa - sb;
-    });
-    const primero = originales[0];
-    const numeros = originales.slice(0, 2).map((o) => o.numero).filter(Boolean);
-    if (numeros.length) {
-      const suya = String(primero.marca || "").toUpperCase() === marcaVehiculo;
-      const marca = primero.marca ? `${primero.marca} ` : "";
-      lineas.push({
-        clase: "numero-original",
-        texto: suya
-          ? `Original ${marca}${numeros.join(" · ")}`.trim()
-          : `También original de ${marca}${numeros.join(" · ")}`.trim(),
-      });
-    }
-  }
   return lineas;
 }
 
@@ -464,12 +439,13 @@ function renderNumerosDeParte(numeros, vehiculo) {
   nota.className = "search-hint";
   nota.textContent =
     "Confirmado por catálogo técnico (TecDoc) para tu vehículo exacto. Con este número cualquier " +
-    "tienda te da la pieza correcta.";
+    "tienda te da la pieza correcta. Cuando la pieza tiene número original del fabricante, va primero; " +
+    "el de reemplazo (otra marca, misma pieza) queda debajo.";
   seccion.appendChild(nota);
 
   const grid = document.createElement("div");
   grid.className = "numeros-grid";
-  for (const pieza of numeros) {
+  for (const pieza of ordenarPiezasConOriginalPrimero(numeros, vehiculo && vehiculo.make)) {
     const ficha = document.createElement("div");
     ficha.className = "numero-ficha";
 
@@ -484,14 +460,19 @@ function renderNumerosDeParte(numeros, vehiculo) {
       ficha.appendChild(img);
     }
 
+    // Originales primero (regla de Omar, 07/10/2026): si tenemos el número del fabricante del carro,
+    // es el que va arriba; el de reemplazo queda debajo. Si no lo tenemos, va el de reemplazo.
+    const datos = numerosDeLaFicha(pieza, vehiculo && vehiculo.make);
+    ficha.classList.add(datos.tipo === "original" ? "con-original" : "solo-reemplazo");
+
     const numero = document.createElement("div");
     numero.className = "numero";
-    numero.textContent = pieza.numero;
+    numero.textContent = datos.principal.numeros.join(" · ");
     ficha.appendChild(numero);
 
     const marca = document.createElement("div");
     marca.className = "numero-marca";
-    marca.textContent = pieza.marca;
+    marca.textContent = datos.principal.etiqueta;
     ficha.appendChild(marca);
 
     const nombre = document.createElement("div");
@@ -506,6 +487,25 @@ function renderNumerosDeParte(numeros, vehiculo) {
       d.className = linea.clase;
       d.textContent = linea.texto;
       ficha.appendChild(d);
+    }
+
+    if (datos.masOriginales > 0) {
+      const mas = document.createElement("div");
+      mas.className = "numero-detalle";
+      mas.textContent = `+ ${datos.masOriginales} originales más para esta pieza`;
+      ficha.appendChild(mas);
+    }
+    if (datos.reemplazo && datos.reemplazo.numero) {
+      const r = document.createElement("div");
+      r.className = "numero-original";
+      r.textContent = `Reemplazo ${datos.reemplazo.marca} ${datos.reemplazo.numero}`.replace(/\s+/g, " ").trim();
+      ficha.appendChild(r);
+    }
+    if (datos.tambienOriginalDe) {
+      const t = document.createElement("div");
+      t.className = "numero-original";
+      t.textContent = `También original de ${datos.tambienOriginalDe.marca} ${datos.tambienOriginalDe.numeros.join(" · ")}`;
+      ficha.appendChild(t);
     }
 
     grid.appendChild(ficha);
