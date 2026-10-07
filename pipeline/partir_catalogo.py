@@ -38,6 +38,41 @@ from pathlib import Path
 RAIZ = Path(__file__).resolve().parent.parent
 ORIGEN = RAIZ / "data" / "build" / "catalogo.json"
 DESTINO = RAIZ / "data" / "build" / "catalogo"
+SEMILLA = RAIZ / "data" / "seed" / "catalogo" / "vehiculos.json"
+
+
+def vehiculo_completo(entrada: dict, flota: list[dict]) -> dict:
+    """Completa el bloque `vehiculo` (marca/modelo/año) de los vehículos que entraron por flota.
+
+    POR QUÉ (hallado el 07/10/2026, antes de publicar): los 248 vehículos de la flota traían solo
+    la etiqueta ("Toyota Corolla 2016 1.3 Dual-VVTi (NRE180_)") y los ids de TecDoc, sin el bloque
+    `vehiculo` que el sitio usa para reconocer el coche del visitante. Resultado: el mes entero de
+    catálogo era INALCANZABLE desde la página (solo se encontraban los 2 que entraron por VIN).
+
+    Se deriva de la semilla (marca y modelo, que es dato nuestro) y de la etiqueta (año y variante,
+    que el pipeline escribe en ese formato fijo). No cuesta consultas: es leer lo que ya está.
+    """
+    actual = entrada.get("vehiculo") or {}
+    if actual.get("make"):
+        return actual
+
+    etiqueta = str(entrada.get("etiqueta") or "").strip()
+    for f in flota:
+        prefijo = f"{f.get('make','')} {f.get('model','')} ".strip()
+        if prefijo and etiqueta.lower().startswith(prefijo.lower()):
+            resto = etiqueta[len(prefijo):].strip()          # "2016 1.3 Dual-VVTi (NRE180_)"
+            anio = resto[:4] if resto[:4].isdigit() else ""
+            return {
+                "make": f.get("make"),
+                "model": f.get("model"),
+                "year": anio,
+                "variante": resto[4:].strip() or (entrada.get("nombres") or {}).get("variante"),
+                "origen": "flota",                            # no vino de un VIN: es de la semilla
+            }
+    # Último recurso: partir la etiqueta por palabras (marca, modelo, año, variante).
+    partes = etiqueta.split()
+    anio = next((x for x in partes if len(x) == 4 and x.isdigit()), "")
+    return {"make": partes[0] if partes else None, "model": None, "year": anio, "origen": "flota"}
 
 
 def clave_vehiculo(vehiculo: dict) -> str:
@@ -67,6 +102,11 @@ def partir() -> dict:
         "vehiculos": [],
     }
     resumen = []
+
+    try:
+        flota = (json.loads(SEMILLA.read_text(encoding="utf-8")).get("flota") or [])
+    except Exception:
+        flota = []
 
     for v in datos.get("vehiculos", []):
         clave = clave_vehiculo(v)
@@ -130,7 +170,7 @@ def partir() -> dict:
             "clave": clave,
             "etiqueta": v.get("etiqueta"),
             "vin": v.get("vin"),
-            "vehiculo": v.get("vehiculo") or {},
+            "vehiculo": vehiculo_completo(v, flota),
             "autodoc": {k: val for k, val in (v.get("autodoc") or {}).items() if not k.startswith("_")},
             "nombres": v.get("nombres") or {},
             "originales": {"archivo": f"catalogo/{clave}/originales.json", "productos": len(originales)},
