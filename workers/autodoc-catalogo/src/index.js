@@ -30,7 +30,9 @@
 const HOST = "autodoc-parts-catalog.p.rapidapi.com";
 const TIPO_TURISMO = 1; // PC
 const LANG = 4; // inglés: los nombres canónicos de TecDoc
-const TOPE_MES = 18000; // tope duro; el plan son 20.000
+// Tope duro de consultas al mes para el Worker. Importa: el bloque de flota gasta el grueso del
+// mes, así que esto NO es el plan entero sino la reserva. Se configura en wrangler.toml ([vars]).
+const TOPE_MES_POR_DEFECTO = 2000;
 const DIAS_CACHE = 90; // los articleId de TecDoc no cambian: la caché puede ser generosa
 
 // ---------------------------------------------------------------------------
@@ -274,9 +276,15 @@ async function piezasDeCategorias(c, vehicleId, categoryIds) {
 // El handler
 // ---------------------------------------------------------------------------
 
+function topeDe(env) {
+  const n = parseInt(String((env && env.TOPE_MES) || ""), 10);
+  return Number.isFinite(n) && n > 0 ? n : TOPE_MES_POR_DEFECTO;
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    const TOPE_MES = topeDe(env);
     if (url.pathname === "/salud") return json({ ok: true, topeMes: TOPE_MES });
     if (url.pathname !== "/vehiculo") return json({ error: "ruta desconocida" }, 404);
 

@@ -53,6 +53,7 @@ function doble(registro = [], opciones = {}) {
 function envFalso(inicial = {}, cuota = "0") {
   const kv = new Map(Object.entries(inicial));
   return {
+    TOPE_MES: "18000",
     RAPIDAPI_KEY: "CLAVE_DE_PRUEBA_QUE_NO_DEBE_SALIR",
     CATALOGO: { get: async (k) => (kv.has(k) ? JSON.parse(kv.get(k)) : null),
                 put: async (k, v) => { kv.set(k, v); } },

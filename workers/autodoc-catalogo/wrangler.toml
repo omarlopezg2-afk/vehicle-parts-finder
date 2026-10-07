@@ -6,16 +6,23 @@ compatibility_date = "2026-10-01"
 # este archivo ni en el repositorio. Es el motivo de que exista el Worker: el sitio es estático y
 # no puede llevar la clave sin que cualquiera la lea y consuma la cuota.
 [vars]
-# Solo el tope, para poder cambiarlo sin desplegar: `wrangler secret put` es para lo secreto.
-TOPE_MES = "18000"
+# LA RESERVA, no el plan entero: el bloque de flota (17.000 consultas) ya gasta el grueso del mes
+# de octubre. El Worker solo puede disponer de lo reservado para la cola larga. Cuando empiece un
+# mes nuevo y sepamos cuánto queda, se sube.
+TOPE_MES = "2000"
 
 # Caché del catálogo por demanda (lo que ya se pidió, no se vuelve a pagar) y contador del mes.
 [[kv_namespaces]]
 binding = "CATALOGO"
-id = "PENDIENTE_DE_CREAR"
-preview_id = "PENDIENTE_DE_CREAR"
+id = "e665520cd49f4c858290057e96939398"
 
 [[kv_namespaces]]
 binding = "CUOTA"
-id = "PENDIENTE_DE_CREAR"
-preview_id = "PENDIENTE_DE_CREAR"
+id = "ccaea0aa30f8463892f90bb1672a1a07"
+
+# El sitio es estático en partexact.com (GitHub Pages), así que el Worker vive en su propio
+# subdominio. Cloudflare crea el registro DNS solo (custom_domain = true). El sitio le pregunta
+# por los vehículos que no tiene calculados; la clave de AUTODOC nunca sale del Worker.
+[[routes]]
+pattern = "api.partexact.com"
+custom_domain = true
