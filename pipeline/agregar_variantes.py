@@ -70,18 +70,8 @@ def _vivas(variantes, anio: str) -> list:
     ]
 
 
-def candidatos(catalogo: dict, variantes_por_modelo: dict, *, criterio: str = "alta") -> list[dict]:
-    """Las variantes que faltan, una por modelo-año, según el criterio.
-
-    Criterio `alta` (el acordado): la **gasolina de más potencia** que existía ese año. Si ese año no
-    tiene ninguna gasolina en la lista de la API, no se añade nada (no se inventa un motor).
-
-    Devuelve una lista de candidatos listos para `semilla_de`. Se compara por `vehicleId` —la unidad
-    del catálogo— y se descarta lo que ya está catalogado.
-    """
-    if criterio != "alta":
-        raise ValueError(f"criterio no soportado: {criterio}")
-
+def _contexto(catalogo: dict):
+    """(ya, nombre, anios_por_modelo): lo catalogado, cómo se llama cada modelo y qué años cubre."""
     # Lo que ya está y cómo se llama cada modelo (de las propias entradas del catálogo).
     ya = set()
     nombre = {}
@@ -101,6 +91,22 @@ def candidatos(catalogo: dict, variantes_por_modelo: dict, *, criterio: str = "a
         anio = str((v.get("vehiculo") or {}).get("year") or "")
         if ids.get("modelId") is not None and anio:
             anios_por_modelo[int(ids["modelId"])].add(anio)
+    return ya, nombre, anios_por_modelo
+
+
+def candidatos(catalogo: dict, variantes_por_modelo: dict, *, criterio: str = "alta") -> list[dict]:
+    """Las variantes que faltan, una por modelo-año, según el criterio.
+
+    Criterio `alta` (el acordado): la **gasolina de más potencia** que existía ese año. Si ese año no
+    tiene ninguna gasolina en la lista de la API, no se añade nada (no se inventa un motor).
+
+    Devuelve una lista de candidatos listos para `semilla_de`. Se compara por `vehicleId` —la unidad
+    del catálogo— y se descarta lo que ya está catalogado.
+    """
+    if criterio != "alta":
+        raise ValueError(f"criterio no soportado: {criterio}")
+
+    ya, nombre, anios_por_modelo = _contexto(catalogo)
 
     salida = []
     for model_id, anios in sorted(anios_por_modelo.items()):
@@ -132,6 +138,40 @@ def candidatos(catalogo: dict, variantes_por_modelo: dict, *, criterio: str = "a
                 "anio": anio,
                 "identidad": identidad_de_variante(elegida),
                 "criterio": f"gama-alta-{criterio}",
+            })
+    return salida
+
+
+def candidatos_elegidos(catalogo: dict, variantes_por_modelo: dict, pares: list[tuple[int, int]]) -> list[dict]:
+    """Las variantes que el usuario eligió a mano (`modelId`, `vehicleId`), una por año que el catálogo
+    ya cubre de ese modelo y en el que esa variante existía.
+
+    Sirve para tapar un hueco concreto cuando el criterio de potencia no acierta (p. ej. el Lancer 2.0
+    de 150 PS, el que se parece al de EE.UU.). Igual que `candidatos`: solo usa lo que está en la caché
+    (0 consultas), descarta lo ya catalogado y NUNCA inventa: un par que la caché no tenga, no entra.
+    """
+    ya, nombre, anios_por_modelo = _contexto(catalogo)
+    salida = []
+    for model_id, vehicle_id in pares:
+        variantes = variantes_por_modelo.get(model_id) or []
+        elegida = next((v for v in variantes if v.get("vehicleId") == vehicle_id), None)
+        if elegida is None or model_id not in nombre:
+            continue
+        make, model, fabricante = nombre[model_id]
+        for anio in sorted(anios_por_modelo.get(model_id, ())):
+            if not _vivas([elegida], anio):
+                continue
+            if (model_id, int(vehicle_id)) in ya:
+                continue
+            salida.append({
+                "manufacturerId": fabricante,
+                "modelId": model_id,
+                "vehicleId": int(vehicle_id),
+                "make": make,
+                "model": model,
+                "anio": anio,
+                "identidad": identidad_de_variante(elegida),
+                "criterio": "elegida-a-mano",
             })
     return salida
 
@@ -181,6 +221,9 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Cataloga los motores que le faltan a la flota (T-B26).")
     ap.add_argument("--criterio", default="alta", choices=["alta"],
                     help="qué variante se añade por modelo-año (por defecto: la gasolina de más potencia)")
+    ap.add_argument("--vehicle-id", action="append", default=[], metavar="MODELID:VEHICLEID",
+                    help="añade esa variante concreta (repetible) en vez de aplicar el criterio; "
+                         "los ids salen del plan (--listar) o de la caché")
     ap.add_argument("--max-consultas", type=int, default=None,
                     help="tope de la corrida (por defecto: lo que estime el plan + 20%%)")
     ap.add_argument("--ejecutar", action="store_true", help="sin esto SOLO imprime el plan")
@@ -203,12 +246,23 @@ def main(argv: list[str] | None = None) -> int:
         print(f"[agregar] no hay caché de variantes en {CACHE}: corre antes completar_variantes.py")
         return 1
 
-    lista = candidatos(catalogo, variantes, criterio=args.criterio)
+    if args.vehicle_id:
+        try:
+            pares = [tuple(int(x) for x in par.split(":")) for par in args.vehicle_id]
+            assert all(len(p) == 2 for p in pares)
+        except (ValueError, AssertionError):
+            print("[agregar] --vehicle-id espera MODELID:VEHICLEID (dos números)")
+            return 1
+        lista = candidatos_elegidos(catalogo, variantes, pares)
+        if not lista:
+            print("[agregar] esas variantes no están en la caché o ya están catalogadas: nada que añadir")
+    else:
+        lista = candidatos(catalogo, variantes, criterio=args.criterio)
     coste = len(lista) * COSTE_POR_VEHICULO
     if args.lote and args.lote > 0:
         lista = lista[:args.lote]
         coste = len(lista) * COSTE_POR_VEHICULO
-    print(f"[agregar] criterio '{args.criterio}': {len(lista)} variantes nuevas en "
+    print(f"[agregar] criterio '{'elegidas a mano' if args.vehicle_id else args.criterio}': {len(lista)} variantes nuevas en "
           f"{len({c['modelId'] for c in lista})} modelos ≈ {coste} consultas "
           f"({COSTE_POR_VEHICULO} por vehículo, medido)")
     por_modelo = collections.Counter(f"{c['make']} {c['model']}" for c in lista)

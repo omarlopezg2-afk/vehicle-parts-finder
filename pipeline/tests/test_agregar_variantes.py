@@ -12,7 +12,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from agregar_variantes import candidatos, identidades, semilla_de  # noqa: E402
+from agregar_variantes import candidatos, candidatos_elegidos, identidades, semilla_de  # noqa: E402
 
 # Variantes reales (recortadas) de un Corolla 2016: el catálogo se quedó con las dos primeras.
 COROLLA = [
@@ -85,6 +85,33 @@ class PruebaEleccion(unittest.TestCase):
     def test_un_criterio_desconocido_se_rechaza_en_vez_de_adivinar(self):
         with self.assertRaises(ValueError):
             candidatos(CATALOGO, {11560: COROLLA}, criterio="todas")
+
+
+class PruebaElegidasAMano(unittest.TestCase):
+    def test_añade_la_variante_pedida_y_no_la_de_mas_potencia(self):
+        lista = candidatos_elegidos(CATALOGO, {11560: COROLLA}, [(11560, 109622)])
+        self.assertEqual([c["vehicleId"] for c in lista], [109622])
+        self.assertEqual(lista[0]["criterio"], "elegida-a-mano")
+        self.assertEqual(lista[0]["identidad"]["motor"], "2ZR-FE")
+
+    def test_una_por_cada_ano_que_el_catalogo_cubre(self):
+        catalogo = json.loads(json.dumps(CATALOGO))
+        catalogo["vehiculos"].append({
+            "etiqueta": "Toyota Corolla 2017 1.3", "vin": None,
+            "vehiculo": {"make": "Toyota", "model": "Corolla", "year": "2017"},
+            "autodoc": {"manufacturerId": 111, "modelId": 11560, "vehicleId": 52438}, "categorias": [],
+        })
+        lista = candidatos_elegidos(catalogo, {11560: COROLLA}, [(11560, 109621)])
+        self.assertEqual(sorted(c["anio"] for c in lista), ["2016", "2017"])
+
+    def test_no_repite_lo_ya_catalogado_y_no_inventa_lo_que_la_cache_no_tiene(self):
+        self.assertEqual(candidatos_elegidos(CATALOGO, {11560: COROLLA}, [(11560, 52438)]), [])
+        self.assertEqual(candidatos_elegidos(CATALOGO, {11560: COROLLA}, [(11560, 999999)]), [])
+        self.assertEqual(candidatos_elegidos(CATALOGO, {}, [(11560, 109621)]), [])
+
+    def test_una_variante_que_no_existia_ese_ano_no_entra(self):
+        futura = [dict(COROLLA[2], constructionIntervalStart="2019-01", constructionIntervalEnd=None)]
+        self.assertEqual(candidatos_elegidos(CATALOGO, {11560: futura}, [(11560, 109621)]), [])
 
 
 class PruebaSemilla(unittest.TestCase):
