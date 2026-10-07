@@ -173,7 +173,9 @@ propósito.
   `0446602170`); los de otras marcas (Subaru, Pontiac…) **no** se llaman "original" del carro.
 - `numerosDeLaFicha`: con original → arriba "ORIGINAL TOYOTA n1 · n2 · n3 · n4" (tope 4, el resto se
   cuenta "+ N originales más") y debajo "Reemplazo MARCA número"; sin original → sube el de reemplazo.
-- `ordenarPiezasConOriginalPrimero`: las piezas con original de la marca van antes.
+- `ordenarPiezasConOriginalPrimero`: primero las normales con original de la marca, luego las normales sin
+  original y al final las **de alto rendimiento** (`High Performance…`, `Sports…`): TecDoc les cruza el original
+  del carro porque le montan, pero no son la pieza original; salen con su número y "Equivale al original …".
 
 **Cobertura real (verificada en navegador):** Corolla 1.3 (`v52438`): las pastillas salen con original
 Toyota, delantera y trasera por separado. Corolla 1.8 (`v109621`): las **pastillas no traen original en el
@@ -256,7 +258,7 @@ Para ver el aspecto real, `--screenshot=/tmp/x.png --window-size=1100,860` y mir
 ```bash
 cd ~/Proyectos/piezas-vehiculos/repo
 
-# pruebas: las tres suites. Hoy 216 + 149 + 21 en verde.
+# pruebas: las tres suites. Hoy 216 + 153 + 21 en verde.
 python3 -m pytest pipeline/tests/ -q
 (cd site && node --test tests/*.test.js)
 (cd workers/autodoc-catalogo && npm test)
@@ -370,7 +372,7 @@ cd workers/autodoc-catalogo && npx wrangler deploy
 
 1. `cat AGENTS.md docs/TRASPASO.md` y `TASKS.md` (T-B22 → T-B27). *(Lo que estás leyendo.)*
 2. `git log --oneline -8` y `git status` para ver dónde quedó el árbol.
-3. Las tres suites de pruebas (sección 6): 216 + 149 + 21 en verde antes de tocar nada.
+3. Las tres suites de pruebas (sección 6): 216 + 153 + 21 en verde antes de tocar nada.
 4. `python3 pipeline/completar_variantes.py` (0 consultas) → tiene que decir "ya estaban: 290" y
    "0 con combustible contradictorio".
 5. Vista previa + los cuatro casos de la tabla de la sección 5 en el navegador. Si el caso "sin motor

@@ -501,6 +501,12 @@ function renderNumerosDeParte(numeros, vehiculo) {
       r.textContent = `Reemplazo ${datos.reemplazo.marca} ${datos.reemplazo.numero}`.replace(/\s+/g, " ").trim();
       ficha.appendChild(r);
     }
+    if (datos.sustituyeA) {
+      const q = document.createElement("div");
+      q.className = "numero-original";
+      q.textContent = `Pieza de alto rendimiento. Equivale al original ${datos.sustituyeA.marca} ${datos.sustituyeA.numeros.join(" · ")}`;
+      ficha.appendChild(q);
+    }
     if (datos.tambienOriginalDe) {
       const t = document.createElement("div");
       t.className = "numero-original";
