@@ -19,6 +19,8 @@
   "productos_oem": ["brake pad", "oil filter", "spark plug"],
   "_equivalentes_comentario": "Cuántos números originales de cada producto se desarrollan en equivalentes de otras marcas (cada uno cuesta una consulta más).",
   "equivalentes_por_producto": 1,
+  "_detalles_comentario": "Cuántas piezas por categoría se piden con TODAS sus especificaciones (posición, medida, tipo) y sus números originales. Cada una es una consulta, y quedan cacheadas por artículo para siempre.",
+  "detalles_por_categoria": 6,
   "categorias_buscadas": [
     "brake pad", "brake disc", "oil filter", "air filter", "fuel filter", "cabin filter",
     "wiper blade", "spark plug", "shock absorber", "radiator", "timing belt", "water pump",

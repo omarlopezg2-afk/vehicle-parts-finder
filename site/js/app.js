@@ -40,7 +40,7 @@ import {
 } from "./dataClient.js";
 import { isLikelyVIN, cleanVIN } from "./vin.js";
 import { decodeVIN } from "./vpicClient.js";
-import { getNumerosDeCategoria } from "./dataClient.js";
+import { getNumerosDeCategoria, getSlugsConNumeros } from "./dataClient.js";
 import { renderVehicleTree, renderCategoryGrid } from "./categoryTree.js";
 import { renderPartCard } from "./partCard.js";
 import { renderPegarNumeroBox } from "./pegarNumero.js";
@@ -316,6 +316,50 @@ async function runVinFlow(vehicle) {
   resultsEl.appendChild(
     renderBreadcrumb([{ label: `${vehicle.make} ${vehicle.model} ${vehicle.year}` }])
   );
+
+  // T-B17 (1/2): el patrón del selector de Mitsubishi que el usuario señaló —"y ahí te ofrece las
+  // categorías que tienen en catálogo"— aplicado a lo nuestro: se enseña ARRIBA lo que de verdad
+  // tenemos cubierto para ese vehículo exacto, y debajo queda el árbol completo para explorar. Sin
+  // esto, el visitante tiene que adivinar cuál de las 34 categorías devolverá algo.
+  const conDatos = await getSlugsConNumeros(vehicle);
+  if (conDatos.length) {
+    const seccion = document.createElement("section");
+    seccion.className = "categorias-con-datos";
+
+    const h = document.createElement("h2");
+    h.textContent = `Con pieza confirmada para tu vehículo (${conDatos.length})`;
+    seccion.appendChild(h);
+
+    const nota = document.createElement("p");
+    nota.className = "search-hint";
+    nota.textContent =
+      "Estas categorías ya tienen el número de la pieza para tu vehículo. Debajo puedes explorar el " +
+      "catálogo completo.";
+    seccion.appendChild(nota);
+
+    const lista = document.createElement("div");
+    lista.className = "chips-categorias";
+    for (const slug of conDatos) {
+      const categoria = categories.find((c) => c.slug === slug);
+      if (!categoria) continue;
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.textContent = categoria.name_es || slug;
+      chip.addEventListener("click", () => {
+        navegar({
+          vista: "vehiculo",
+          make: vehicle.make,
+          model: vehicle.model,
+          year: String(vehicle.year),
+          categoria: slug,
+        });
+        runCategorySelection(vehicle, slug, categories);
+      });
+      lista.appendChild(chip);
+    }
+    seccion.appendChild(lista);
+    resultsEl.appendChild(seccion);
+  }
 
   const tree = renderVehicleTree(vehicle, categories, (slug) => {
     // T-E5: la categoría dentro del vehículo tiene su propia URL, así que "atrás"

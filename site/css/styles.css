@@ -201,6 +201,41 @@ main {
   max-width: 62ch;
 }
 
+/* --- T-B17: las categorías que de verdad tenemos para ese vehículo --- */
+.categorias-con-datos {
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  padding: 0.9rem 1rem;
+  margin: 0.75rem 0 1.25rem;
+}
+
+.categorias-con-datos h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+}
+
+.chips-categorias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.chips-categorias button {
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-text);
+}
+
+.chips-categorias button:hover {
+  border-color: var(--color-text);
+}
+
 /* --- T-B14: el número de parte, arriba de las ofertas --- */
 .numeros-parte {
   border: 1px solid var(--color-border);
