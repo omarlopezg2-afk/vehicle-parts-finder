@@ -89,6 +89,53 @@ def slug_de(nombre: str) -> str:
     return t.strip("-") or "categoria"
 
 
+def _normalizar(valor) -> str:
+    """Sin acentos y en minúsculas, para emparejar textos de la API entre sí."""
+    t = unicodedata.normalize("NFKD", str(valor or "")).encode("ascii", "ignore").decode()
+    return t.lower().strip()
+
+
+def _sin_repetir(articulos: list) -> list:
+    """Quita repetidos por número+marca (el volcado de la API trae la misma pieza varias veces)."""
+    vistos, salida = set(), []
+    for a in articulos:
+        clave = (str(a.get("numero") or "").upper(), str(a.get("marca") or "").upper())
+        if clave in vistos or not a.get("numero"):
+            continue
+        vistos.add(clave)
+        salida.append(a)
+    return salida
+
+
+def articulos_utiles(cat: dict, *, tope_del_producto: int = 3) -> list:
+    """Los artículos de una categoría que se PUBLICAN.
+
+    Son dos grupos, y el segundo es el arreglo de un hueco medido el 07/10/2026 (T-B27):
+      1. Los DETALLADOS (con especificaciones o números originales), que es lo que distingue una
+         pieza de otra y la razón por la que el catálogo no es un volcado de marcas.
+      2. **Los que SON el producto de la categoría** — los que el sitio va a enseñar cuando el
+         visitante abra esa categoría. Medido: 307 vehículo-categoría del catálogo tenían el número
+         descargado (la lista de la categoría ya se pagó) y el sitio decía "no tenemos piezas",
+         porque el pipeline detalla los 3 PRIMEROS artículos de la lista y a veces esos son discos
+         cuando la categoría se pidió por "brake pad". Publicar el número que el visitante vino a
+         buscar no cuesta ni una consulta.
+
+    El grupo 2 va con TOPE (`tope_del_producto`, 3 como los detallados) a propósito: sin tope, una
+    categoría de filtro de aceite publicaba 64 marcas — justo el "volcado de marcas" que el usuario
+    rechazó. Lo que el visitante necesita es el número, no el catálogo de todas las marcas.
+
+    Nunca rellena: si no hay nada que coincida, devuelve vacío y la categoría no se publica.
+    """
+    articulos = cat.get("articulos") or []
+    utiles = [a for a in articulos if a.get("especificaciones") or a.get("oem")]
+    buscado = _normalizar(cat.get("buscado"))
+    if buscado:
+        del_producto = [a for a in articulos
+                        if a.get("numero") and buscado in _normalizar(a.get("pieza"))]
+        utiles += del_producto[:tope_del_producto]
+    return _sin_repetir(utiles)
+
+
 def partir() -> dict:
     datos = json.loads(ORIGEN.read_text(encoding="utf-8"))
     if DESTINO.exists():
@@ -127,11 +174,7 @@ def partir() -> dict:
 
         categorias = []
         for cat in v.get("categorias", []):
-            # SOLO lo detallado: lo que trae especificaciones o números originales.
-            utiles = [
-                a for a in (cat.get("articulos") or [])
-                if a.get("especificaciones") or a.get("oem")
-            ]
+            utiles = articulos_utiles(cat)
             if not utiles:
                 continue
             slug = slug_de(cat.get("nombre"))

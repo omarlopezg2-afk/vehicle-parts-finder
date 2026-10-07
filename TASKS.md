@@ -522,3 +522,55 @@ criterio**. Medido contra las listas completas que la API da para esos modelos:
 3. Que el sitio llame al Worker con `?pais=` (T-B21) y añadir el selector de mercado con su rótulo.
 4. Los dos avisos de arriba (guía invertida en Japón; gas de Corea o de taller) en su categoría.
 5. Verificar con un carro real de cada caso: un Hilux V6, un Corolla 1.8 y un coreano a gas.
+
+### HECHO el 07/10/2026 (tarde): las 43 variantes están dentro
+
+Ejecutado con `pipeline/agregar_variantes.py --ejecutar --lote 8` (6 lotes, cada uno escribe el
+catálogo: si uno se corta, no se pierde lo bajado y el siguiente sigue por donde iba).
+
+| Qué | Antes | Ahora |
+|---|---|---|
+| Vehículos en el catálogo | 250 | **288** |
+| Categorías con piezas | 2.467 | **2.813** |
+| Consultas acumuladas | 12.058 | **13.693** (la corrida costó **1.635**, no 2.064: la caché de especificaciones ahorró ~20%) |
+| Pruebas | 195 + 118 + 8 | **212 + 118 + 10** |
+
+- **Las 43 están todas** (verificado por `vehicleId` contra el plan) y ninguna quedó sin categorías ni
+  sin combustible (`completar_variantes` dice 288/288).
+- El caso estrella, ya en el navegador: el `Corolla 2016` ahora pregunta por **1.8 L · 151 PS ·
+  Gasolina · 2ZR-FE** además del 1.3 y el diésel 1.4, y al elegir el 1.8 da **su** número de pastillas
+  (distinto del 1.3: el 1.6 GDI del Accent, el 4.0 V6 del Hilux y el 3.3 V6 del Santa Fe también
+  entraron).
+- **Ojo con el criterio (`gama alta`)**: en tres modelos la gasolina de más potencia es una serie de
+  escaparate que en RD casi no se ve (`Lancer EVO X` 402 PS, `Grand Cherokee 6.2` 717 PS, `Yaris GR
+  4WD` 272 PS). No se inventó nada —son coches reales— pero ahí el motor común puede seguir faltando:
+  eso es la ronda 2, contrastando con el registro de la DGII.
+- **Lo que se aprendió del `fusionar`** (importante para la próxima): fusiona por VIN **o etiqueta**, y
+  la etiqueta manda por encima del `vehicleId`. Al añadir variantes cuyo nombre coincide con una entrada
+  que ya estaba (mismo coche, otro `vehicleId` de TecDoc), **la entrada vieja se sustituye**, no se
+  duplica: pasó 5 veces, y en los dos casos grandes la entrada nueva trajo MÁS piezas (308 vs 42 y 142
+  vs 41), así que no se perdió nada — pero conviene mirarlo antes de dar por hecho que solo suma.
+
+### T-B27 · El número estaba descargado y el sitio decía "no tenemos" (MEDIDO Y ARREGLADO)
+
+Al verificar el Corolla 1.8 en el navegador salió el hueco de verdad: el catálogo **detalla solo los 3
+primeros artículos de cada categoría** (T-B16), y en esa categoría los 3 primeros eran **discos**
+cuando la categoría se había pedido por **"brake pad"**. Resultado: el visitante elegía su motor y la
+página de pastillas decía "todavía no tenemos piezas registradas en esta categoría" **con el número
+descargado y pagado** (y con 113 números originales de Toyota en el bloque del vehículo).
+
+- **Medido: 307 vehículo-categoría** del catálogo en esa situación (93 vehículos; las peores: *Engine
+  Timing* 129, *Disc Brake* 63, *Cooling System* 38).
+- **Arreglo sin gastar ni una consulta** (`partir_catalogo.articulos_utiles`): además de lo detallado,
+  se publica **hasta 3 artículos de los que SON el producto de la categoria** (los que el sitio va a
+  enseñar). Con tope a propósito: sin él, una categoría de filtro publicaba **64 marcas**, que es el
+  "volcado de marcas" que el usuario rechazó.
+- Resultado: quedan **191** huecos, y esos son limpios (en su categoría **no hay ningún artículo que se
+  llame como el término buscado**: la API devolvió piezas de ala cuando se le pidió "radiator"). No se
+  rellena ninguno: si no está, no se publica.
+- Efecto en el caso estrella: el `Corolla 2016 1.8` ya muestra 3 números de pastilla (`13.0465-5690.2`
+  de ATE, `DB1786 HD/UP` de BENDIX) y el `1.3` sigue con sus 5 de antes (sin regresión).
+- **Pendiente relacionado:** el bloque de números ORIGINALES del vehículo (`originales.json`, 100-190
+  números del fabricante por coche) viaja al sitio pero **ninguna pantalla lo pinta todavía**. Para el
+  motor equivocado no: para el mismo motor, ese es el número que el cliente pide en la tienda. Siguiente
+  paso natural de esta misma capa.
