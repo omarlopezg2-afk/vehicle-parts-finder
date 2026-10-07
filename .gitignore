@@ -17,3 +17,8 @@ data/raw/*
 # Estaba versionada a mano y se quedo vieja: decia 2 piezas mientras el catalogo
 # real tenia 28. Se queda solo el README, que explica como se sirve en local.
 site/data/build/*.json
+site/data/build/catalogo
+
+# T-B19: el archivo ÚNICO del catálogo es un producto intermedio del pipeline (decenas de MB con
+# la flota del país). A git y al sitio va la versión PARTIDA: data/build/catalogo/ (índice + trozos).
+data/build/catalogo.json

@@ -59,12 +59,19 @@ jobs:
       - name: Checkout del repositorio
         uses: actions/checkout@v4
 
-      - name: Copiar data/build/*.json a site/data/build/
+      - name: Copiar data/build/ a site/data/build/
         run: |
           mkdir -p site/data/build
+          # Los .json sueltos (parts, vehicles, search_index, categories, fitment) ...
           cp data/build/*.json site/data/build/
+          # ... y el catálogo PARTIDO (T-B19): un índice + un archivo por vehículo-categoría.
+          # El archivo único catalogo.json NO se copia a propósito: pesa decenas de MB y ningún
+          # visitante debe descargarlo. Sin esta línea, el sitio se quedaba sin números.
+          rm -f site/data/build/catalogo.json
+          cp -r data/build/catalogo site/data/build/catalogo
           echo "Copiado:"
           ls -la site/data/build/
+          echo "catálogo partido: $(find site/data/build/catalogo -name '*.json' | wc -l) archivos"
 
       - name: Configurar GitHub Pages
         uses: actions/configure-pages@v5

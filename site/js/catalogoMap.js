@@ -100,8 +100,76 @@ export function vehiculoEnCatalogo(catalogo, vehiculo) {
 }
 
 /**
+ * T-B19: qué categorías del catálogo (archivos ya partidos) corresponden a una categoría del
+ * sitio. El catálogo guarda las categorías con el nombre técnico de AUTODOC ("Disc Brake",
+ * "Lubrication"); el sitio usa sus propios slugs ("pastillas-freno"). Se emparejan con los mismos
+ * fragmentos de nombre de pieza que el resto del módulo, así que hay una sola fuente de verdad.
+ *
+ * @param {object} vehiculoCatalogo entrada del índice (catalogo/index.json)
+ * @param {string} slug categoría del sitio
+ * @returns {Array<{slug:string, nombre:string, archivo:string, articulos:number}>}
+ */
+export function categoriasParaSlug(vehiculoCatalogo, slug) {
+  const fragmentos = FRAGMENTOS_POR_SLUG[slug];
+  if (!fragmentos || !fragmentos.length || !vehiculoCatalogo) return [];
+  const buscados = fragmentos.map(normalizar);
+  return (vehiculoCatalogo.categorias || []).filter((c) => {
+    // 1) el término con el que se pidió la categoría ("oil filter", "brake pad"): es el fiable.
+    const pedido = normalizar(c.buscado || "");
+    if (pedido && buscados.some((f) => pedido.includes(f) || f.includes(pedido))) return true;
+    // Lo que hay dentro: el nombre de las piezas es la señal más directa (una categoría puede
+    // servir a dos del sitio: "Disc Brake" trae pastillas Y discos).
+    const productos = (c.productos || []).map(normalizar);
+    if (productos.some((p) => buscados.some((f) => p.includes(f)))) return true;
+    // 2) y si no, el nombre o la ruta de la categoría (menos fiable: "Lubrication" esconde los
+    //    filtros de aceite, por eso no basta con esto).
+    const texto = normalizar(c.nombre);
+    const ruta = normalizar(c.ruta || "");
+    return buscados.some((f) => texto.includes(f) || ruta.includes(f));
+  });
+}
+
+/**
+ * Filtrar una LISTA de artículos por categoría del sitio (el nombre de la pieza manda, no la
+ * categoría de AUTODOC, que es un grupo ambiguo). Se usa sobre los artículos de un trozo ya
+ * cargado, y también desde `piezasDeCategoria` cuando los artículos vienen del catálogo entero.
+ *
+ * @returns {Array<{numero,marca,pieza,foto,especificaciones,originales}>}
+ */
+export function filtrarArticulos(articulos, slug) {
+  const fragmentos = FRAGMENTOS_POR_SLUG[slug];
+  if (!fragmentos || !fragmentos.length) return [];
+  const buscados = fragmentos.map(normalizar);
+  const salida = [];
+  const vistos = new Set();
+
+  for (const art of articulos || []) {
+    const nombre = normalizar(art.pieza);
+    if (!buscados.some((f) => nombre.includes(f))) continue;
+    const clave = `${art.numero}|${art.marca}`.toUpperCase();
+    if (vistos.has(clave)) continue;
+    vistos.add(clave);
+    salida.push({
+      numero: art.numero,
+      marca: art.marca,
+      pieza: art.pieza,
+      foto: art.foto || null,
+      especificaciones: art.especificaciones || null,
+      originales: Array.isArray(art.oem) ? art.oem : [],
+    });
+  }
+
+  salida.sort((a, b) => a.marca.localeCompare(b.marca, "es") || a.numero.localeCompare(b.numero, "es"));
+  return salida;
+}
+
+/**
  * Las piezas del catálogo que corresponden a una categoría del sitio, para ese vehículo.
  * Devuelve [] si no hay nada: nunca rellena.
+ *
+ * NOTA (T-B19): esta función trabaja sobre las piezas de UNA categoría ya cargada. Quien decide
+ * qué archivos descargar es dataClient (con `categoriasParaSlug`), porque el catálogo está partido
+ * por vehículo y categoría para no bajar 1,3 MB por visita.
  *
  * @returns {Array<{numero:string, marca:string, pieza:string, foto:string|null}>}
  */
@@ -112,35 +180,11 @@ export function piezasDeCategoria(catalogo, vehiculo, slug) {
   const entrada = vehiculoEnCatalogo(catalogo, vehiculo);
   if (!entrada) return [];
 
-  const buscados = fragmentos.map(normalizar);
-  const salida = [];
-  const vistos = new Set();
-
+  const todos = [];
   for (const cat of entrada.categorias || []) {
-    for (const art of cat.articulos || []) {
-      const nombre = normalizar(art.pieza);
-      if (!buscados.some((f) => nombre.includes(f))) continue;
-      // La misma pieza puede venir dos veces de AUTODOC con distinta marca (es legítimo), pero
-      // no queremos duplicar exactamente el mismo número + marca.
-      const clave = `${art.numero}|${art.marca}`.toUpperCase();
-      if (vistos.has(clave)) continue;
-      vistos.add(clave);
-      salida.push({
-        numero: art.numero,
-        marca: art.marca,
-        pieza: art.pieza,
-        foto: art.foto || null,
-        // T-B16: lo que convierte el número en "la pieza exacta". Van tal cual desde el catálogo
-        // (pueden venir vacíos: solo las piezas detalladas los tienen).
-        especificaciones: art.especificaciones || null,
-        originales: Array.isArray(art.oem) ? art.oem : [],
-      });
-    }
+    for (const art of cat.articulos || []) todos.push(art);
   }
-
-  // Ordenadas por marca y número: estable y fácil de leer en pantalla.
-  salida.sort((a, b) => a.marca.localeCompare(b.marca, "es") || a.numero.localeCompare(b.numero, "es"));
-  return salida;
+  return filtrarArticulos(todos, slug);
 }
 
 /**

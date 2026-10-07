@@ -41,13 +41,18 @@
 // aquí porque T-F1/categorías ya está aprobado en main; ver
 // problemas_conocidos del PR de T-E1 para más detalle de este supuesto.
 
-import { piezasDeCategoria, slugsConNumeros, vehiculoEnCatalogo } from "./catalogoMap.js";
+import {
+  categoriasParaSlug, filtrarArticulos, FRAGMENTOS_POR_SLUG, vehiculoEnCatalogo,
+} from "./catalogoMap.js";
 
 const REAL_PATHS = {
   parts: "./data/build/parts.json",
   vehicles: "./data/build/vehicles.json",
   categories: "./data/build/categories.json",
-  catalogo: "./data/build/catalogo.json",
+  // T-B19: el catálogo está PARTIDO. Esto es solo el índice (vehículo -> qué categorías tiene y
+  // en qué archivo). Antes era un único archivo de 10,3 MB con 8 vehículos (~1,3 MB por visita,
+  // y ~350 MB con la flota del país). Ahora cada visita baja el índice y el trozo que necesita.
+  catalogo: "./data/build/catalogo/index.json",
 };
 
 // catalogo A PROPÓSITO no está aquí: si el archivo real no existe, esta función devuelve lista
@@ -71,6 +76,7 @@ let _fetchImpl = typeof fetch === "function" ? fetch : null;
 export function _setFetchForTests(fn) {
   _fetchImpl = fn;
   _cache.clear();
+  _cacheTrozos.clear();
 }
 
 async function _loadJSON(key) {
@@ -150,21 +156,71 @@ export async function getCatalogo() {
   }
 }
 
+// Cache de trozos ya descargados en esta sesión (un vehículo-categoría).
+const _cacheTrozos = new Map();
+
+async function _cargarTrozo(rutaRelativa) {
+  if (_cacheTrozos.has(rutaRelativa)) return _cacheTrozos.get(rutaRelativa);
+  const url = `./data/build/${rutaRelativa}`;
+  const res = await _fetchImpl(url);
+  if (!res || !res.ok) throw new Error(`fetch de ${url} respondió ${res && res.status}`);
+  const datos = await res.json();
+  _cacheTrozos.set(rutaRelativa, datos);
+  return datos;
+}
+
 /**
  * Las piezas con número de parte para una categoría del sitio y un vehículo.
- * @returns {Promise<Array<{numero:string, marca:string, pieza:string, foto:string|null}>>}
+ * Descarga SOLO los trozos que corresponden a esa categoría (normalmente uno, ~6 KB).
+ * @returns {Promise<Array<{numero,marca,pieza,foto,especificaciones,originales}>>}
  */
 export async function getNumerosDeCategoria(vehiculo, slug) {
   const { catalogo } = await getCatalogo();
   if (!catalogo) return [];
-  return piezasDeCategoria(catalogo, vehiculo, slug);
+  const entrada = vehiculoEnCatalogo(catalogo, vehiculo);
+  if (!entrada) return [];
+
+  const categorias = categoriasParaSlug(entrada, slug);
+  if (!categorias.length) return [];
+
+  const articulos = [];
+  for (const cat of categorias) {
+    try {
+      const trozo = await _cargarTrozo(cat.archivo);
+      for (const a of trozo.articulos || []) articulos.push(a);
+    } catch (_err) {
+      // Un trozo que no baja no puede tumbar la página: se ignora y se muestra lo que haya.
+    }
+  }
+  return filtrarArticulos(articulos, slug);
 }
 
-/** Qué categorías del sitio tienen número de parte para ese vehículo. */
+/**
+ * Qué categorías del sitio tienen número de parte para ese vehículo.
+ * Se resuelve con el ÍNDICE, sin descargar ningún trozo.
+ */
 export async function getSlugsConNumeros(vehiculo) {
   const { catalogo } = await getCatalogo();
   if (!catalogo) return [];
-  return slugsConNumeros(catalogo, vehiculo);
+  const entrada = vehiculoEnCatalogo(catalogo, vehiculo);
+  if (!entrada) return [];
+  return Object.keys(FRAGMENTOS_POR_SLUG).filter(
+    (slug) => categoriasParaSlug(entrada, slug).length > 0
+  );
+}
+
+/** Los números originales del fabricante para ese vehículo (se descarga solo si se pide). */
+export async function getOriginalesDelVehiculo(vehiculo) {
+  const { catalogo } = await getCatalogo();
+  if (!catalogo) return [];
+  const entrada = vehiculoEnCatalogo(catalogo, vehiculo);
+  if (!entrada || !entrada.originales || !entrada.originales.archivo) return [];
+  try {
+    const trozo = await _cargarTrozo(entrada.originales.archivo);
+    return trozo.originales || [];
+  } catch (_err) {
+    return [];
+  }
 }
 
 /**
