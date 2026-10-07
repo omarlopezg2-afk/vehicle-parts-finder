@@ -8,6 +8,7 @@ import {
   numerosDeLaFicha,
   ordenarPiezasConOriginalPrimero,
   MAX_ORIGINALES_VISIBLES,
+  esAltoRendimiento,
 } from "../js/numerosOriginales.js";
 
 const DISCO = {
@@ -88,6 +89,37 @@ describe("numerosDeLaFicha", () => {
     const f = numerosDeLaFicha(muchos, "Toyota");
     assert.equal(f.principal.numeros.length, MAX_ORIGINALES_VISIBLES);
     assert.equal(f.masOriginales, 12 - MAX_ORIGINALES_VISIBLES);
+  });
+});
+
+describe("piezas de alto rendimiento", () => {
+  const RENDIMIENTO = {
+    numero: "MFP-22000EBC", marca: "JAPOCAT", pieza: "High Performance Brake Pad Set",
+    originales: [{ numero: "0446502390", marca: "TOYOTA" }, { numero: "0446502391", marca: "TOYOTA" },
+                 { numero: "0446502392", marca: "TOYOTA" }],
+  };
+  test("se reconocen por el nombre de la pieza", () => {
+    assert.equal(esAltoRendimiento(RENDIMIENTO), true);
+    assert.equal(esAltoRendimiento({ pieza: "Sports Air Filter System" }), true);
+    assert.equal(esAltoRendimiento(PASTILLA), false);
+    assert.equal(esAltoRendimiento(null), false);
+  });
+  test("no se llaman 'Original': van con su número y la equivalencia aparte", () => {
+    const f = numerosDeLaFicha(RENDIMIENTO, "Toyota");
+    assert.equal(f.tipo, "reemplazo");
+    assert.deepEqual(f.principal, { etiqueta: "JAPOCAT", numeros: ["MFP-22000EBC"] });
+    assert.deepEqual(f.sustituyeA, { marca: "Toyota", numeros: ["0446502390", "0446502391"] });
+    assert.equal(f.reemplazo, null);
+  });
+  test("las normales nunca llevan 'sustituyeA'", () => {
+    assert.equal(numerosDeLaFicha(DISCO, "Toyota").sustituyeA, null);
+    assert.equal(numerosDeLaFicha(PASTILLA, "Toyota").sustituyeA, null);
+  });
+  test("van al final aunque tengan original de la marca", () => {
+    const normalConOriginal = { numero: "N1", marca: "AAA", pieza: "Brake Pad Set, disc brake",
+      originales: [{ numero: "1", marca: "TOYOTA" }] };
+    const r = ordenarPiezasConOriginalPrimero([RENDIMIENTO, PASTILLA, normalConOriginal], "Toyota");
+    assert.deepEqual(r.map((p) => p.numero), ["N1", "13.0465-5690.2", "MFP-22000EBC"]);
   });
 });
 

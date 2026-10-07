@@ -13,6 +13,15 @@
 // figura como Subaru o Pontiac). Esos NO se llaman "original" del carro: se separan en `deOtras`.
 // Nunca se inventa ni se completa nada: si el artículo no trae `oem`, devuelve vacío.
 
+// Piezas "de rendimiento" (EBC, JAPOCAT…): TecDoc les cruza el número original del carro porque le
+// MONTAN, pero no son la pieza original ni la de uso normal. No se presentan como "Original" ni suben
+// al principio: se enseñan con su propio número y la equivalencia en una línea aparte.
+const ALTO_RENDIMIENTO = /^(high performance|sports?)\b/i;
+
+export function esAltoRendimiento(pieza) {
+  return ALTO_RENDIMIENTO.test(limpia(pieza && pieza.pieza));
+}
+
 /** Cuántos originales de la marca del carro se enseñan como máximo en la ficha (el resto se cuenta). */
 export const MAX_ORIGINALES_VISIBLES = 4;
 
@@ -72,13 +81,28 @@ export function separarOriginales(pieza, marcaVehiculo) {
  * - `tambienOriginalDe`: el cruce con otras marcas, solo si NO hay original propio (si lo hay, ese cruce
  *   es ruido).
  *
+ * - `sustituyeA`: solo en piezas de alto rendimiento: a qué original del carro equivalen (sin llamarlas
+ *   "original").
+ *
  * @returns {{tipo:"original"|"reemplazo", principal:{etiqueta:string, numeros:string[]},
  *   reemplazo:{marca:string, numero:string}|null, masOriginales:number,
- *   tambienOriginalDe:{marca:string, numeros:string[]}|null}}
+ *   tambienOriginalDe:{marca:string, numeros:string[]}|null,
+ *   sustituyeA:{marca:string, numeros:string[]}|null}}
  */
 export function numerosDeLaFicha(pieza, marcaVehiculo, max = MAX_ORIGINALES_VISIBLES) {
   const { propios, deOtras } = separarOriginales(pieza, marcaVehiculo);
   const reemplazo = { marca: limpia(pieza && pieza.marca), numero: limpia(pieza && pieza.numero) };
+
+  if (esAltoRendimiento(pieza)) {
+    return {
+      tipo: "reemplazo",
+      principal: { etiqueta: reemplazo.marca, numeros: reemplazo.numero ? [reemplazo.numero] : [] },
+      reemplazo: null,
+      masOriginales: 0,
+      tambienOriginalDe: null,
+      sustituyeA: propios.length ? { marca: limpia(marcaVehiculo), numeros: propios.slice(0, 2) } : null,
+    };
+  }
 
   if (propios.length) {
     return {
@@ -87,6 +111,7 @@ export function numerosDeLaFicha(pieza, marcaVehiculo, max = MAX_ORIGINALES_VISI
       reemplazo,
       masOriginales: Math.max(0, propios.length - max),
       tambienOriginalDe: null,
+      sustituyeA: null,
     };
   }
 
@@ -97,18 +122,22 @@ export function numerosDeLaFicha(pieza, marcaVehiculo, max = MAX_ORIGINALES_VISI
     reemplazo: null,
     masOriginales: 0,
     tambienOriginalDe: otra ? { marca: otra.marca, numeros: otra.numeros.slice(0, 2) } : null,
+    sustituyeA: null,
   };
 }
 
 /**
- * Pone primero las piezas que tienen original de la marca del carro. Es un orden estable: dentro de cada
- * grupo se respeta el orden que ya traían (marca y número).
+ * Orden de las fichas: primero las piezas normales con original de la marca del carro, luego las
+ * normales sin original y al final las de alto rendimiento. Es estable: dentro de cada grupo se
+ * respeta el orden que ya traían (marca y número).
  */
 export function ordenarPiezasConOriginalPrimero(piezas, marcaVehiculo) {
   const con = [];
   const sin = [];
+  const rendimiento = [];
   for (const p of piezas || []) {
-    (separarOriginales(p, marcaVehiculo).propios.length ? con : sin).push(p);
+    if (esAltoRendimiento(p)) rendimiento.push(p);
+    else (separarOriginales(p, marcaVehiculo).propios.length ? con : sin).push(p);
   }
-  return [...con, ...sin];
+  return [...con, ...sin, ...rendimiento];
 }
