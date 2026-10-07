@@ -335,12 +335,18 @@ mercado. Dije lo contrario y era exagerado: la pieza compartida es la norma en l
 `83` Europa (UN M-49) · `63` Alemania · `273` Europa Occidental sin Alemania · `153` México ·
 `49` Canadá · `37` Brasil.
 
+**CORRECCIÓN del 07/10/2026 (T-B25/T-B26):** esta sección se escribió creyendo que el catálogo se había
+armado con EE.UU. (261). **No es así: se armó con RD (67)** — lo dicen la semilla
+(`data/seed/catalogo/vehiculos.json`, `"pais": 67`) y el monolito (`"pais_filtro": 67`), y el índice ya
+publica ese campo. Por eso el defecto del Worker pasó a **67**, y donde abajo dice "el catálogo
+precalculado se queda en EE.UU." hay que leer **República Dominicana**.
+
 ### Por qué sale casi gratis
 
 - El Worker **ya acepta `pais`** (`?pais=127`): no hay que tocar la API ni volver a pagar nada.
-- El **catálogo precalculado se queda en EE.UU.** (así se armó). Los otros mercados los resuelve el
-  **Worker por demanda** y los cachea: el primero paga, los demás no. Es exactamente para lo que se
-  construyó.
+- El **catálogo precalculado es el de RD (67)** (así se armó: ver la corrección de arriba). Los otros
+  mercados los resuelve el **Worker por demanda** y los cachea: el primero paga, los demás no. Es
+  exactamente para lo que se construyó.
 - O sea: esto **no es un proyecto nuevo**, es ampliar la cuarta capa que ya está a medias.
 
 ### Diseño (se hace JUNTO con T-B22: es la misma pantalla)
@@ -448,3 +454,71 @@ mercado. Hoy el sitio **dice** el mercado (República Dominicana, el único con 
 catálogo) pero no deja cambiarlo: elegir otro mercado significa preguntarle a la API por demanda, y
 eso es el Worker con `?pais=` (T-B21 + T-B23), que todavía no llama el sitio. Tampoco hay que
 prometerlo: mientras no exista, la línea dice el mercado que sí es.
+
+---
+
+## T-B26 · El mercado como ORIGEN del carro (y lo que eso cambia) — anotado el 07/10/2026
+
+**Lo que dijo el usuario (07/10/2026), que es lo que da sentido a T-B23:** en RD entran muchísimos
+carros de **Corea** (buena parte **adaptados a gas allá**, y llegan así) y de **Japón** con la **guía a
+la derecha**, a la que aquí se le hace el **cambio a la izquierda** antes de venderlo al consumidor
+final. No es una preferencia de navegación: son dos coches que en el catálogo de un solo mercado no
+existen, o existen con piezas que ya no son las suyas.
+
+### Las dos adaptaciones y qué NO se puede prometer
+
+1. **Japón → guía invertida aquí.** El catálogo japonés describe un coche con la dirección a la
+   derecha; el que está en RD tiene la cremallera, la columna y el volante cambiados por un taller
+   local. Consecuencia para el sitio: **las piezas de dirección (cremallera, columna, volante,
+   mangueras) hay que confirmarlas con el taller**, y ningún número del catálogo JDM se presenta como
+   "el de tu coche" en esas categorías. El resto (motor, frenos, filtros, suspensión) sí es del JDM.
+   Además: **vPIC es la base de la NHTSA (EE.UU.) y no decodifica un chasis japonés/coreano** — por eso
+   para estos carros el camino no es el VIN, es mercado + motor. Eso hace del selector de mercado algo
+   imprescindible, no un adorno.
+2. **Corea → gas adaptado allá.** Aquí hay dos casos y no se pueden mezclar:
+   - **Versión de gas del mercado coreano (de fábrica):** EXISTE en el catálogo y hay que ofrecerla.
+     Ya medido: `Kia RIO IV` trae `1.25 LPG` (mismo motor `G4LA`, 82 PS) y el índice armado con RD ya
+     incluye un `Hyundai Elantra 2020 · 1.6 LPI · G4FG` y variantes híbridas de Toyota/Suzuki.
+   - **Adaptación hecha en un taller** (aquí o allá, sobre una versión de gasolina): no tiene versión
+     en el catálogo. Regla de T-B24 §2: se dice, no se da el número de gasolina como si fuera el suyo.
+   - **Ojo con el vocabulario:** la API escribe `Petrol/Liquified Petroleum Gas (LPG)`; el sitio dice
+     "Gasolina / Gas (GLP)", nunca "gas" a secas.
+3. **Pregunta al visitante, en castellano llano:** "¿de dónde llegó tu carro?" (República Dominicana ·
+   EE.UU. · Japón · Corea · otro) — y el rótulo del bloque diciendo siempre qué mercado se está
+   mostrando, que es la regla que ya se cumple.
+
+### LO QUE SALIÓ AL MEDIR HOY (0 consultas: caché en `data/raw/autodoc_variantes/`)
+
+**El catálogo elige los motores MAL para la flota dominicana.** La flota se armó con
+`variantes_por_modelo_anio: 2` y `elegidas[:tope]` — **los dos primeros que devuelve la API, sin ningún
+criterio**. Medido contra las listas completas que la API da para esos modelos:
+
+- **79 modelo-año del catálogo NO tienen la gasolina más potente de ese año** (la que en RD es la
+  habitual). Ejemplos con nombre y apellido:
+  - `Toyota Corolla 2016/2017`: el catálogo tiene **1.3 (1NR-FE) y 1.4 D-4D diésel**; falta el
+    **1.8 VVT-i (2ZR-FE)**. El 1.8 es el Corolla que se ve en la calle.
+  - `Toyota Hilux / Fortuner 2016-2020`: el catálogo tiene **solo diésel (1GD/2GD-FTV)**; falta el
+    **4.0 V6 (1GR-FE)**.
+  - `Hyundai Accent`: falta el **1.6 GDI (G4FD)**; `Tucson/Sportage`: falta el **1.6 T-GDi (G4FP)**;
+    `Santa Fe`: falta el **3.3 V6 (G6DH)**.
+- **Añadir esas variantes cuesta 36 entradas nuevas** (un `vehicleId` nuevo por variante, en 33
+  modelos) ≈ **1.728 consultas** a 48 por entrada (el catálogo actual costó 12.058 para 250). Es la
+  decisión de cuota que hay que tomar: **sin eso, el visitante con un Corolla 1.8 o un Hilux V6 no
+  ve su motor en la pregunta** — y eso es exactamente "un número que no le queda", aunque el sitio ya
+  no mienta (dice qué motor está mostrando).
+- Lo que **ya está resuelto**: la lista completa de variantes por modelo quedó en caché (49 modelos),
+  así que **elegir bien ya no cuesta ninguna consulta**; lo que se paga es bajar las piezas de las
+  variantes nuevas.
+- **Criterio propuesto** (a decidir por el usuario, no lo elijo yo solo): por cada modelo-año, la
+  **gasolina de más potencia** (la gama alta es la que se importa) + **una de gama baja** + el diésel
+  si existe; y saltarse las variantes que no se venden/importan en RD. Antes de gastar, comprobar
+  contra `docs/criterio-de-flota.md` (registro DGII) qué motores son los que de verdad entran.
+
+### Orden propuesto para el siguiente bloque
+
+1. Decidir el criterio de variantes y el presupuesto (36 entradas ≈ 1.728 consultas de las ~7.900).
+2. Bajar esas 36 variantes con `fetch_autodoc.py --solo` (una por una, con la caché de detalles ya
+   puesta: lo ya pagado no se repaga) y re-partir el catálogo.
+3. Que el sitio llame al Worker con `?pais=` (T-B21) y añadir el selector de mercado con su rótulo.
+4. Los dos avisos de arriba (guía invertida en Japón; gas de Corea o de taller) en su categoría.
+5. Verificar con un carro real de cada caso: un Hilux V6, un Corolla 1.8 y un coreano a gas.
