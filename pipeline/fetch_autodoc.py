@@ -38,8 +38,9 @@ NUNCA ES FATAL
 from __future__ import annotations
 
 import json
-import os
+import json
 import re
+import signal
 import sys
 import time
 import unicodedata
@@ -114,12 +115,36 @@ class ClienteAutodoc:
 
     @staticmethod
     def _fetch_http(url: str, cabeceras: dict, timeout: int = 45) -> tuple[int, str]:
-        req = urllib.request.Request(url, headers=cabeceras)
+        """Una petición HTTP con DOS frenos.
+
+        El `timeout` de urlopen cubre el caso normal, pero NO basta: la noche del 06/10/2026 el
+        bloque de flota se quedó 4 horas y media parado con un socket ESTABLISHED y 0 bytes
+        pendientes, sin CPU y sin excepción — el proceso esperando una respuesta que no llegaba y
+        que el timeout no cortó. Una alarma del sistema operativo corta cualquier espera, venga de
+        donde venga. Nunca lanza: devuelve estado 0 y el que llama decide (saltar y seguir).
+        """
+        def _cortar(_signum, _frame):
+            raise TimeoutError(f"sin respuesta en {timeout}s")
+
+        previo = None
+        if hasattr(signal, "SIGALRM"):
+            previo = signal.signal(signal.SIGALRM, _cortar)
+            signal.alarm(timeout)  # red de seguridad: corta aunque el socket no respete el timeout
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.status, r.read().decode("utf-8", "replace")
-        except urllib.error.HTTPError as e:
-            return e.code, e.read().decode("utf-8", "replace")
+            req = urllib.request.Request(url, headers=cabeceras)
+            try:
+                with urllib.request.urlopen(req, timeout=timeout) as r:
+                    return r.status, r.read().decode("utf-8", "replace")
+            except urllib.error.HTTPError as e:
+                return e.code, e.read().decode("utf-8", "replace")
+            except TimeoutError:
+                return 0, ""
+            except OSError:
+                return 0, ""
+        finally:
+            if previo is not None:
+                signal.alarm(0)
+                signal.signal(signal.SIGALRM, previo)
 
     def pedir(self, ruta: str):
         if self.consultas >= self.max_consultas:
