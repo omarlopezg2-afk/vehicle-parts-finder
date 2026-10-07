@@ -314,9 +314,21 @@ Un número exacto para el motor equivocado es peor que no dar número.
 ## T-B23 · La cuarta capa: mercado + motor (idea del usuario, 07/10)
 
 **Lo que pidió el usuario:** que el cliente elija si quiere ver la versión americana, europea, japonesa…
-"no sé si será mucho pedir". **No lo es.** Y es más importante de lo que parece: un Corolla importado
-de Japón (usado JDM) lleva piezas distintas al Corolla americano, y en RD se importan muchísimos
-usados japoneses. No arregla solo el nombre del modelo: arregla el número.
+"no sé si será mucho pedir". **No lo es**, pero conviene medir para qué sirve de verdad.
+
+**MEDIDO el 07/10/2026, y corrige una afirmación mía anterior:** comparando el mismo Toyota Corolla en
+Japón (127), EE.UU. (261) y RD (67) — 61 / 61 / 60 generaciones, y para la generación 2019-2020 las
+**mismas 11 variantes de motor** en Japón y en EE.UU. (2.0 MZEA12, 1.2 NRE210, 2.0 Hybrid MZEH12,
+1.8 Hybrid ZWE211…). Es decir: **a un Corolla importado de Japón NO le cambian las piezas** por el
+mercado. Dije lo contrario y era exagerado: la pieza compartida es la norma en los modelos globales.
+
+**Para qué sirve entonces el filtro (que sí sirve):**
+1. **Cobertura**: los modelos que solo existen en un mercado y por eso NO están en el catálogo armado
+   con EE.UU. (kei cars japoneses, modelos europeos, coreanos que no se venden en EE.UU.). Ahí el
+   filtro es la diferencia entre encontrar el coche y no encontrarlo.
+2. **Nombre**: en algunas marcas el mismo coche se llama distinto (Mitsubishi: ASX aquí / Outlander
+   Sport en EE.UU., ya comprobado).
+3. **Nunca para "arreglar el número"** de un modelo global: eso lo arregla la variante (T-B22).
 
 **Mercados reales que ofrece la API** (`/api/countries/list`, medido 07/10/2026 — 283 en total):
 `261` Estados Unidos · `67` República Dominicana · `127` Japón · `213` Corea del Sur ·
