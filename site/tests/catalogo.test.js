@@ -11,7 +11,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
-  normalizar, vehiculoEnCatalogo, vehiculosEnCatalogo, etiquetaDeVariante,
+  normalizar, vehiculoEnCatalogo, vehiculosEnCatalogo, etiquetaDeVariante, traducirCombustible,
   piezasDeCategoria, slugsConNumeros, FRAGMENTOS_POR_SLUG,
 } from "../js/catalogoMap.js";
 import { getNumerosDeCategoria, getSlugsConNumeros, _setFetchForTests } from "../js/dataClient.js";
@@ -282,4 +282,34 @@ test("la etiqueta no queda vacía nunca: si no hay dato, lo dice", () => {
 test("un vehículo que no está devuelve lista vacía, no una variante inventada", () => {
   assert.deepEqual(vehiculosEnCatalogo(INDICE_DOS_VARIANTES, { make: "Honda", model: "Civic", year: 2020 }), []);
   assert.deepEqual(vehiculosEnCatalogo(null, { make: "Toyota", model: "Corolla", year: 2020 }), []);
+});
+
+
+// --------------------------------------------------------------------------------------
+// T-B24: el combustible en el idioma del cliente. "Petrol" es GASOLINA, y "gas" a secas no se usa.
+// --------------------------------------------------------------------------------------
+
+test("la tabla de combustibles dice lo acordado, sin anglicismos", () => {
+  assert.equal(traducirCombustible("Petrol"), "Gasolina");
+  assert.equal(traducirCombustible("Petrol/Liquified Petroleum Gas (LPG)"), "Gasolina / Gas (GLP)");
+  assert.equal(traducirCombustible("Diesel"), "Diésel");
+  assert.equal(traducirCombustible("Petrol/Ethanol"), "Gasolina / Etanol");
+  assert.equal(traducirCombustible("Petrol/Electric"), "Híbrido");
+});
+
+test("nunca se dice 'gas' a secas: en RD eso es gasolina y GLP a la vez", () => {
+  const conGas = traducirCombustible("Petrol/Liquified Petroleum Gas (LPG)");
+  assert.ok(!/^gas$/i.test(conGas.trim()), "un label que diga solo 'gas' haría adivinar al cliente");
+  assert.ok(conGas.includes("Gas (GLP)"), "cuando es gas, tiene que decir GLP");
+});
+
+test("un combustible nuevo se muestra tal cual, sin inventar traducción", () => {
+  assert.equal(traducirCombustible("Petrol/CNG"), "Petrol/CNG");
+  assert.equal(traducirCombustible(""), "");
+  assert.equal(traducirCombustible(null), "");
+});
+
+test("la etiqueta de variante traduce el combustible, no lo deja en inglés", () => {
+  const e = etiquetaDeVariante({ vehiculo: { cilindrada_l: 1.6, potencia_hp: 130, combustible: "Petrol" } });
+  assert.equal(e, "1.6 L · 130 HP · Gasolina");
 });

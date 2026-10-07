@@ -135,6 +135,37 @@ export function vehiculosEnCatalogo(catalogo, vehiculo) {
 }
 
 /**
+ * El combustible, en el idioma del cliente (T-B24).
+ *
+ * La API (TecDoc, en inglés británico) dice `Petrol`, `Petrol/Liquified Petroleum Gas (LPG)`… y eso
+ * NO se le puede mostrar a nadie tal cual. Peor: en República Dominicana "gas" se usa para las dos
+ * cosas — "voy a echar gas" (gasolina) y "mi carro es a gas" (GLP) —, así que **nunca** se escribe
+ * "gas" a secas: sería pedirle al cliente que adivine. Siempre "Gasolina" o "Gas (GLP)", completos.
+ *
+ * Tabla acordada con el usuario (07/10/2026) — no cambiarla sin hablarlo:
+ *   Petrol                             -> Gasolina
+ *   Petrol/Liquified Petroleum Gas (LPG) -> Gasolina / Gas (GLP)
+ *   Diesel                             -> Diésel
+ *   Petrol/Ethanol                     -> Gasolina / Etanol
+ *   Petrol/Electric                    -> Híbrido
+ * Un valor nuevo se muestra tal cual (mejor raro que mentir), pero esta lista es la buena.
+ */
+export function traducirCombustible(valor) {
+  const v = String(valor || "").trim();
+  if (!v) return "";
+  const tabla = {
+    Petrol: "Gasolina",
+    "Petrol/Liquified Petroleum Gas (LPG)": "Gasolina / Gas (GLP)",
+    Diesel: "Diésel",
+    "Petrol/Ethanol": "Gasolina / Etanol",
+    "Petrol/Electric": "Híbrido",
+  };
+  // Comparación sin distinguir mayúsculas: la API no siempre respeta el formato.
+  const clave = Object.keys(tabla).find((k) => k.toLowerCase() === v.toLowerCase());
+  return clave ? tabla[clave] : v;
+}
+
+/**
  * Cómo se llama esta variante para que la persona la reconozca (T-B22).
  * Se arma con lo que trae el catálogo: cilindrada y potencia si están, y si no el nombre del motor
  * tal como lo da TecDoc ("1.3 Dual-VVTi (NRE180_)"). Nunca queda vacío: si no hay dato se dice que
@@ -146,7 +177,7 @@ export function etiquetaDeVariante(entrada) {
   const partes = [];
   if (v.cilindrada_l != null && v.cilindrada_l !== "") partes.push(`${v.cilindrada_l} L`);
   if (v.potencia_hp != null && v.potencia_hp !== "") partes.push(`${v.potencia_hp} HP`);
-  if (v.combustible) partes.push(String(v.combustible));
+  if (v.combustible) partes.push(traducirCombustible(v.combustible));
   if (v.motor) partes.push(String(v.motor));
   if (!partes.length && v.variante) partes.push(String(v.variante));
   if (!partes.length && entrada.nombres && entrada.nombres.variante) partes.push(String(entrada.nombres.variante));
