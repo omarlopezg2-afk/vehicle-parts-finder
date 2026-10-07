@@ -307,3 +307,49 @@ Un número exacto para el motor equivocado es peor que no dar número.
   cada una debe cambiar las piezas, y ninguna pantalla debe mostrar un número sin su variante.
 - Contar en el índice cuántos modelos-año tienen más de una variante (debería ser la mayoría de los
   del bloque: 2 por modelo-año).
+
+
+---
+
+## T-B23 · La cuarta capa: mercado + motor (idea del usuario, 07/10)
+
+**Lo que pidió el usuario:** que el cliente elija si quiere ver la versión americana, europea, japonesa…
+"no sé si será mucho pedir". **No lo es.** Y es más importante de lo que parece: un Corolla importado
+de Japón (usado JDM) lleva piezas distintas al Corolla americano, y en RD se importan muchísimos
+usados japoneses. No arregla solo el nombre del modelo: arregla el número.
+
+**Mercados reales que ofrece la API** (`/api/countries/list`, medido 07/10/2026 — 283 en total):
+`261` Estados Unidos · `67` República Dominicana · `127` Japón · `213` Corea del Sur ·
+`83` Europa (UN M-49) · `63` Alemania · `273` Europa Occidental sin Alemania · `153` México ·
+`49` Canadá · `37` Brasil.
+
+### Por qué sale casi gratis
+
+- El Worker **ya acepta `pais`** (`?pais=127`): no hay que tocar la API ni volver a pagar nada.
+- El **catálogo precalculado se queda en EE.UU.** (así se armó). Los otros mercados los resuelve el
+  **Worker por demanda** y los cachea: el primero paga, los demás no. Es exactamente para lo que se
+  construyó.
+- O sea: esto **no es un proyecto nuevo**, es ampliar la cuarta capa que ya está a medias.
+
+### Diseño (se hace JUNTO con T-B22: es la misma pantalla)
+
+Un solo bloque de "¿cuál es tu carro exactamente?" con dos preguntas:
+1. **Mercado** (si no lo sabe, la opción por defecto es EE.UU., que es la mayoría de los importados).
+2. **Motor** (la variante de T-B22).
+
+Y una regla que no se rompe: **nunca mostrar un número sin decir de qué mercado y de qué motor es.**
+Si el visitante trae **VIN**, no se pregunta nada: el VIN decide mercado y motor (y el selector queda
+solo para quien no tiene el VIN a mano, que es la mayoría).
+
+### Riesgo y cómo se tapa
+
+Elegir mal el mercado = piezas que no le quedan. Por eso:
+- Con VIN, manda el VIN (sin preguntas).
+- Sin VIN, el rótulo dice siempre qué se está mostrando ("EE.UU. · 1.6 EcoBoost 181 HP").
+- Si el modelo no está en el mercado elegido, el Worker ya **prueba el otro mercado** antes de decir
+  que no existe (arreglado hoy con la Ford Escape 2013) y el sitio debe **decirlo** al mostrarlo.
+
+### Verificación
+- Con `?pais=127` (Japón) y `?pais=261` (EE.UU.) el mismo modelo debe dar **variantes distintas**; si
+  dan lo mismo, el filtro no está haciendo nada y hay que investigar antes de prometerlo.
+- Un Toyota importado de Japón conocido (pedirle al usuario uno real) debe resolver con su mercado.
