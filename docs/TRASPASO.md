@@ -411,6 +411,67 @@ cd workers/autodoc-catalogo && npx wrangler deploy
   no pierde lo ya bajado.
 - **El Worker tiene su propio tope** (`TOPE_MES = 2000`) y responde `/salud` sin gastar nada.
 
+### 9.1 · Corrección del 10-oct-2026: coste real por vehículo y catálogo completo
+
+**El «~48 consultas por vehículo» de arriba es el número bueno. El «9» de
+`docs/catalogo-requisitos-y-precios.md` está corto por 5,3 veces** y falsea cualquier cálculo de
+tamaño. El estudio completo, con el método para re-medirlo sin gastar cuota, está en
+**`docs/coste-catalogo-completo.md`**. Lo esencial, medido sobre el catálogo congelado (290
+vehículos, 13.899 consultas):
+
+| Alcance (8 marcas principales ≈ 81 % del parque, ~2.850 variantes) | Consultas | Compra | USD |
+|---|---|---|---|
+| Números de TODAS las categorías | 153.900 | 2 × Ultra | **118** |
+| + ficha exacta de cada pieza (posición, medida, original) | 3.297.409 | 3×Mega + 3×Ultra | **1.074** |
+| + equivalencias cruzadas | 6.440.919 | 6×Mega + 5×Ultra | **2.089** |
+| Pesimista (reutilización 3× en vez de 12,44×) | 26,2 M | meses de Mega | **7.950** |
+
+Para las **4 marcas del 62 %** (1.500 variantes): 59 / 598 / 1.133 USD (pesimista 4.186).
+
+Tres claves que salen de ahí y que no eran obvias:
+
+- **La lista de una categoría devuelve TODAS sus piezas con su número, en 1 consulta** → los números
+  son baratos; lo caro es detallar.
+- **El detalle se paga 1 por artículo, y el `articleId` de TecDoc es global**: medido, 795.998
+  apariciones → 63.969 distintos (**12,44×**). Por eso el detalle del parque completo baja de
+  ~12.000 a ~1.000-2.100 USD. Sin ese dato, el cálculo sale doce veces más caro.
+- **Las 10 categorías actuales son el ~20 %** de un árbol de 40-70 grupos: no faltaban piezas de esas
+  categorías, faltaban categorías enteras.
+
+Y tres acciones que salen del estudio:
+
+1. **El censo antes de comprar nada grande**: el árbol de categorías de las 2.850 variantes son 5.700
+   consultas ≈ **29 USD** (un mes de Pro) y convierte el supuesto en número exacto.
+2. **Pedir cotización de volcado completo a AUTODOC** (ver 9.2) antes de gastar 2.000 USD en 6,4 M de
+   llamadas.
+3. **Correo saliente de `partexact.com`: hoy no existe.** El dominio está en *Cloudflare Email
+   Routing* (MX `route*.mx.cloudflare.net`, SPF `_spf.mx.cloudflare.net`, sin DKIM): **solo recibe**.
+   Enviar «como» `support@partexact.com` desde otro cliente no pasa SPF y acaba en spam — la
+   cotización se perdería sin aviso. Para escribir al proveedor hay que montar antes el envío (Zoho,
+   igual que `wifimonitor.app`, que sí envía) o usar un buzón que sí mande.
+
+### 9.2 · La cotización de volcado completo (cómo pedirla)
+
+Objetivo: averiguar si AUTODOC vende el catálogo de una vez, más barato que 6,4 M de llamadas por
+RapidAPI. Es una **llamada de negocio**, así que va desde el correo del proyecto y **en inglés** — y
+**solo después de que el dominio pueda enviar** (ver el punto 3 de 9.1).
+
+Qué preguntar. No «cuánto cuesta», que invita a un no, sino el abanico de opciones:
+
+1. Licencia del catálogo para un buscador de repuestos de República Dominicana: **~2.850 variantes de
+   8 marcas, ~3,3 M de fichas de artículo, ~6,4 M de consultas** si se hace por API.
+2. **Formato y entrega**: exportación (JSON/CSV/XML), descarga única o depósito, actualizaciones
+   incrementales.
+3. **Cadencia de actualización** y coste de mantenerlo fresco.
+4. **Términos**: ¿se pueden **guardar** los datos y servirlos a los usuarios, o exigen consulta en
+   vivo? ¿cuántos usuarios o dominios? ¿atribución?
+5. **Precios**: tarifa plana anual, tramos por volumen, precio por registro — y plazo de entrega.
+6. Decir que ya usamos su API en RapidAPI y que buscamos la vía más eficiente **para ese volumen**.
+
+Cifras para juzgar la respuesta (de `docs/coste-catalogo-completo.md`): por API son **2.089 USD** (8
+marcas, con fichas exactas y equivalencias) y el pesimista, **7.950 USD**. Por encima de eso no
+compensa: se sigue con la vía por demanda a 29 USD/mes, que ya está diseñada.
+
 ---
 
 ## 10. Primeros 60 minutos recomendados
